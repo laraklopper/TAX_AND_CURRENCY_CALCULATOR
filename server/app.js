@@ -17,6 +17,10 @@ if (!port) {
 app.use(express.json())
 app.use(cors())
 app.use(helmet())
+app.use(express.urlencoded({extended:true}))
+
+// =======ROUTES===========
+// Prefix all route modules with their base path.
 
 mongoose.set('strictPopulate', false)
 
