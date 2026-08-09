@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-
+const connectDB = require('./config/connect')
 const port = process.env.PORT || 3001;
 const app = express();
 
@@ -20,6 +20,15 @@ app.use(helmet())
 
 mongoose.set('strictPopulate', false)
 
- app.listen(port, () => {
-        console.info(`[INFO:app.js] server is running on ${port}`)// Log a message in the console indicating the server is running
+
+//=============START THE SERVER=============
+// Connect to MongoDB first; only start listening once the DB is available.
+// This avoids “server started but DB is down” race conditions.
+connectDB().then(() => {
+    app.listen(port, () => {
+        console.info(`[INFO:app.js] server is running on ${port}`)
     })
+}).catch((error) => {
+    console.error('[ERROR: app.js]: Database connection failed');
+    process.exit();
+})
