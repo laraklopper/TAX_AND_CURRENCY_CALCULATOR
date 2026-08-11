@@ -29,18 +29,22 @@ export default function Header({currentUser}) {
                         )}
                         {currentUser && (
                             <li>
-                                <NavLink to='/calculator' className='refLink'>CALCULATOR</NavLink>
+                                <NavLink to='/calculators' className='refLink'>CALCULATOR</NavLink>
                             </li>
                         )}
                         {currentUser && (
                             <li>
-                                <NavLink to='/currencyConverter'>CURRENCY CONVERTER</NavLink>
+                                <NavLink to='/currencyConverter' className='refLink'>CURRENCY CONVERTER</NavLink>
                             </li>
                         )}
-                        
+                        {currentUser && (
+                            <li>
+                                <NavLink to='/profile' className='refLink'>PROFILE</NavLink>
+                            </li>
+                        )}
                         {currentUser.admin && (
                             <li>
-                                <NavLink to='/users'>USERS</NavLink>
+                                <NavLink to='/users' className='refLink'>USERS</NavLink>
                             </li>
                         )}
                     </ul>
