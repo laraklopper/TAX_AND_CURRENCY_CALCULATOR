@@ -46,7 +46,14 @@
     padding: 0px;
     display: flex;
 }
+#headerRow2{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
 #mainHeaderStack{
+    display: flex;
+    align-items: baseline;
     width: 100%;
     margin: 0px;
     padding: 0px;

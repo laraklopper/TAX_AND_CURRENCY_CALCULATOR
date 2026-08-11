@@ -13,6 +13,16 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
+#mainNavRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#mainNavCol{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 #loginNavBar{
     margin: 0px;
     padding: 0px;
