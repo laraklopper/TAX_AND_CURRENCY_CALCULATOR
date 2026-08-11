@@ -9,7 +9,7 @@ export default function ProtectedUserRoute(//Export default ProtectedUserRoute.j
     }
  ) {
   if (!currentUser) {
-    return <Navigate/>
+    return <Navigate to='/'/>
   }
   return children
 }
