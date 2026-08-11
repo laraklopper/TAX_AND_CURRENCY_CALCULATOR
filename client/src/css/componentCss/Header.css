@@ -1,12 +1,34 @@
 /* Header.css */
+#appHeading{
+    font-family: "Roboto", sans-serif;
+    text-decoration: underline;
+    margin: 0px;
+    padding: 0px;
+    font-size: 28px;
+    letter-spacing: 2px;
+    font-weight: 900;
+}
+#page-heading{
+    font-family: "Roboto", sans-serif;
+    text-decoration: underline;
+    font-size: 26px;
+    letter-spacing: 2px;
+}
+.headerSpan{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    justify-content: center;
+}
 /* MAIN HEADER */
 /* LOGGED IN HEADER */
 #mainHeader{
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin: 0px;
-    padding: 0px;
+    margin: 10px 0px;
+    padding: 10px 0px 5px 0px;
     background-color: #B6C6D4;
 }
 #mainNavbar{
@@ -15,4 +37,17 @@
     display: flex;
     gap: 10px;
     list-style-type: none;
+}
+/* BOOTSTRAP */
+#headerRow1{
+    width: 100%;
+    height: 10px;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+#mainHeaderStack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }

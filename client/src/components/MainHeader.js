@@ -1,5 +1,6 @@
 import React from 'react'
 import '../css/componentCss/Header.css'
+import '../css/componentCss/Navbar.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
@@ -24,19 +25,19 @@ export default function MainHeader({mainHeading}) {
             <Stack direction="horizontal" gap={3} id='mainHeaderStack'>
                 <div className="p-2">
                     <span className='headingSpan'>
-                        <h2>{mainHeading}</h2>
+                        <h2 id='page-heading'>{mainHeading}</h2>
                     </span>
                 </div>
                 <div className="p-2 ms-auto"></div>
                 <div className="vr" />
-                <div className="p-2">
-                    <nav>
+                <div className="p-2" id='main-nav-block'>
+                    <nav id='navigation'>
                         <ul id='loginNavBar'>
                             <li className='linkItem'>
-                                <NavLink to='/'>LOGIN</NavLink>
+                                <NavLink to='/' className='refLink'>LOGIN</NavLink>
                             </li>
                             <li className='linkItem'>
-                                <NavLink to='/reg'>REGISTRATION</NavLink>
+                                <NavLink to='/reg' className='refLink'>REGISTRATION</NavLink>
                             </li>
                         </ul>
                     </nav>
