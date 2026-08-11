@@ -27,6 +27,22 @@ export default function Header({currentUser}) {
                                 <NavLink to='/'>DASHBOARD</NavLink>
                             </li> 
                         )}
+                        {currentUser && (
+                            <li>
+                                <NavLink to='/calculator' className='refLink'>CALCULATOR</NavLink>
+                            </li>
+                        )}
+                        {currentUser && (
+                            <li>
+                                <NavLink to='/currencyConverter'>CURRENCY CONVERTER</NavLink>
+                            </li>
+                        )}
+                        
+                        {currentUser.admin && (
+                            <li>
+                                <NavLink to='/users'>USERS</NavLink>
+                            </li>
+                        )}
                     </ul>
                 </nav>
             </div>
