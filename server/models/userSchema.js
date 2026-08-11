@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
         },
     },
     // Field for user email (allow email address for any country)
+    // Required for user login
     email:{
         type: String,
         required: [true, 'Email is required'],
@@ -49,6 +50,11 @@ const userSchema = new mongoose.Schema({
         minlength: [8, 'Password must be at least 8 characters long'],
         maxlength: [1024, 'Password cannot exceed 1024 characters'],
         select: false,
+    },
+    // Role-based access control: true = admin privileges, false/undefined = regular user
+    admin:{
+        type: Boolean,
+        default: false,
     },
     // ========PASSWORD RESET FIELDS============
     resetPasswordToken:{
