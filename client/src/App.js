@@ -21,7 +21,15 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [loggedIn, setLoggedIn] = useState(false)
   const [error, setError] = useState(null)
-  
+  const [userData, setUserData] = useState({
+    fullName: {
+      firstName: '',
+      lastName:''
+    },
+    email: '',
+    dateOfBirth:'',
+    admin: false,
+  })
   return (
     <>
       <Container role='main' id='appContainer'>
@@ -70,7 +78,11 @@ export default function App() {
           ):(
             <>
               <Route exact path='/' element={
-                <Login/>
+                <Login
+                  userData={userData}
+                  setUserData={setUserData}
+                  setError={setError}
+                />
               }/>
               <Route path='/reg' element={
                 <Registration/>

@@ -1,8 +1,62 @@
+#login-form{
+    width: 400px;
+    background-color: #A8AEB3;
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+}
+/* LAYOUT */
+#login-details{
+     display: flex;
+    width: 300px;
+    margin: 0px;
+    padding: 0px;
+    flex-direction: column;
+        align-items: center;
+background-color: #BFBFBF;
+}
+#login-email-block,
+#login-passwd-block{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    flex-direction: column;
+    align-items: center;
+}
+#show-passwd-block{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    flex-direction: column;
+    align-items: center;
+}
+.login-label{
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* BUTTON */
 #loginBtn{
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 180px;
     height: 40px;
     margin: 0px;
     padding: 0px;
-    
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    color: #000;
+    border: solid 2px #323A42;
+    text-transform: uppercase;
+
+}
+#loginBtn:hover{
+     color: #E8F0F6;
+    background-color: #323A42;
 }

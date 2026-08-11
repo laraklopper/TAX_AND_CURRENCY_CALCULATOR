@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import MainHeader from '../components/MainHeader'
 import LoginForm from '../components/LoginForm';
 
-export default function Login() {
+export default function Login({userData, setUserData, setError}) {
   return (
     <div id='page-div'>
       <MainHeader mainHeading='LOGIN'/>
@@ -16,7 +16,10 @@ export default function Login() {
         <Col id='login-col1'/>
         <Col xs={6} id='login-col'>
           <div id='login-panal'>
-            <LoginForm/>
+            <LoginForm
+              userData={userData}
+              setUserData={setUserData}
+            />
           </div>
         </Col>
         <Col id='login-col2'/>

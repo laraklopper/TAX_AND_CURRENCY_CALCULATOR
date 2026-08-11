@@ -1,0 +1,52 @@
+#formHeadingBlock{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#formHeading{
+     font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    margin: 0px;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 0px;
+    text-transform: uppercase;
+}
+/* INPUT FIELDS */
+.input {
+  text-align: center;
+  border: solid black 2px;
+  border-radius: 5px;
+  padding: 5px;
+  width: 180px;
+  font-family: "Courier Prime", monospace;
+  font-size: 16px;
+  font-weight: 700;
+}
+/* BUTTONS */
+#showPasswrdBtn{
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Courier Prime", monospace;
+  font-size: 16px;
+  font-weight: 700;
+}
+.msgText{
+   margin: 0px;
+    padding: 0px;
+    color: #000;
+    text-transform: uppercase;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+}
