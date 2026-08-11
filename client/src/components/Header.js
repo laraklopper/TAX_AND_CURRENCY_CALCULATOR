@@ -17,8 +17,8 @@ export default function Header({currentUser}) {
         </Col>
         <Col/>
         </Row>
-        <Row>
-            <Col>
+        <Row id='headerNav row'>
+            <Col md={12} xs={12} id='navCol'>
             <div>
                 <nav>
                     <ul>
