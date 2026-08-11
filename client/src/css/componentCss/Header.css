@@ -3,6 +3,7 @@
 /* LOGGED IN HEADER */
 #mainHeader{
     display: flex;
+    flex-direction: column;
     width: 100%;
     margin: 0px;
     padding: 0px;

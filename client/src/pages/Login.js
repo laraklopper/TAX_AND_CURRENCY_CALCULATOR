@@ -1,7 +1,10 @@
 import React from 'react'
+import MainHeader from '../components/MainHeader'
 
 export default function Login() {
   return (
-    <div>Login</div>
+    <div>
+      <MainHeader/>
+    </div>
   )
 }
