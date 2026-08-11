@@ -51,12 +51,6 @@ const userSchema = new mongoose.Schema({
         maxlength: [1024, 'Password cannot exceed 1024 characters'],
         select: false,
     },
-    // Role-based access control: true = admin privileges, false/undefined = regular user
-    admin :{
-      type: Boolean,//Indicate data type as a boolean
-      required: false,// Optional because normal users may not need this field.
-      default: false, // New users are regular users unless explicitly made an admin.
-    },
     // ========PASSWORD RESET FIELDS============
     resetPasswordToken:{
         type: String,
