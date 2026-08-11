@@ -6,13 +6,11 @@ import Stack from 'react-bootstrap/Stack';
 import {NavLink} from 'react-router-dom'
 export default function MainHeader({mainHeading}) {
   return (
-   <header>
-    <Row>
-        <Col>
-
-        </Col>
+   <header id='mainHeader' role='banner'>
+    <Row id='headerRow1'>
+        <Col id='mainHeaderCol1'></Col>
     </Row>
-    <Row>
+    <Row id='headerRow2'>
         <Col/>
         <Col xs={5}>
             <span className='headerSpan'>
@@ -21,8 +19,8 @@ export default function MainHeader({mainHeading}) {
         </Col>
         <Col/>
       </Row>
-    <Row>
-        <Col>
+    <Row id='mainNavRow'>
+        <Col id='mainNavCol'>
             <Stack direction="horizontal" gap={3} id='mainHeaderStack'>
                 <div className="p-2">
                     <span className='headingSpan'>
