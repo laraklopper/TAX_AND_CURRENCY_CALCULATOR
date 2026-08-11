@@ -5,8 +5,12 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // IMPORT REACT ROUTER COMPONENTS
-import { Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { Bug } from 'lucide-react';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Registration from './pages/Registration'
+import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 export default function App() {
   // const [users, setUsers] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
@@ -15,7 +19,7 @@ export default function App() {
   
   return (
     <>
-      <Container>
+      <Container role='main' id='appContainer'>
       <Row id='globalErrorRow'>
           <Col xs={0} md id='errorCol1'/>
           <Col xs={12} md={6} id='globalErrorCol' aria-live='polite'>
@@ -28,9 +32,26 @@ export default function App() {
           </Col>
           <Col xs={0} md id='errorCol2'/>
         </Row>
-
         <Routes>
-          
+          {loggedIn ? (
+            <>
+            {/* Route to Home/Dashboard  */}
+              <Route exact path='/' element={
+                <ProtectedUserRoute>
+                  <Home/>
+                </ProtectedUserRoute>
+              }/>
+            </>
+          ):(
+            <>
+              <Route exact path='/' element={
+                <Login/>
+              }/>
+              <Route path='/reg' element={
+                <Registration/>
+              }/>
+            </>
+          )}
         </Routes>
       </Container>
     </>
