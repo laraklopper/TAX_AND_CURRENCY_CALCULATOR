@@ -7,10 +7,15 @@ import Col from 'react-bootstrap/Col';
 // IMPORT REACT ROUTER COMPONENTS
 import { Route, Routes } from 'react-router-dom';
 import { Bug } from 'lucide-react';
-import Home from './pages/Home';
+import Dashboard from './pages/Dashboard'
+import Calculators from './pages/Calculators';
+import CurrencyConverter from './pages/CurrencyConverter'
 import Login from './pages/Login';
 import Registration from './pages/Registration'
+import Profile from './pages/Profiled'
+import Users from './pages/Users'
 import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
+import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute';
 export default function App() {
   // const [users, setUsers] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
@@ -37,9 +42,29 @@ export default function App() {
             <>
             {/* Route to Home/Dashboard  */}
               <Route exact path='/' element={
-                <ProtectedUserRoute>
-                  <Home/>
+                <ProtectedUserRoute currentUser={currentUser}>
+                  <Dashboard/>
                 </ProtectedUserRoute>
+              }/>
+              <Route path='/calculators' element={
+                <ProtectedUserRoute currentUser={currentUser}>
+                  <Calculators/>
+                </ProtectedUserRoute>
+              }/>
+              <Route path='/currencyConverter' element={
+                <ProtectedUserRoute currentUser={currentUser}>
+                  <CurrencyConverter/>
+                </ProtectedUserRoute>
+              }/>
+              <Route path='/profile' element={
+                <ProtectedUserRoute currentUser={currentUser}>
+                  <Profile/>
+                </ProtectedUserRoute>
+              }/>
+              <Route path='/users' element={
+                <ProtectedAdminRoute currentUser={currentUser}>
+                  <Users/>
+                </ProtectedAdminRoute>
               }/>
             </>
           ):(
