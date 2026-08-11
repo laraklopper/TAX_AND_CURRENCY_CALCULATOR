@@ -12,7 +12,7 @@ import Calculators from './pages/Calculators';
 import CurrencyConverter from './pages/CurrencyConverter'
 import Login from './pages/Login';
 import Registration from './pages/Registration'
-import Profile from './pages/Profiled'
+import Profile from './pages/Profile'
 import Users from './pages/Users'
 import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute';
