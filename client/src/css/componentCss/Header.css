@@ -7,4 +7,12 @@
     width: 100%;
     margin: 0px;
     padding: 0px;
+    background-color: #B6C6D4;
+}
+#mainNavbar{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    gap: 10px;
+    list-style-type: none;
 }
