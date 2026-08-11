@@ -2,7 +2,7 @@ import React from 'react'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 export default function MainHeader({mainHeading}) {
   return (
    <header>
@@ -34,10 +34,10 @@ export default function MainHeader({mainHeading}) {
                     <nav>
                         <ul id='loginNavBar'>
                             <li className='linkItem'>
-                                <Link to='/'>LOGIN</Link>
+                                <NavLink to='/'>LOGIN</NavLink>
                             </li>
                             <li className='linkItem'>
-                                <Link to='/reg'>REGISTRATION</Link>
+                                <NavLink to='/reg'>REGISTRATION</NavLink>
                             </li>
                         </ul>
                     </nav>
