@@ -1,12 +1,27 @@
 import React from 'react'
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/LoggedOut.css'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import MainHeader from '../components/MainHeader'
+import LoginForm from '../components/LoginForm';
 
 export default function Login() {
   return (
     <div id='page-div'>
       <MainHeader mainHeading='LOGIN'/>
+      <section id='login-section1'>
+        <Row id='loginRow'>
+        <Col id='login-col1'/>
+        <Col xs={6} id='login-col'>
+          <div id='login-panal'>
+            <LoginForm/>
+          </div>
+        </Col>
+        <Col id='login-col2'/>
+      </Row>
+      </section>
     </div>
   )
 }
