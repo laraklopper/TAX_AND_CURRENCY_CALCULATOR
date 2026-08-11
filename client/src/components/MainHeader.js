@@ -14,7 +14,7 @@ export default function MainHeader({mainHeading}) {
         <Col/>
         <Col xs={5}>
             <span className='headerSpan'>
-                <h1>APP HEADING</h1>
+                <h1 id='appHeading'>APP HEADING</h1>
             </span>
         </Col>
         <Col/>
