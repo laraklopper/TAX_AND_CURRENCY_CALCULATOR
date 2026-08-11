@@ -14,10 +14,12 @@ const currencyConvertSchema = new mongoose.Schema({
     currency: {
         baseCurrency: {
             type: String,
+            required: [true, 'base currency is required'],
+            trim: true,
 
         },
         targetCurrency:{
-            
+            type: String,
 
         },
     },
