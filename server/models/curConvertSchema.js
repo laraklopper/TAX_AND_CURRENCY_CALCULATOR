@@ -1,1 +1,5 @@
-const packageName = require('packageName');
+const mongoose = require('mongoose');
+
+const currencyConvertSchema = new mongoose.Schema({
+    
+});
