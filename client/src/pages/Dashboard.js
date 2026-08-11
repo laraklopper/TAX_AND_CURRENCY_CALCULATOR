@@ -1,7 +1,9 @@
 import React from 'react'
-
-export default function Dashboard() {
+import Header from '../components/Header'
+export default function Dashboard({currentUser}) {
   return (
-    <div>Dashboard</div>
+    <div>
+      <Header currentUser={currentUser}/>
+    </div>
   )
 }

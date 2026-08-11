@@ -1,7 +1,10 @@
 import React from 'react'
+import Header from '../components/Header'
 
-export default function Users() {
+export default function Users({currentUser}) {
   return (
-    <div>Users</div>
+    <div>
+      <Header currentUser={currentUser}/>
+    </div>
   )
 }

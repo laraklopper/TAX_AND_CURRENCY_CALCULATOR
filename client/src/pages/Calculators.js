@@ -1,7 +1,10 @@
 import React from 'react'
+import Header from '../components/Header'
 
-export default function Calculators() {
+export default function Calculators({currentUser}) {
   return (
-    <div>Calculators</div>
+    <div>
+      <Header currentUser={currentUser}/>
+    </div>
   )
 }

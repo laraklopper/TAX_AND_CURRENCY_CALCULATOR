@@ -1,7 +1,10 @@
 import React from 'react'
+import Header from '../components/Header'
 
-export default function CurrencyConverter() {
+export default function CurrencyConverter({currentUser}) {
   return (
-    <div>CurrencyConverter</div>
+    <div>
+      <Header currentUser={currentUser}/>
+    </div>
   )
 }
