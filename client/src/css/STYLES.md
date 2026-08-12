@@ -92,6 +92,8 @@ padding: 0px;
   color: #000000;
   font-family: "Roboto Condensed", sans-serif;
   font-weight: 700;
+  margin: 0px;
+  padding: 0px;
 }
 
 .label{

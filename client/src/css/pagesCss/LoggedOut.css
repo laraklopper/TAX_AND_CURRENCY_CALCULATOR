@@ -30,3 +30,14 @@
     margin: 0px;
     padding: 0px;
 }
+/* REGISTRATION */
+#regisSection1{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: #7A7A7A;
+}
+#regisRow{
+    width: 100%;
+}

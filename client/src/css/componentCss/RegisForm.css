@@ -1,1 +1,97 @@
 /* RegisForm.css */
+#registration-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 10px 5px;
+    gap: 10px;
+}
+.regis-label{
+    margin: 0px;
+    padding: 0px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+}
+/* LAYOUT */
+#regis-input-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+background-color: #BFBFBF;
+width: 80%;
+margin: 0px;
+padding: 10px;
+gap: 10px;
+}
+/* GROUP 1 */
+#regis-group1{
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#regis-stack1{
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#regis-fullName-block{
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+#regis-fullName{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+}
+/* GROUP 2 */
+#regis-group2{
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#regis-stack2,
+#regis-stack3{
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+/* GROUP 3 */
+#regis-group3{
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#admin-reg-block{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+#reg-pswd-block{
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+/* GROUP 4 */
+#regis-group4{
+    width: 80%;
+    margin: 0px;
+    padding: 5px;
+}
