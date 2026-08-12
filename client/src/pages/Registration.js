@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import MainHeader from '../components/MainHeader'
 import RegistrationForm from '../components/RegistrationForm';
-export default function Registration() {
+export default function Registration({setError}) {
   const [newUserData, setNewUserData] = useState({
     fullName: {
       firstName: '',
@@ -24,7 +24,10 @@ export default function Registration() {
         <Row id='regisRow'>
         <Col id='regisCol'>
           <div id='regis-panal'>
-            <RegistrationForm/>
+            <RegistrationForm
+              newUserData={newUserData}
+              setNewUserData={setNewUserData}
+            />
           </div>
         </Col>
       </Row>
