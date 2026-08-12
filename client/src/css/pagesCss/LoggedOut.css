@@ -35,9 +35,23 @@
     display: flex;
     width: 100%;
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
     background-color: #7A7A7A;
 }
+
 #regisRow{
+    display: flex;
+    margin: 0px;
+    padding: 0px5;
     width: 100%;
+}
+#regis-col{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#regis-panal{
+   background-color: #9E9E9E;
+  margin:0px;
+  padding :10px;
 }

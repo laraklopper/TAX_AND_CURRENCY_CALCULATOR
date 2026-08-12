@@ -7,6 +7,7 @@
     margin: 0px;
     padding: 10px 5px;
     gap: 10px;
+    background-color: #A8AEB3;
 }
 .regis-label{
     margin: 0px;
@@ -94,4 +95,22 @@ gap: 10px;
     width: 80%;
     margin: 0px;
     padding: 5px;
+}
+#regis-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: "Courier Prime", monospace;
+    letter-spacing: 2px;
+    margin: 0px;
+    padding: 0px;
+    border: solid 2px #323A42;
+}
+#regis-btn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
 }
