@@ -9,13 +9,17 @@
     gap: 10px;
     background-color: #A8AEB3;
 }
+/* Label */
 .regis-label{
+    display: flex;
     margin: 0px;
     padding: 0px;
     font-family: "Courier Prime", monospace;
     font-weight: 700;
+    color: #000;
 }
 /* LAYOUT */
+/* INPUT DETAILS */
 #regis-input-details{
     display: flex;
     flex-direction: column;
@@ -26,7 +30,7 @@ margin: 0px;
 padding: 10px;
 gap: 10px;
 }
-/* GROUP 1 */
+/* GROUP 1: Full Name */
 #regis-group1{
     width: 100%;
     margin: 0px;
@@ -35,6 +39,7 @@ gap: 10px;
     background: #D6D6D6;
     border-radius: 8px;
 }
+/* STACK 1: https://react-bootstrap.netlify.app/docs/layout/stack */
 #regis-stack1{
     display: flex;
     align-items: baseline;
@@ -54,7 +59,7 @@ gap: 10px;
     margin: 0px;
     padding: 0px;
 }
-/* GROUP 2 */
+/* GROUP 2: Email + DateOfBirth */
 #regis-group2{
     width: 100%;
     margin: 0px;
@@ -63,6 +68,7 @@ gap: 10px;
     background: #D6D6D6;
     border-radius: 8px;
 }
+/* STACK 2,3: https://react-bootstrap.netlify.app/docs/layout/stack */
 #regis-stack2,
 #regis-stack3{
     display: flex;
@@ -71,7 +77,7 @@ gap: 10px;
     margin: 0px;
     padding: 0px;
 }
-/* GROUP 3 */
+/* GROUP 3: Admin + Password*/
 #regis-group3{
     width: 100%;
     margin: 0px;
@@ -80,22 +86,44 @@ gap: 10px;
     background: #D6D6D6;
     border-radius: 8px;
 }
+/* STACK https://react-bootstrap.netlify.app/docs/layout/stack */
+#regis-stack4,
+#regis-stack5{
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+}
 #admin-reg-block{
     display: flex;
     align-items: baseline;
     gap: 10px;
+    margin: 0px;
+    padding: 0px;
 }
 #reg-pswd-block{
     display: flex;
     align-items: baseline;
     gap: 5px;
 }
+
 /* GROUP 4 */
 #regis-group4{
+    display: flex;
     width: 80%;
     margin: 0px;
     padding: 5px;
 }
+/* STACK 6: https://react-bootstrap.netlify.app/docs/layout/stack */
+#regis-stack6{
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+}
+/* ===============
+BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
+====================== */
 #regis-btn{
     display: flex;
     justify-content: center;

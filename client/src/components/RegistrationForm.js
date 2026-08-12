@@ -229,7 +229,7 @@ export default function RegistrationForm(
         <div id='regis-group4'>
         <Stack direction="horizontal" gap={3} id='regis-stack6'>
       <div className="p-2" id='requiredInfo'>
-                    <p className='infoMsg' aria-live='polite' aria-hidden='true'>
+                    <p className='infoText' aria-live='polite' aria-hidden='true'>
                         <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /> Indicates required information</small>
                     </p>
                 </div>
@@ -241,7 +241,7 @@ export default function RegistrationForm(
       </div>
       <div className="vr" style={{color: '#404040', opacity: .50, width: '2px'}}/>
       <div className="p-2 ">
-        <Button variant='danger'>CLEAR FORM</Button>
+        <Button variant='danger' id='clearFormBtn'>CLEAR FORM</Button>
       </div>
       
       

@@ -46,6 +46,15 @@
 }
 
 /* TEXT */
+#requiredInfo{
+    display: flex;
+    gap: 10px;
+    font-family: "Open Sans", sans-serif;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+
 .msgText{
    margin: 0px;
     padding: 0px;
@@ -57,6 +66,7 @@
     font-weight: 700;
     font-size: 14px;
 }
+
 .infoText{
   text-transform: uppercase;
     color: #404040;
@@ -92,11 +102,12 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     justify-content: center;
     width: 180px;
     height: 40px;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Courier Prime", monospace;
     font-weight: 700;
     text-transform: uppercase;
     color: #000;
     margin: 0px;
+    letter-spacing: 2px;
     padding: 0px;
     border: solid 2px #323A42;
 }
