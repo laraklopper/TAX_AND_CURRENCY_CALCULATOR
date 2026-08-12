@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { Eye, EyeOff, Bug } from 'lucide-react';
 
 // LoginForm function component
-export default function LoginForm({userData, setUserData}) {
+export default function LoginForm({userData, setUserData, submitLogin}) {
     const [showPassword, setShowPassword] = useState(false)
     const [passwordMsg, setPasswordMsg] = useState(false)
     const [showEmailMsg, setShowEmailMsg] = useState(false)
@@ -49,8 +49,13 @@ export default function LoginForm({userData, setUserData}) {
     const emailErrorId = 'loginEmailError';
     const passwordErrorId = 'loginPasswordError';
 
+     const handleLogin = (e) => {
+        e.preventDefault();//Prevent default form submission
+        submitLogin();// Call the submitLogin function passed as a prop from the parent component (Login.js)
+    }
+
     return (
-    <form id='login-form' method='POST' aria-labelledby={formTitleId}>
+    <form id='login-form' method='POST' aria-labelledby={formTitleId} onSubmit={handleLogin}>
     <p className='visually-hidden' id={formTitleId}>LOGIN FORM</p>
     <div id='formHeadingBlock'>
         <h3 id='formHeading'>SIGN IN</h3>

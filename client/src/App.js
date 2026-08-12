@@ -82,6 +82,9 @@ export default function App() {
                   userData={userData}
                   setUserData={setUserData}
                   setError={setError}
+                  loggedIn={loggedIn}
+                  setLoggedIn={setLoggedIn}
+                  setCurrentUser={setCurrentUser}
                 />
               }/>
               <Route path='/reg' element={
