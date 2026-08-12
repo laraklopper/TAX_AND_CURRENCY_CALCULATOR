@@ -190,4 +190,4 @@ const checkAge = (req, res, next) => {
         return res.status(500).json({ message: 'Internal Server Error' });// Return 500 (Internal Server Error) response
     }
 }
-module.exports = {checkJwtToken}
+module.exports = {checkJwtToken, checkPassword, checkAge}

@@ -1,6 +1,8 @@
 require('dotenv').config()
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userSchema')
+const { checkPassword, checkAge } = require('./middleware')
 const router = express.Router()
 
 // Extract environmental variables (with safe fallbacks for local dev)
@@ -26,6 +28,16 @@ else if (!rawAlgorithm) {
 }
 //=============ROUTES================
 // Use Plaintext passwords for development
+/*──────────────────────────── HELPERS ──────────────────────────────*/
+// Sign a JWT for the given user document
+const signToken = (user) => {
+    return jwt.sign(
+        { userId: user._id, email: user.email, admin: user.admin },
+        secretKey,
+        { expiresIn: expirationTime, algorithm: jwtAlgorithm }
+    );
+}
+
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
  ─────────────────────────────────────────────────────────────────────────*/
@@ -44,20 +56,73 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'username and password are required' });
         }
 
-        
+        // Password field is select:false on the schema, so it must be explicitly requested
+        const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
+
+        // Use Plaintext passwords for development - compare directly, no hashing
+        if (!user || user.password !== password) {
+            console.error('[ERROR: authRoutes.js, /login] Invalid email or password');
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        const token = signToken(user);
+        const userObj = user.toObject();
+        delete userObj.password;// Never send the password back to the client
+
+        console.log('[SUCCESS: authRoutes.js, /login] User logged in:', user.email);
+        return res.status(200).json({ message: 'Login successful', token, user: userObj });
     } catch (error) {
-        
+        console.error('[ERROR: authRoutes.js, /login]', error.message);
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
 })
 
 //Route to register a new user
 //Send a POST request to the auth/register endpoint
 // Use Plaintext passwords for development
-router.post('/register', async () => {
+router.post('/register', checkAge, checkPassword, async (req, res) => {
     try {
-        
+        const { fullName, email, password, dateOfBirth, admin } = req.body || {};
+
+        if (!fullName || !fullName.firstName || !fullName.lastName || !email || !password || !dateOfBirth) {
+            console.error('[ERROR: authRoutes.js, /register] Missing required registration fields');
+            return res.status(400).json({ message: 'fullName, email, password and dateOfBirth are required' });
+        }
+
+        const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
+        if (existingUser) {
+            console.error('[ERROR: authRoutes.js, /register] Email already registered:', email);
+            return res.status(409).json({ message: 'Email is already registered' });
+        }
+
+        // Use Plaintext passwords for development - stored as-is, no hashing
+        const newUser = await User.create({
+            fullName,
+            email,
+            password,
+            dateOfBirth,
+            admin: admin === true,
+        });
+
+        const token = signToken(newUser);
+        const userObj = newUser.toObject();
+        delete userObj.password;// Never send the password back to the client
+
+        console.log('[SUCCESS: authRoutes.js, /register] User registered:', newUser.email);
+        return res.status(201).json({ message: 'Registration successful', token, user: userObj });
     } catch (error) {
-        
+        // Mongoose validation errors (required fields, min/max length, etc.)
+        if (error.name === 'ValidationError') {
+            console.error('[ERROR: authRoutes.js, /register] Validation error:', error.message);
+            return res.status(400).json({ message: error.message });
+        }
+        // Duplicate key error (unique email constraint)
+        if (error.code === 11000) {
+            console.error('[ERROR: authRoutes.js, /register] Duplicate email:', req.body?.email);
+            return res.status(409).json({ message: 'Email is already registered' });
+        }
+        console.error('[ERROR: authRoutes.js, /register]', error.message);
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
 })
 
