@@ -3,7 +3,7 @@ import Header from '../components/Header'
 
 export default function Users({currentUser}) {
   return (
-    <div>
+    <div id='pageContainer'>
       <Header currentUser={currentUser}/>
     </div>
   )

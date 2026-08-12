@@ -3,6 +3,32 @@
     margin: 0px;
     padding: 0px;
 }
+/* ==========================
+LAYOUT
+===============*/
+/* BOOTSTRAP LAYOUT */
+/* https://react-bootstrap.netlify.app/docs/layout/grid#container */
+#appContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+}
+#pageContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+    background-color: inherit;
+    height: 100%;
+    gap: 10px;
+}
 /* ========================= 
 Accessibility helpers 
  ARIA : Accessible Rich Internet Applications

@@ -9,7 +9,7 @@ import LoginForm from '../components/LoginForm';
 
 export default function Login({userData, setUserData, setError}) {
   return (
-    <div id='page-div'>
+    <div id='pageContainer' role='main'>
       <MainHeader mainHeading='LOGIN'/>
       <section id='login-section1'>
         <Row id='loginRow'>
