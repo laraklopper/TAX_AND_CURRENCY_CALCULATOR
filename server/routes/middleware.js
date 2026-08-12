@@ -4,7 +4,7 @@ file using the dotenv package*/
 require('dotenv').config();
 // Import Required modules and packages
 const jwt = require('jsonwebtoken');// Import the JSON Web Token (JWT) library
-
+const bcrypt = require('bcrypt');
 // Extract enviromental variables
 const secretKey = process.env.JWT_SECRET_KEY || 'secretKey';
 
@@ -73,6 +73,7 @@ const checkJwtToken = (req, res, next) => {
 
 /*Middleware to hash password before registration or password changes
  * Expects req.body.password to be present*/
+// Use Plaintext passwords for development
 const hashPassword = async (req, res, next) => {
     try {
         const {password, newPassword} = req.body || {};// Extract the password and newPassword from the request body
@@ -99,5 +100,67 @@ const hashPassword = async (req, res, next) => {
         });
     }
 }
+/*====================================
+AGE VALIDATION MIDDLEWARE
+========================*/
+/*Middleware function to check that user age
+All users must be 16 or older; admin users must be 18 or older*/
+const checkAge = (req, res, next) => {
+    console.log('[DEBUG: middleware.js checkAge] Middleware triggered');// Log message in the console for debugging purposes
+    try {
+        const { dateOfBirth, admin } = req.body || {};// Extract the date of birth and admin flag from the request body
+        console.log('[DEBUG: middleware.js checkAge] Received date of birth:', dateOfBirth);// Log message in the console for debugging purposes
 
+        // Conditional rendering to check if the date of birth is provided in the request body
+        if (!dateOfBirth) {
+            console.error(`[ERROR: middleware.js, checkAge] Date of Birth is required`);// Log an error message in the console for debugging purposes
+            return res.status(400).json({// Respond with a 400 (Bad Request) status if underage
+                error: 'Date of Birth is required'//Error Message
+            });
+        }
+
+
+        const dob = new Date(dateOfBirth);// Convert string to JavaScript Date object
+        //Conditional rendering to check if date conversion succeeded
+        if (Number.isNaN(dob.getTime())) {
+            console.error(`[ERROR: middleware.js, checkAge] Invalid Date of Birth format`);// Log a error message in the console for debugging purposes
+            return res.status(400).json({ message: 'Invalid Date of Birth format.' });// Respond with a 400 (Bad Request) status if date of Birth is invalid
+        }
+        const now = new Date();
+        if (dob > now) {
+            console.error(`[ERROR: middleware.js, checkAge]:Date of Birth cannot be in the future.`); // Log a error message in the console for debugging purposes
+            // Respond with a 400 (Bad Request) status if future date
+            return res.status(400).json({
+                message: 'Date of Birth cannot be in the future.'//Error message
+            });
+        }
+        // Calculate the user's age in years
+        const years =
+            now.getFullYear() -
+            dob.getFullYear() -
+            (
+                now < new Date(now.getFullYear(), dob.getMonth(), dob.getDate())
+                    ? 1 // Birthday has not occurred yet this year
+                    : 0 // Birthday has already occurred this year
+            );
+
+        // Determine the minimum required age
+        const MIN_AGE = admin === true ? 18 : 16; // Admins must be 18+, regular users must be 16+
+        // Block registration if user is below the minimum age
+        if (years < MIN_AGE) {
+            console.error(// Log a error message in the console for debugging purposes
+                `[ERROR: middleware.js, checkAge]: You must be at least ${MIN_AGE} years old to register as ${admin === true ? 'an admin' : 'a user'}.`
+            );
+            return res.status(400).json({ // Respond with a 400 (Bad Request) status
+                message: `You must be at least ${MIN_AGE} years old to register as ${admin === true ? 'an admin' : 'a user'}.` //Error Message
+            });
+        }
+
+        // If age validation passes, continue
+        next();// Call the next middleware or route handler
+    } catch (error) {
+        console.error('[ERROR: middleware.js checkAge]', error.message);// Log a error message in the console for debugging purposes
+        return res.status(500).json({ message: 'Internal Server Error' });// Return 500 (Internal Server Error) response
+    }
+}
 module.exports = {checkJwtToken}
