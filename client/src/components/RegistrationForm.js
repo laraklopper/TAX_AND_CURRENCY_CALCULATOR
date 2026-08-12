@@ -194,7 +194,7 @@ export default function RegistrationForm(
            {/* First Name Input: value={newUserData.fullName.firstName} */}
             <input
                 className='input'
-                placeholder='firstName'
+                placeholder='FIRST NAME'
                 name='fullName.firstName'
                 value={newUserData.fullName.firstName}
                 onChange={handleInputChange}
@@ -269,7 +269,6 @@ export default function RegistrationForm(
                                 aria-required='true'
                                 aria-invalid={emailEmpty ? 'true' : 'false'}
                                 aria-describedby={emailEmpty ? emailErrorId : null}
-
                             />
                         </div>
                         <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
@@ -437,28 +436,32 @@ export default function RegistrationForm(
                     </p>
                 </div>
                 <div className="p-2 ms-auto">
-        <Button variant='light'
-        id='regis-btn'
-        type='submit'
-        // ARIA ATTRIBUTES:
-        role='button'
-        aria-label='REGISTER'
-        aria-live='assertive'
-        >REGISTER</Button>
+        <Button 
+            variant='light'
+            id='regis-btn'
+            type='submit'
+            // ARIA ATTRIBUTES:
+            role='button'
+            aria-label='REGISTER'
+            aria-live='assertive'
+        >
+        REGISTER
+    </Button>
       </div>
       <div className="vr" style={{color: '#404040', opacity: .50, width: '2px'}}/>
       <div className="p-2 ">
-        <Button variant='danger' id='clearFormBtn' onClick={clearForm}
+        <Button 
+        variant='danger' 
+        id='clearFormBtn' 
+        onClick={clearForm}
+        type='button'
+        // ARIA ATTRIBUTES:
         aria-live='assertive'
         aria-label='Clear form'
         >CLEAR FORM</Button>
       </div>
-      
-      
     </Stack>
-
         </div>
-
     </form>
   )
 }
