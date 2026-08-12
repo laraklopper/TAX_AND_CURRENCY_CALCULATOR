@@ -10,4 +10,23 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    margin: 0px;
+    padding: 10px 0px;
+}
+#loginRow{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#login-col{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+
+}
+#login-col1,
+#login-col2{
+    margin: 0px;
+    padding: 0px;
 }
