@@ -420,7 +420,7 @@ export default function RegistrationForm(
                 )}
         </Button>
       </div>
-      
+      {/* Pase */}
       {passwordMsg && (
          <div className="p-2 ms-auto" id='msgBlock'>
             <p className='msgText' aria-live="polite"><strong>We will never share your password</strong></p>
