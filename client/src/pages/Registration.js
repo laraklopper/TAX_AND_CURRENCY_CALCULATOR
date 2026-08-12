@@ -73,6 +73,11 @@ export default function Registration({setError}) {
         </Col>
       </Row>
       </section>
+      <footer className='pageFooter'>
+        <Row id='footerRow1'>
+          <Col></Col>
+        </Row>
+      </footer>
     </div>
   )
 }
