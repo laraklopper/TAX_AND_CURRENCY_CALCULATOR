@@ -98,6 +98,22 @@ export default function RegistrationForm(
         //=========== EVENT LISTENERS=========================
         const handleRegistration= (e) => {
             e.preventDefault();
+            // Mark every field as touched so validation errors show if the user submits an incomplete form
+            setTouched({
+                firstName: true,
+                lastName: true,
+                email: true,
+                dateOfBirth: true,
+                password: true,
+            });
+            const hasErrors =
+                firstNameEmpty ||
+                lastNameEmpty ||
+                emailEmpty ||
+                dateOfBirthEmpty ||
+                dateOfBirthTooYoung ||
+                passwordEmpty;
+            if (hasErrors) return;// Block submission until all fields are valid
             console.log('[INFO: RegistrationForm.js]: Registering new user')
             addUser?.()//call the addUser function/request
         }
@@ -194,7 +210,11 @@ export default function RegistrationForm(
            {/* First Name Input: value={newUserData.fullName.firstName} */}
             <input
                 className='input'
+                id='regisFirstName'
+                type='text'
+                required
                 placeholder='FIRST NAME'
+                autoComplete='given-name'
                 name='fullName.firstName'
                 value={newUserData.fullName.firstName}
                 onChange={handleInputChange}
@@ -203,7 +223,7 @@ export default function RegistrationForm(
                 aria-label='First Name Input'
                 aria-required="true"
                 aria-invalid={firstNameEmpty ? 'true' : 'false'}
-                aria-describedby={firstNameEmpty ? firstNameErrorId : null}
+                aria-describedby={showFirstNameError ? firstNameErrorId : null}
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
@@ -228,7 +248,7 @@ export default function RegistrationForm(
                 aria-label='Last Name Input'
                 aria-required='true'
                 aria-invalid={lastNameEmpty ? 'true' : 'false'}
-                aria-describedby={lastNameEmpty ? lastNameErrorId : null}
+                aria-describedby={showLastNameError ? lastNameErrorId : null}
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
@@ -252,23 +272,26 @@ export default function RegistrationForm(
                 <div className="p-2" id='regis-email-block'>
                 {/* EMAIL: value={newUserData.email} */}
                         <div className='input-div'>
-                            <label className='regis-label'>EMAIL:</label>
+                            <label className='regis-label' htmlFor='regisEmailInput'>EMAIL:</label>
                             <div className='input-div'>
                                 <input
                                 type='email'
                                 className='input'
+                                id='regisEmailInput'
                                 placeholder='EMAIL'
                                 required
+                                autoComplete='email'
                                 name='email'
                                 value={newUserData.email}
                                // EVENT HANDLERS:
                                 onChange={handleInputChange}
-                                onBlur={handleBlur}
+                                onFocus={() => setEmailMsg(true)}
+                                onBlur={(e) => { setEmailMsg(false); handleBlur(e); }}
                                 // ARIA ATTRIBUTES:
                                 aria-label='Email Input'
                                 aria-required='true'
                                 aria-invalid={emailEmpty ? 'true' : 'false'}
-                                aria-describedby={emailEmpty ? emailErrorId : null}
+                                aria-describedby={showEmailError ? emailErrorId : null}
                             />
                         </div>
                         <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
@@ -300,10 +323,11 @@ export default function RegistrationForm(
                     id='regisDateOfBirthInput'
                     required
                     max={maxDob}
-                    autoComplete='dateOfBirth'
+                    autoComplete='bday'
                     name='dateOfBirth'
                     value={newUserData.dateOfBirth}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     // ARIA ATTRIBUTES:
                     aria-label='Date of Birth Input'
                     aria-required='true'
@@ -328,7 +352,7 @@ export default function RegistrationForm(
                 </div>
             )}
       </div>
-      <div className="p-2"><p className='infoText'>USERS MUST BE ATLEAST 18 YEARS OLD</p></div>     
+      <div className="p-2"><p className='infoText' id={dateOfBirthAgeHintId}>USERS MUST BE AT LEAST {minAge} YEARS OLD</p></div>
     </Stack>
             </div>
             {/* GROUP 3: admin + Password */}

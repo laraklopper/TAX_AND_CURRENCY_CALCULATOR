@@ -53,6 +53,9 @@ export default function LoginForm(
 
      const handleLogin = (e) => {
         e.preventDefault();//Prevent default form submission
+        // Mark both fields as touched so validation errors show if the user submits blank
+        setTouched({ username: true, password: true });
+        if (emailEmpty || passwordEmpty) return;// Block submission until both fields are filled in
         submitLogin();// Call the submitLogin function passed as a prop from the parent component (Login.js)
     }
 
@@ -76,6 +79,7 @@ export default function LoginForm(
                             id='login-email'
                             type='email'
                             placeholder='EMAIL'
+                            required
                             autoComplete='email'
                             name='email'
                             value={userData.email}
@@ -90,8 +94,8 @@ export default function LoginForm(
                             aria-label='Login Email input'// Provide a label for screen readers (also have a visible label for sighted users)
                             aria-invalid={emailEmpty ? 'true' : 'false'}// Mark invalid if empty (simple validation)
                             aria-describedby={[// Conditionally include help and error message IDs based on state
-                                emailEmpty ? emailHelpId : null,
-                                emailEmpty ? emailHelpId : null,
+                                showEmailMsg ? emailHelpId : null,
+                                showEmailError ? emailErrorId : null,
                             ]
                                 .filter(Boolean)
                                 .join(' ')}
@@ -115,12 +119,13 @@ export default function LoginForm(
             {/* STACK 2: PASSWORD */}
             <Stack gap={3} id='loginStack2'>
                 <div className="p-2" id='login-passwd-block'>
-                    <label className='login-label'>PASSWORD:</label>
+                    <label className='login-label' htmlFor='login-password'>PASSWORD:</label>
                         <input
-                            type='password'
+                            type={showPassword ? 'text' : 'password'}
                             className='input'
                             id='login-password'
                             placeholder='PASSWORD'
+                            required
                             autoComplete='current-password'
                             name='password'
                             value={userData.password}
@@ -152,7 +157,7 @@ export default function LoginForm(
                         onClick={() => setShowPassword(!showPassword)} 
                         // ARIA ATTRIBUTES
                         aria-label={showPassword ? 'Hide Password' : 'Show Password'}
-                        aria-controls='loginPassword'
+                        aria-controls='login-password'
                         aria-describedby={passwordHelpId}
                         aria-pressed={showPassword}
                         aria-expanded={showPassword}
