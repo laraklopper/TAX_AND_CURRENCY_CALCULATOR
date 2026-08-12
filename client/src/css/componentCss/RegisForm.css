@@ -106,6 +106,8 @@ gap: 10px;
     display: flex;
     align-items: baseline;
     gap: 5px;
+    margin: 0px;
+    padding: 0px;
 }
 
 /* GROUP 4 */

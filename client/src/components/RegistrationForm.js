@@ -170,8 +170,9 @@ export default function RegistrationForm(
     {/* STACK 5 */}
     <Stack direction="horizontal" gap={3} id='regis-stack5'>
       <div className="p-2" id='reg-pswd-block'>
-        <label className='regis-label' htmlFor='regisPswdInput'>PASSWORD:</label>
+        
         <div className='input-div'>
+        <label className='regis-label' htmlFor='regisPswdInput'>PASSWORD:</label>
             <input
                 className='input'
                 placeholder='PASSWORD'
@@ -187,6 +188,9 @@ export default function RegistrationForm(
 
             />
              <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+        </div>
+        <div>
+
         </div>
            
       </div>

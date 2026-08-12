@@ -33,6 +33,7 @@
 /* REGISTRATION */
 #regisSection1{
     display: flex;
+    flex-direction: column;
     width: 100%;
     margin: 0px;
     padding: 10px;
@@ -41,17 +42,24 @@
 
 #regisRow{
     display: flex;
+    flex-direction: column;
     margin: 0px;
-    padding: 0px5;
+    padding: 0px;
     width: 100%;
 }
-#regis-col{
+#regisCol{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
 #regis-panal{
+    display: flex;
+    justify-content: center;
    background-color: #9E9E9E;
   margin:0px;
   padding :10px;
+  width: 90%;
 }
