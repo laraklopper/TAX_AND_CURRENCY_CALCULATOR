@@ -181,13 +181,17 @@ export default function RegistrationForm(
         </p>
         {/* GROUP 1: FullName */}
             <div id='regis-group1'>
+            {/* STACK 1: */}
                <Stack direction="horizontal" gap={3} id='regis-stack1'>
       <div className="p-2" id='regis-fullName-block'>
+      {/* -------FULL NAME: First Name + Last Name---------- */}
       <div id='regis-fullName'>
-      <label className='regis-label' htmlFor=''>FULL NAME:</label>
+      <label className='regis-label'>FULL NAME:</label>
       {/* FIRST NAME */}
         <div className='input-div'>
+        {/* (Hidden Label) First Name Label */}
             <label className='regis-label' htmlFor='regisFirstName' hidden>FIRST NAME:</label>
+           {/* First Name Input: value={newUserData.fullName.firstName} */}
             <input
                 className='input'
                 placeholder='firstName'
@@ -203,11 +207,28 @@ export default function RegistrationForm(
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
+        {/* LAST NAME: required*/}
         <div className='input-div'>
-            <label className='regis-label' htmlFor='' hidden>LAST NAME</label>
+        {/* (Hidden Label) Last Name Label: value={newUserData.fullName.lastName} */}
+            <label className='regis-label' htmlFor='regisLastName' hidden>LAST NAME:</label>
+            {/* Last Name Input */}
             <input
                 className='input'
+                id='regisLastName'
+                type='text'
+                required
                 placeholder='LAST NAME'
+                autoComplete='family-name'
+                name='fullName.lastName'
+                value={newUserData.fullName.lastName}
+                //EVENT HANDLERS:
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                // ARIA ATTRIBUTES:
+                aria-label='Last Name Input'
+                aria-required='true'
+                aria-invalid={lastNameEmpty ? 'true' : 'false'}
+                aria-describedby={lastNameEmpty ? lastNameErrorId : null}
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
@@ -226,10 +247,10 @@ export default function RegistrationForm(
             </div>
             {/* GROUP 2: Email + Date of Birth */}
             <div id='regis-group2'>
-            {/* STACK 2: Email */}
+            {/* STACK 2: Email  */}
                 <Stack direction="horizontal" gap={3} id='regis-stack2'>
                 <div className="p-2" id='regis-email-block'>
-                {/* EMAIL */}
+                {/* EMAIL: value={newUserData.email} */}
                         <div className='input-div'>
                             <label className='regis-label'>EMAIL:</label>
                             <div className='input-div'>
@@ -271,7 +292,7 @@ export default function RegistrationForm(
                 {/* STACK 3 */}
                   <Stack direction="horizontal" gap={3} id='regis-stack3'>
       <div className="p-2">
-      {/* DATE OF BIRTH: required */}
+      {/* DATE OF BIRTH: value={newUserData.dateOfBirth} */}
         <div className='input-div'>
         <label className='regis-label' htmlFor='regisDateOfBirthInput'>DATE OF BIRTH:</label>
             <input
@@ -293,7 +314,6 @@ export default function RegistrationForm(
                 <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
         {/* Error message */}
-        {/* */}
         {showDateOfBirthError && (
             <div className="p-2 ms-auto">
                 <p id={dateOfBirthErrorId} className="visually-hidden" role="alert">
@@ -309,8 +329,7 @@ export default function RegistrationForm(
                 </div>
             )}
       </div>
-      <div className="p-2"><p className='infoText'>USERS MUST BE ATLEAST 18 YEARS OLD</p></div>
-      
+      <div className="p-2"><p className='infoText'>USERS MUST BE ATLEAST 18 YEARS OLD</p></div>     
     </Stack>
             </div>
             {/* GROUP 3: admin + Password */}
@@ -318,8 +337,10 @@ export default function RegistrationForm(
             {/* STACK 4 */}
                 <Stack direction="horizontal" gap={3} id='regis-stack4'>
       <div className="p-2" id='admin-reg-block'>
+      {/* ADMIN CHECKBOX: OPTIONAL (based on age restriction)*/}
+      {/* ADMIN: checked={newUserData.admin} */}
       <div id='checkbox-div'>
-        <label className='regis-label' htmlFor=''>REGISTER AS ADMIN:</label>
+        <label className='regis-label' htmlFor='adminRegisBox'>REGISTER AS ADMIN:</label>
         <input
             type='checkbox'
             id='adminRegisBox'
@@ -342,7 +363,7 @@ export default function RegistrationForm(
     {/* STACK 5 */}
     <Stack direction="horizontal" gap={3} id='regis-stack5'>
       <div className="p-2" id='reg-pswd-block'>
-      {/* PASSWORD */}
+      {/* PASSWORD : value={newUserData.password}*/}
         <div className='input-div'>
         <label className='regis-label' htmlFor='regisPswdInput'>PASSWORD:</label>
             <input
@@ -350,6 +371,7 @@ export default function RegistrationForm(
                 placeholder='PASSWORD'
                 type={showPassword ? 'text' : 'password'}
                 required
+                autoComplete='new-password'
                 id='regisPswdInput'
                 name='password'
                 value={newUserData.password}
