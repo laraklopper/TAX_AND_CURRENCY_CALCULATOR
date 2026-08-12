@@ -9,7 +9,8 @@ import { Eye, EyeOff } from 'lucide-react';
 export default function RegistrationForm(
     {
         newUserData,
-        setNewUserData
+        setNewUserData,
+        addUser
     }
     ) {
         const [showPassword, setShowPassword] = useState(false)
@@ -22,8 +23,6 @@ export default function RegistrationForm(
             lastName: false,     // Tracks if last name field was touched
             email: false,        // Tracks if email field was touched
             dateOfBirth: false,  // Tracks if date of birth field was touched
-            currency: false,     // Tracks if currency select was touched
-            timezone: false,     // Tracks if timezone select was touched
             password: false,     // Tracks if password field was touched
         })
 
@@ -96,11 +95,17 @@ export default function RegistrationForm(
     const showDateOfBirthAgeError =
         touched.dateOfBirth && !dateOfBirthEmpty && dateOfBirthTooYoung;
 
-        // EVENT LISTENERS
+        //=========== EVENT LISTENERS=========================
+        const handleRegistration= (e) => {
+            e.preventDefault();
+            console.log('[INFO: RegistrationForm.js]: Registering new user')
+            addUser?.()//call the addUser function/request
+        }
 
          const handleInputChange = (event) => {
         const { name, value } = event.target;// Get the input name and value from the changed field
-        if (name.includes('.')) {// Check if the input name represents a nested object field
+        // Conditionl rendering to check if the input name represents a nested object field
+        if (name.includes('.')) {
             const [parent, field] = name.split('.');// Split the field name into parent and child keys
             setNewUserData((prevState) => ({// Update nested state without removing existing nested values
                 ...prevState,
@@ -112,21 +117,21 @@ export default function RegistrationForm(
             }))
         } else {
             // Update normal top-level fields
-            setNewUserData((prev) => ({  // Example: username, email, dateOfBirth, password
+            setNewUserData((prev) => ({  // Example: email, dateOfBirth, password
                 ...prev,
                 [name]: value
             }))
         }
     };
 
- // Maps nested field names (e.g. fullName.firstName) to their flat touched key
+    // Maps nested field names (e.g. fullName.firstName) to their flat touched key
     const handleBlur = (e) => {
         const { name } = e.target;// Get the input name
         const key = name.includes('.') ? name.split('.')[1] : name; // If the name is nested, use the second part as the touched key.
         setTouched(prev => ({ ...prev, [key]: true }));// Mark this field as touched
     };
 
-        // Clears/resets the registration form
+    // Function to Clear/reset the registration form
     const clearForm = () => {
         const confirmClear = window.confirm(// Ask the user to confirm before clearing all input fields
             "Are you sure you want to clear the form?"
@@ -134,7 +139,6 @@ export default function RegistrationForm(
         if (!confirmClear) return;// Stop if the user clicks Cancel
         // Reset the registration form data to its default values
         setNewUserData({
-            username: '',
             fullName: { firstName: '', lastName: '' },
             email: '',
             dateOfBirth: '',
@@ -161,8 +165,10 @@ export default function RegistrationForm(
     const dateOfBirthErrorId = 'registrationDateOfBirthError';// ID used for date of birth required error
     const dateOfBirthAgeHintId = 'registrationDateOfBirthAgeHint';// ID used for date of birth age hint
     const dateOfBirthAgeErrorId = 'registrationDateOfBirthAgeError';// ID used for date of birth age error
+
+    // ===========JSX RENDERING==============
   return (
-    <form id='registration-form' method='POST' aria-labelledby={formTitleId}>
+    <form id='registration-form' method='POST' aria-labelledby={formTitleId} onSubmit={handleRegistration}>
     <p className='visually-hidden' id={formTitleId}>REGISTRATION FORM</p>
         <div id='formHeadingBlock'>
             <h3 id='formHeading'>SIGN UP</h3>
@@ -206,7 +212,7 @@ export default function RegistrationForm(
             <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
         </div>
-        {/* ERROR MESSAGES */}
+        {/* ERROR MESSAGES: first and last Name */}
         {showFirstNameError && (
             <p id={firstNameErrorId} className="visually-hidden" role="alert">First name is required.</p>
         )}
@@ -323,11 +329,11 @@ export default function RegistrationForm(
                 { ...prev, admin: e.target.checked }
                 ))}
             // ARIA ATTRIBUTES:
+            aria-label='Register as admin'
             aria-required='false'
         />
         </div>
       </div>
-      
       <div className="p-2"></div>
       <div className="p-2 ms-auto">
         <p className='infoText'>ADMIN USERS MUST BE AT LEAST 21 YEARS OLD</p>
@@ -336,7 +342,7 @@ export default function RegistrationForm(
     {/* STACK 5 */}
     <Stack direction="horizontal" gap={3} id='regis-stack5'>
       <div className="p-2" id='reg-pswd-block'>
-        
+      {/* PASSWORD */}
         <div className='input-div'>
         <label className='regis-label' htmlFor='regisPswdInput'>PASSWORD:</label>
             <input
@@ -348,25 +354,24 @@ export default function RegistrationForm(
                 name='password'
                 value={newUserData.password}
                 // EVENT HANDLERS:
-                                onFocus={() => setPasswordMsg(true)}
-                                onBlur={(e) => { setPasswordMsg(false); handleBlur(e); }}
-                                onChange={handleInputChange}
-                                // ARIA ATTRIBUTES:
-                                aria-label='Registration Password'
-                                aria-required='true'
-                                aria-invalid={passwordEmpty ? 'true' : 'false'}
-                                aria-describedby={showPasswordError ? passwordErrorId : passwordHelpId}
+                onFocus={() => setPasswordMsg(true)}
+                onBlur={(e) => { setPasswordMsg(false); handleBlur(e); }}
+                onChange={handleInputChange}
                 // ARIA ATTRIBUTES:
-
+                aria-label='Registration Password'
+                aria-required='true'
+                aria-invalid={passwordEmpty ? 'true' : 'false'}
+                aria-describedby={showPasswordError ? passwordErrorId : passwordHelpId}
             />
              <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
+        {/* ERROR MESSAGE */}
+        {showPasswordError && (
+            <p id={passwordErrorId} className="visually-hidden" role="alert">Password is required.</p>
+        )}
         <div>
-
         </div>
-           
       </div>
-      
       <div className="p-2">
         <Button 
         variant='warning' 
@@ -393,12 +398,12 @@ export default function RegistrationForm(
                 )}
         </Button>
       </div>
+      
       {passwordMsg && (
          <div className="p-2 ms-auto" id='msgBlock'>
             <p className='msgText' aria-live="polite"><strong>We will never share your password</strong></p>
         </div>
       )}
-     
     </Stack>
             </div>
         </div>
