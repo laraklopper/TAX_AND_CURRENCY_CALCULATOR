@@ -25,6 +25,7 @@ else if (!rawAlgorithm) {
     console.warn('[WARNING: userRoute.js] Missing jwt algorithm, using fallback algorithm.'); // Log a warning message in the console for debugging purposes
 }
 //=============ROUTES================
+// Use Plaintext passwords for development
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
  ─────────────────────────────────────────────────────────────────────────*/
@@ -51,6 +52,7 @@ router.post('/login', async (req, res) => {
 
 //Route to register a new user
 //Send a POST request to the auth/register endpoint
+// Use Plaintext passwords for development
 router.post('/register', async () => {
     try {
         

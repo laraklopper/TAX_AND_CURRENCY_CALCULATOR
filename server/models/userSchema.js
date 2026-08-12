@@ -52,6 +52,7 @@ const userSchema = new mongoose.Schema({
         select: false,
     },
     // Role-based access control: true = admin privileges, false/undefined = regular user
+    // Admin users must be 21 years or older
     admin:{
         type: Boolean,
         default: false,

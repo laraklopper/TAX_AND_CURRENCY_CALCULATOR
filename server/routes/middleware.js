@@ -100,6 +100,33 @@ const hashPassword = async (req, res, next) => {
         });
     }
 }
+/*Middleware to ensure that the password has a minimum of 
+eight characters and at least one special character*/
+const checkPassword = (req, res, next) => {
+    console.log('[DEBUG: middleware.js checkPassword] Middleware triggered');// Log message in the console for debugging purposes
+
+    // Support both registration (password) and password change (newPassword)
+    const pwd = req.body?.password ?? req.body?.newPassword;
+
+    //Conditional rendering to check if password input is provided
+    if (typeof pwd !== 'string') {
+        console.error('[ERROR: middleware.js, checkPassword]: Password is required');// Log a error message in the console for debugging purposes
+        return res.status(400).json({//Return a 400 (Bad Request) status code with a error message
+             message: 'Password is required.' //Error Message
+            });
+    }
+    // Regular expression used to validate password strength
+    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+
+    //Conditional rendering to test the password against the regular expression
+    if (!passwordRegex.test(pwd)) {
+        console.error('[ERROR: middleware.js, checkPassword] Weak password');//Log an error message in the console for debugging purposes
+        return res.status(400).json(// Respond with a 400 (Bad Request) status and an error message
+            { message: 'Password must be at least 8 characters long and contain one special character.' }//Error message
+        );
+    }
+    return next();// Call the next middleware or route handler
+}
 /*====================================
 AGE VALIDATION MIDDLEWARE
 ========================*/
