@@ -71,4 +71,33 @@ const checkJwtToken = (req, res, next) => {
     }
 }
 
+/*Middleware to hash password before registration or password changes
+ * Expects req.body.password to be present*/
+const hashPassword = async (req, res, next) => {
+    try {
+        const {password, newPassword} = req.body || {};// Extract the password and newPassword from the request body
+        //Conditional rendering for password hashing
+        // Hash password for registration/login
+        if (password && !newPassword) {
+             const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)// Generate a secure hash of the password using bcrypt
+            req.body.password = hashedPassword; // Replace the plain-text password with the hashed password
+            console.log('[INFO: middleware.js, hashPassword] Password hashed for registration/login'); // Log a message in the console for debugging purposes
+        }
+        // Conditional rendering to check if this is a password update request
+        // Hash new password for password changes
+        if (newPassword) {
+            const hashedNewPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);// Generate a secure hash of the new password
+            req.body.newPassword = hashedNewPassword;// Replace the plain-text new password with its hash
+            console.log('[INFO: hashPassword] New password hashed for update');// Log a message in the console for debugging purposes
+        }
+
+        next();// Call the next middleware or route handler
+    } catch (error) {
+        console.error('[ERROR: middleware.js, hashPassword] Error hashing password:', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ // Return a 500 (Internal Server Error) status code with a message
+            message: 'Error processing password' //Message
+        });
+    }
+}
+
 module.exports = {checkJwtToken}
