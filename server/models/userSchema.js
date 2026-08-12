@@ -1,3 +1,4 @@
+// userSchema.js
 const mongoose = require('mongoose');
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
