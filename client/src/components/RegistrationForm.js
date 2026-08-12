@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import '../css/componentCss/RegisForm.css'
 import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
@@ -15,8 +15,90 @@ export default function RegistrationForm(
         const [showPassword, setShowPassword] = useState(false)
         const [passwordMsg, setPasswordMsg] = useState(false)
         const [emailMsg, setEmailMsg] = useState(false)
-        
-          const handleInputChange = (event) => {
+         // Tracks whether each input field has been touched/blurred
+        // This prevents validation errors from showing before the user interacts with a field
+        const [touched, setTouched] = useState({
+            firstName: false,    // Tracks if first name field was touched
+            lastName: false,     // Tracks if last name field was touched
+            email: false,        // Tracks if email field was touched
+            dateOfBirth: false,  // Tracks if date of birth field was touched
+            currency: false,     // Tracks if currency select was touched
+            timezone: false,     // Tracks if timezone select was touched
+            password: false,     // Tracks if password field was touched
+        })
+
+        // Minimum age: depends on whether the user registers as admin.
+    //  21 for admin, 18 for regular user
+    const minAge = newUserData.admin === true ? 21 : 18;
+
+     // Latest acceptable date of birth for the minimum age requirement
+    const today = new Date(); // Get today's date
+    // Calculate the latest acceptable date of birth.
+    // Example: If the minimum age is 18, the user's DOB must be on or before today's date minus 18 years.
+    const maxDob = new Date(
+        today.getFullYear() - minAge,
+        today.getMonth(),
+        today.getDate()
+    )
+        .toISOString()
+        .split('T')[0];
+
+    //========== EMPTY FIELD VALIDATION ====================
+    // Checks if first name is empty
+    const firstNameEmpty = useMemo(
+        () => !String(newUserData.fullName?.firstName || '').trim(),[newUserData.fullName?.firstName]
+    )
+     // Checks if last name is empty
+    const lastNameEmpty = useMemo(
+        () => !String(newUserData.fullName?.lastName || '').trim(), [newUserData.fullName?.lastName]
+    );
+    // Checks if email is empty
+    const emailEmpty = useMemo(
+        () => !String(newUserData.email || '').trim(),[newUserData.email]
+    );
+
+    // Checks if date of birth is empty
+    const dateOfBirthEmpty = useMemo(
+        () => !String(newUserData.dateOfBirth || '').trim(),[newUserData.dateOfBirth]
+    );
+
+     // Checks if password is empty
+    const passwordEmpty = useMemo(
+        () => !String(newUserData.password || '').trim(),[newUserData.password]
+    );
+     //========== AGE VALIDATION ====================
+    // Checks whether the selected date of birth makes the user too young
+    const dateOfBirthTooYoung = useMemo(() => {
+        if (!newUserData.dateOfBirth) return false;// If no date of birth was selected, do not check age yet
+        const dob = new Date(newUserData.dateOfBirth);// Convert the selected date of birth into a Date object
+        const now = new Date();// Get the current date
+        let age = now.getFullYear() - dob.getFullYear();// Calculate age based on year difference
+        const m = now.getMonth() - dob.getMonth();// Calculate month difference
+        // If the user's birthday has not happened yet this year,
+        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
+            age--;// subtract 1 from the calculated age
+        }
+        return age < minAge;// Return true if the user is younger than the required minimum age
+    }, [newUserData.dateOfBirth, minAge]);
+
+    // Only show validation errors AFTER field was touched
+    // Show email error only if the email field was touched and is empty
+    const showEmailError = touched.email && emailEmpty;
+    // Show password error only if the password field was touched and is empty
+    const showPasswordError = touched.password && passwordEmpty;
+    // Show first name error only if the first name field was touched and is empty
+    const showFirstNameError = touched.firstName && firstNameEmpty;
+    // Show last name error only if the last name field was touched and is empty
+    const showLastNameError = touched.lastName && lastNameEmpty;
+    // Show date of birth required error only if the field was touched and empty
+    const showDateOfBirthError = touched.dateOfBirth && dateOfBirthEmpty;
+    // Show age error only if date of birth was touched, is not empty, and user is too young
+    const showDateOfBirthAgeError =
+        touched.dateOfBirth && !dateOfBirthEmpty && dateOfBirthTooYoung;
+
+        // EVENT LISTENERS
+
+         const handleInputChange = (event) => {
         const { name, value } = event.target;// Get the input name and value from the changed field
         if (name.includes('.')) {// Check if the input name represents a nested object field
             const [parent, field] = name.split('.');// Split the field name into parent and child keys
@@ -37,32 +119,83 @@ export default function RegistrationForm(
         }
     };
 
+ // Maps nested field names (e.g. fullName.firstName) to their flat touched key
+    const handleBlur = (e) => {
+        const { name } = e.target;// Get the input name
+        const key = name.includes('.') ? name.split('.')[1] : name; // If the name is nested, use the second part as the touched key.
+        setTouched(prev => ({ ...prev, [key]: true }));// Mark this field as touched
+    };
+
+        // Clears/resets the registration form
+    const clearForm = () => {
+        const confirmClear = window.confirm(// Ask the user to confirm before clearing all input fields
+            "Are you sure you want to clear the form?"
+        );
+        if (!confirmClear) return;// Stop if the user clicks Cancel
+        // Reset the registration form data to its default values
+        setNewUserData({
+            username: '',
+            fullName: { firstName: '', lastName: '' },
+            email: '',
+            dateOfBirth: '',
+            admin: false,
+            password: '',
+        });
+        setTouched({
+            firstName: false,
+            lastName: false,
+            email: false,
+            dateOfBirth: false,
+            password: false,
+        });
+    }
     // ========= IDs USED BY aria-labelledby / aria-describedby =========
     // Keeps ARIA references stable and readable
     const formTitleId = 'registrationFormTitle';
     // Error IDs (for aria-describedby)
+    const emailErrorId = 'registrationEmailError';// ID used for email error message
+    const passwordHelpId = 'registrationPasswordHelp';// ID used for password help text
+    const passwordErrorId = 'registrationPasswordError';// ID used for password error message
+    const firstNameErrorId = 'registrationFirstNameError';// ID used for first name error message
+    const lastNameErrorId = 'registrationLastNameError';// ID used for last name error message
+    const dateOfBirthErrorId = 'registrationDateOfBirthError';// ID used for date of birth required error
+    const dateOfBirthAgeHintId = 'registrationDateOfBirthAgeHint';// ID used for date of birth age hint
+    const dateOfBirthAgeErrorId = 'registrationDateOfBirthAgeError';// ID used for date of birth age error
   return (
     <form id='registration-form' method='POST' aria-labelledby={formTitleId}>
     <p className='visually-hidden' id={formTitleId}>REGISTRATION FORM</p>
         <div id='formHeadingBlock'>
             <h3 id='formHeading'>SIGN UP</h3>
         </div>
-        <div id='regis-input-details'>
+        {/* ============MAIN REGISTRATION INPUT BLOCK============ */}
+        <div id='regis-input-details' aria-labelledby='mainInputDescrip'>
+        {/* --------Screen Reader Heading----------- */}
+        <p className='visually-hidden' id='mainInputDescrip'>
+            MAIN USER REGISTRATION DETAILS INPUT
+        </p>
         {/* GROUP 1: FullName */}
             <div id='regis-group1'>
                <Stack direction="horizontal" gap={3} id='regis-stack1'>
       <div className="p-2" id='regis-fullName-block'>
       <div id='regis-fullName'>
       <label className='regis-label' htmlFor=''>FULL NAME:</label>
+      {/* FIRST NAME */}
         <div className='input-div'>
-            <label className='regis-label'></label>
+            <label className='regis-label' htmlFor='regisFirstName' hidden>FIRST NAME:</label>
             <input
                 className='input'
                 placeholder='firstName'
+                name='fullName.firstName'
+                value={newUserData.fullName.firstName}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                // ARIA ATTRIBUTES:
+                aria-label='First Name Input'
+                aria-required="true"
+                aria-invalid={firstNameEmpty ? 'true' : 'false'}
+                aria-describedby={firstNameEmpty ? firstNameErrorId : null}
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-
-
         </div>
         <div className='input-div'>
             <label className='regis-label' htmlFor='' hidden>LAST NAME</label>
@@ -73,8 +206,13 @@ export default function RegistrationForm(
             <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
         </div>
-        {/* ERROR MESSAGE */}
-        {/* <span className='error-span'><p>Full Name is required</p></span> */}
+        {/* ERROR MESSAGES */}
+        {showFirstNameError && (
+            <p id={firstNameErrorId} className="visually-hidden" role="alert">First name is required.</p>
+        )}
+        {showLastNameError && (
+            <p id={lastNameErrorId} className="visually-hidden" role="alert">Last name is required.</p>
+        )}
       </div>
       <div className="p-2 ms-auto"></div>
       <div className="p-2"></div>
@@ -85,6 +223,7 @@ export default function RegistrationForm(
             {/* STACK 2: Email */}
                 <Stack direction="horizontal" gap={3} id='regis-stack2'>
                 <div className="p-2" id='regis-email-block'>
+                {/* EMAIL */}
                         <div className='input-div'>
                             <label className='regis-label'>EMAIL:</label>
                             <div className='input-div'>
@@ -95,10 +234,14 @@ export default function RegistrationForm(
                                 required
                                 name='email'
                                 value={newUserData.email}
+                               // EVENT HANDLERS:
                                 onChange={handleInputChange}
-                                onFocus={() => setEmailMsg(true)}
-                                onBlur={() => setEmailMsg(false)}
+                                onBlur={handleBlur}
                                 // ARIA ATTRIBUTES:
+                                aria-label='Email Input'
+                                aria-required='true'
+                                aria-invalid={emailEmpty ? 'true' : 'false'}
+                                aria-describedby={emailEmpty ? emailErrorId : null}
 
                             />
                         </div>
@@ -106,10 +249,12 @@ export default function RegistrationForm(
                             </div>
                 </div>
                 {/* Error message */}
-                {/* <div className="p-2">
-                    <span><p>EMAIL IS REQUIRED</p></span>
-                </div> */}
-                {/* EMAIL MEssage */}
+                {showEmailError && (
+                    <div className="p-2" >
+                    <p id={emailErrorId} className="visually-hidden" role="alert">EMAIL IS REQUIRED</p>
+                </div>
+                )}
+                {/* EMAIL MESSAGE */}
                 {emailMsg && (
                     <div className="p-2 ms-auto">
                         <p className='msgText'>WE WILL NEVER SHARE YOUR EMAIL</p>
@@ -122,20 +267,41 @@ export default function RegistrationForm(
       <div className="p-2">
       {/* DATE OF BIRTH: required */}
         <div className='input-div'>
-        <label className='regis-label'>DATE OF BIRTH:</label>
+        <label className='regis-label' htmlFor='regisDateOfBirthInput'>DATE OF BIRTH:</label>
             <input
                 type='date'
                 className='input'
-                    // id=''
+                    id='regisDateOfBirthInput'
                     required
+                    max={maxDob}
+                    autoComplete='dateOfBirth'
                     name='dateOfBirth'
                     value={newUserData.dateOfBirth}
                     onChange={handleInputChange}
+                    // ARIA ATTRIBUTES:
+                    aria-label='Date of Birth Input'
+                    aria-required='true'
+                    aria-invalid={(dateOfBirthEmpty || dateOfBirthTooYoung) ? 'true' : 'false'}
+                    aria-describedby={showDateOfBirthAgeError ? dateOfBirthAgeErrorId : dateOfBirthAgeHintId}
                 />
                 <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
         {/* Error message */}
-        {/* <div className="p-2 ms-auto"></div> */}
+        {/* */}
+        {showDateOfBirthError && (
+            <div className="p-2 ms-auto">
+                <p id={dateOfBirthErrorId} className="visually-hidden" role="alert">
+                    Date of birth is required.
+                </p>
+            </div>           
+            )}
+            {showDateOfBirthAgeError && (
+                <div className="p-2 ms-auto">
+                <p id={dateOfBirthAgeErrorId} className="visually-hidden" role="alert">
+                    You must be at least {minAge} years old to register{newUserData.admin === true ? ' as an admin' : ''}.
+                </p>
+                </div>
+            )}
       </div>
       <div className="p-2"><p className='infoText'>USERS MUST BE ATLEAST 18 YEARS OLD</p></div>
       
@@ -181,9 +347,15 @@ export default function RegistrationForm(
                 id='regisPswdInput'
                 name='password'
                 value={newUserData.password}
-                onChange={handleInputChange}
-                onFocus={() => setPasswordMsg(true)}
-                onBlur={() => setPasswordMsg(false)}
+                // EVENT HANDLERS:
+                                onFocus={() => setPasswordMsg(true)}
+                                onBlur={(e) => { setPasswordMsg(false); handleBlur(e); }}
+                                onChange={handleInputChange}
+                                // ARIA ATTRIBUTES:
+                                aria-label='Registration Password'
+                                aria-required='true'
+                                aria-invalid={passwordEmpty ? 'true' : 'false'}
+                                aria-describedby={showPasswordError ? passwordErrorId : passwordHelpId}
                 // ARIA ATTRIBUTES:
 
             />
@@ -241,11 +413,18 @@ export default function RegistrationForm(
         <Button variant='light'
         id='regis-btn'
         type='submit'
+        // ARIA ATTRIBUTES:
+        role='button'
+        aria-label='REGISTER'
+        aria-live='assertive'
         >REGISTER</Button>
       </div>
       <div className="vr" style={{color: '#404040', opacity: .50, width: '2px'}}/>
       <div className="p-2 ">
-        <Button variant='danger' id='clearFormBtn'>CLEAR FORM</Button>
+        <Button variant='danger' id='clearFormBtn' onClick={clearForm}
+        aria-live='assertive'
+        aria-label='Clear form'
+        >CLEAR FORM</Button>
       </div>
       
       
