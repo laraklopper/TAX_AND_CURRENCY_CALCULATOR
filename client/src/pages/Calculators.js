@@ -8,6 +8,8 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
+import TaxCalculator from '../components/TaxCalculator';
+import InterestCalc from '../components/InterestCalc';
 
 export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
@@ -61,13 +63,14 @@ export default function Calculators({currentUser, logout}) {
             {/* TAX CALCULATOR */}
             {showTaxCalc && (
               <div id='tax-calculator-panal'>
-
-
+                <TaxCalculator/>
               </div>
             )}
             {/* INTEREST CALCULATOR */}
             {showIntCalc &&(
-              <div id='int-calculator-panal'></div>
+              <div id='int-calculator-panal'>
+                <InterestCalc/>
+              </div>
             )}
             {/* BASIC CALCULATOR */}
             {showCalc && (
