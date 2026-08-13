@@ -45,6 +45,23 @@ export default function CurrencyConvertForm() {
       </div>
       <div className="p-2">
         <label className='converterLabel'>CONVERT TO:</label>
+        <div>
+            <select
+                 className='input'
+                 id='converterTo'
+                required
+                // name=''
+                //    value={}
+                // onChange={}
+                //ARIA ATTRIBUTES:
+                aria-label='Convert to currency'
+                aria-required='true'
+            >
+               <option value=''>SELECT</option>
+                    {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
+                </select>
+                <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+        </div>
       </div>
     </Stack>
         </div>
