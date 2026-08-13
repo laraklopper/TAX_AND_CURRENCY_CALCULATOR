@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import CurrencyConvertForm from '../components/CurrencyConvertForm';
 
 export default function CurrencyConverter({currentUser, logout}) {
   return (
@@ -17,6 +18,7 @@ export default function CurrencyConverter({currentUser, logout}) {
         <Col xs={6}>
           <div id='currency-converter-panal'>
 {/*Currency Converter form  */}
+<CurrencyConvertForm/>
           </div>
         </Col>
         <Col/>
