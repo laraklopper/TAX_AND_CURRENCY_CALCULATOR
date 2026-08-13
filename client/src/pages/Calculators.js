@@ -7,6 +7,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import NumberCalculator from '../components/NumberCalculator';
 
 export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
@@ -70,7 +71,9 @@ export default function Calculators({currentUser, logout}) {
             )}
             {/* BASIC CALCULATOR */}
             {showCalc && (
-              <div id='calculator-panal'></div>
+              <div id='calculator-panal'>
+                <NumberCalculator/>
+              </div>
             )}
 
           </div>

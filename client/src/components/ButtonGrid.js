@@ -15,7 +15,7 @@ import { Divide,
         Delete
     } from 'lucide-react';
 
-export default function ButtonGrid() {
+export default function ButtonGrid({handleClick, handleClear, handleBackspace, handleEquals}) {
   return (
     <div id='btnGrid' aria-labelledby='calculatorBtnGrid'>
             {/* ---------Screen Reader Heading----- */}
@@ -24,7 +24,16 @@ export default function ButtonGrid() {
             {/* ------LINE 1: 7, 8, 9, divide----------- */}
             <div id='line1' aria-label='First row of calculator buttons' >
                 {/* Button: 7 */}
-                <Button variant='secondary' id='Btn7'>7</Button>
+                <Button 
+                    variant='secondary' 
+                    id='Btn7'
+                    size='sm'
+                    type='button'
+                    className='numButton'
+                    onClick={() => handleClick('7', 'seven')}
+                    // ARIA ATTRIBUTES:
+                    aria-label='7'
+                    >7</Button>
                 {/* Button 8 */}
                 <Button variant='secondary' id='Btn8'>8</Button>
                 {/* Button 9 */}
