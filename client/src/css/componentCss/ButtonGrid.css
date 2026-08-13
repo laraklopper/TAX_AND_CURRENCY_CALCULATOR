@@ -1,0 +1,135 @@
+/* Buttons.css
+ButtonGrid.js */
+/* ==================
+LAYOUT
+=======================*/
+#btnGrid {
+    width: 200px;
+    padding: 300px;
+    background-color: #9B9B9B;
+    margin: 0px;
+    padding: 5px;
+    border-radius: 8px;
+}
+/*------------
+ BOOTSTRAP LAYOUT
+ --------------- */
+/* -------------------
+STACK 
+https://react-bootstrap.netlify.app/docs/layout/stack
+-----------------------*/
+#buttonsStack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0px 5px 0px;
+}
+/* Buttons Layout */
+#line1, #line2, #line3,
+#line4, #line5 {
+    display: flex;
+    gap: 5px;
+    margin: 2px 0px;
+        justify-content: center;
+}
+/* ======================
+CALCULATOR BUTTONS
+https://react-bootstrap.netlify.app/docs/components/buttons
+================*/
+/*------------- 
+OPERATIONS BUTTONS 
+---------------*/
+#divideBtn, #multiplyBtn, #plusBtn,
+#minusBtn, #equalsBtn, #backspaceBtn {
+    width: 40px;
+    height: 40px;
+    color: #000;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: #323A42 solid;
+}
+#divideBtn:hover,
+#multiplyBtn:hover,
+#plusBtn:hover,
+#minusBtn:hover,
+#equalsBtn:hover,
+#backspaceBtn:hover {
+    width: 40px;
+    height: 40px;
+    color: #E8F0F6;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: #323A42 solid;
+    background-color: #323A42;
+}
+#clearBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    width: 40px;
+    height: 40px;
+    color: #b22222;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    border: #323A42 solid;
+}
+#clearBtn:hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    width: 40px;
+    height: 40px;
+    color: #b22222;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    border: #323A42 solid;
+    background-color: #323A42;
+}
+/* -----------
+NUMBER BUTTONS 
+https://react-bootstrap.netlify.app/docs/components/buttons
+---------------------*/
+#Btn0, #Btn1, #Btn2, 
+#Btn3, #Btn4,#Btn5, 
+#Btn6, #Btn7, #Btn8,
+#Btn9 {
+    width: 40px;
+    height: 40px;
+    color: #000;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0px;
+    border: #323A42 solid;
+    padding: 0px;
+}
+#Btn0:hover, #Btn1:hover,
+#Btn2:hover,#Btn3:hover,
+#Btn4:hover, #Btn5:hover,
+#Btn6:hover, #Btn7:hover,
+#Btn8:hover, #Btn9:hover {
+    width: 40px;
+    height: 40px;
+    color: #FFFFFF;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0px;
+    padding: 0px;
+    background-color: #323A42;
+}
