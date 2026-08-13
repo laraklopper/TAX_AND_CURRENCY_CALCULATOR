@@ -1,23 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/CurrencyConverter.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
+import { currencies } from '../dataArrays/currencies';
 
-// Default values used when the form is first loaded or reset
-const EMPTY_FORM = {
-    amount: '',
-    from: '',
-    to: ''
-};
-export default function CurrencyConvertForm() {
-   // ================STATE VARIABLES===================
-    const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
-    const [result, setResult] = useState(null);// Stores the conversion returned by the API
-    const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
-    const [error, setError] = useState('');// Stores any error messages shown to the user
-  
+
+export default function CurrencyConvertForm(
+    {
+        submitConvert,EMPTY_FORM, loading, setLoading, error, setError, result, setResult, form, setForm}) {
       //===========EVENT LISTENERS===============
     //Function to handle inputChanges in the form
     const handleChange = (e) => {
@@ -40,8 +32,14 @@ export default function CurrencyConvertForm() {
 
         setError('');// Clear any displayed error messages.
     };
+
+    const handleConvert = (event) =>{
+        event.preventDefault()
+        submitConvert()
+    }
+    //==============JSX RENDERING===================
     return (
-    <form id='currency-converter-form' aria-labelledby='formHeading' >
+    <form id='currency-converter-form' method='GET' aria-labelledby='formHeading' onSubmit={handleConvert} aria-busy={loading} >
         <div id='formHeadingBlock'>
             <h3 id='formHeading'>CURRENCY CONVERTER</h3>
         </div>
@@ -56,42 +54,52 @@ export default function CurrencyConvertForm() {
             <input
                 className='input'
                 id='converterAmount'
-                // name=''
-                // value={}
+                type='number'
+                step='0.01'
+                min='0.01'
+                name='amount'
+                value={form.amount}
                 onChange={handleChange}
-                // ARIA ATTRIBUTES:
+                placeholder='0.00'
+                required
+                //ARIA ATTRIBUTES:
+                aria-label='Amount to convert'
+                aria-required='true'
             />
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
-      {/* Convert to currency */}
-      <div className="p-2">
+      {/* Convert from currency */}
+      <div className="p-2"  id='convertFromBlock'>
       <label className='converterLabel' htmlFor='converterFrom'>CONVERT FROM:</label>
         <div className='input-div'>
             <select
              className='input'
                 id='converterFrom'
                 required
-                // name=''
-                // value={}
-                // onChange={}
+                name='from'
+                value={form.from}
+                onChange={handleChange}
                 // ARIA ATTRIBUTES:
                 aria-required= 'true'
                 aria-label='convert from currency'>
                     <option value=''>SELECT</option>
                     {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
+                    {currencies.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                    ))}
                 </select>
                 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
-      <div className="p-2">
-        <label className='converterLabel'>CONVERT TO:</label>
-        <div>
+      <div className="p-2"  id='convertToBlock'>
+        <label className='converterLabel' htmlFor='converterTo'>CONVERT TO:</label>
+        <div className='input-div'>
             <select
                  className='input'
                  id='converterTo'
                 required
-                // name=''
+                name='to'
                 //    value={}
                 // onChange={}
                 //ARIA ATTRIBUTES:
@@ -99,14 +107,18 @@ export default function CurrencyConvertForm() {
                 aria-required='true'
             >
                <option value=''>SELECT</option>
-                    {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
+                {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
+                    {currencies.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                    ))}
                 </select>
                 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
     </Stack>
         </div>
-        <Stack gap={3}>
+        {/* STACK 2 */}
+        <Stack gap={3} id='converterStack2'>
       <div className="p-2" id='submit-converter-btn-block'>
         <Button
                             variant='light'
