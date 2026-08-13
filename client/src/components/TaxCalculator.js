@@ -20,15 +20,16 @@ export default function TaxCalculator() {
     }
 
   return (
-      <div className='calculator-block' id='calculator-3' aria-labelledby='calculator3Descrip'>
+      <div className='calculator-div' id='calculator-3' aria-labelledby='calculator3Descrip'>
                         {/* -------Screen Reader Heading----------- */}
                         <p className='visually-hidden' id='calculator3Descrip'>TAX CALCULATOR : DEFAULT VALUE 15%</p>
                         <div id='tax-calculator-panal' aria-labelledby='calculator3Head'>
-                            <div className='calculator-div'>
+                            
                                 <div className='calculator-heading-block'>
                                     <h3 className='calculatorHeading' id='calculator3Head'>TAX CALCULATOR</h3>
                                 </div>
-                                {/* ==========CALCULATOR 3: STACK 1============= */}
+                                <div id='tax-calculator-input'>
+                                {/* ========= STACK 1============= */}
                                 <Stack gap={3} id='calculator3Stack1'>
                                     {/* ---------TAX AMOUNT------------------ */}
                                     <div className="p-2" id='taxAmountBlock'>
@@ -48,7 +49,6 @@ export default function TaxCalculator() {
                                     </div>
                                     <div className="p-2" id='taxRateBlock'>
                                         {/* ---------TAX RATE------------- */}
-                                        <div className='calculator-input-div'>
                                             <label className='calculatorLabel'>TAX RATE:</label>
                                             <input
                                                 className='input'
@@ -63,11 +63,11 @@ export default function TaxCalculator() {
                                                 // ARIA ATTRIBUTES:
                                                 aria-label='Tax rate'
                                             />
-                                        </div>
-                                        <div className="p-2" id='infoBlock'></div>
+                                        
+                                       
                                     </div>
                                 </Stack>
-                                {/* ======= STACK 3: OUTPUT======= */}
+                                {/* ======= STACK 2: OUTPUT======= */}
                                 <Stack gap={3} id='calculator3Stack2'>
                                     {/* TAX OUTPUT DISPLAY */}
                                     <div id='tax-output-block'>

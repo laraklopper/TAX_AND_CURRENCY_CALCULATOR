@@ -81,6 +81,21 @@ export default function Calculators({currentUser, logout}) {
         </Col>
         <Col id='calculatorCol2'/>
       </Row>
+      {/* Row 2:Calculator Information/Messages */}
+            <Row id='info-msg-row'>
+                <Col xs={0} md id='info-msg-col1'/>
+                <Col xs={12} md={6} id='info-msg-col'>
+                    <div id='info-msg-div'>
+                        <span className='info-msg-span'>
+                            {/* Display default (SOUTH AFRICAN)15% tax rate */}
+                            <h6 className='calculator-info-text'>INTEREST PERIOD CALCULATED IN MONTHS</h6>
+                            <h6 className='calculator-info-text'>DEFAULT TAX RATE IS SET TO SOUTH AFRICAN 15% TAX RATE</h6>
+                        </span>
+                    </div>
+                </Col>
+                <Col xs={0} md id='info-msg-col1'/>
+            </Row>
+
       </section>
       <Footer logout={logout}/>
     </div>

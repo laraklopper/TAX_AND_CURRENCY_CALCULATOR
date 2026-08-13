@@ -45,7 +45,7 @@ OPERATIONS BUTTONS
     width: 40px;
     height: 40px;
     color: #000;
-    font-family: "Roboto Mono", monospace;
+     font-family: "Courier Prime", monospace;
     font-weight: 700;
     margin: 0px;
     padding: 0px;
@@ -60,17 +60,7 @@ OPERATIONS BUTTONS
 #minusBtn:hover,
 #equalsBtn:hover,
 #backspaceBtn:hover {
-    width: 40px;
-    height: 40px;
     color: #E8F0F6;
-    font-family: "Roboto Mono", monospace;
-    font-weight: 700;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: #323A42 solid;
     background-color: #323A42;
 }
 #clearBtn {
@@ -82,22 +72,12 @@ OPERATIONS BUTTONS
     width: 40px;
     height: 40px;
     color: #b22222;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: #323A42 solid;
 }
 #clearBtn:hover {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0px;
-    padding: 0px;
-    width: 40px;
-    height: 40px;
     color: #b22222;
-    font-family: "Roboto Mono", monospace;
-    font-weight: 700;
-    border: #323A42 solid;
     background-color: #323A42;
 }
 /* -----------
@@ -123,13 +103,6 @@ https://react-bootstrap.netlify.app/docs/components/buttons
 #Btn4:hover, #Btn5:hover,
 #Btn6:hover, #Btn7:hover,
 #Btn8:hover, #Btn9:hover {
-    width: 40px;
-    height: 40px;
-    color: #FFFFFF;
-    font-family: "Roboto Mono", monospace;
-    font-weight: 700;
-    font-size: 20px;
-    margin: 0px;
-    padding: 0px;
+    color: #E8F0F6;
     background-color: #323A42;
 }
