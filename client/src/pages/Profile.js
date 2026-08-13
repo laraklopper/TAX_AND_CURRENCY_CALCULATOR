@@ -1,10 +1,12 @@
 import React from 'react'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
-export default function Profile({currentUser}) {
+export default function Profile({currentUser, logout}) {
   return (
-    <div>
+    <div id='pageContainer'>
       <Header currentUser={currentUser}/>
+      <Footer logout={logout}/>
     </div>
   )
 }

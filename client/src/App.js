@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import './App.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // IMPORT REACT ROUTER COMPONENTS
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Bug } from 'lucide-react';
 import Dashboard from './pages/Dashboard'
 import Calculators from './pages/Calculators';
@@ -30,6 +30,27 @@ export default function App() {
     dateOfBirth:'',
     admin: false,
   })
+
+  const navigate = useNavigate()
+  // ======================================
+  const logout = useCallback(() => {
+    //Clear localStorage
+       localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('loggedIn')
+    // Reset state
+     setLoggedIn(false)
+    setError('');// Clear any existing error messages
+    setUserData()
+    setUserData({//Reset the userData
+      email: '',
+      password: ''
+    })//Reset the userData
+      /*Use the navigate function to redirect the
+    user to the login page after logging out*/
+    navigate('/')
+  },[navigate])
+  //======================================
   return (
     <>
       <Container role='main' id='appContainer'>
@@ -51,27 +72,27 @@ export default function App() {
             {/* Route to Home/Dashboard  */}
               <Route exact path='/' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Dashboard currentUser={currentUser}/>
+                  <Dashboard currentUser={currentUser} logout={logout}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/calculators' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Calculators currentUser={currentUser}/>
+                  <Calculators currentUser={currentUser} logout={logout}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/currencyConverter' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <CurrencyConverter currentUser={currentUser}/>
+                  <CurrencyConverter currentUser={currentUser} logout={logout}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/profile' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Profile currentUser={currentUser}/>
+                  <Profile currentUser={currentUser} logout={logout}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/users' element={
                 <ProtectedAdminRoute currentUser={currentUser}>
-                  <Users currentUser={currentUser}/>
+                  <Users currentUser={currentUser} logout={logout}/>
                 </ProtectedAdminRoute>
               }/>
             </>

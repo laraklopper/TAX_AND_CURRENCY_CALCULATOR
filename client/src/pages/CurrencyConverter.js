@@ -1,10 +1,13 @@
 import React from 'react'
+import '../css/pagesCss/PageSetup.css'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
-export default function CurrencyConverter({currentUser}) {
+export default function CurrencyConverter({currentUser, logout}) {
   return (
-    <div>
+    <div id='pageContainer'>
       <Header currentUser={currentUser}/>
+      <Footer logout={logout}/>
     </div>
   )
 }

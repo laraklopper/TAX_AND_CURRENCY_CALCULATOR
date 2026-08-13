@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-export default function Footer() {
+export default function Footer({logout}) {
   return (
     <footer id='loggedIn-footer'>
          <Row id='footerRow1'>
@@ -12,8 +12,18 @@ export default function Footer() {
             <Stack direction="horizontal" gap={3} id='logout-stack'>
                 <div className="p-2"></div>
                 <div className="p-2 ms-auto"></div>
-                <div className="p-2"><Button variant="warning" id='logoutBtn'>LOGOUT</Button>
-</div>
+                <div className="p-2">
+                <Button 
+                  variant="warning" 
+                  id='logoutBtn' 
+                  onClick={logout}
+                  type='button'
+                  // ARIA ATTRIBUTES:
+                  aria-label='logout'
+                  >
+                  LOGOUT
+                  </Button>
+                  </div>
             </Stack>
           </Col>
         </Row>
