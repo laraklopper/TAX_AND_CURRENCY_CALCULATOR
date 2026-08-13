@@ -12,6 +12,7 @@ const helmet = require('helmet');
 const connectDB = require('./config/connect')
 // ============IMPORT ROUTES===================
 const authRoutes = require('./routes/authRoutes')
+const apiRoutes = require('./routes/apiRoutes')
 // Extract enviromental variables
 const port = process.env.PORT || 3001;
 
@@ -32,6 +33,7 @@ app.use(express.urlencoded({extended:true}))
 // =======ROUTES===========
 // Prefix all route modules with their base path.
 app.use('/auth', authRoutes)
+app.use('/api', apiRoutes)
 mongoose.set('strictPopulate', false)
 
 
