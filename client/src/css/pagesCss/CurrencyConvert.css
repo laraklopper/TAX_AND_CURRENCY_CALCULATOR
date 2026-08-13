@@ -1,0 +1,10 @@
+#currency-converter-sec1{
+        width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #878787;
+}
