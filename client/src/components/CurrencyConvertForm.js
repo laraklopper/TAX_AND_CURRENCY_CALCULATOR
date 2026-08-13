@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/CurrencyConverter.css'
 import Stack from 'react-bootstrap/Stack';
+import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
 
+// Default values used when the form is first loaded or reset
+const EMPTY_FORM = {
+    amount: '',
+    from: '',
+    to: ''
+};
 export default function CurrencyConvertForm() {
+   // ================STATE VARIABLES===================
+    const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
+    const [result, setResult] = useState(null);// Stores the conversion returned by the API
+    const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
+    const [error, setError] = useState('');// Stores any error messages shown to the user
   return (
     <form>
         <div id='formHeadingBlock'>
@@ -20,6 +32,7 @@ export default function CurrencyConvertForm() {
                 id='converterAmount'
                 // name=''
                 // value={}
+                
             />
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
@@ -65,6 +78,42 @@ export default function CurrencyConvertForm() {
       </div>
     </Stack>
         </div>
+        <Stack gap={3}>
+      <div className="p-2">
+        <Button
+                            variant='light'
+                            id='submitConvertBtn'
+                            type='submit'
+                            disabled={loading}
+                            // ARIA ATTRIBUTES:
+                            role='button'
+                            aria-label={loading ? 'CONVERTING...' : 'CONVERT'}
+                            aria-disabled={loading}
+                        >
+                            {loading ? 'CONVERTING...' : 'CONVERT'}
+                        </Button>
+      </div>
+      <div className="p-2">
+        <Button
+                            variant='danger'
+                            id='clearFormBtn'
+                            type='button'
+                            // onClick={handleClear}
+                            // ARIA ATTRIBUTES:
+                            aria-label='Clear currency converter form'
+                            aria-disabled={loading}
+                        >
+                            CLEAR FORM
+                        </Button>
+      </div>
+      <div className="p-2" id='converterResultBlock'>
+        {/* Only display the Result after form submission */}
+      </div>
+        {/* ========ERROR MESSAGE==================== */}
+        {error && (
+            <p className='infoText' style={{ color: '#C22419' }} role='alert' aria-live='assertive'>{error}</p>
+        )}
+    </Stack>
     </form>
   )
 }
