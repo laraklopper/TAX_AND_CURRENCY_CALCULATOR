@@ -39,7 +39,7 @@ const currencyConvertSchema = new mongoose.Schema({
             type: String,
             required: [true, 'target currency is required'],
             trim: true,
-            enum: [currencies],
+            enum: currencies,
             uppercase: true,
             minlength: [3, 'Target currency must be a 3-letter currency code'],
             maxlength: [3, 'Target currency must be a 3-letter currency code'],

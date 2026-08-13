@@ -100,8 +100,8 @@ export default function CurrencyConvertForm(
                  id='converterTo'
                 required
                 name='to'
-                //    value={}
-                // onChange={}
+                value={form.to}
+                onChange={handleChange}
                 //ARIA ATTRIBUTES:
                 aria-label='Convert to currency'
                 aria-required='true'
