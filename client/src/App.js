@@ -51,27 +51,27 @@ export default function App() {
             {/* Route to Home/Dashboard  */}
               <Route exact path='/' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Dashboard/>
+                  <Dashboard currentUser={currentUser}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/calculators' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Calculators/>
+                  <Calculators currentUser={currentUser}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/currencyConverter' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <CurrencyConverter/>
+                  <CurrencyConverter currentUser={currentUser}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/profile' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Profile/>
+                  <Profile currentUser={currentUser}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/users' element={
                 <ProtectedAdminRoute currentUser={currentUser}>
-                  <Users/>
+                  <Users currentUser={currentUser}/>
                 </ProtectedAdminRoute>
               }/>
             </>

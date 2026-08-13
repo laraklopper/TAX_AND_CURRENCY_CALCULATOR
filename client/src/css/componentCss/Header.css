@@ -21,8 +21,10 @@
     width: 100%;
     justify-content: center;
 }
-/* MAIN HEADER */
-/* LOGGED IN HEADER */
+/* MainHeader.js */
+/*===============
+ loggedIn = false 
+ ====================*/
 #mainHeader{
     display: flex;
     flex-direction: column;
@@ -51,10 +53,39 @@
     padding: 0px;
     width: 100%;
 }
+#headerRow3{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#headerNavRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#navCol{
+    display: flex;
+    justify-content: center;
+        width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 #mainHeaderStack{
     display: flex;
     align-items: baseline;
     width: 100%;
     margin: 0px;
     padding: 0px;
+}
+/*===============
+ loggedIn = true 
+ ====================*/
+#header{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin: 10px 0px;
+    padding: 10px 0px 5px 0px;
+    background-color: #B6C6D4;
 }

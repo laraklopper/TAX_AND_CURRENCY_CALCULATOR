@@ -6,40 +6,40 @@ import { NavLink } from 'react-router-dom';
 export default function Header({currentUser}) {
   return (
     <header id='header'>
-        <Row>
+        <Row id='headerRow1'>
             <Col></Col>
         </Row>
-        <Row>
+        <Row id='headerRow2'>
             <Col/>
         <Col xs={5}>
-            <span className='headingSpan'>
-                <h1>APP HEADING</h1>
+            <span className='headerSpan'>
+                <h1 id='appHeading'>APP HEADING</h1>
             </span>
         </Col>
         <Col/>
         </Row>
-        <Row id='headerNav row'>
+        <Row id='headerNavRow'>
             <Col md={12} xs={12} id='navCol'>
             <div>
-                <nav>
-                    <ul>
+                <nav id='navigation'>
+                    <ul id='navbar'>
                         {currentUser && (
-                            <li>
-                                <NavLink to='/'>DASHBOARD</NavLink>
+                            <li className='linkItem'>
+                                <NavLink to='/' className='refLink'>DASHBOARD</NavLink>
                             </li> 
                         )}
                         {currentUser && (
-                            <li>
+                            <li className='linkItem'>
                                 <NavLink to='/calculators' className='refLink'>CALCULATOR</NavLink>
                             </li>
                         )}
                         {currentUser && (
-                            <li>
+                            <li className='linkItem'>
                                 <NavLink to='/currencyConverter' className='refLink'>CURRENCY CONVERTER</NavLink>
                             </li>
                         )}
                         {currentUser && (
-                            <li>
+                            <li className='linkItem'>
                                 <NavLink to='/profile' className='refLink'>PROFILE</NavLink>
                             </li>
                         )}

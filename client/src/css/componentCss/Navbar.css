@@ -13,11 +13,13 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-#mainNavRow{
+#mainNavRow,
+#navRow{
     width: 100%;
     margin: 0px;
     padding: 0px;
 }
+
 #mainNavCol{
     width: 100%;
     margin: 0px;
@@ -39,18 +41,26 @@ LAYOUT
     display: flex;
     background-color: #D4D5D6
 }
-
+#navbar{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+    align-items: center;
+    list-style-type: none;
+}
+/* LINK */
 .linkItem{
     width: 180px;
     display: flex;
     align-items: center;
-    width: 180px;
+    width: 230px;
 }
 .refLink{
     display: flex;
     letter-spacing: 2px;
     align-items: center;
-    width: 180px;
+    width: 230px;
     font-family: "Roboto Mono", monospace;
     margin: 0px;
     color: #000;
@@ -60,6 +70,7 @@ LAYOUT
     font-weight: 700;
     justify-content: center;
     border-radius: 5px;
+    text-align: center;
     background-color: #E8F0F6;
     border: solid 2px #323A42;
 }
