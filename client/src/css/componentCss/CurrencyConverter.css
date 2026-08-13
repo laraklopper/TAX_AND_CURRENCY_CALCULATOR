@@ -1,0 +1,42 @@
+#converterStack1{
+    width: 100%;
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
+#converterAmountBlock,
+#convertFromBlock,
+#convertToBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    gap: 5px;
+}
+.converterLabel{
+   font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  margin: 0px;
+  letter-spacing: 1px;
+  padding: 0px;
+}
+#currency-converter-row{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#submitConvertBtn{
+    width: 180px;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    height: 40px;
+     font-family: "Courier Prime", monospace;
+     letter-spacing: 2px;
+     font-weight: 700;
+    justify-content: center;
+    align-items: center;
+}
