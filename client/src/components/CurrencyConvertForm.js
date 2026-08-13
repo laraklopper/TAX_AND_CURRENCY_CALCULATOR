@@ -17,13 +17,39 @@ export default function CurrencyConvertForm() {
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
     const [error, setError] = useState('');// Stores any error messages shown to the user
-  return (
-    <form>
+  
+      //===========EVENT LISTENERS===============
+    //Function to handle inputChanges in the form
+    const handleChange = (e) => {
+        const { name, value } = e.target;// Extract the name and current value of the input that triggered the event.
+        /* Update only the field that changed while keeping
+        the existing values for the other form fields.*/
+        setForm(prev => ({
+            ...prev,          // Copy the existing form values
+            [name]: value     // Update the matching field dynamically
+        }));
+        /*Clear any previous conversion result because the user
+        has changed the input values and a new conversion is needed. */
+        setResult(null);
+        setError('');// Remove any previous error message once the user begins editing.
+    };
+    //Function to clear the form
+    const handleClear = () => {
+        setForm(EMPTY_FORM);// Reset all form inputs (amount, from, and to) to their default values.
+        setResult(null);// Remove the previous conversion result from the screen.
+
+        setError('');// Clear any displayed error messages.
+    };
+    return (
+    <form id='currency-converter-form' aria-labelledby='formHeading' >
         <div id='formHeadingBlock'>
             <h3 id='formHeading'>CURRENCY CONVERTER</h3>
         </div>
+        {/* CONVERTER INPUT */}
         <div id='converter-details-input'>
+        {/* STACK 1 */}
             <Stack gap={3} id='converterStack1'>
+            {/* Converter amount */}
       <div className="p-2" id='converterAmountBlock'>
         <label className='converterLabel' htmlFor='converterAmount'>AMOUNT</label>
         <div className='input-div'>
@@ -32,11 +58,13 @@ export default function CurrencyConvertForm() {
                 id='converterAmount'
                 // name=''
                 // value={}
-                
+                onChange={handleChange}
+                // ARIA ATTRIBUTES:
             />
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
+      {/* Convert to currency */}
       <div className="p-2">
       <label className='converterLabel' htmlFor='converterFrom'>CONVERT FROM:</label>
         <div className='input-div'>
@@ -79,7 +107,7 @@ export default function CurrencyConvertForm() {
     </Stack>
         </div>
         <Stack gap={3}>
-      <div className="p-2">
+      <div className="p-2" id='submit-converter-btn-block'>
         <Button
                             variant='light'
                             id='submitConvertBtn'
@@ -93,12 +121,12 @@ export default function CurrencyConvertForm() {
                             {loading ? 'CONVERTING...' : 'CONVERT'}
                         </Button>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='clearFormBtn-block'>
         <Button
                             variant='danger'
                             id='clearFormBtn'
                             type='button'
-                            // onClick={handleClear}
+                            onClick={handleClear}
                             // ARIA ATTRIBUTES:
                             aria-label='Clear currency converter form'
                             aria-disabled={loading}
