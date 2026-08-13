@@ -67,7 +67,7 @@ export default function TaxCalculator() {
                                         <div className="p-2" id='infoBlock'></div>
                                     </div>
                                 </Stack>
-                                {/* =======CALCULATOR 3: STACK 3======= */}
+                                {/* ======= STACK 3: OUTPUT======= */}
                                 <Stack gap={3} id='calculator3Stack2'>
                                     {/* TAX OUTPUT DISPLAY */}
                                     <div id='tax-output-block'>
@@ -98,8 +98,6 @@ export default function TaxCalculator() {
                             </div>
                         </div>
                     </div>  
-
-
   )
 }
 
@@ -115,7 +113,9 @@ function TaxRow(
     return (
         <div id='tax-div' role='group'>
             {/* Display the row label */}
-            <p className='calculatorLabel' style={{ fontWeight: bold ? 'bold' : 'normal' }}>{label}</p>{/* Make text bold when bold=true */}
+            <p className='calculatorLabel' 
+            // style={{ fontWeight: bold ? 'bold' : 'normal' }}
+            >{label}</p>{/* Make text bold when bold=true */}
             {/* Display the formatted Rand value */}
             <p className='calculatorLabel' style={{ fontWeight: bold ? 'bold' : 'normal' }}>{/* Make value bold when bold=true */}
                 R {value.toFixed(2)}

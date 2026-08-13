@@ -37,20 +37,19 @@ export default function InterestCalc() {
     }
 
   return (
-     <div className='calculator-block' id='calculator-2' aria-labelledby='calculator2Descrip'>
+     <div className='calculator-div' id='calculator-2' aria-labelledby='calculator2Descrip'>
                         {/* ---------Screen Reader Heading------------- */}
                         <p className='visually-hidden' id='calculator2Descrip'>INTEREST CALCULATOR</p>
-                        <div id='interest-calculator-panal'>
-                            <div className='calculator-div'>
+                        <div id='interest-calculator-block'>
                                 <div className='calculator-heading-block'>
                                     <h3 className='calculatorHeading'>INTEREST CALCULATOR</h3>
                                 </div>
                                 {/* -------------CALCULATOR 2: STACK 1----------------- */}
+                                <div id='calculator-input'>
                                 <Stack gap={3} id='calculator2Stack1'>
                                     {/* AMOUNT INPUT */}
                                     <div  id='amountInputBlock'>
                                         <label className='calculatorLabel'>AMOUNT:</label>
-                                        <div className='input-div'>
                                             <input
                                                 className='input'
                                                 id='amountInput'
@@ -62,11 +61,11 @@ export default function InterestCalc() {
                                                 onChange={handlePrincipalChange}
                                                 //ARIA ATTRIBUTES
                                             />
-                                        </div>
+                                       
                                         {/* --------INTEREST RATE-------------- */}
                                     </div>
                                     <div id='interestInputBlock'>
-                                        <label className='calculatorLabel'>INTEREST:</label>
+                                    <label className='calculatorLabel' htmlFor='interestInput'>INTEREST:</label>
                                         <input
                                             className='input'
                                             id='interestInput'
@@ -82,7 +81,7 @@ export default function InterestCalc() {
                                     </div>
                                     {/* ----------TIME PERIOD (months)-------- */}
                                     <div id='periodInputBlock'>
-                                        <label className='calculatorLabel'>PERIOD:</label>
+                        <label className='calculatorLabel' htmlFor='timeInput'>PERIOD:</label>
                                         <input
                                             className='input'
                                             id='timeInput'
@@ -95,15 +94,12 @@ export default function InterestCalc() {
                                             onChange={handleTimePeriodChange}
                                             // ARIA ATTRIBUTES:
                                             aria-label='Interest-period-input'
-                                        />
+                                        />           
                                     </div>
                                 </Stack>
-
-
-
-                                {/* ========CALCULATOR 2: STACK 2 */}
+                                {/* ======== STACK 2 */}
                                 <Stack gap={3} id='calculator2Stack2'>
-                                    <div className="p-2" id='formHeadingBlock'>
+                                    <div id='calculateInterestBtn-block'>
                                         <Button
                                             type='button'
                                             onClick={calculateInterest}
@@ -116,7 +112,7 @@ export default function InterestCalc() {
                                         </Button>
                                     </div>
                                     {/* INTEREST OUTPUT */}
-                                    <div className="p-2"  id='interestOutputBlock'>
+                                    <div id='interestOutputBlock'>
                                         {/* OUTPUT */}
                                         <h6 className='calculatorLabel'>INTEREST:</h6>
                                         {/* <h6 className='calculatorLabel'><strong>R</strong></h6> */}
@@ -135,9 +131,8 @@ export default function InterestCalc() {
                                         </Button>
                                     </div>
                                 </Stack>
-                            </div>
+                                </div>
                         </div>
                     </div>  
-
   )
 }

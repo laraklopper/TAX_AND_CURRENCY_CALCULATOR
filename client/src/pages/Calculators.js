@@ -55,10 +55,8 @@ export default function Calculators({currentUser, logout}) {
         <Col id='toggleCalcCol2'/>
       </Row>
         <Row id='calculatorRow'>
-         <Col xs={3} md={2}>
-        
-        </Col>
-        <Col xs={12} md={8} id='calculatorCol'>
+         <Col id='calculatorCol1'/>
+        <Col xs={6} id='calculatorCol'>
           <div id='calculators-div'>
             {/* TAX CALCULATOR */}
             {showTaxCalc && (
@@ -81,9 +79,7 @@ export default function Calculators({currentUser, logout}) {
 
           </div>
         </Col>
-        <Col xs={3} md={2}>
-        
-        </Col>
+        <Col id='calculatorCol2'/>
       </Row>
       </section>
       <Footer logout={logout}/>

@@ -1,0 +1,192 @@
+.calculator-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+        width: 100%;
+}
+.calculator-heading-block{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+.calculatorHeading {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    margin: 0px;
+    padding: 0px;
+    text-transform: uppercase;
+}
+.calculatorLabel{
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  margin: 0px;
+  letter-spacing: 2px;
+  padding: 0px;
+  color: #000;
+  text-decoration: underline 2px;
+}
+.tax-span{
+    display: flex;
+}
+#tax-div{
+    display: flex;
+    gap: 10px;
+}
+#tax-output-block{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 10px 5px;
+    background-color: #cacaca;
+}
+/* =====================
+CALCULATOR 1: TAX CALCULATOR
+===================*/
+#tax-calculator-panal{
+    display: flex;
+    width: 80%;
+    justify-content: center;
+    background-color: #6c757d;
+    margin: 0px;
+    padding: 10px;
+    height: 100%;
+     border-radius: 8px;
+    border: solid;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+/* =====================
+CALCULATOR 2: INTEREST CALCULATOR
+===================*/
+#int-calculator-panal{
+    display: flex;
+    width: 80%;
+    background-color: #6c757d;
+    flex-direction: row;
+    margin: 0px;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    height: 100%;
+     border-radius: 8px;
+    border: solid;
+    gap: 10px;
+}
+/* LAYOUT */
+#interest-calculator-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#calculator-input{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    width: 400px;
+    gap: 10px;
+    background-color: #cacaca;
+}
+/* STACK 1: */
+#calculator2Stack1{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#amountInputBlock,
+#interestInputBlock,
+#periodInputBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+/* STACK2 */
+#calculator2Stack2{
+        display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#interestOutputBlock{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    padding: 5px;
+}
+#calculateInterestBtn-block{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#calculateInterestBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 700;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    border: solid 2px #323A42;
+    width: 200px;
+    height: 40px;
+
+}
+/* ===============
+CALCULATOR 3: GENERAL CALCULATOR
+==========*/
+#calculator-panal{
+    display: flex;
+    width: 80%;
+    justify-content: flex-start;
+    margin: 0px;
+    padding: 10px;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    background-color: #6c757d;
+     border-radius: 8px;
+    border: solid;
+    gap: 4px;
+}
+#basic-calculator-input{
+    display: flex;
+}
+/* BOOTSTRAP LAYOUT */
+#general-calculatorStack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    width: 300px;
+}
+
+#calculator-input-block{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px;
+    background-color: #9B9B9B;
+    padding: 5px;
+}

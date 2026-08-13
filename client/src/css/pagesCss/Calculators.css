@@ -8,6 +8,13 @@
     gap: 5px;
     background-color: #878787;
 }
+#calculators-div{
+        display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 5px;
+    width: 100%;
+}
 #toggleCalculatorRow{
     display: flex;
      margin: 0px;
@@ -18,4 +25,104 @@
     margin: 0px;
     padding: 0px;
     width: 100%;
+}
+#toggleCalcCol{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+}
+#toggleCalcCol1,
+#toggleCalcCol2{
+    margin: 0px;
+    padding: 0px;
+}
+#toggleCalculatorStack{
+    display: flex;
+    justify-content: center;
+}
+#toggle-calc1-block,
+#toggle-calc2-block,
+#toggle-calc3-block{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#calculatorCol{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#calculatorCol1,
+#calculatorCol2{
+    margin: 0px;
+    padding: 0px;
+}
+/* ===============================
+ MESSAGES
+============================*/
+/* ----------------------
+LAYOUT
+---------------------*/
+#info-msg-div{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 10px 0px;
+}
+/* BOOTSTRAP LAYOUT */
+#info-msg-row{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#info-msg-col{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+
+}
+#info-msg-col1,
+#info-msg-col2{
+    margin: 0px;
+    padding: 0x;
+}
+
+/* -----------------------
+
+------------------*/
+.info-msg-span{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+
+}
+.calculator-info-text{
+    margin: 5px 0px;
+    padding: 0px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+}
+/* BUTTONS */
+#toggleTaxCalcBtn,
+#toggleIntCalcBtn,
+#toggleCalcBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    letter-spacing: 1px;
+    margin: 0px;
+    padding: 0px;
+    width: 280px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    border: solid 2px #323A42;
 }

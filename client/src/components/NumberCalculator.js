@@ -82,7 +82,8 @@ export default function NumberCalculator() {
         <div className='calculator-heading-block'>
             <h3 className='calculatorHeading'>CALCULATOR</h3>
         </div>
-        <Stack gap={3}>
+        <div id='basic-calculator-input'>
+        <Stack gap={3} id='general-calculatorStack'>
         <div id='calculator-input-block'>
             <input
                 type='text'
@@ -115,8 +116,7 @@ export default function NumberCalculator() {
         />
       </div>
     </Stack>
-
-
+</div>
     </div>
   )
 }
