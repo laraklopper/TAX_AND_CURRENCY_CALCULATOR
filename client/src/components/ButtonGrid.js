@@ -2,7 +2,6 @@
 //IMPORT REQUIRED MODULES AND PACKAGES
 import React from 'react'
 // IMPORT CSS STYLESHEETS
-import '../css/componentsCsss/ButtonGrid.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
