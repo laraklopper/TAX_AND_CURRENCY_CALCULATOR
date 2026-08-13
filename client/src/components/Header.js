@@ -3,7 +3,7 @@ import '../css/componentCss/Header.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { NavLink } from 'react-router-dom';
-export default function Header({currentUser}) {
+export default function Header({currentUser, pageHeader}) {
   return (
     <header id='header'>
         <Row id='headerRow1'>
@@ -14,6 +14,10 @@ export default function Header({currentUser}) {
         <Col xs={5}>
             <span className='headerSpan'>
                 <h1 id='appHeading'>APP HEADING</h1>
+            </span>
+            <span className='headerSpan'>
+            <h2>{pageHeader}</h2>
+
             </span>
         </Col>
         <Col/>
@@ -30,7 +34,7 @@ export default function Header({currentUser}) {
                         )}
                         {currentUser && (
                             <li className='linkItem'>
-                                <NavLink to='/calculators' className='refLink'>CALCULATOR</NavLink>
+                                <NavLink to='/calculators' className='refLink'>CALCULATORS</NavLink>
                             </li>
                         )}
                         {currentUser && (

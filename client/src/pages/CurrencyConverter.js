@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 export default function CurrencyConverter({currentUser, logout}) {
   return (
     <div id='pageContainer'>
-      <Header currentUser={currentUser}/>
+      <Header currentUser={currentUser} pageHeader={'CURRENCY CONVERTER'}/>
       <Footer logout={logout}/>
     </div>
   )
