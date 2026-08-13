@@ -34,7 +34,7 @@ export default function Calculators({currentUser, logout}) {
    },[])
   // ============================================
   return (
-    <div id='pageContainer'>
+    <div id='pageContainer' role='main'>
       <Header currentUser={currentUser} pageHeader={'CALCULATORS'}/>
       <section id='calculatorSec1'>
       <Row id='toggleCalculatorRow'>
@@ -42,13 +42,47 @@ export default function Calculators({currentUser, logout}) {
         <Col xs={5} id='toggleCalcCol'>
              <Stack gap={3} id='toggleCalculatorStack'>
               <div className="p-2" id='toggle-calc1-block'>
-                <Button variant='light' onClick={toggleTaxCalc} id='toggleTaxCalcBtn' >TAX CALCULATOR</Button>
+                <Button 
+                variant='light' 
+                onClick={toggleTaxCalc} 
+                id='toggleTaxCalcBtn' 
+                type='button'
+                // ARIA ATTRIBUTES:
+                aria-label={showTaxCalc ? 'HIDE TAX CALCULATOR': 'SHOW TAX CALCULATOR'}
+                aria-pressed={showTaxCalc}
+                aria-expanded={showTaxCalc}
+                aria-controls='tax-calculator-panal'
+                >
+                {showTaxCalc ? 'HIDE TAX CALCULATOR': 'SHOW TAX CALCULATOR'}
+              </Button>
               </div>
               <div className="p-2" id='toggle-calc2-block'>
-                <Button variant='light' onClick={toggleInterestCalculator} id='toggleIntCalcBtn'>INTEREST CALCULATOR</Button>
+                <Button 
+                variant='light' 
+                onClick={toggleInterestCalculator} 
+                id='toggleIntCalcBtn'
+                type='button'
+                // ARIA ATTRIBUTES:
+                aria-label={showIntCalc ? 'HIDE CALCULATOR':'SHOW INTEREST CALCULATOR'}
+                aria-pressed={showIntCalc}
+                aria-expanded={showIntCalc}
+                aria-controls='int-calculator-panal'
+                >{showIntCalc ? 'HIDE CALCULATOR':'SHOW INTEREST CALCULATOR'}</Button>
               </div>
               <div className="p-2" id='toggle-calc3-block'>
-                <Button variant='light' onClick={toggleCalculator} id='toggleCalcBtn'>CALCULATOR</Button>
+                <Button 
+                  variant='light' 
+                  onClick={toggleCalculator} 
+                  id='toggleCalcBtn'
+                  type='button'
+                  // ARIA ATTRIBUTES:
+                  aria-label={showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
+                  aria-pressed={showCalc}
+                  aria-expanded={showCalc}
+                  aria-controls='calculator-panal'
+                  >
+                    {showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
+                  </Button>
               </div>
             </Stack>
         </Col>
