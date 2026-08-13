@@ -1,0 +1,21 @@
+#calculatorSec1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #878787;
+}
+#toggleCalculatorRow{
+    display: flex;
+     margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#calculatorRow{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
