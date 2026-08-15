@@ -25,8 +25,14 @@ CurrencyList.js*/
     background-color: #C9D6E0;
     color: #323A42;
 }
-#currency-list-table tbody tr:nth-child(even){
+/* TABLE ROWS: STYLES.md 1.5. TABLES */
+#currency-list-table .evenRow{
+    color: #404040;
     background-color: #E8F0F6;
+}
+#currency-list-table .oddRow{
+    color: #404040;
+    background-color: #9BB1C7;
 }
 #currency-list-table tbody tr:hover{
     background-color: #C9D6E0;

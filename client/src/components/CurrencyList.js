@@ -18,8 +18,8 @@ export default function CurrencyList() {
             </thead>
             <tbody>
                 {/* MAP EACH CURRENCY WITH ITS NAME AND COUNTRY/S */}
-                {currencyCountries.map(({ code, name, countries }) => (
-                    <tr key={code}>
+                {currencyCountries.map(({ code, name, countries }, index) => (
+                    <tr key={code} className={index % 2 === 0 ? 'evenRow' : 'oddRow'}>
                         <th scope='row'>{code}</th>
                         <td>{name}</td>
                         <td>{countries.join(', ')}</td>
