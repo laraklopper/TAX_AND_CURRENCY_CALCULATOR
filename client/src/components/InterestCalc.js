@@ -127,7 +127,7 @@ export default function InterestCalc() {
                                             // ARIA ATTRIBUTES:
                                             aria-label='Reset interest calculator'
                                         >
-                                            RESET CALCULATOR
+                                            RESET
                                         </Button>
                                     </div>
                                 </Stack>
