@@ -31,9 +31,14 @@ export default function Profile({currentUser, logout}) {
         <Col xs={6}>
            <Stack gap={3}>
       <div className="p-2">
-        {/* Full Name */}
+        <div>
+          <span><p>FULL NAME</p></span>
+        </div>
       </div>
       <div className="p-2">
+      <div>
+        <span><p>DATE OF BIRTH</p></span>
+      </div>
         {/* Date of Birth */}
       </div>
     </Stack>
@@ -42,9 +47,18 @@ export default function Profile({currentUser, logout}) {
            <Stack gap={3}>
       <div className="p-2">
         {/* Email */}
+        <div>
+          <span><p>EMAIL:</p></span>
+        </div>
       </div>
       <div className="p-2">
         {/* Is admin */}
+        <div>
+        <span>
+          <p>ADMIN:</p>
+          {/* YES/NO */}
+        </span>
+        </div>
       </div>
     </Stack>
         </Col>
