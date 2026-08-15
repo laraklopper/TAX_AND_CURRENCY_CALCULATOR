@@ -116,7 +116,7 @@ submitConvert={submitConvert}
         <div id='currencies-display-panal'>
 <Row id='currencies-list-row'>
       
-        <Col xs={12} md={8} id='currencies-list-col'>
+        <Col md={12} id='currencies-list-col'>
           <div id='currency-list-display'>
             {/* CURRENCY LIST COMPONENT */}
             <CurrencyList />
