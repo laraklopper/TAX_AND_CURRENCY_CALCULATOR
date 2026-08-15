@@ -29,6 +29,13 @@ LAYOUT
     height: 100%;
     gap: 10px;
 }
+.toggle-div{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
 /* ========================= 
 Accessibility helpers 
  ARIA : Accessible Rich Internet Applications

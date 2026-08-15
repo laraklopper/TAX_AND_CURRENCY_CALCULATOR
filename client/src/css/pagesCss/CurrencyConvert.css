@@ -52,3 +52,54 @@ SECTION 2:
     gap: 5px;
     background-color: #6E6E6E;
 }
+/* ================
+LAYOUT
+============*/
+#currencies-display-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#toggle-currencies-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0pc;
+}
+#currencies-list-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#currencies-list-col{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+}
+#currencies-list-col1,
+#currencies-list-col2{
+    margin: 0px;
+    padding: 0px;
+}
+/* ===============
+ BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
+ =================*/
+#toggle-currencies-listbtn{
+     width: 280px;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    height: 40px;
+    font-family: "Courier Prime", monospace;
+    border: #323A42 solid;
+
+}
+#toggle-currencies-listbtn:hover{
+    background-color: #323A42;
+    color: #E8F0F6;
+}

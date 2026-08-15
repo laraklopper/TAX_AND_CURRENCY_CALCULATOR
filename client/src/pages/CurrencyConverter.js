@@ -3,6 +3,7 @@ import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/CurrencyConvert.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import CurrencyConvertForm from '../components/CurrencyConvertForm';
@@ -19,8 +20,13 @@ export default function CurrencyConverter({currentUser, logout}) {
     const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
-
     const [error, setError] = useState('');// Stores any error messages shown to the user
+    const [showCurrencies, setShowCurrencies] = useState(false)
+
+    const toggleCurrencyList = () =>{
+      setShowCurrencies((prev) => !prev)
+    }
+
 
     //===============
     const submitConvert = useCallback(async () => {//Define async function to convert currency
@@ -86,6 +92,37 @@ submitConvert={submitConvert}
         </Col>
         <Col id='currency-convert-col2'/>
       </Row>
+
+      </section>
+      <section id='currency-converter-sec2'>
+            <Row id='toggle-currencies-row'>
+        <Col id='toggle-currencies-col1'/>
+        <Col xs={5} id='toggle-currencies-col'>
+          <div className='toggle-div'>
+            <Button 
+              variant='light' 
+              id='toggle-currencies-listbtn' 
+              type='button'
+              onClick={toggleCurrencyList}
+              >
+              {showCurrencies ? 'Hide currencies list':'Show available currencies'}
+            </Button>
+          </div>
+        </Col>
+        <Col id='toggle-currencies-col2'/>
+      </Row>
+      {showCurrencies && (
+        <div id='currencies-display-panal'>
+<Row id='currencies-list-row'>
+      <Col xs={6} md={2} id='currencies-list-col1'/>
+        <Col xs={12} md={8} id='currencies-list-col'>
+          {/* CURRENCY LIST COMPONENT */}
+        </Col>
+        <Col xs={6} md={2} id='currencies-list-col2'/>
+      </Row>
+        </div>
+      )}
+      
 
       </section>
       <Footer logout={logout}/>
