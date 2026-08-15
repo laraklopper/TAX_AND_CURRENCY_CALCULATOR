@@ -1,5 +1,7 @@
+/* CurrencyConvert.css
+CurrencyConverter.js*/
 #currency-converter-sec1{
-        width: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,11 +29,26 @@ LAYOUT
     padding: 0px;
 }
 #currency-convert-col{
+    display: flex;
+    justify-content: center;
     margin: 0px;
-    padding: 0px;
+    padding: 5px 0px;
 }
 #currency-convert-col1,
 #currency-convert-col2{
     margin: 0px;
     padding: 0px;
+}
+/* ==================
+SECTION 2:
+===========*/
+#currency-converter-sec2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #6E6E6E;
 }

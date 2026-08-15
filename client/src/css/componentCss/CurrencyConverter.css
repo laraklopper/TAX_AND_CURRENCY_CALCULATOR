@@ -2,12 +2,26 @@
 CurrencyConverterForm.js
 */
 #currency-converter-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 370px;
     border: solid;
     padding: 10px;
     margin: 0px;
     border-radius: 8px;
     background-color: #A8AEB3;
+    gap: 10px;
+}
+/* =============================
+LAYOUT
+===================*/
+#converter-details-input{
+    display: flex;
+    background-color: #BFBFBF;
+  width: 80%;
+  margin: 0px;
+padding: 0px;
 }
 /* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
 #converterStack1{
@@ -27,7 +41,14 @@ CurrencyConverterForm.js
     margin: 0px;
     gap: 5px;
 }
-/* STACK 2 */
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
+#converterStack2{
+    width: 100%;
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
 #submit-converter-btn-block,
 #clearFormBtn-block,
 #converterResultBlock{
@@ -40,6 +61,13 @@ CurrencyConverterForm.js
 /* ====================
 TEXT
 ===================== */
+#converter-formheadingBlock{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 5px 0px;
+    width: 100%;
+}
 .converterLabel{
    font-family: "Courier Prime", monospace;
   font-weight: 700;
