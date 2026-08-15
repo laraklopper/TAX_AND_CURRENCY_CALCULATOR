@@ -8,6 +8,9 @@
     gap: 5px;
     background-color: #878787;
 }
+/* ============
+LAYOUT
+===========*/
 #calculators-div{
         display: flex;
     justify-content: center;
@@ -15,6 +18,8 @@
     padding: 5px;
     width: 100%;
 }
+/* BOOTSTRAP LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #toggleCalculatorRow{
     display: flex;
      margin: 0px;
@@ -36,18 +41,7 @@
     margin: 0px;
     padding: 0px;
 }
-#toggleCalculatorStack{
-    display: flex;
-    justify-content: center;
-}
-#toggle-calc1-block,
-#toggle-calc2-block,
-#toggle-calc3-block{
-    display: flex;
-    justify-content: center;
-    margin: 0px;
-    padding: 0px;
-}
+
 #calculatorCol{
     display: flex;
     justify-content: center;
@@ -56,6 +50,24 @@
 }
 #calculatorCol1,
 #calculatorCol2{
+    margin: 0px;
+    padding: 0px;
+}
+/* STACK */
+#toggleCalculatorStack{
+    display: flex;
+    justify-content: center;
+    background-color: #B6C6D4;
+    border-radius: 8px;
+    margin: 0px;
+    padding: 0px;
+
+}
+#toggle-calc1-block,
+#toggle-calc2-block,
+#toggle-calc3-block{
+    display: flex;
+    justify-content: center;
     margin: 0px;
     padding: 0px;
 }
@@ -110,7 +122,9 @@ LAYOUT
     font-weight: 700;
     font-size: 14px;
 }
-/* BUTTONS */
+/* ===============
+ BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
+ =================*/
 #toggleTaxCalcBtn,
 #toggleIntCalcBtn,
 #toggleCalcBtn{
@@ -125,4 +139,10 @@ LAYOUT
     font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: solid 2px #323A42;
+}
+#toggleTaxCalcBtn:hover,
+#toggleIntCalcBtn:hover,
+#toggleCalcBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
 }

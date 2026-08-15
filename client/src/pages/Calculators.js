@@ -40,7 +40,7 @@ export default function Calculators({currentUser, logout}) {
       <Row id='toggleCalculatorRow'>
         <Col id='toggleCalcCol1'/>
         <Col xs={5} id='toggleCalcCol'>
-             <Stack gap={3} id='toggleCalculatorStack'>
+             <Stack id='toggleCalculatorStack'>
               <div className="p-2" id='toggle-calc1-block'>
                 <Button 
                 variant='light' 

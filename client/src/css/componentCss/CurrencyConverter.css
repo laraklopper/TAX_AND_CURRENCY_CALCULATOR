@@ -1,3 +1,11 @@
+#currency-converter-form{
+    width: 370px;
+    border: solid;
+    padding: 10px;
+    margin: 0px;
+    border-radius: 8px;
+    background-color: #A8AEB3;
+}
 #converterStack1{
     width: 100%;
     display: flex;
@@ -22,12 +30,7 @@
   letter-spacing: 1px;
   padding: 0px;
 }
-#currency-converter-row{
-    display: flex;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
+
 #submitConvertBtn{
     width: 180px;
     margin: 0px;
