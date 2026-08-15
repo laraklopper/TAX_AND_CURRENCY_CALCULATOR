@@ -146,8 +146,13 @@ export default function CurrencyConvertForm(
                             CLEAR FORM
                         </Button>
       </div>
-      <div className="p-2" id='converterResultBlock'>
+      <div className="p-2" id='converterResultBlock' aria-live='polite'>
         {/* Only display the Result after form submission */}
+        {result && (
+            <p className='infoText'>
+                {result.amount} {result.from} = {Number(result.result).toFixed(2)} {result.to}
+            </p>
+        )}
       </div>
         {/* ========ERROR MESSAGE==================== */}
         {error && (
