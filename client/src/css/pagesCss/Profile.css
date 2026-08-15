@@ -22,11 +22,21 @@
     margin: 0px;
     padding: 0px;
 }
+#toggle-edit-user-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 #edit-user-row{
     width: 100%;
     margin: 0px;
     padding: 0px;
     display: flex;
+}
+#toggle-edit-user-col{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 #edit-user-stack{
     width: 100%;

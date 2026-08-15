@@ -50,8 +50,8 @@ export default function Profile({currentUser, logout}) {
         </Col>
       </Row>
       {/* EDIT USER AND EDIT PASSWORD FORMS */}
-       <Row id='edit-user-row'>
-          <Col>
+       <Row id='toggle-edit-user-row'>
+          <Col id='toggle-edit-user-col'>
             <Stack direction="horizontal" gap={3} id='edit-user-stack'>
       <div className="p-2"></div>
       <div className="p-2 ms-auto">
@@ -71,12 +71,20 @@ export default function Profile({currentUser, logout}) {
       <div>
         {showEditUser && (
           <div>
+            <Row id='edit-user-row'>
+        <Col>1 of 1</Col>
+      </Row>
+
 
           </div>
         )}
         {showEditPswd &&(
           <div>
-            
+ <Row id='edit-password-row'>
+        <Col></Col>
+        <Col xs={6}>2 of 3 (wider)</Col>
+        <Col></Col>
+      </Row>
           </div>
         )}
       </div>
