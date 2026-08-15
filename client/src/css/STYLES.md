@@ -34,7 +34,6 @@ html, #body{
     margin: 0px;
     padding: 0px;
     width: 100%;
-    background-color: #525252;
     background-color: #7A7A7A;
 }
 #section2{
@@ -42,7 +41,7 @@ html, #body{
   margin: 0px;
   padding: 0px;
   width: 100%;
-  background-color: #6E6E6E;
+  background-color: #C4C4C4;
 }
 ```
 ### NAVIGATION BAR
@@ -119,4 +118,18 @@ padding: 0px;
   letter-spacing: 1px;
   padding: 0px;
 }
+````
+
+### 1.5. TABLES
+
+```css
+.evenRow{
+  color: #404040;
+  background-color: #E8F0F6;
+}
+.oddRow{
+  color: #404040;
+  background-color: #9BB1C7;
+}
+
 ````
