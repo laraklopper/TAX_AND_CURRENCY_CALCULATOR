@@ -12,6 +12,8 @@ CurrencyList.js*/
     font-family: "Courier Prime", monospace;
     text-align: left;
     border-collapse: collapse;
+    border: solid 2px;
+    overflow-y: scroll;
 }
 #currency-list-table th,
 #currency-list-table td{
@@ -20,8 +22,8 @@ CurrencyList.js*/
 }
 #currency-list-table thead th{
     text-transform: uppercase;
-    background-color: #323A42;
-    color: #E8F0F6;
+    background-color: #C9D6E0;
+    color: #323A42;
 }
 #currency-list-table tbody tr:nth-child(even){
     background-color: #E8F0F6;
