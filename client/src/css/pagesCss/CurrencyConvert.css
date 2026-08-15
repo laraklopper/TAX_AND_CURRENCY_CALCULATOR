@@ -12,11 +12,11 @@
 LAYOUT
 ====*/
 #currency-converter-panal{
-    width: 100%;
+    width: 80%;
     display: flex;
     justify-content: center;
     margin: 0px;
-    padding: 0px;
+    padding: 10px 5px;
     background-color: #9E9E9E;
 }
 /* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
