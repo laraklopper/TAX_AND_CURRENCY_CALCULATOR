@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import CurrencyConvertForm from '../components/CurrencyConvertForm';
+import CurrencyList from '../components/CurrencyList';
 
 // Default values used when the form is first loaded or reset
 const EMPTY_FORM = {
@@ -117,6 +118,7 @@ submitConvert={submitConvert}
       <Col xs={6} md={2} id='currencies-list-col1'/>
         <Col xs={12} md={8} id='currencies-list-col'>
           {/* CURRENCY LIST COMPONENT */}
+          <CurrencyList />
         </Col>
         <Col xs={6} md={2} id='currencies-list-col2'/>
       </Row>

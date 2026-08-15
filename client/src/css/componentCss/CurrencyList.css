@@ -1,0 +1,31 @@
+/* CurrencyList.css
+CurrencyList.js*/
+#currency-list-block{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 0px;
+    overflow-x: auto;
+}
+#currency-list-table{
+    width: 100%;
+    margin: 0px;
+    font-family: "Courier Prime", monospace;
+    text-align: left;
+    border-collapse: collapse;
+}
+#currency-list-table th,
+#currency-list-table td{
+    padding: 8px 12px;
+    border: 1px solid #9E9E9E;
+}
+#currency-list-table thead th{
+    text-transform: uppercase;
+    background-color: #323A42;
+    color: #E8F0F6;
+}
+#currency-list-table tbody tr:nth-child(even){
+    background-color: #E8F0F6;
+}
+#currency-list-table tbody tr:hover{
+    background-color: #C9D6E0;
+}
