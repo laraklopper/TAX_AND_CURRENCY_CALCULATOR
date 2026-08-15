@@ -11,9 +11,9 @@ export default function CurrencyList() {
         <table id='currency-list-table' role='table' aria-label='Available currencies and the countries where they are used'>
             <thead>
                 <tr>
-                    <th scope='col'>CODE</th>
-                    <th scope='col'>CURRENCY</th>
-                    <th scope='col'>COUNTRY/S</th>
+                    <th scope='col' style={{textAlign: 'center'}}>CODE</th>
+                    <th scope='col' style={{textAlign: 'center'}}>CURRENCY</th>
+                    <th scope='col' style={{textAlign: 'center'}}>COUNTRY/S</th>
                 </tr>
             </thead>
             <tbody>
