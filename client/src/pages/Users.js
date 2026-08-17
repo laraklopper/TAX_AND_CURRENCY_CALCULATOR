@@ -13,7 +13,7 @@ export default function Users({currentUser, logout}) {
       <Header currentUser={currentUser} pageHeader={'ADMIN'}/>
         <section id='admin-section1'>
           {/* EDIT TAX DATA FORM */}
-          <Row id='toggle-tax-update-col'>
+          <Row id='toggle-tax-update-row'>
         <Col/>
         <Col xs={6} id='toggle-tax-formCol'>
           <div className='toggle-div'>
