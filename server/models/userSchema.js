@@ -109,4 +109,16 @@ const userSchema = new mongoose.Schema({
     toObject: {virtuals:true}
 });
 
+// Virtual field returning the address formatted as a single readable string
+userSchema.virtual('userAddress').get(function () {
+    return [
+        this.address?.line1,
+        this.address?.line2,
+        this.address?.city,
+        this.address?.province,
+    ]
+        .filter(Boolean)
+        .join(', ');
+});
+
 module.exports = mongoose.model('user', userSchema)
