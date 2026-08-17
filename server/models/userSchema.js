@@ -24,9 +24,9 @@ const userSchema = new mongoose.Schema({
             maxlength: [50, 'Last name cannot exceed 50 characters'],
         },
     },
-    // Field for user email (allow email address for any country)
+    // Field for user email (allow email for any country)
     // Required for user login
-    email:{
+        email:{
         type: String,
         required: [true, 'Email is required'],
         unique: true,
