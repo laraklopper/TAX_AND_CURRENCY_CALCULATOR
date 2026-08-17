@@ -30,18 +30,23 @@
   border-radius: 5px;
   padding: 5px;
   width: 180px;
-  font-family: "Courier Prime", monospace;
+  font-family: "Fira Sans", sans-serif;
   font-size: 16px;
   font-weight: 700;
 }
 .tax-form-label{
-    font-family: "Courier Prime", monospace;
-     text-align: center;
+    font-family: "Fira Sans", sans-serif;
+     
  font-weight: 700;
- font-size: 18px;
+ font-size: 16px;
+}
+.tax-checkbox-label{
+    font-family: "Fira Sans", sans-serif;
+    letter-spacing: 2px;
+
 }
 .formSectionHead{
-    font-family: "Courier Prime", monospace;
+    font-family: "Fira Sans", sans-serif;
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -53,9 +58,35 @@ LAYOUT
 ===============*/
 #tax-form-input-detail{
     width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+
 }
+/* Group 1 */
 #taxform-group1{
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
     width: 100%;
+}
+/* Group 2 */
+#taxform-group2{
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+    width: 100%;
+}
+.taxyearcheckbox-input{
+    display: flex;
+    gap: 10px;
+    justify-content: baseline;
+}
+#income-tax-bracket-list{
+    display: flex;
+    flex-direction: column;
 }
 /* BUTTONS */
 #submitTaxDataBtn{
