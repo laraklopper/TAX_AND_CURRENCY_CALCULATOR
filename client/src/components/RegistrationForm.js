@@ -74,6 +74,10 @@ export default function RegistrationForm({
     const cityEmpty = useMemo(
         () => !String(newUserData.address?.city || '').trim(), [newUserData.address?.city]
     );
+    // Checks if province is empty
+    const provinceEmpty = useMemo(
+        () => !String(newUserData.address?.province || '').trim(), [newUserData.address?.province]
+    );
     //========== AGE VALIDATION ====================
     // Checks whether the selected date of birth makes the user too young
     const dateOfBirthTooYoung = useMemo(() => {
@@ -107,6 +111,8 @@ export default function RegistrationForm({
     const showLine1Error = touched.line1 && line1Empty;
     // Show city/town error only if the field was touched and is empty
     const showCityError = touched.city && cityEmpty;
+    // Show province error only if the field was touched and is empty
+    const showProvinceError = touched.province && provinceEmpty;
 
     //=========== EVENT LISTENERS=========================
     const handleRegistration = (e) => {
@@ -130,6 +136,7 @@ export default function RegistrationForm({
             dateOfBirthTooYoung ||
             line1Empty ||
             cityEmpty ||
+            provinceEmpty ||
             passwordEmpty;
         if (hasErrors) return; // Block submission until all fields are valid
         console.log('[INFO: RegistrationForm.js]: Registering new user')
@@ -205,6 +212,7 @@ export default function RegistrationForm({
     const dateOfBirthAgeErrorId = 'registrationDateOfBirthAgeError'; // ID used for date of birth age error
     const line1ErrorId = 'registrationLine1Error'; // ID used for street address error message
     const cityErrorId = 'registrationCityError'; // ID used for city/town error message
+    const provinceErrorId = 'registrationProvinceError'; // ID used for province error message
 
     // ===========JSX RENDERING==============
     return (
@@ -451,7 +459,7 @@ export default function RegistrationForm({
 )}
         </div>
         <div className='address-input-div'>
-            <label className='regis-label' id='selectRegisProvince'>PROVINCE:</label>
+            <label className='regis-label' htmlFor='selectRegisProvince'>PROVINCE:</label>
             <select
             className='input'
             id='selectRegisProvince'
@@ -463,6 +471,8 @@ export default function RegistrationForm({
             // ARIA ATTRIBUTES:
             aria-label='Province Select'
             aria-required='true'
+            aria-invalid={provinceEmpty ? 'true' : 'false'}
+            aria-describedby={showProvinceError ? provinceErrorId : null}
             >
             <option value=''>SELECT</option>
             {provinces.map(p => (
@@ -471,6 +481,9 @@ export default function RegistrationForm({
 
             </select>
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+            {showProvinceError && (
+                <p id={provinceErrorId} className="visually-hidden" role="alert">Province is required.</p>
+            )}
         </div>
       </div>
       <div className="p-2">
