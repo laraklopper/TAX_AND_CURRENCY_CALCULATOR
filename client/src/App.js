@@ -13,7 +13,7 @@ import CurrencyConverter from './pages/CurrencyConverter'
 import Login from './pages/Login';
 import Registration from './pages/Registration'
 import Profile from './pages/Profile'
-import Users from './pages/Users'
+import TaxData from './pages/TaxData';
 import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute';
 export default function App() {
@@ -91,9 +91,9 @@ export default function App() {
                   <Profile currentUser={currentUser} setError={setError} logout={logout}/>
                 </ProtectedUserRoute>
               }/>
-              <Route path='/users' element={
+              <Route path='/taxes' element={
                 <ProtectedAdminRoute currentUser={currentUser}>
-                  <Users currentUser={currentUser} logout={logout}/>
+                <TaxData currentUser={currentUser} logout={logout}/>
                 </ProtectedAdminRoute>
               }/>
             </>
