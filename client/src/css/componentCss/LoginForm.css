@@ -39,7 +39,30 @@ background-color: #BFBFBF;
     padding: 0px;
     margin: 0px;
 }
-
+.loginHelpMessage{
+    display: flex;
+    justify-content: center;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.loginErrorMessage{
+    display: flex;
+    justify-content: center;
+    font-family: "Noto Serif", serif;
+    font-weight: 700;
+    margin: 0px;
+    align-items: center;
+    gap: 2px;
+    font-size: 14px;
+    padding: 0px 0px 5px 0px;
+    text-align: center;
+    text-transform: uppercase;
+}
 /* BUTTON */
 #loginBtn{
     display: flex;
