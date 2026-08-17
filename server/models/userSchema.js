@@ -43,6 +43,39 @@ const userSchema = new mongoose.Schema({
             message: 'Date of birth must be in the past'// Error message shown when validation fails
         }
     },
+    //===========NESTED ADDRESS OBJECT=========
+    address: {
+        //Street
+        line1:{
+            type: String,
+            trim: true,
+            required: [true, 'Street address is required'],
+            minlength: [2, 'Address line 1 must be at least 2 characters long'],
+            maxlength: [100, 'Address line 1 cannot exceed 100 characters'],
+        },
+        // Complex/building/floor/etc. (optional)
+        line2:{
+            type: String,
+            trim: true,
+            minlength: [2, 'Line 2 must be at least 2 characters long'],
+            maxlength: [100, 'Line 2 cannot exceed 100 characters'],
+        },
+        //Field for city or town
+        city: {
+            type: String,
+            required: [true, 'City or town name is required'],
+            trim: true,
+            minlength: [2, 'City or town name must be at least 2 characters long'],
+            maxlength: [50, 'City or town name cannot exceed 50 characters']
+        },
+        //Field for province or region
+        province: {
+            type: String,
+            trim: true,
+            minlength: [2, 'Province or region name must be at least 2 characters long'],
+            maxlength: [50, 'Province or region name cannot exceed 50 characters']
+        },
+    },
     // Field for Password (required for login)
     // Password hashing is done in registration request middleware (not used during dev)
     password: {
