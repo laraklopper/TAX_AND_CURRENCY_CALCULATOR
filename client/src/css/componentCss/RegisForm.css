@@ -126,7 +126,7 @@ gap: 10px;
 #regis-address-block2{
     display: flex;
     justify-content: center;
-    align-items: baseline;
+    align-items: center;
     gap: 15px;
 }
 /* GROUP 4: Admin + Password*/

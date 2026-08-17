@@ -1,12 +1,19 @@
+// RegistrationForm.js
 import React, { useMemo, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/RegisForm.css'
 import '../css/componentCss/FormSetup.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+//IMPORT ICONS FROM LUCIDE-REACT
 import { Asterisk } from 'lucide-react';
 import { Eye, EyeOff, MapPin  } from 'lucide-react';
 import {provinces} from '../dataArrays/locations'
-export default function RegistrationForm({
+
+//RegistrationForm Function component
+export default function RegistrationForm(
+    {//PROPS PASSED FROM PARENT COMPONENT
     newUserData,
     setNewUserData,
     addUser
@@ -257,7 +264,7 @@ export default function RegistrationForm({
                                         aria-invalid={firstNameEmpty ? 'true' : 'false'}
                                         aria-describedby={showFirstNameError ? firstNameErrorId : null}
                                     />
-                                    <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+                                    <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                                 </div>
                                 {/* LAST NAME: required*/}
                                 <div className='input-div'>
@@ -299,7 +306,7 @@ export default function RegistrationForm({
                 </div>
                 {/* GROUP 2: Email + Date of Birth */}
                 <div id='regis-group2'>
-                    {/* STACK 2: Email  */}
+                    {/* STACK 2: EMAIL  */}
                     <Stack direction="horizontal" gap={3} id='regis-stack2'>
                         <div className="p-2" id='regis-email-block'>
                             {/* EMAIL: value={newUserData.email} */}
@@ -386,7 +393,7 @@ export default function RegistrationForm({
                         <div className="p-2"><p className='infoText' id={dateOfBirthAgeHintId}>USERS MUST BE AT LEAST {minAge} YEARS OLD</p></div>
                     </Stack>
                 </div>
-                {/* GROUP 3:  */}
+                {/* GROUP 3: ADDRESS  */}
                 <div id='regis-group3'>
                     <div id='regis-address-head'>   
                         <span><h4 id='regisAddressHeading'>ADDRESS</h4><MapPin /></span>
@@ -394,6 +401,7 @@ export default function RegistrationForm({
                           
                           <Stack gap={3} id='regis-address-stack'>
       <div className="p-2" id='regis-streetaddress-block'>
+      {/* STREET ADDRESS: ADDRESS LINE 1 */}
         <div className='input-div'>
             <label className='regis-label' htmlFor='regisLine1Input'>STREET:</label>
             <textarea
@@ -401,6 +409,7 @@ export default function RegistrationForm({
                 className='text-input'
                 rows={2}
                 required
+                placeholder='STREET ADDRESS'
                 id='regisLine1Input'
                 name='address.line1'
                 value={newUserData.address.line1}
@@ -412,13 +421,14 @@ export default function RegistrationForm({
                 aria-invalid={line1Empty ? 'true' : 'false'}
                 aria-describedby={showLine1Error ? line1ErrorId : null}
             />
-            <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
         </div>
+        {/* Error */}
         {showLine1Error && (
             <p id={line1ErrorId} className="visually-hidden" role="alert">Street address is required.</p>
         )}
         <div className='input-div'>
-        {/* optional */}
+        {/* OPTIONAL ADDRESS LINE 2 */}
             <label className='regis-label' htmlFor='addressLine2' hidden>LINE 2:</label>
             <textarea
                 className='text-input'
@@ -435,6 +445,7 @@ export default function RegistrationForm({
         </div>
         </div>
       <div className="p-2" id='regis-address-block2'>
+      {/* CITY/TOWN */}
         <div className='address-input-div'>
 <label className='regis-label' htmlFor='regisCityTownInput'>CITY/TOWN:</label>
 <input
@@ -454,10 +465,12 @@ export default function RegistrationForm({
     aria-describedby={showCityError ? cityErrorId : null}
 />
 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+{/* Error */}
 {showCityError && (
     <p id={cityErrorId} className="visually-hidden" role="alert">City or town is required.</p>
 )}
         </div>
+        {/* PROVINCE SELECT */}
         <div className='address-input-div'>
             <label className='regis-label' htmlFor='selectRegisProvince'>PROVINCE:</label>
             <select
@@ -478,16 +491,12 @@ export default function RegistrationForm({
             {provinces.map(p => (
                 <option key={p} value={p}>{p}</option>
             ))}
-
             </select>
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+            {/* Error */}
             {showProvinceError && (
                 <p id={provinceErrorId} className="visually-hidden" role="alert">Province is required.</p>
             )}
-        </div>
-      </div>
-      <div className="p-2">
-        <div>
         </div>
       </div>
     </Stack>  
@@ -545,7 +554,7 @@ export default function RegistrationForm({
                                     aria-invalid={passwordEmpty ? 'true' : 'false'}
                                     aria-describedby={showPasswordError ? passwordErrorId : passwordHelpId}
                                 />
-                                <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                             </div>
                             {/* ERROR MESSAGE */}
                             {showPasswordError && (
@@ -594,7 +603,7 @@ export default function RegistrationForm({
                 <Stack direction="horizontal" gap={3} id='regis-stack6'>
                     <div className="p-2" id='requiredInfo'>
                         <p className='infoText' aria-live='polite' aria-hidden='true'>
-                            <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /> Indicates required information</small>
+                            <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
                         </p>
                     </div>
                     <div className="p-2 ms-auto">
