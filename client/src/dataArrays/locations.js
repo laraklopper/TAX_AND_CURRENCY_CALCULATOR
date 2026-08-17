@@ -1,4 +1,4 @@
-export const southAfricanProvinces = [
+export const provinces = [
   "Eastern Cape",
   "Free State",
   "Gauteng",
