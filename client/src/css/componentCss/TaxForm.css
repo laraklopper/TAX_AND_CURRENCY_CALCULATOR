@@ -14,7 +14,6 @@
     align-items: center;
     background-color: inherit;
    width: 100%;
-   justify-content: center;
    flex-direction: column;
 }
 .tax-input-div{
@@ -36,19 +35,23 @@
 }
 .tax-form-label{
     font-family: "Fira Sans", sans-serif;
-     
+     text-transform: uppercase;
  font-weight: 700;
  font-size: 16px;
+ letter-spacing: 2px;
 }
 .tax-checkbox-label{
     font-family: "Fira Sans", sans-serif;
     letter-spacing: 2px;
+    font-size: 14px;
 
 }
 .formSectionHead{
     font-family: "Fira Sans", sans-serif;
     text-transform: uppercase;
     font-weight: 700;
+    letter-spacing: 2px;
+    text-decoration: underline;
 }
 .formHeader{
     text-align: center;
@@ -56,12 +59,13 @@
 /* =====================
 LAYOUT
 ===============*/
-#tax-form-input-detail{
+#tax-form-details-input{
     width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0px;
+    gap: 10px;
     padding: 0px;
 
 }
@@ -71,6 +75,25 @@ LAYOUT
     background: #D6D6D6;
     border-radius: 8px;
     width: 100%;
+    margin: 0px;
+    padding: 10px;
+}
+#tax-year-block1{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+#tax-year-block2{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0px;
+}
+#tax-year-block3{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0px;
 }
 /* Group 2 */
 #taxform-group2{
@@ -78,8 +101,44 @@ LAYOUT
     background: #D6D6D6;
     border-radius: 8px;
     width: 100%;
+    margin: 0px;
+    padding: 10px;
 }
-.taxyearcheckbox-input{
+#bracket-data{
+        display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+}
+/* Group 3 */
+#taxform-group3{
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+    width: 100%;
+    gap: 10px;
+    padding: 10px;
+}
+/* Group 4 */
+#taxform-group4{
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+}
+/* Group 5 */
+#taxform-group5{
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#taxyearcheckbox-input{
     display: flex;
     gap: 10px;
     justify-content: baseline;
@@ -88,10 +147,31 @@ LAYOUT
     display: flex;
     flex-direction: column;
 }
+#delete-bracket-div{
+        display: flex;
+    justify-content: flex-end;
+    margin: 0px;
+    padding: 0px;
+}
 /* BUTTONS */
 #submitTaxDataBtn{
     display: flex;
+    
     align-items: center;
     gap: 5px;
+    font-weight: 700;
+    color: #000;
+}
+#addIncomeTaxBracket{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 600;
+}
+#removeBracketBtn{
+    width: 40px;
+    height: 40px;
     font-weight: 700;
 }

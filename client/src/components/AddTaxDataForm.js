@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import '../css/componentCss/TaxForm.css'
+import '../css/componentCss/FormSetup.css'
+import Stack from 'react-bootstrap/Stack';
+import Button from 'react-bootstrap/Button';
 import { Plus, Trash2, Save, RotateCcw, CheckCircle2, AlertCircle } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -210,20 +214,20 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
   const inputOk = "border-gray-300";
   const inputErr = "border-red-400 bg-red-50";
   const fieldCls = (key) => `${inputBase} ${errors[key] ? inputErr : inputOk}`;
-  const label = "block text-xs font-medium text-gray-600 mb-1";
+  // const label = "block text-xs font-medium text-gray-600 mb-1";
   const errText = "mt-1 text-xs text-red-600";
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white">
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold text-gray-900">
+    <div id="tax-form-block">
+      <div id="formHeadingBlock">
+        <h3 id="formHeading">
           {isEditMode ? "Update Tax Year Configuration" : "Add Tax Year Configuration"}
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        </h3>
+        {/* <p >
           Defines the SARS brackets, rebates, and thresholds used by the tax
           calculator for a given tax year. New Budget Speech figures should
           be added here as a new tax year, not hardcoded in the calculator.
-        </p>
+        </p> */}
       </div>
 
       {status === "success" && (
@@ -239,77 +243,96 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit} noValidate id="add-tax-data-form">
+      <div id="tax-form-details-input">
         {/* --- Tax year identity ------------------------------------- */}
-        <section className="mb-8">
-          <h2 className="text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wide">
-            Tax Year
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className={label}>Tax year label</label>
+      <div id="taxform-group1">
+ <h5 className="formSectionHead">Tax Year</h5>
+  <Stack  gap={3}>
+      <div className="p-2" id="tax-year-block1">
+          <label  className="tax-form-label">Tax year label</label>
               <input
                 type="text"
                 placeholder="2025-2026"
-                className={fieldCls("taxYear")}
+                className="taxdata-input"
+                // className={fieldCls("taxYear")}
                 value={form.taxYear}
                 disabled={isEditMode}
                 onChange={(e) => updateField("taxYear", e.target.value)}
+                // ARIA ATTRIBUTES: 
+                aria-disabled={isEditMode}
               />
               {errors.taxYear && <p className={errText}>{errors.taxYear}</p>}
-            </div>
-            <div>
-              <label className={label}>Start date</label>
+      </div>
+      <div className="p-2" id="tax-year-block2">
+            <label className='tax-form-label'>Start date:</label>
               <input
                 type="date"
-                className={fieldCls("startDate")}
+                // className={fieldCls("startDate")}
+                className="taxdata-input"
                 value={form.startDate}
                 onChange={(e) => updateField("startDate", e.target.value)}
               />
               {errors.startDate && <p className={errText}>{errors.startDate}</p>}
-            </div>
-            <div>
-              <label className={label}>End date</label>
+      </div>
+      <div className="p-2" id="tax-year-block3">
+           <label 
+              className="tax-form-label"
+              >End date</label>
               <input
                 type="date"
-                className={fieldCls("endDate")}
+                // className={fieldCls("endDate")}
+                className="taxdata-input"
                 value={form.endDate}
                 onChange={(e) => updateField("endDate", e.target.value)}
               />
               {errors.endDate && <p className={errText}>{errors.endDate}</p>}
-            </div>
-          </div>
-
-          <label className="mt-4 inline-flex items-center gap-2 text-sm text-gray-700">
+      </div>
+      <div>
+        
+      </div>
+    </Stack>
+       <Stack direction="horizontal" gap={3}>
+      <div className="p-2" id="taxyearcheckbox-input">
             <input
               type="checkbox"
               className="rounded border-gray-300"
               checked={form.isActive}
               onChange={(e) => updateField("isActive", e.target.checked)}
             />
-            Set as the active tax year (used by default in calculations)
+             <label className="tax-checkbox-label"> Set as the active tax year (used by default in calculations)
           </label>
-        </section>
-
+           </div>
+      <div className="p-2"></div>
+      <div className="p-2"></div>
+    </Stack>
+          
+      </div>
         {/* --- Brackets ------------------------------------------------ */}
-        <section className="mb-8">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wide">
-              Income Tax Brackets
-            </h2>
-            <button
-              type="button"
+      <div id="taxform-group2">
+ 
+    <Stack direction="horizontal" gap={3}>
+      <div className="p-2"><h5 className="formSectionHead">Income Tax Brackets</h5></div>
+      <div className="p-2 ms-auto">Second item</div>
+      <div className="p-2">
+        <Button
+        type="button"
               onClick={addBracket}
-              className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
-            >
-              <Plus size={16} /> Add bracket
-            </button>
-          </div>
+              variant="secondary"
+              id="addIncomeTaxBracket"
+        >
+<Plus size={16} /> Add bracket
+        </Button>
+      </div>
+    </Stack>
+ 
+       
+        
 
           {errors.brackets && <p className={errText}>{errors.brackets}</p>}
 
-          <div className="space-y-3">
-            <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_1fr_auto] gap-3 text-xs font-medium text-gray-500 px-1">
+          <div id="bracket-data">
+            <div>
               <span>Min (R)</span>
               <span>Max (R) — blank = no ceiling</span>
               <span>Base amount (R)</span>
@@ -320,8 +343,9 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
             {form.brackets.map((b, i) => (
               <div
                 key={i}
-                className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_1fr_auto] gap-3 items-start bg-gray-50 rounded-md p-3 border border-gray-200"
+                id="form-bracket-layout"
               >
+              <div id="bracket-input">
                 <div>
                   <input
                     type="number"
@@ -371,25 +395,27 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                     <p className={errText}>{errors[`bracket-${i}-rate`]}</p>
                   )}
                 </div>
-                <button
+              </div> 
+              <div id="delete-bracket-div">
+                <Button
                   type="button"
                   onClick={() => removeBracket(i)}
                   disabled={form.brackets.length === 1}
                   className="self-center text-gray-400 hover:text-red-600 disabled:opacity-30 disabled:hover:text-gray-400 p-2"
                   title="Remove bracket"
+                  size="sm"
+                  id="removeBracketBtn"
                 >
                   <Trash2 size={16} />
-                </button>
+                </Button>
+                </div>
               </div>
             ))}
           </div>
-        </section>
-
+      </div>
         {/* --- Rebates ------------------------------------------------- */}
-        <section className="mb-8">
-          <h2 className="text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wide">
-            Rebates (annual, R)
-          </h2>
+        <div id="taxform-group3">
+          <h5>Rebates (annual, R)</h5>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               ["primary", "Primary (all taxpayers)"],
@@ -397,7 +423,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               ["tertiary", "Tertiary (age 75+)"],
             ].map(([key, text]) => (
               <div key={key}>
-                <label className={label}>{text}</label>
+                <label className="tax-form-label">{text}</label>
                 <input
                   type="number"
                   className={fieldCls(`rebate-${key}`)}
@@ -410,13 +436,10 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               </div>
             ))}
           </div>
-        </section>
-
+        </div>
         {/* --- Thresholds ------------------------------------------------- */}
-        <section className="mb-8">
-          <h2 className="text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wide">
-            Tax Thresholds (R)
-          </h2>
+        <div id="taxform-group4">
+          <h5 className="formSectionHead">Tax Thresholds (R)</h5>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               ["under65", "Under 65"],
@@ -424,7 +447,9 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               ["age75plus", "75 and older"],
             ].map(([key, text]) => (
               <div key={key}>
-                <label className={label}>{text}</label>
+                <label 
+                className="tax-form-label"
+                >{text}</label>
                 <input
                   type="number"
                   className={fieldCls(`threshold-${key}`)}
@@ -437,14 +462,18 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               </div>
             ))}
           </div>
-        </section>
-
+        </div>
+</div>
         {/* --- Actions ------------------------------------------------- */}
-        <div className="flex items-center gap-3 pt-2 border-t border-gray-200">
-          <button
+        <div id="taxform-group5">
+        <Stack direction="horizontal" gap={3}>
+      <div className="p-2"></div>
+      <div className="p-2 ms-auto">
+           <Button
+          variant="light"
             type="submit"
             disabled={status === "saving"}
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-md"
+           id="submitTaxDataBtn"
           >
             <Save size={16} />
             {status === "saving"
@@ -452,14 +481,20 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               : isEditMode
               ? "Update tax year"
               : "Create tax year"}
-          </button>
-          <button
-            type="button"
+          </Button>
+      </div>
+      <div className="p-2"><Button
+          variant="danger"
+          type="button"
             onClick={resetForm}
-            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 px-3 py-2"
+            id="clearFormBtn"
           >
             <RotateCcw size={16} /> Reset
-          </button>
+          </Button></div>
+    </Stack>
+       
+       
+          
         </div>
       </form>
     </div>
