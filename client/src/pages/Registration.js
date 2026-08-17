@@ -17,6 +17,12 @@ export default function Registration({setError}) {
     },
     email: '',
     dateOfBirth: '',
+    address: {
+      street: '',
+      line2:'',
+      city: '',
+      province: '',
+    },
     admin: false,
     password: '',
   })
@@ -36,7 +42,7 @@ export default function Registration({setError}) {
           fullName: newUserData.fullName,
           email: newUserData.email,
           dateOfBirth: newUserData.dateOfBirth,
-          preferences: newUserData.preferences,
+          address: newUserData.address,
           admin: newUserData.admin,
           password: newUserData.password
         })

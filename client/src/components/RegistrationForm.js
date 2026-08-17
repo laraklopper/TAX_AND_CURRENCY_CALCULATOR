@@ -5,7 +5,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
 import { Eye, EyeOff, MapPin  } from 'lucide-react';
-
+import {provinces} from '../dataArrays/locations'
 export default function RegistrationForm({
     newUserData,
     setNewUserData,
@@ -21,6 +21,9 @@ export default function RegistrationForm({
         lastName: false,     // Tracks if last name field was touched
         email: false,        // Tracks if email field was touched
         dateOfBirth: false,  // Tracks if date of birth field was touched
+        street: false,
+        city: false,
+        province:false,
         password: false,     // Tracks if password field was touched
     })
 
@@ -223,7 +226,7 @@ export default function RegistrationForm({
                                         aria-invalid={firstNameEmpty ? 'true' : 'false'}
                                         aria-describedby={showFirstNameError ? firstNameErrorId : null}
                                     />
-                                    <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                    <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
                                 </div>
                                 {/* LAST NAME: required*/}
                                 <div className='input-div'>
@@ -248,7 +251,7 @@ export default function RegistrationForm({
                                         aria-invalid={lastNameEmpty ? 'true' : 'false'}
                                         aria-describedby={showLastNameError ? lastNameErrorId : null}
                                     />
-                                    <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                    <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
                                 </div>
                             </div>
                             {/* ERROR MESSAGES: first and last Name */}
@@ -292,7 +295,7 @@ export default function RegistrationForm({
                                         aria-describedby={showEmailError ? emailErrorId : null}
                                     />
                                 </div>
-                                <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
                             </div>
                         </div>
                         {/* Error message */}
@@ -331,7 +334,7 @@ export default function RegistrationForm({
                                     aria-invalid={(dateOfBirthEmpty || dateOfBirthTooYoung) ? 'true' : 'false'}
                                     aria-describedby={showDateOfBirthAgeError ? dateOfBirthAgeErrorId : dateOfBirthAgeHintId}
                                 />
-                                <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
                             </div>
                             {/* Error message */}
                             {showDateOfBirthError && (
@@ -383,14 +386,20 @@ export default function RegistrationForm({
 <input
     className='input'
 />
+<small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
         <div className='address-input-div'>
             <label className='regis-label'>PROVINCE:</label>
             <select
             className='input'
             >
+            <option value=''>SELECT</option>
+            {provinces.map(p => (
+                <option key={p} value={p}>{p}</option>
+            ))}
 
             </select>
+            <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
         
       </div>
