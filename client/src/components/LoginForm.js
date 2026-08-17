@@ -12,7 +12,7 @@ export default function LoginForm({ userData, setUserData, submitLogin }) {
     const [passwordMsg, setPasswordMsg] = useState(false)
     const [showEmailMsg, setShowEmailMsg] = useState(false)
     const [touched, setTouched] = useState({ // State to track if fields have been touched for validation purposes
-        username: false,
+        email: false,
         password: false
     })
 
@@ -25,7 +25,7 @@ export default function LoginForm({ userData, setUserData, submitLogin }) {
         [userData.password] // Recalculate only when the password value changes
     )
     // Only show validation errors AFTER field was touched
-    const showEmailError = touched.username && emailEmpty; // Show email error only after field was touched
+    const showEmailError = touched.email && emailEmpty; // Show email error only after field was touched
     const showPasswordError = touched.password && passwordEmpty; // Show password error only after field was touched
 
     //Function to handle Input change in the Login Form
@@ -52,7 +52,7 @@ export default function LoginForm({ userData, setUserData, submitLogin }) {
     const handleLogin = (e) => {
         e.preventDefault(); //Prevent default form submission
         // Mark both fields as touched so validation errors show if the user submits blank
-        setTouched({ username: true, password: true });
+        setTouched({ email: true, password: true });
         if (emailEmpty || passwordEmpty) return; // Block submission until both fields are filled in
         submitLogin(); // Call the submitLogin function passed as a prop from the parent component (Login.js)
     }
