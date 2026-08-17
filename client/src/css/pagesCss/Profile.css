@@ -33,6 +33,12 @@
     padding: 0px;
     display: flex;
 }
+#edit-password-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
 #toggle-edit-user-col{
     width: 100%;
     margin: 0px;

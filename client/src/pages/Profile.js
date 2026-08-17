@@ -7,8 +7,10 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import EditPasswordForm from '../components/EditPasswordForm';
+import EditUserForm from '../components/EditUserForm';
 
-export default function Profile({currentUser, logout}) {
+export default function Profile({currentUser, logout, setError}) {
   const [showEditUser, setShowEditUser] = useState(false)
   const [showEditPswd, setShowEditPswd] = useState(false)
 
@@ -70,7 +72,15 @@ export default function Profile({currentUser, logout}) {
       <div className="p-2"></div>
       <div className="p-2 ms-auto">
         {/* TOGGLE EDIT USER BUTTON */}
-        <Button variant='light' id='toggleEditUserBtn' onClick={toggleEditUserForm}>EDIT DETAILS</Button>
+        <Button 
+        variant='light' 
+        id='toggleEditUserBtn' 
+        onClick={toggleEditUserForm}
+        // aria-label=''
+        aria-pressed={showEditUser}
+        aria-expanded={showEditUser}
+        aria-controls='edit-user-panal'
+        >EDIT DETAILS</Button>
       </div>
       <div className="vr" style={{width: '2px', color: '#404040', opacity: '.75'}}/>
       <div className="p-2">
@@ -84,19 +94,27 @@ export default function Profile({currentUser, logout}) {
       {/* EDIT PROFILE and EDIT PASSWORD FORM */}
       <div>
         {showEditUser && (
-          <div>
+          <div id='edit-user-panal'>
             <Row id='edit-user-row'>
-        <Col>1 of 1</Col>
+        <Col>
+          <EditUserForm/>
+        </Col>
       </Row>
 
 
           </div>
         )}
         {showEditPswd &&(
-          <div>
+          <div id='edit-password-panal'>
  <Row id='edit-password-row'>
         <Col></Col>
-        <Col xs={6}>2 of 3 (wider)</Col>
+        <Col xs={6}>
+          <div id='edit-password-block'>
+            <EditPasswordForm
+              setError={setError}
+            />
+          </div>
+        </Col>
         <Col></Col>
       </Row>
           </div>
