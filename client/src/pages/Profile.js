@@ -92,7 +92,7 @@ export default function Profile({currentUser, logout, setError}) {
         </Row>
       </div>
       {/* EDIT PROFILE and EDIT PASSWORD FORM */}
-      <div>
+      
         {showEditUser && (
           <div id='edit-user-panal'>
             <Row id='edit-user-row'>
@@ -107,19 +107,19 @@ export default function Profile({currentUser, logout, setError}) {
         {showEditPswd &&(
           <div id='edit-password-panal'>
  <Row id='edit-password-row'>
-        <Col></Col>
-        <Col xs={6}>
+        <Col id='edit-password-col1'></Col>
+        <Col xs={6} id='edit-password-col'>
           <div id='edit-password-block'>
             <EditPasswordForm
               setError={setError}
             />
           </div>
         </Col>
-        <Col></Col>
+        <Col id='edit-password-col2'></Col>
       </Row>
           </div>
         )}
-      </div>
+     
       </section>
       <Footer logout={logout}/>
     </div>

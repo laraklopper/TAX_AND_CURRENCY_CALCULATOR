@@ -16,7 +16,27 @@
     flex-direction: column;
     align-items: center;
 }
-
+#edit-password-panal{
+    width: 100%;
+}
+#edit-password-col{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#edit-password-col1,
+#edit-password-col2{
+    margin: 0px;
+    padding: 0px;
+}
+#edit-password-block{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 5px;
+    width: 100%;
+}
 #user-profileRow{
     width: 100%;
     margin: 0px;
