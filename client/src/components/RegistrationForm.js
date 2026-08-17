@@ -357,24 +357,37 @@ export default function RegistrationForm({
                 </div>
                 {/* GROUP 3:  */}
                 <div id='regis-group3'>
-                    <div id='regis-address-head'>   <span><h4 id='regisAddressHeading'>ADDRESS</h4><MapPin /></span></div>
+                    <div id='regis-address-head'>   
+                        <span><h4 id='regisAddressHeading'>ADDRESS</h4><MapPin /></span>
+                    </div>
                           
                           <Stack gap={3} id='regis-address-stack'>
       <div className="p-2" id='regis-streetaddress-block'>
         <div className='input-div'>
             <label className='regis-label'>STREET:</label>
             <textarea
+                type= 'text'
                 className='text-input'
                 rows={2}
+                required
+                name='address.street'
+                value={newUserData.address.street}
+                onChange={handleInputChange}
+                // ARIA ATTRIBUTES:
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
         <div className='input-div'>
+        {/* optional */}
             <label className='regis-label' htmlFor='addressLine2' hidden>LINE 2:</label>
             <textarea
                 className='text-input'
                 rows={2}
                 id='addressLine2'
+                // name=''
+                // value={}
+                // onChange={}
+                // ARIA ATTRIBUTES:
             />
         </div>      
         </div>
@@ -382,16 +395,30 @@ export default function RegistrationForm({
       {/* <div className="p-2">ERROR</div> */}
       <div className="p-2" id='regis-address-block2'>
         <div className='address-input-div'>
-<label className='regis-label'>CITY/TOWN:</label>
+<label className='regis-label' htmlFor='regisCityTownInput'>CITY/TOWN:</label>
 <input
+    type='text'
     className='input'
+    required
+    id='regisCityTownInput'
+    // name=''
+    // value={}
+    onChange={handleInputChange}
+
+
 />
 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
         <div className='address-input-div'>
-            <label className='regis-label'>PROVINCE:</label>
+            <label className='regis-label' id='selectRegisProvince'>PROVINCE:</label>
             <select
             className='input'
+            id='selectRegisProvince'
+            required
+            name='address.province'
+            value={newUserData.address.province}
+            onChange={handleInputChange}
+            // ARIA ATTRIBUTES:
             >
             <option value=''>SELECT</option>
             {provinces.map(p => (
