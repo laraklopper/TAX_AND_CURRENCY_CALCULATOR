@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import '../css/componentCss/EditUserForms.css'
 import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
@@ -11,8 +11,103 @@ export default function EditPasswordForm({setError}) {
     const [showNewPswd, setShowNewPswd] = useState(false)
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    const isStrongPassword = useCallback((pwd) => {
+        //Regex pattern to check for at least 8 characters and one special character
+        return /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/ 
+            .test(
+                String(pwd || '')// Ensure pwd is a string before testing
+            );
+    },[])
+
+    const resetForm = useCallback(() => {
+        const confirmReset = window.confirm(
+            "Are you sure you want to clear the form?"
+        )
+        if (!confirmReset) return;// If user cancels, exit the function
+        setCurrentPassword('');// Clear the current password field
+        setNewPassword('')// Clear the new password field
+        setError?.(null)// Clear any existing error messages
+    },[setError])
+    //==================================
+    const editPassword = useCallback(async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            if (!currentPassword || !newPassword) {
+                const msg = 'Both current and new passwords are required.';
+                setError?.(msg)
+                alert(msg)
+                return
+            }
+            else if(newPassword === currentPassword){
+               const msg = 'New password must be different from the current password.';// Error message
+                setError?.(msg);// Set the error state to display the error in the UI
+                alert(msg);
+                return;// Exit the function early
+            }
+            else if (!isStrongPassword(newPassword)) {
+                const msg = //Message for weak password
+                    'New password must be at least 8 characters long and include at least one special character.';
+                setError?.(msg);// Set the error state to display the error in the UI
+                alert(msg);// Alert user of error
+                return;// Exit the function early
+            }
+
+            const token = localStorage.getItem('token');
+
+            //Conditional rendering to check if token exists
+            if (!token) {
+                const msg = 'User is not authenticated. Please log in again.';// Error message for missing token
+                setError?.(msg);// Set the error state to display the error in the UI
+                alert(msg);// Alert user of error
+                return;// Exit the function early
+            }
+
+            const response = await fetch('http://localhost:3001/users/editPassword', {
+                method: 'PATCH',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',// Specify the Content-Type in the request payload
+                    'Authorization': `Bearer ${token}`,// Attach JWT token for authorization
+                },
+                body: JSON.stringify({// Convert the password data to a JSON string
+                    currentPassword,
+                    newPassword
+                })
+            });
+
+            const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
+            /* Conditional rendering to check if the response
+               is not successful (status code is not in the range 200-299)*/
+            if (!response.ok) {
+                const errorMessage = data.message || 'Failed to change password.';//Default error message
+                setError?.(errorMessage);// Set the error state to display the error in the UI
+                alert(errorMessage);// Alert user of error
+                return;// Exit the function early
+            }
+
+            // Clear form fields directly — avoids the window.confirm in resetForm
+            setCurrentPassword('');
+            setNewPassword('');
+            setError?.(null);//Clear any previous error messages
+            console.log('[SUCCESS: EditPasswordForm.js] Password successfully changed');// Log success message to console for debugging
+            setLoading(false);// Set loading to false after successful response
+            alert('Password changed successfully.');// Notify the user of success
+        } catch (error) {
+          const msg = error?.message || 'An error occurred while changing the password.';// Default error message
+            setError?.(msg);// Set the error state to display the error in the UI
+            console.error('[ERROR: EditPasswordForm.js, editPassword]', msg);// Log the error message in the console for debugging
+            alert('Error changing password');// Alert user of error
+        }finally{
+            setLoading(false)//Set Loading state to false
+        }
+
+    },[currentPassword, newPassword, setError, isStrongPassword])
+    //===========================================
   return (
-    <form id='edit-password-form' method='PATCH' aria-labelledby='formHeading'>
+    <form id='edit-password-form' method='PATCH' aria-labelledby='formHeading' onSubmit={editPassword}>
         <div id='formHeading'>
             <h3 id='formHeading'>EDIT PASSWORD</h3>
         </div>
@@ -117,10 +212,10 @@ export default function EditPasswordForm({setError}) {
         </div>
         <div>
             <div>
-                <Button variant='light'>EDIT PASSWORD</Button>
+                <Button variant='light' type='submit' disabled={loading}>EDIT PASSWORD</Button>
             </div>
             <div>
-                <Button variant='danger' id='clearFormBtn'>
+                <Button variant='danger' id='clearFormBtn' type='button' onClick={resetForm}>
                     CLEAR FORM
                 </Button>
 
