@@ -7,7 +7,7 @@ import Footer from '../components/Footer'
 export default function Users({currentUser, logout}) {
   return (
     <div id='pageContainer'>
-      <Header currentUser={currentUser} pageHeader={'USERS'}/>
+      <Header currentUser={currentUser} pageHeader={'ADMIN'}/>
       <Footer logout={logout}/>
     </div>
   )

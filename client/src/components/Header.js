@@ -49,7 +49,7 @@ export default function Header({currentUser, pageHeader}) {
                         )}
                         {currentUser.admin && (
                             <li>
-                                <NavLink to='/users' className='refLink'>USERS</NavLink>
+                                <NavLink to='/users' className='refLink'>ADMIN</NavLink>
                             </li>
                         )}
                     </ul>

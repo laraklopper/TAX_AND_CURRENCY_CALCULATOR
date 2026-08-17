@@ -1,0 +1,45 @@
+#dashBoardSec1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #1262B3;
+}
+#dashboard-tab{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.nav-tabs .nav-link{
+    color: #000;
+    text-transform:uppercase ;
+    font-weight: 700;
+}
+.nav-tabs .nav-link:active{
+    color: #000;
+    text-transform:uppercase ;
+    font-weight: 700;
+    border: solid;
+}
+#tax-year-head-row{
+        width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+#taxYearHeadCol{
+margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+}
+#taxYearHeadCol1,
+#taxYearHeadCol2{
+    margin: 0px;
+    padding: 0px;
+}
