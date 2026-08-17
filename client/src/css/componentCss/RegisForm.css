@@ -18,6 +18,13 @@
     font-weight: 700;
     color: #000;
 }
+.address-input-div{
+        margin: 0px;
+    padding: 0px;
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+}
 /* LAYOUT */
 /* INPUT DETAILS */
 #regis-input-details{
@@ -86,6 +93,51 @@ gap: 10px;
     background: #D6D6D6;
     border-radius: 8px;
 }
+#regis-address-head{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 0px 0px 10px 0px;
+    padding: 0px;
+}
+#regis-address-head span{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#regisAddressHeading{
+    margin: 0px;
+    padding: 0px;
+    text-decoration: underline;
+}
+#regis-address-stack{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    display: flex;
+}
+#regis-streetaddress-block{
+        display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+#regis-address-block2{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 15px;
+}
+/* GROUP 4: Admin + Password*/
+#regis-group4{
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
 /* STACK https://react-bootstrap.netlify.app/docs/layout/stack */
 #regis-stack4,
 #regis-stack5{
@@ -109,11 +161,10 @@ gap: 10px;
     margin: 0px;
     padding: 0px;
 }
-
-/* GROUP 4 */
-#regis-group4{
+/* GROUP 5 */
+#regis-group5{
     display: flex;
-    width: 80%;
+    width: 100%;
     margin: 0px;
     padding: 5px;
 }
@@ -122,6 +173,12 @@ gap: 10px;
     display: flex;
     align-items: baseline;
     width: 100%;
+}
+#regis-group5{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
 }
 /* ===============
 BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons

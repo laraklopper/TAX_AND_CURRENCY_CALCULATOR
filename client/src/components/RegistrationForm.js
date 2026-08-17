@@ -4,7 +4,7 @@ import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, MapPin  } from 'lucide-react';
 
 export default function RegistrationForm({
     newUserData,
@@ -352,8 +352,57 @@ export default function RegistrationForm({
                         <div className="p-2"><p className='infoText' id={dateOfBirthAgeHintId}>USERS MUST BE AT LEAST {minAge} YEARS OLD</p></div>
                     </Stack>
                 </div>
-                {/* GROUP 3: admin + Password */}
+                {/* GROUP 3:  */}
                 <div id='regis-group3'>
+                    <div id='regis-address-head'>   <span><h4 id='regisAddressHeading'>ADDRESS</h4><MapPin /></span></div>
+                          
+                          <Stack gap={3} id='regis-address-stack'>
+      <div className="p-2" id='regis-streetaddress-block'>
+        <div className='input-div'>
+            <label className='regis-label'>STREET:</label>
+            <textarea
+                className='text-input'
+                rows={2}
+            />
+            <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+        </div>
+        <div className='input-div'>
+            <label className='regis-label' htmlFor='addressLine2' hidden>LINE 2:</label>
+            <textarea
+                className='text-input'
+                rows={2}
+                id='addressLine2'
+            />
+        </div>      
+        </div>
+        {/* Error Message for street address */}
+      {/* <div className="p-2">ERROR</div> */}
+      <div className="p-2" id='regis-address-block2'>
+        <div className='address-input-div'>
+<label className='regis-label'>CITY/TOWN:</label>
+<input
+    className='input'
+/>
+        </div>
+        <div className='address-input-div'>
+            <label className='regis-label'>PROVINCE:</label>
+            <select
+            className='input'
+            >
+
+            </select>
+        </div>
+        
+      </div>
+      <div className="p-2">
+        <div>
+
+        </div>
+      </div>
+    </Stack>  
+                </div>
+                {/* GROUP 4: admin + Password */}
+                <div id='regis-group4'>
                     {/* STACK 4 */}
                     <Stack direction="horizontal" gap={3} id='regis-stack4'>
                         <div className="p-2" id='admin-reg-block'>
@@ -449,7 +498,8 @@ export default function RegistrationForm({
                     </Stack>
                 </div>
             </div>
-            <div id='regis-group4'>
+            {/* GROUP 5 */}
+            <div id='regis-group5'>
                 <Stack direction="horizontal" gap={3} id='regis-stack6'>
                     <div className="p-2" id='requiredInfo'>
                         <p className='infoText' aria-live='polite' aria-hidden='true'>

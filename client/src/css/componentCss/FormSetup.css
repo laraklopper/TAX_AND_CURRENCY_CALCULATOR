@@ -44,7 +44,14 @@
   font-size: 16px;
   font-weight: 700;
 }
-
+.text-input{
+  overflow-y: scroll;
+  width: 200px;
+   border-radius: 5px;
+  padding: 5px;
+   border: solid black 2px;
+font-family: "Courier Prime", monospace;
+}
 /* TEXT */
 #requiredInfo{
     display: flex;
