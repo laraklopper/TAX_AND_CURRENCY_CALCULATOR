@@ -18,8 +18,8 @@ export default function Registration({setError}) {
     email: '',
     dateOfBirth: '',
     address: {
-      street: '',
-      line2:'',
+      line1: '',
+      line2: '',
       city: '',
       province: '',
     },

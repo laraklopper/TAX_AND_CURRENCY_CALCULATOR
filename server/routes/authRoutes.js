@@ -82,11 +82,16 @@ router.post('/login', async (req, res) => {
 // Use Plaintext passwords for development
 router.post('/register', checkAge, checkPassword, async (req, res) => {
     try {
-        const { fullName, email, password, dateOfBirth, admin } = req.body || {};
+        const { fullName, email, password, dateOfBirth, address, admin } = req.body || {};
 
         if (!fullName || !fullName.firstName || !fullName.lastName || !email || !password || !dateOfBirth) {
             console.error('[ERROR: authRoutes.js, /register] Missing required registration fields');
             return res.status(400).json({ message: 'fullName, email, password and dateOfBirth are required' });
+        }
+
+        if (!address || !address.line1 || !address.city) {
+            console.error('[ERROR: authRoutes.js, /register] Missing required address fields');
+            return res.status(400).json({ message: 'address line1 and city are required' });
         }
 
         const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
@@ -101,6 +106,7 @@ router.post('/register', checkAge, checkPassword, async (req, res) => {
             email,
             password,
             dateOfBirth,
+            address,
             admin: admin === true,
         });
 

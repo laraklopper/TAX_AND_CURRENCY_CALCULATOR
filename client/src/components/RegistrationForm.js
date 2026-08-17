@@ -21,7 +21,7 @@ export default function RegistrationForm({
         lastName: false,     // Tracks if last name field was touched
         email: false,        // Tracks if email field was touched
         dateOfBirth: false,  // Tracks if date of birth field was touched
-        street: false,
+        line1: false,
         city: false,
         province:false,
         password: false,     // Tracks if password field was touched
@@ -66,6 +66,14 @@ export default function RegistrationForm({
     const passwordEmpty = useMemo(
         () => !String(newUserData.password || '').trim(), [newUserData.password]
     );
+    // Checks if street address (line1) is empty
+    const line1Empty = useMemo(
+        () => !String(newUserData.address?.line1 || '').trim(), [newUserData.address?.line1]
+    );
+    // Checks if city/town is empty
+    const cityEmpty = useMemo(
+        () => !String(newUserData.address?.city || '').trim(), [newUserData.address?.city]
+    );
     //========== AGE VALIDATION ====================
     // Checks whether the selected date of birth makes the user too young
     const dateOfBirthTooYoung = useMemo(() => {
@@ -95,6 +103,10 @@ export default function RegistrationForm({
     // Show age error only if date of birth was touched, is not empty, and user is too young
     const showDateOfBirthAgeError =
         touched.dateOfBirth && !dateOfBirthEmpty && dateOfBirthTooYoung;
+    // Show street address error only if the field was touched and is empty
+    const showLine1Error = touched.line1 && line1Empty;
+    // Show city/town error only if the field was touched and is empty
+    const showCityError = touched.city && cityEmpty;
 
     //=========== EVENT LISTENERS=========================
     const handleRegistration = (e) => {
@@ -105,6 +117,9 @@ export default function RegistrationForm({
             lastName: true,
             email: true,
             dateOfBirth: true,
+            line1: true,
+            city: true,
+            province: true,
             password: true,
         });
         const hasErrors =
@@ -113,6 +128,8 @@ export default function RegistrationForm({
             emailEmpty ||
             dateOfBirthEmpty ||
             dateOfBirthTooYoung ||
+            line1Empty ||
+            cityEmpty ||
             passwordEmpty;
         if (hasErrors) return; // Block submission until all fields are valid
         console.log('[INFO: RegistrationForm.js]: Registering new user')
@@ -159,6 +176,7 @@ export default function RegistrationForm({
             fullName: { firstName: '', lastName: '' },
             email: '',
             dateOfBirth: '',
+            address: { line1: '', line2: '', city: '', province: '' },
             admin: false,
             password: '',
         });
@@ -167,6 +185,9 @@ export default function RegistrationForm({
             lastName: false,
             email: false,
             dateOfBirth: false,
+            line1: false,
+            city: false,
+            province: false,
             password: false,
         });
     }
@@ -182,6 +203,8 @@ export default function RegistrationForm({
     const dateOfBirthErrorId = 'registrationDateOfBirthError'; // ID used for date of birth required error
     const dateOfBirthAgeHintId = 'registrationDateOfBirthAgeHint'; // ID used for date of birth age hint
     const dateOfBirthAgeErrorId = 'registrationDateOfBirthAgeError'; // ID used for date of birth age error
+    const line1ErrorId = 'registrationLine1Error'; // ID used for street address error message
+    const cityErrorId = 'registrationCityError'; // ID used for city/town error message
 
     // ===========JSX RENDERING==============
     return (
@@ -364,19 +387,28 @@ export default function RegistrationForm({
                           <Stack gap={3} id='regis-address-stack'>
       <div className="p-2" id='regis-streetaddress-block'>
         <div className='input-div'>
-            <label className='regis-label'>STREET:</label>
+            <label className='regis-label' htmlFor='regisLine1Input'>STREET:</label>
             <textarea
                 type= 'text'
                 className='text-input'
                 rows={2}
                 required
-                name='address.street'
-                value={newUserData.address.street}
+                id='regisLine1Input'
+                name='address.line1'
+                value={newUserData.address.line1}
                 onChange={handleInputChange}
+                onBlur={handleBlur}
                 // ARIA ATTRIBUTES:
+                aria-label='Street Address Input'
+                aria-required='true'
+                aria-invalid={line1Empty ? 'true' : 'false'}
+                aria-describedby={showLine1Error ? line1ErrorId : null}
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
+        {showLine1Error && (
+            <p id={line1ErrorId} className="visually-hidden" role="alert">Street address is required.</p>
+        )}
         <div className='input-div'>
         {/* optional */}
             <label className='regis-label' htmlFor='addressLine2' hidden>LINE 2:</label>
@@ -384,15 +416,16 @@ export default function RegistrationForm({
                 className='text-input'
                 rows={2}
                 id='addressLine2'
-                // name=''
-                // value={}
-                // onChange={}
+                placeholder='ADDITIONAL ADDRESS DETAILS'
+                name='address.line2'
+                value={newUserData.address.line2}
+                onChange={handleInputChange}
                 // ARIA ATTRIBUTES:
+                aria-required= 'false'
+                aria-label='Address Line 2 Input (optional)'
             />
-        </div>      
         </div>
-        {/* Error Message for street address */}
-      {/* <div className="p-2">ERROR</div> */}
+        </div>
       <div className="p-2" id='regis-address-block2'>
         <div className='address-input-div'>
 <label className='regis-label' htmlFor='regisCityTownInput'>CITY/TOWN:</label>
@@ -400,14 +433,22 @@ export default function RegistrationForm({
     type='text'
     className='input'
     required
+    placeholder='CITY/TOWN'
     id='regisCityTownInput'
-    // name=''
-    // value={}
+    name='address.city'
+    value={newUserData.address.city}
     onChange={handleInputChange}
-
-
+    onBlur={handleBlur}
+    // ARIA ATTRIBUTES:
+    aria-label='City or Town Input'
+    aria-required='true'
+    aria-invalid={cityEmpty ? 'true' : 'false'}
+    aria-describedby={showCityError ? cityErrorId : null}
 />
 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+{showCityError && (
+    <p id={cityErrorId} className="visually-hidden" role="alert">City or town is required.</p>
+)}
         </div>
         <div className='address-input-div'>
             <label className='regis-label' id='selectRegisProvince'>PROVINCE:</label>
@@ -418,7 +459,10 @@ export default function RegistrationForm({
             name='address.province'
             value={newUserData.address.province}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             // ARIA ATTRIBUTES:
+            aria-label='Province Select'
+            aria-required='true'
             >
             <option value=''>SELECT</option>
             {provinces.map(p => (
@@ -428,11 +472,9 @@ export default function RegistrationForm({
             </select>
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
-        
       </div>
       <div className="p-2">
         <div>
-
         </div>
       </div>
     </Stack>  
