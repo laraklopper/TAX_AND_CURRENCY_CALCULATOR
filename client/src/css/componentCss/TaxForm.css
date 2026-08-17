@@ -1,0 +1,66 @@
+#tax-form-block{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border: solid;
+    padding: 10px 5px;
+    margin: 0px;
+    background-color: #A8AEB3; 
+}
+#add-tax-data-form{
+    display: flex;
+    align-items: center;
+    background-color: inherit;
+   width: 100%;
+   justify-content: center;
+   flex-direction: column;
+}
+.tax-input-div{
+     display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0px;
+    padding: 0px;
+}
+.taxdata-input{
+ text-align: center;
+  border: solid black 2px;
+  border-radius: 5px;
+  padding: 5px;
+  width: 180px;
+  font-family: "Courier Prime", monospace;
+  font-size: 16px;
+  font-weight: 700;
+}
+.tax-form-label{
+    font-family: "Courier Prime", monospace;
+     text-align: center;
+ font-weight: 700;
+ font-size: 18px;
+}
+.formSectionHead{
+    font-family: "Courier Prime", monospace;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.formHeader{
+    text-align: center;
+}
+/* =====================
+LAYOUT
+===============*/
+#tax-form-input-detail{
+    width: 80%;
+}
+#taxform-group1{
+    width: 100%;
+}
+/* BUTTONS */
+#submitTaxDataBtn{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+}

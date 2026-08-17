@@ -6,14 +6,21 @@
     width: 100%;
     background-color: #4da6ff;
 }
-#update-tax-data-panal{
+#change-tax-data-panal{
     width: 100%;
     margin: 0px;
-    padding: 0px;
+    padding: 5px;
     display: flex;
 }
 #toggle-tax-update-row{
     width: 100%;
     margin: 0px;
     padding: 0px;
+}
+#add-tax-data-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+
+    
 }
