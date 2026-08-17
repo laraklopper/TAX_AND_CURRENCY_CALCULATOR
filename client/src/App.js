@@ -27,6 +27,7 @@ export default function App() {
       lastName:''
     },
     email: '',
+    password: '',
     dateOfBirth:'',
     admin: false,
   })
@@ -109,7 +110,7 @@ export default function App() {
                 />
               }/>
               <Route path='/reg' element={
-                <Registration/>
+                <Registration setError={setError}/>
               }/>
             </>
           )}

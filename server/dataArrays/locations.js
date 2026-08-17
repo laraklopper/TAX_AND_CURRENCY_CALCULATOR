@@ -1,4 +1,4 @@
-export const provinces = [
+const provinces = [
   "Eastern Cape",
   "Free State",
   "Gauteng",
@@ -9,7 +9,7 @@ export const provinces = [
   "Northern Cape",
   "Western Cape",
 ];
-export const southAfricanProvinces = [
+const southAfricanProvinces = [
   { code: "EC", name: "Eastern Cape" },
   { code: "FS", name: "Free State" },
   { code: "GT", name: "Gauteng" },
@@ -20,3 +20,5 @@ export const southAfricanProvinces = [
   { code: "NC", name: "Northern Cape" },
   { code: "WC", name: "Western Cape" },
 ];
+
+module.exports = { provinces, southAfricanProvinces };

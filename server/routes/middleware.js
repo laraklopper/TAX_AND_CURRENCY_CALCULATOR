@@ -142,7 +142,7 @@ const checkAge = (req, res, next) => {
         if (!dateOfBirth) {
             console.error(`[ERROR: middleware.js, checkAge] Date of Birth is required`);// Log an error message in the console for debugging purposes
             return res.status(400).json({// Respond with a 400 (Bad Request) status if underage
-                error: 'Date of Birth is required'//Error Message
+                message: 'Date of Birth is required'//Error Message
             });
         }
 

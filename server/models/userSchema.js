@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         lowercase: true,
+        validate: {
+            validator: function (v) {
+                return emailRegex.test(v);
+            },
+            message: 'Please enter a valid email address'
+        },
     },
     /*All users must be 18 years or older*/
     dateOfBirth: {
