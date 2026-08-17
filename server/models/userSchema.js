@@ -1,5 +1,6 @@
 // userSchema.js
 const mongoose = require('mongoose');
+const { provinces } = require('../dataArrays/locations');
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -72,6 +73,7 @@ const userSchema = new mongoose.Schema({
         province: {
             type: String,
             trim: true,
+            enum: provinces,
             minlength: [2, 'Province or region name must be at least 2 characters long'],
             maxlength: [50, 'Province or region name cannot exceed 50 characters']
         },
