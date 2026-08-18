@@ -52,3 +52,71 @@ Accessibility helpers
   white-space: nowrap;
   border: 0;
 }
+/* ===============
+ANIMATIONS
+=============*/
+#event-row{
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+#event-col{
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+.event-bar {
+    width: 100%;
+    background-color: #338F27;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+}
+.event-track {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    margin: 0px;
+}
+/* =========================
+   UNIVERSAL EVENT ANIMATION
+   left → right → center
+   ========================= */
+   /* Any icon inside the track */
+.event-slide {
+    --icon-size: 32px;
+    /* MUST match icon size prop */
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    animation: slide-left-right-center 12s ease-in-out forwards;
+    will-change: left, transform;
+    pointer-events: none;
+}
+/* Keyframes: LEFT → RIGHT → CENTER */
+@keyframes slide-left-right-center {
+    0% {
+        left: 0;
+        transform: translateY(-50%);
+    }
+    65% {
+        left: calc(100% - var(--icon-size));
+        transform: translateY(-50%);
+    }
+    100% {
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .event-slide {
+        animation: none;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

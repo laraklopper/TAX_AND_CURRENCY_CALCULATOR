@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import AddTaxDataForm from '../components/AddTaxDataForm';
+import { HandCoins } from 'lucide-react';
 
 export default function TaxData(
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
@@ -28,6 +29,15 @@ export default function TaxData(
   return (
     <div id='pageContainer'>
       <Header currentUser={currentUser} pageHeader={'ADMIN'}/>
+      <Row id='event-row'>
+        <Col id='event-col'>
+          <div className='event-bar'>
+            <div className='event-track'>
+              <HandCoins className='event-slide' size={32}/>
+            </div>
+          </div>
+        </Col>
+      </Row>
         <section id='admin-section1'>
           {/* Section 1 row 1 */}
           <Row id='toggle-tax-update-row'>
