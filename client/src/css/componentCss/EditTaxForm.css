@@ -1,6 +1,16 @@
+/* EditTaxForm.css */
+#change-tax-year-form{
+    display: flex;
+    background-color: #A8AEB3;
+    margin: 0px;
+    padding: 0px;
+    width: 50%;
+}
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
 #edit-tax-year-stack{
     display: flex;
     justify-content: center;
+    width: 100%;
 
 }
 #edit-year-block2{

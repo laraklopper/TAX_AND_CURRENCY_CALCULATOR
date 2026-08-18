@@ -11,7 +11,7 @@ export default function ChangeTaxYearForm() {
         <p className='visually-hidden' id='formTitle'>EDIT TAX YEAR FORM</p>
              <Stack gap={3} id='edit-tax-year-stack'>
                   <div className="p-2" id='edit-year-block'>
-                    <label className='edit-taxyear-label' htmlFor='edit-taxyear-input'>TAX YEAR:</label>
+                    <label className='edit-taxyear-label' htmlFor='edit-taxyear-input'>CHANGE TAX YEAR:</label>
                     <input
                       id='edit-taxyear-input'
                     //   required //required if the form is submitted
