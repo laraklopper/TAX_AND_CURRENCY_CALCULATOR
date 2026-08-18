@@ -8,26 +8,19 @@
     gap: 5px;
     background-color: #1262B3;
 }
-#dashboard-tab{
+/* LAYOUT */
+#dashboard-panal{
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin: 0px;
     padding: 0px;
-    display: flex;
-    justify-content: space-evenly;
 }
-.nav-tabs .nav-link{
-    color: #000;
-    text-transform:uppercase ;
-    font-weight: 700;
-}
-.nav-tabs .nav-link:active{
-    color: #000;
-    text-transform:uppercase ;
-    font-weight: 700;
-    border: solid;
-}
+
+/* BOOTSTRAP LAYOUT */
+/* Grid: https://react-bootstrap.netlify.app/docs/layout/grid */
 #tax-year-head-row{
-        width: 100%;
+    width: 100%;
     margin: 0px;
     padding: 0px;
     display: flex;
@@ -42,4 +35,24 @@ margin: 0px;
 #taxYearHeadCol2{
     margin: 0px;
     padding: 0px;
+}
+/* TABS: https://react-bootstrap.netlify.app/docs/components/tabs */
+#dashboard-tab{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: space-evenly;
+}
+/* Tab Links */
+.nav-tabs .nav-link{
+    color: #000;
+    text-transform:uppercase ;
+    font-weight: 700;
+}
+.nav-tabs .nav-link:active{
+    color: #000;
+    text-transform:uppercase ;
+    font-weight: 700;
+    border: solid;
 }
