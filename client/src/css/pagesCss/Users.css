@@ -1,3 +1,5 @@
+/* TaxData.js */
+/* SECTION 1 */
 #admin-section1{
     display: flex;
     flex-direction: column;
@@ -6,12 +8,17 @@
     width: 100%;
     background-color: #4da6ff;
 }
+/* ================
+LAYOUT
+==========*/
 #change-tax-data-panal{
     width: 100%;
     margin: 0px;
     padding: 5px;
     display: flex;
 }
+/* BOOTSTRAP LAYOUT */
+/* Grid: https://react-bootstrap.netlify.app/docs/layout/grid */
 #toggle-tax-update-row{
     width: 100%;
     margin: 0px;
@@ -21,14 +28,13 @@
     width: 100%;
     margin: 0px;
     padding: 0px;
-
-    
 }
 #add-tax-data-col{
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
+/* BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons */
 #toggleTaxChangeBtn{
     display: flex;
     justify-content: center;
