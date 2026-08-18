@@ -1,9 +1,16 @@
+// ChangeTaxYearForm.js
+// IMPORT REQUIRED MODULES AND PACKAGES
 import React from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/EditTaxForm.css'
 import '../css/componentCss/FormSetup.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { SaveCheck } from 'lucide-react';
+
+
 export default function ChangeTaxYearForm() {
   return (
     <form id='change-tax-year-form' method='PUT' aria-describedby='formTitle'>
