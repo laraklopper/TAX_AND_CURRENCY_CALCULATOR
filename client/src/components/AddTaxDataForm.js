@@ -209,6 +209,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
     }
   }
 
+  
   const inputBase =
     "w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent";
   const inputOk = "border-gray-300";
@@ -327,7 +328,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
     </Stack>
           {errors.brackets && <p className={errText}>{errors.brackets}</p>}
           <div id="bracket-data">
-            <div>
+            <div id="brackets">
               <span>Min (R)</span>
               <span>Max (R) — blank = no ceiling</span>
               <span>Base amount (R)</span>
@@ -344,7 +345,8 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                   <input
                     type="number"
                     placeholder="Min"
-                    className={fieldCls(`bracket-${i}-min`)}
+                    // className={fieldCls(`bracket-${i}-min`)}
+                    className="taxdata-input"
                     value={b.min}
                     onChange={(e) => updateBracket(i, "min", e.target.value)}
                   />
@@ -356,7 +358,8 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                   <input
                     type="number"
                     placeholder="No ceiling"
-                    className={fieldCls(`bracket-${i}-max`)}
+                    className="taxdata-input"
+                    // className={fieldCls(`bracket-${i}-max`)}
                     value={b.max}
                     onChange={(e) => updateBracket(i, "max", e.target.value)}
                   />
@@ -368,7 +371,8 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                   <input
                     type="number"
                     placeholder="Base amount"
-                    className={fieldCls(`bracket-${i}-baseAmount`)}
+                    className="taxdata-input"
+                    // className={fieldCls(`bracket-${i}-baseAmount`)}
                     value={b.baseAmount}
                     onChange={(e) => updateBracket(i, "baseAmount", e.target.value)}
                   />
@@ -381,7 +385,8 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                     type="number"
                     step="0.01"
                     placeholder="Rate %"
-                    className={fieldCls(`bracket-${i}-rate`)}
+                    className="taxdata-input"
+                    // className={fieldCls(`bracket-${i}-rate`)}
                     value={b.rate}
                     onChange={(e) => updateBracket(i, "rate", e.target.value)}
                   />
