@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import AddTaxDataForm from '../components/AddTaxDataForm';
+import TaxDataDisplay from '../components/TaxDataDisplay';
 import { HandCoins } from 'lucide-react';
 
 export default function TaxData(
@@ -71,6 +72,12 @@ export default function TaxData(
             </Row>
           </div>
         )}
+        {/* CURRENT TAX YEAR DATA */}
+        <Row id='tax-data-display-row'>
+          <Col id='tax-data-display-col'>
+            <TaxDataDisplay/>
+          </Col>
+        </Row>
         </section>
       <Footer logout={logout}/>
     </div>

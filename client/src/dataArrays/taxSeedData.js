@@ -1,0 +1,29 @@
+// taxSeedData.js
+// Client-side copy of server/dataArrays/taxSeedData.json (SARS 2025-2026 tax year).
+// Used as the fallback/default data set for TaxDataDisplay until a tax year
+// config is fetched from the database.
+export const taxSeedData = {
+  taxYear: '2025-2026',
+  startDate: '2025-03-01',
+  endDate: '2026-02-28',
+  brackets: [
+    { min: 1,       max: 237100,  baseAmount: 0,      rate: 0.18 },
+    { min: 237101,  max: 370500,  baseAmount: 42678,  rate: 0.26 },
+    { min: 370501,  max: 512800,  baseAmount: 77362,  rate: 0.31 },
+    { min: 512801,  max: 673000,  baseAmount: 121475, rate: 0.36 },
+    { min: 673001,  max: 857900,  baseAmount: 179147, rate: 0.39 },
+    { min: 857901,  max: 1817000, baseAmount: 251258, rate: 0.41 },
+    { min: 1817001, max: null,    baseAmount: 644489, rate: 0.45 }
+  ],
+  rebates: {
+    primary: 17235,   // all taxpayers
+    secondary: 9444,  // age 65+
+    tertiary: 3145    // age 75+
+  },
+  thresholds: {
+    under65: 95750,
+    age65to74: 148217,
+    age75plus: 165689
+  },
+  isActive: true
+};
