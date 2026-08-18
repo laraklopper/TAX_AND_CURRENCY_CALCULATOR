@@ -62,7 +62,7 @@ export default function EditUserForm() {
       </div>
       <div className="p-2 ms-auto"></div>
       {showEmailMsg && (<div className="p-2">
-        <p>WE WILL NEVER SHARE YOUR EMAIL</p>
+        <p className='msgText' aria-live='polite'>WE WILL NEVER SHARE YOUR EMAIL</p>
       </div>)}
     </Stack>
       </div>

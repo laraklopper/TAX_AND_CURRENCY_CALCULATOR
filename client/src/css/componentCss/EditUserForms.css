@@ -8,6 +8,15 @@
     width: 100%;
     background-color: #A8AEB3;
 }
+.edit-user-label{
+     font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    padding: 0px;
+    margin: 0px;
+}
+/* ==================
+LAYOUT
+============*/
 #edit-user-input-details{
     width: 80%;
     margin: 0px;
@@ -23,15 +32,20 @@
 #edit-user-group1{
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
     border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
+    margin: 0px;
+    padding: 10px;
 }
+/* STACK 1 */
 #edit-user-stack1{
     width: 100%;
     display: flex;
     align-items: baseline;
+    margin: 0px;
+    padding: 0px;
 }
 #edit-user-stack2{
     width: 100%;
@@ -40,15 +54,36 @@
     margin: 0px;
     padding: 0px;
 }
+#edit-user-block1{
+    display: flex;
+    margin: 0px;
+    align-items: baseline;
+    gap: 10px;
+}
+#edit-user-stack2{
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#edit-user-email-block{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+}
 /* GROUP 2 */
 #edit-user-group2{
     display: flex;
     flex-direction: column;
         width: 80%;
-
     border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
+    margin: 0px;
+    padding: 10px;
 }
 #edit-user-stack3{
     width: 100%;
@@ -84,31 +119,15 @@
     width: 100%;
     padding: 0px;
     margin: 0px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
 }
 
-#edit-user-block1{
-    display: flex;
-    margin: 0px;
-    align-items: baseline;
-    gap: 10px;
-}
-#edit-user-stack2{
-    display: flex;
-    align-items: baseline;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
-#edit-user-email-block{
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-}
-.edit-user-label{
-     font-family: "Courier Prime", monospace;
-    font-weight: 700;
-    padding: 0px;
-    margin: 0px;
+
+
+#edit-user-stack4{
+    width: 80%;
 }
 #edit-userBtn{
     display: flex;
