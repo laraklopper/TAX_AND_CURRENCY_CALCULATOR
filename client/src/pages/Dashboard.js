@@ -35,9 +35,13 @@ export default function Dashboard({currentUser, logout}) {
           {/* DISPLAY CURRENT TAX YEAR DATA FROM FORM */}
         </Col>
       </Row>
-      {/* ONLY MAKE THE SECTION AVAILABLE TO ADMIN USERS */}
+      
+            </div>
+      </section>
+     {/* ONLY MAKE THE SECTION AVAILABLE TO ADMIN USERS */}
       {currentUser.admin &&(
-<Row id='change-tax-year-row'>
+        <section id='dashBoardSec2'>
+      <Row id='change-tax-year-row'>
         <Col id='change-tax-year-col1'></Col>
         <Col xs={6} id='change-tax-year-toggle-col'>
            <div id='toggle-tax-year-div'>
@@ -67,10 +71,8 @@ export default function Dashboard({currentUser, logout}) {
         </Col>
         <Col id='change-tax-year-col2'></Col>
       </Row>
-         )}
-            </div>
       </section>
-     
+         )}
       <Footer logout={logout}/>
     </div>
   )
