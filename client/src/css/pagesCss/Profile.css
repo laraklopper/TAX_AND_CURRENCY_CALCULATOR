@@ -16,7 +16,14 @@
     flex-direction: column;
     align-items: center;
 }
+#edit-user-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 #edit-password-panal{
+     margin: 0px;
+    padding: 0px;
     width: 100%;
 }
 #edit-password-col{

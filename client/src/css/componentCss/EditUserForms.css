@@ -1,4 +1,133 @@
 /* EDIT USER DETAILS */
+#edit-user-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px;
+    width: 100%;
+    background-color: #A8AEB3;
+}
+#edit-user-input-details{
+    width: 80%;
+    margin: 0px;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #BFBFBF;
+    overflow-y: scroll;
+}
+/* GROUP 1 */
+#edit-user-group1{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#edit-user-stack1{
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+}
+#edit-user-stack2{
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+}
+/* GROUP 2 */
+#edit-user-group2{
+    display: flex;
+    flex-direction: column;
+        width: 80%;
+
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#edit-user-stack3{
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+}
+#address-head-block{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+#address-block2,
+#address-block3{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 10px;
+}
+#address-head-span{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#address-heading{
+    margin: 0px;
+    padding: 0px;
+    text-decoration: underline;
+    font-family: "Roboto", sans-serif;
+}
+/* GROUP 3 */
+#edit-user-group3{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+#edit-user-block1{
+    display: flex;
+    margin: 0px;
+    align-items: baseline;
+    gap: 10px;
+}
+#edit-user-stack2{
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#edit-user-email-block{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+.edit-user-label{
+     font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    padding: 0px;
+    margin: 0px;
+}
+#edit-userBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    width: 180px;
+    height: 40px;
+    color: #000;
+    letter-spacing: 2px;
+    border: solid 2px #323A42;
+}
+#edit-userBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
 /* EDIT PASSWORD FORM */
 #edit-password-form{
     display: flex;
@@ -7,6 +136,7 @@
     width: 400px;
     margin: 0px;
     padding: 10px;
+    background-color: #A8AEB3;
 }
 .edit-pswd-label{
      font-family: "Courier Prime", monospace;

@@ -20,6 +20,13 @@
     text-transform: uppercase;
 }
 /* INPUT FIELDS */
+.input-group{
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  padding: 0px;
+  gap: 5px;
+}
 .input-div{
   margin: 0px;
   padding: 0px;
