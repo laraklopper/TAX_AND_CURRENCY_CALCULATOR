@@ -11,7 +11,15 @@
     display: flex;
     justify-content: center;
     width: 100%;
-
+    margin: 0px;
+    padding: 0px;
+}
+#edit-year-block{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0px;
+    flex-direction: column;
 }
 #edit-year-block2{
     display: flex;
@@ -36,6 +44,7 @@
   font-size: 16px;
   font-weight: 700;
 }
+/* BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons */
 #saveTaxYearBtn{
     display: flex;
     align-items: center;
@@ -44,4 +53,10 @@
     width: 40px;
     margin: 0px;
     padding: 0px;
+    color: #000;
+    border: #ffc107;
+}
+#saveTaxYearBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
 }

@@ -32,7 +32,7 @@ export default function ChangeTaxYearForm() {
                     type='submit'
                     // ARIA ATTRIBUTES:
                     >
-                        <SaveCheck color='#000' fontSize={32} fontWeight={700} aria-hidden='true' focusable='false'/>
+                        <SaveCheck fontSize={32} fontWeight={700} aria-hidden='true' focusable='false'/>
                     </Button>
                   </div>
               </Stack>
