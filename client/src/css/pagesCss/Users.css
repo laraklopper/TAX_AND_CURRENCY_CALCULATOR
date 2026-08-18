@@ -29,3 +29,21 @@
     padding: 0px;
     width: 100%;
 }
+#toggleTaxChangeBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 700;
+    border: solid 2px #323A42;
+    font-family: "Courier Prime", monospace;
+    color: #000;
+    letter-spacing: 2px;
+}
+#toggleTaxChangeBtn:hover{
+    background-color: #323A42;
+    color: #E8F0F6;
+}
