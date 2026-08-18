@@ -80,9 +80,8 @@ export default function Dashboard({currentUser, logout}) {
             </div>
           )}
           </div>
-          
         </Col>
-        <Col></Col>
+        <Col id='change-tax-year-col2'></Col>
       </Row>
             </div>
        
