@@ -33,6 +33,29 @@
   font-size: 16px;
   font-weight: 700;
 }
+/* Validated inputs (rebates / thresholds).
+   Base styling plus a valid / invalid border state. */
+.tax-field{
+  width: 100%;
+  border: solid 1px;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+.tax-field:focus{
+  outline: none;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #3B82F6;
+}
+.tax-field-ok{
+  border-color: #D1D5DB;
+}
+.tax-field-error{
+  border-color: #F87171;
+  background-color: #FEF2F2;
+}
 .tax-form-label{
     font-family: "Fira Sans", sans-serif;
      text-transform: uppercase;

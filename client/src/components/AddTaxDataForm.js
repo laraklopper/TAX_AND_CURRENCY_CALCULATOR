@@ -210,11 +210,8 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
   }
 
   
-  const inputBase =
-    "w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent";
-  const inputOk = "border-gray-300";
-  const inputErr = "border-red-400 bg-red-50";
-  const fieldCls = (key) => `${inputBase} ${errors[key] ? inputErr : inputOk}`;
+  const fieldCls = (key) =>
+    `tax-field ${errors[key] ? "tax-field-error" : "tax-field-ok"}`;
   // const label = "block text-xs font-medium text-gray-600 mb-1";
   const errText = "mt-1 text-xs text-red-600";
 
