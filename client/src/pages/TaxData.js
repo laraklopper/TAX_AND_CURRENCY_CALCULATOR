@@ -1,18 +1,30 @@
+// TaxData.js
 import React, { useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Users.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+// IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import AddTaxDataForm from '../components/AddTaxDataForm';
 
-export default function TaxData({currentUser, logout}) {
+export default function TaxData(
+  {//PROPS PASSED FROM PARENT COMPONENT (App.js)
+    currentUser, 
+    logout
+  }
+  ) {
+  // ===========STATE VARIABLES===========
    const [showTaxForm, setShowTaxForm] = useState(false)
 
+  // =========EVENT LISTENERS===================
    const toggleTaxDataForm = () => setShowTaxForm((prev) => !prev)
 
+   //===============JSX RENDERING=================
   return (
     <div id='pageContainer'>
       <Header currentUser={currentUser} pageHeader={'ADMIN'}/>
@@ -49,7 +61,6 @@ export default function TaxData({currentUser, logout}) {
             </Row>
           </div>
         )}
-     
         </section>
       <Footer logout={logout}/>
     </div>
