@@ -5,14 +5,33 @@ TaxDataDisplay.js*/
     margin: 0px;
     padding: 10px 15px;
     overflow-x: auto;
-    background-color: #404040;
+    /* background-color: #404040; */
+    background-color: #9E9E9E;
 }
 /* TAX YEAR SUMMARY */
 #tax-year-summary{
     margin: 0px 0px 10px 0px;
     padding: 10px 0px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #404040;
 }
+#tax-summary-stack{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#summary-block1,
+#summary-block2,
+#summary-block3{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+}
+/* TEXT */
 #tax-data-heading{
     color: #E8F0F6;
     font-family: "Roboto Condensed", sans-serif;
@@ -20,6 +39,7 @@ TaxDataDisplay.js*/
     letter-spacing: 1px;
     margin: 0px;
     padding: 0px;
+    text-decoration: underline;
 }
 .tax-data-info{
     text-transform: uppercase;
@@ -27,31 +47,68 @@ TaxDataDisplay.js*/
     font-family: "Open Sans", sans-serif;
     margin: 0px;
     padding: 5px 0px;
+    font-weight: 700;
 }
-.activeYear{
+/* ACTIVE YEAR */
+#active-year-span{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    background-color: #C9D6E0;
+    padding: 0px;
+}
+#active-year-span .activeYear{
     color: #198754;
     font-weight: 700;
+    margin: 0px;
+    padding: 5px 0px;
+    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: "Open Sans", sans-serif;
 }
-.inactiveYear{
+#active-year-span .inactiveYear{
     color: #C22419;
     font-weight: 700;
+    margin: 0px;
+    padding: 5px 0px;
+    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: "Open Sans", sans-serif;
 }
 /* DATA GROUPS */
+#tax-data-panal{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0px;
+    width: 100%;
+    background-color: #323A42;
+}
 .tax-data-group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     margin: 0px 0px 15px 0px;
     padding: 0px;
 }
+/* Group Heading */
 .tax-data-subheading{
     color: #E8F0F6;
+    text-align: center;
+    text-decoration: underline;
     font-family: "Roboto", sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
     margin: 0px;
     padding: 5px 0px;
 }
-/* TABLES */
+/*TAX DATA TABLES */
 .tax-data-table{
-    width: 100%;
+    width: 85%;
     margin: 0px;
     font-family: "Courier Prime", monospace;
     text-align: left;
@@ -80,3 +137,34 @@ TaxDataDisplay.js*/
 .tax-data-table tbody tr:hover{
     background-color: #C9D6E0;
 }
+/* ===============
+LAYOUT
+===============*/
+#toggle-tax-data-div{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px 0px 5px 0px;
+}
+/* BUTTONS */
+#toggleTaxDataBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    height: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: solid 2px #323A42;
+    font-weight: 700;
+    font-family: "Courier Prime", monospace;
+}
+#toggleTaxDataBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+

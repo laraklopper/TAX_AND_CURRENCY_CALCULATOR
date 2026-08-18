@@ -20,14 +20,7 @@ export default function Dashboard({currentUser, logout}) {
       <Header currentUser={currentUser} pageHeader={'DASHBOARD'}/>
       <section id='dashBoardSec1'>
           <div id='dashboard-panal'>
-         <Row id='tax-year-head-row'>
-        <Col id='taxYearHeadCol1'/>
-        <Col xs={6} id='taxYearHeadCol'>
-          <span id='tax-year-span'><h4 id='tax-year-head'>TAX YEAR:</h4><h4 id='current-tax-year'> 2025/2026</h4></span>
-          {/* <span id='tax-year-span'><h4 id='tax-year-head'>TAX YEAR:</h4><h4 id='current-tax-year'> {currentTaxYear}</h4></span> */}
-        </Col>
-        <Col id='taxYearHeadCol2'/>
-      </Row>
+   
       <Row id='tax-year-data-row'>
         <Col id='tax-year-data-col'>
           {/* DISPLAY CURRENT TAX YEAR DATA FROM FORM */}
