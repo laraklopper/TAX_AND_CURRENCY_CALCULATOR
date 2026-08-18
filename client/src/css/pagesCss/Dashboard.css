@@ -112,5 +112,11 @@ margin: 0px;
     text-transform: uppercase;
     color: #000;
     font-size: 16px;
+    border: solid 2px #323A42;
 }
 
+#toggle-tax-year-btn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+
+}
