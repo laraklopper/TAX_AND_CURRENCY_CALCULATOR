@@ -325,12 +325,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
         </Button>
       </div>
     </Stack>
- 
-       
-        
-
           {errors.brackets && <p className={errText}>{errors.brackets}</p>}
-
           <div id="bracket-data">
             <div>
               <span>Min (R)</span>
@@ -339,7 +334,6 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               <span>Rate (%)</span>
               <span></span>
             </div>
-
             {form.brackets.map((b, i) => (
               <div
                 key={i}
