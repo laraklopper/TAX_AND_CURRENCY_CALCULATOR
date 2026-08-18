@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ChangeTaxYearForm from '../components/ChangeTaxYearForm';
+import TaxDataDisplay from '../components/TaxDataDisplay';
 
 
 export default function Dashboard({currentUser, logout}) {
@@ -25,14 +26,12 @@ export default function Dashboard({currentUser, logout}) {
           <span id='tax-year-span'><h4 id='tax-year-head'>TAX YEAR:</h4><h4 id='current-tax-year'> 2025/2026</h4></span>
           {/* <span id='tax-year-span'><h4 id='tax-year-head'>TAX YEAR:</h4><h4 id='current-tax-year'> {currentTaxYear}</h4></span> */}
         </Col>
-        <Col id='taxYearHeadCol2'>
-         
-          
-        </Col>
+        <Col id='taxYearHeadCol2'/>
       </Row>
       <Row id='tax-year-data-row'>
         <Col id='tax-year-data-col'>
           {/* DISPLAY CURRENT TAX YEAR DATA FROM FORM */}
+          <TaxDataDisplay/>
         </Col>
       </Row>
       
