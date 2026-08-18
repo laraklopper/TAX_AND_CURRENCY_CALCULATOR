@@ -395,7 +395,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                   size="sm"
                   id="removeBracketBtn"
                 >
-                  <Trash2 size={16} fontWeight={700}/>
+                  <Trash2 size={16} fontWeight={700} color="#000"/>
                 </Button>
                 </div>
               </div>
@@ -426,7 +426,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
             ))}
           </div>
         </div>
-        {/* --- Thresholds ------------------------------------------------- */}
+        {/* --- GROUP 4:Thresholds ------------------------------------------------- */}
         <div id="taxform-group4">
           <h5 className="formSectionHead">Tax Thresholds (R)</h5>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
