@@ -33,16 +33,38 @@ export default function Profile({currentUser, logout, setError}) {
         <Col xs={6}>
            <Stack gap={3}>
       <div className="p-2">
-        <div>
-          <span><p>FULL NAME</p></span>
+        <div className='details-group'>
+          <span><p className='nested-details-label'>FULL NAME:</p></span>
+          <div className='nested-details-group'>
+          <span  className='nested-details-span'>
+           <p className='user-details-label'>FIRST NAME:</p>
+           <p>Current user first name</p>
+
+          </span>
+ <span className='nested-details-span' >
+       
+           <p className='user-details-label'>LAST NAME:</p>
+<p>Current user last name</p>
+          </span>
+          </div>
+         
         </div>
       </div>
       <div className="p-2">
-      <div>
-        <span><p>DATE OF BIRTH</p></span>
+      <div className='details-group'>
+        <span><p className='user-details-label'>DATE OF BIRTH</p></span>
+         <p className='user-details-value'>current user date of birth</p>
       </div>
         {/* Date of Birth */}
+       
       </div>
+      <div className="p-2">
+        {/* Is admin */}
+        <span>
+          <p className='user-details-label'>ADMIN:</p>
+          {/* YES/NO */}
+        </span>
+        </div>
     </Stack>
         </Col>
         <Col xs={6}>
@@ -50,15 +72,13 @@ export default function Profile({currentUser, logout, setError}) {
       <div className="p-2">
         {/* Email */}
         <div>
-          <span><p>EMAIL:</p></span>
+          <span><p className='user-details-label'>EMAIL:</p></span>
         </div>
       </div>
       <div className="p-2">
-        {/* Is admin */}
-        <div>
+        <div id='user-details-group'>
         <span>
-          <p>ADMIN:</p>
-          {/* YES/NO */}
+          <p className='nested-details-label'>ADDRESS:</p>
         </span>
         </div>
       </div>
@@ -85,7 +105,12 @@ export default function Profile({currentUser, logout, setError}) {
       <div className="vr" style={{width: '2px', color: '#404040', opacity: '.75'}}/>
       <div className="p-2">
         {/* TOGGLE EDIT PASSWORD BUTTON */}
-        <Button id='toggleEditPswdBtn' variant='light' onClick={toggleEditPswdForm}>EDIT PASSWORD</Button>
+        <Button 
+        id='toggleEditPswdBtn' 
+        variant='light' 
+        onClick={toggleEditPswdForm}>
+        {showEditPswd ? 'Exit': 'Edit Password'}
+        </Button>
       </div>
     </Stack>
           </Col>
