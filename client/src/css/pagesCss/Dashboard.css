@@ -36,6 +36,20 @@ margin: 0px;
     margin: 0px;
     padding: 0px;
 }
+#change-tax-year-row{
+    width: 100%;
+}
+#change-tax-year-col1,
+#change-tax-year-col2{
+    margin: 0px;
+    padding: 0px;
+}
+#change-tax-year-toggle{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
 /* TABS: https://react-bootstrap.netlify.app/docs/components/tabs */
 #dashboard-tab{
     width: 100%;
@@ -55,4 +69,68 @@ margin: 0px;
     text-transform:uppercase ;
     font-weight: 700;
     border: solid;
+}
+#tax-year-span{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0px;
+    padding: 5px 0px 0px 0px;
+    border-bottom: solid #404040;
+}
+#tax-year-span h4{
+    margin: 0px;
+    padding: 0px;
+}
+#edit-taxyear-input{
+    text-align: center;
+  border: solid black 2px;
+  border-radius: 5px;
+  padding: 5px;
+  width: 180px;
+  font-family: "Courier Prime", monospace;
+  font-size: 16px;
+  font-weight: 700;
+}
+#toggle-tax-year-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 5px 3px 5px 0px;
+}
+#change-tax-year-panal{
+        width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+}
+#toggle-tax-year-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    width: 180px;
+    height: 40px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    font-size: 16px;
+}
+#change-tax-year-form{
+    background-color: #A8AEB3;
+    margin: 0px;
+    padding: 0px;
+    width: 50%;
+}
+#edit-year-block{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0px;
+    flex-direction: column;
 }
