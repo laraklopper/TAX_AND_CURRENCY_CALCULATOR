@@ -20,6 +20,7 @@ AddTaxDataForm.js */
    width: 100%;
    flex-direction: column;
 }
+/* INPUT LAYOUT */
 .tax-input-div{
      display: flex;
     align-items: center;
@@ -27,6 +28,7 @@ AddTaxDataForm.js */
     margin: 0px;
     padding: 0px;
 }
+/* INPUT */
 .taxdata-input{
  text-align: center;
   border: solid black 2px;
@@ -56,9 +58,25 @@ AddTaxDataForm.js */
 .tax-field-ok{
   border-color: #D1D5DB;
 }
+/* ERROR */
 .tax-field-error{
   border-color: #F87171;
   background-color: #FEF2F2;
+}
+
+
+/* TEXT */
+.formSectionHead{
+    font-family: "Fira Sans", sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-decoration: underline;
+    font-size: 18px;
+}
+.formHeader{
+    text-align: center;
+    font-family: "Fira Sans", sans-serif;
 }
 .tax-form-label{
     font-family: "Fira Sans", sans-serif;
@@ -71,17 +89,6 @@ AddTaxDataForm.js */
     font-family: "Fira Sans", sans-serif;
     letter-spacing: 2px;
     font-size: 14px;
-
-}
-.formSectionHead{
-    font-family: "Fira Sans", sans-serif;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-decoration: underline;
-}
-.formHeader{
-    text-align: center;
 }
 /* =====================
 LAYOUT
@@ -112,6 +119,7 @@ LAYOUT
     margin: 0px;
     width: 100%;
     padding: 0px;
+    display: flex;
 }
 #tax-year-block1,
 #tax-year-block2,
@@ -146,6 +154,8 @@ LAYOUT
     display: flex;
     align-items: center;
     margin: 0px;
+    padding: 0px;
+    width: 100%;
 }
 #bracket-data{
     display: flex;
@@ -154,7 +164,7 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-/* LIST */
+/* LIST: https://react-bootstrap.netlify.app/docs/components/list-group */
 #brackets{
     display: flex;
     flex-direction: column;
@@ -189,7 +199,7 @@ LAYOUT
     gap: 10px;
     padding: 10px;
 }
-/* Group 4 */
+/* Group 4: Tax Thresholds (R) */
 #taxform-group4{
     border: solid #323A42 2px;
     background: #D6D6D6;
@@ -198,7 +208,7 @@ LAYOUT
     margin: 0px;
     padding: 10px;
 }
-/* Group 5 Tax Thresholds (R)*/
+/* Group 5 */
 #taxform-group5{
    display: flex;
    justify-content: center;
@@ -215,24 +225,30 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-#income-tax-bracket-list{
-    display: flex;
-    flex-direction: column;
-}
 #delete-bracket-div{
-        display: flex;
+    display: flex;
     justify-content: flex-end;
     margin: 0px;
     padding: 0px;
 }
-/* BUTTONS */
+/* BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons */
 #submitTaxDataBtn{
     display: flex;
-    
+    justify-content: center;
+    text-transform: uppercase;
+    height: 40px;
+    width: 200px;
     align-items: center;
     gap: 5px;
     font-weight: 700;
     color: #000;
+    font-family: "Courier Prime", monospace;
+    border: solid 2px #323A42;
+}
+#submitTaxDataBtn:hover,
+#addIncomeTaxBracket:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
 }
 #addIncomeTaxBracket{
     display: flex;
@@ -240,10 +256,17 @@ LAYOUT
     gap: 10px;
     text-transform: uppercase;
     color: #000;
-    font-weight: 600;
+    font-weight: 700;
+    border: solid 2px #323A42;
+    width: 180px;
+    height: 40px;
+    font-family: "Courier Prime", monospace;
 }
 #removeBracketBtn{
     width: 40px;
     height: 40px;
     font-weight: 700;
+    border: solid 2px #323A42;
+    margin: 0px;
+    padding: 0px;
 }

@@ -293,25 +293,21 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
           </label>
            </div>
     </Stack>
-    {/* ST */}
-       <Stack direction="horizontal" gap={3}>
-     
-      <div className="p-2"></div>
-      <div className="p-2"></div>
-    </Stack>
-          
       </div>
         {/* ---   GROUP 2: BRACKETS ------------------------------------------------ */}
       <div id="taxform-group2">
-    <Stack direction="horizontal" gap={3}>
+      {/* INCOME TAX BRACKETS HEADING STACK */}
+    <Stack direction="horizontal" gap={3} id="income-tax-head-stack">
       <div className="p-2"><h5 className="formSectionHead">Income Tax Brackets</h5></div>
       <div className="p-2 ms-auto"></div>
       <div className="p-2">
         <Button
               type="button"
               onClick={addBracket}
-              variant="secondary"
+              variant="light"
               id="addIncomeTaxBracket"
+              // ARIA ATTRIBUTES:
+              aria-label="addBracket"
         >
 <Plus size={16} fontWeight={700} aria-hidden='true' focusable='false'/> Add bracket
         </Button>
