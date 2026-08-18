@@ -1,0 +1,37 @@
+#edit-tax-year-stack{
+    display: flex;
+    justify-content: center;
+
+}
+#edit-year-block2{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+.edit-taxyear-label{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+  margin: 0px;
+  letter-spacing: 1px;
+  padding: 0px;
+}
+#edit-taxyear-input{
+  text-align: center;
+  border: solid black 2px;
+  border-radius: 5px;
+  padding: 5px;
+  width: 180px;
+  font-family: "Courier Prime", monospace;
+  font-size: 16px;
+  font-weight: 700;
+}
+#saveTaxYearBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    margin: 0px;
+    padding: 0px;
+}

@@ -47,7 +47,7 @@ margin: 0px;
 #change-tax-year-toggle{
     display: flex;
     justify-content: center;
-    margin: 0px;
+    margin: 5px 0px;
     padding: 0px;
 }
 /* TABS: https://react-bootstrap.netlify.app/docs/components/tabs */
@@ -82,16 +82,7 @@ margin: 0px;
     margin: 0px;
     padding: 0px;
 }
-#edit-taxyear-input{
-    text-align: center;
-  border: solid black 2px;
-  border-radius: 5px;
-  padding: 5px;
-  width: 180px;
-  font-family: "Courier Prime", monospace;
-  font-size: 16px;
-  font-weight: 700;
-}
+
 #toggle-tax-year-div{
     display: flex;
     flex-direction: column;
@@ -100,6 +91,7 @@ margin: 0px;
     width: 100%;
     margin: 0px;
     padding: 5px 3px 5px 0px;
+    gap: 10px;
 }
 #change-tax-year-panal{
         width: 100%;

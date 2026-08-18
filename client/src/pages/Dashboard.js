@@ -3,12 +3,12 @@ import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Dashboard.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Stack from 'react-bootstrap/Stack';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import ChangeTaxYearForm from '../components/ChangeTaxYearForm';
 
 
 export default function Dashboard({currentUser, logout}) {
@@ -57,26 +57,7 @@ export default function Dashboard({currentUser, logout}) {
             <Button variant='warning' id='toggle-tax-year-btn' onClick={toggleChangeTaxYear}>CHANGE TAX YEAR</Button>
           {showChangeTaxYear && (
             <div id='change-tax-year-panal'>
-              <form id='change-tax-year-form'>
-                <div>
-                  <Stack gap={3}>
-                  <div className="p-2" id='edit-year-block'>
-                    <label className='edit-taxyear-label'>TAX YEAR</label>
-                    <input
-                      id='edit-taxyear-input'
-                    />
-                  </div>
-                  <div className="p-2">
-                    <Button
-                    variant='warning'
-                    >CHANGE YEAR</Button>
-                  </div>
-                 
-              </Stack>
-                </div>
-
-
-              </form>
+              <ChangeTaxYearForm/>
             </div>
           )}
           </div>
