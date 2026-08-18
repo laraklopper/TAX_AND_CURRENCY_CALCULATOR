@@ -1,14 +1,18 @@
+/* TaxForm.css,
+AddTaxDataForm.js */
+/* ADD TAX DATA BLOCK */
 #tax-form-block{
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    padding: 10px;
     border: solid;
     padding: 10px 5px;
     margin: 0px;
     background-color: #A8AEB3; 
+    gap: 10px;
 }
+/* FORM */
 #add-tax-data-form{
     display: flex;
     align-items: center;
@@ -82,18 +86,19 @@
 /* =====================
 LAYOUT
 ===============*/
+/* INPUT */
 #tax-form-details-input{
-    width: 80%;
+   width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0px;
     gap: 10px;
-    padding: 0px;
+    padding: 10px;
     background-color: #BFBFBF;
-
+    overflow-y: scroll;
 }
-/* Group 1 */
+/* Group 1: TAX YEAR IDENTITY*/
 #taxform-group1{
     border: solid #323A42 2px;
     background: #D6D6D6;
@@ -102,49 +107,80 @@ LAYOUT
     margin: 0px;
     padding: 10px;
 }
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
 #tax-year-stack{
     margin: 0px;
     width: 100%;
+    padding: 0px;
 }
-#tax-year-block1{
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-}
-#tax-year-block2{
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin: 0px;
-}
+#tax-year-block1,
+#tax-year-block2,
 #tax-year-block3{
     display: flex;
+    flex-direction: column;
     align-items: baseline;
     gap: 10px;
     margin: 0px;
 }
-/* Group 2 */
+#tax-year-block4{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+}
+/* Group 2: INCOME BRACKETS*/
 #taxform-group2{
+    display: flex;
+    flex-direction: column;
     border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
     width: 100%;
     margin: 0px;
     padding: 10px;
+    overflow-y: scroll;
+}
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
+#income-tax-head-stack{
+    display: flex;
+    align-items: center;
+    margin: 0px;
 }
 #bracket-data{
-        display: flex;
+    display: flex;
     flex-direction: column;
     gap: 10px;
     margin: 0px;
     padding: 0px;
 }
+/* LIST */
 #brackets{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin: 0px;
+    padding: 0px 10px;
 }
-/* Group 3 */
+#bracketListItem1,
+#bracketListItem2,
+#bracketListItem3,
+#bracketListItem4{
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}
+#form-bracket-layout{
+    border: solid #323A42 1px;
+    padding: 5px;
+    background-color: #D1D5DB;
+    border-radius: 5px;
+}
+/* Group 3: Rebates (annual, R) */
 #taxform-group3{
     border: solid #323A42 2px;
     background: #D6D6D6;
@@ -162,19 +198,22 @@ LAYOUT
     margin: 0px;
     padding: 10px;
 }
-/* Group 5 */
+/* Group 5 Tax Thresholds (R)*/
 #taxform-group5{
-    border: solid #323A42 2px;
-    background: #D6D6D6;
+   display: flex;
+   justify-content: center;
     border-radius: 8px;
     width: 100%;
     margin: 0px;
     padding: 0px;
 }
-#taxyearcheckbox-input{
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
+#tax-actions-stack{
     display: flex;
-    gap: 10px;
-    justify-content: baseline;
+    align-items: baseline;
+    width: 80%;
+    margin: 0px;
+    padding: 0px;
 }
 #income-tax-bracket-list{
     display: flex;

@@ -3,6 +3,7 @@ import '../css/componentCss/TaxForm.css'
 import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { Plus, Trash2, Save, RotateCcw, CheckCircle2, AlertCircle } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -221,13 +222,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
         <h3 id="formHeading">
           {isEditMode ? "Update Tax Year Configuration" : "Add Tax Year Configuration"}
         </h3>
-        {/* <p >
-          Defines the SARS brackets, rebates, and thresholds used by the tax
-          calculator for a given tax year. New Budget Speech figures should
-          be added here as a new tax year, not hardcoded in the calculator.
-        </p> */}
       </div>
-
       {status === "success" && (
         <div className="mb-4 flex items-center gap-2 rounded-md bg-green-50 border border-green-200 px-3 py-2 text-sm text-green-800">
           <CheckCircle2 size={16} className="shrink-0" />
@@ -240,19 +235,20 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
           {statusMessage}
         </div>
       )}
-
-      <form onSubmit={handleSubmit} noValidate id="add-tax-data-form">
+      {/* =======FORM============== */}
+      <form onSubmit={handleSubmit}  id="add-tax-data-form">
       <div id="tax-form-details-input">
-        {/* --- Tax year identity ------------------------------------- */}
-      <div id="taxform-group1">
- <h5 className="formSectionHead">Tax Year</h5>
-  <Stack  gap={3}>
+        {/* --- GROUP 1: TAX YEAR IDENTITY ------------------------------------- */}
+      <div id="taxform-group1" aria-labelledby="taxYearHead">
+        <h5 className="formSectionHead" id="taxYearHead">Tax Year</h5>
+        {/* STACK 1 */}
+      <Stack  gap={3} id="tax-year-stack">
       <div className="p-2" id="tax-year-block1">
-          <label  className="tax-form-label">Tax year label</label>
+          <label className="tax-form-label">Tax year label</label>
               <input
                 type="text"
                 placeholder="2025-2026"
-                className="taxdata-input"
+                className="tax-field"
                 // className={fieldCls("taxYear")}
                 value={form.taxYear}
                 disabled={isEditMode}
@@ -267,7 +263,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               <input
                 type="date"
                 // className={fieldCls("startDate")}
-                className="taxdata-input"
+                className="tax-field"
                 value={form.startDate}
                 onChange={(e) => updateField("startDate", e.target.value)}
               />
@@ -279,19 +275,14 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
               >End date</label>
               <input
                 type="date"
-                // className={fieldCls("endDate")}
-                className="taxdata-input"
+                className="tax-field"
+                // name=""
                 value={form.endDate}
                 onChange={(e) => updateField("endDate", e.target.value)}
               />
               {errors.endDate && <p className={errText}>{errors.endDate}</p>}
       </div>
-      <div>
-        
-      </div>
-    </Stack>
-       <Stack direction="horizontal" gap={3}>
-      <div className="p-2" id="taxyearcheckbox-input">
+       <div className="p-2" id="tax-year-block4">
             <input
               type="checkbox"
               className="rounded border-gray-300"
@@ -301,108 +292,110 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
              <label className="tax-checkbox-label"> Set as the active tax year (used by default in calculations)
           </label>
            </div>
+    </Stack>
+    {/* ST */}
+       <Stack direction="horizontal" gap={3}>
+     
       <div className="p-2"></div>
       <div className="p-2"></div>
     </Stack>
           
       </div>
-        {/* --- Brackets ------------------------------------------------ */}
+        {/* ---   GROUP 2: BRACKETS ------------------------------------------------ */}
       <div id="taxform-group2">
- 
     <Stack direction="horizontal" gap={3}>
       <div className="p-2"><h5 className="formSectionHead">Income Tax Brackets</h5></div>
-      <div className="p-2 ms-auto">Second item</div>
+      <div className="p-2 ms-auto"></div>
       <div className="p-2">
         <Button
-        type="button"
+              type="button"
               onClick={addBracket}
               variant="secondary"
               id="addIncomeTaxBracket"
         >
-<Plus size={16} /> Add bracket
+<Plus size={16} fontWeight={700} aria-hidden='true' focusable='false'/> Add bracket
         </Button>
       </div>
     </Stack>
           {errors.brackets && <p className={errText}>{errors.brackets}</p>}
           <div id="bracket-data">
-            <div id="brackets">
-              <span>Min (R)</span>
-              <span>Max (R) — blank = no ceiling</span>
-              <span>Base amount (R)</span>
-              <span>Rate (%)</span>
-              <span></span>
-            </div>
+            <ListGroup variant="flush" id="brackets">
+              <ListGroup.Item id="bracketListItem1">Min (R)</ListGroup.Item>
+              <ListGroup.Item id="bracketListItem2">Max (R) — blank = no ceiling</ListGroup.Item>
+              <ListGroup.Item id="bracketListItem3">Base amount (R)</ListGroup.Item>
+              <ListGroup.Item id="bracketListItem4">Rate (%)</ListGroup.Item>
+            </ListGroup>
             {form.brackets.map((b, i) => (
               <div
                 key={i}
                 id="form-bracket-layout"
               >
               <div id="bracket-input">
-                <div>
-                  <input
+              <Stack gap={3} id="bracket-input-stack">
+      <div className="p-2">
+          <input
                     type="number"
                     placeholder="Min"
-                    // className={fieldCls(`bracket-${i}-min`)}
-                    className="taxdata-input"
+                    className="tax-field"
                     value={b.min}
                     onChange={(e) => updateBracket(i, "min", e.target.value)}
                   />
                   {errors[`bracket-${i}-min`] && (
                     <p className={errText}>{errors[`bracket-${i}-min`]}</p>
                   )}
-                </div>
-                <div>
-                  <input
+      </div>
+      <div className="p-2">
+         <input
                     type="number"
                     placeholder="No ceiling"
-                    className="taxdata-input"
-                    // className={fieldCls(`bracket-${i}-max`)}
+                    className="tax-field"
                     value={b.max}
                     onChange={(e) => updateBracket(i, "max", e.target.value)}
                   />
                   {errors[`bracket-${i}-max`] && (
                     <p className={errText}>{errors[`bracket-${i}-max`]}</p>
                   )}
-                </div>
-                <div>
-                  <input
+      </div>
+      <div className="p-2">
+         <input
                     type="number"
                     placeholder="Base amount"
-                    className="taxdata-input"
-                    // className={fieldCls(`bracket-${i}-baseAmount`)}
+                    className="tax-field"
                     value={b.baseAmount}
                     onChange={(e) => updateBracket(i, "baseAmount", e.target.value)}
                   />
                   {errors[`bracket-${i}-baseAmount`] && (
                     <p className={errText}>{errors[`bracket-${i}-baseAmount`]}</p>
                   )}
-                </div>
-                <div>
-                  <input
+      </div>
+      <div className="p-2">
+        <input
                     type="number"
                     step="0.01"
                     placeholder="Rate %"
-                    className="taxdata-input"
-                    // className={fieldCls(`bracket-${i}-rate`)}
+                    className="tax-field"
                     value={b.rate}
                     onChange={(e) => updateBracket(i, "rate", e.target.value)}
                   />
                   {errors[`bracket-${i}-rate`] && (
                     <p className={errText}>{errors[`bracket-${i}-rate`]}</p>
                   )}
-                </div>
+      </div>
+    </Stack>
+               
+               
               </div> 
               <div id="delete-bracket-div">
                 <Button
+                  variant="danger"
                   type="button"
                   onClick={() => removeBracket(i)}
                   disabled={form.brackets.length === 1}
-                  className="self-center text-gray-400 hover:text-red-600 disabled:opacity-30 disabled:hover:text-gray-400 p-2"
                   title="Remove bracket"
                   size="sm"
                   id="removeBracketBtn"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={16} fontWeight={700}/>
                 </Button>
                 </div>
               </div>
@@ -410,8 +403,8 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
           </div>
       </div>
         {/* --- Rebates ------------------------------------------------- */}
-        <div id="taxform-group3">
-          <h5>Rebates (annual, R)</h5>
+        <div id="taxform-group3" aria-labelledby="annualRebates">
+          <h5 className="formSectionHead" id="annualRebates">Rebates (annual, R)</h5>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               ["primary", "Primary (all taxpayers)"],
@@ -448,7 +441,8 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                 >{text}</label>
                 <input
                   type="number"
-                  className={fieldCls(`threshold-${key}`)}
+                  className="tax-field"
+                  // className={fieldCls(`threshold-${key}`)}
                   value={form.thresholds[key]}
                   onChange={(e) => updateNested("thresholds", key, e.target.value)}
                 />
@@ -462,16 +456,17 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
 </div>
         {/* --- Actions ------------------------------------------------- */}
         <div id="taxform-group5">
-        <Stack direction="horizontal" gap={3}>
+        <Stack direction="horizontal" gap={3} id="tax-actions-stack">
       <div className="p-2"></div>
       <div className="p-2 ms-auto">
            <Button
-          variant="light"
+            variant="light"
             type="submit"
             disabled={status === "saving"}
            id="submitTaxDataBtn"
+           role="button"
           >
-            <Save size={16} />
+            <Save size={16} fontWeight={700} aria-hidden='true' focusable='false'/>
             {status === "saving"
               ? "Saving..."
               : isEditMode
