@@ -6,6 +6,19 @@
     margin: 0px;
     padding: 10px 0px;
     gap: 5px;
+    background-color: #8dbdca;
+}
+#dashboard-sec1-panal{
+    width: 100%;
+}
+#dashBoardSec2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
     background-color: #1262B3;
 }
 /* LAYOUT */
@@ -44,44 +57,35 @@ margin: 0px;
     margin: 0px;
     padding: 0px;
 }
-#change-tax-year-toggle{
+#tax-year-data-row{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#change-tax-year-toggle-col{
     display: flex;
     justify-content: center;
     margin: 5px 0px;
     padding: 0px;
 }
-/* TABS: https://react-bootstrap.netlify.app/docs/components/tabs */
-#dashboard-tab{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    justify-content: space-evenly;
-}
-/* Tab Links */
-.nav-tabs .nav-link{
-    color: #000;
-    text-transform:uppercase ;
-    font-weight: 700;
-}
-.nav-tabs .nav-link:active{
-    color: #000;
-    text-transform:uppercase ;
-    font-weight: 700;
-    border: solid;
-}
+
 #tax-year-span{
     display: flex;
     align-items: baseline;
     gap: 10px;
     margin: 0px;
     padding: 5px 0px 0px 0px;
-    border-bottom: solid #404040;
+    border-bottom: solid #591616;
 }
 #tax-year-span h4{
     margin: 0px;
     padding: 0px;
+    color: #591616;
+    font-family: "Roboto", sans-serif;
+    font-weight: 800;
 }
+
 
 #toggle-tax-year-div{
     display: flex;
@@ -99,6 +103,7 @@ margin: 0px;
     justify-content: center;
     margin: 0px;
 }
+/* BUTTON */
 #toggle-tax-year-btn{
     display: flex;
     justify-content: center;
