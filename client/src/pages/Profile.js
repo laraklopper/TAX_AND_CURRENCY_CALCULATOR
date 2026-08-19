@@ -100,7 +100,9 @@ export default function Profile({currentUser, logout, setError}) {
         aria-pressed={showEditUser}
         aria-expanded={showEditUser}
         aria-controls='edit-user-panal'
-        >EDIT DETAILS</Button>
+        >
+          EDIT DETAILS
+        </Button>
       </div>
       <div className="vr" style={{width: '2px', color: '#404040', opacity: '.75'}}/>
       <div className="p-2">
