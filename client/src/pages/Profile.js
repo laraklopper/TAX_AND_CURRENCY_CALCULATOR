@@ -1,3 +1,4 @@
+// Profile.js
 import React, { useState } from 'react'
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Profile.css'
@@ -50,13 +51,13 @@ export default function Profile({currentUser, logout, setError}) {
           <span><p className='nested-details-label'>FULL NAME:</p></span>
           <div className='nested-details-group'>
           <span  className='nested-details-span'>
-           <p className='user-details-label'>FIRST NAME:</p>
-           <p>Current user first name</p>
+           <p className='details-label'>FIRST NAME:</p>
+           <p className='details-value'>Current user first name</p>
 
           </span>
  <span className='nested-details-span' >
        
-           <p className='user-details-label'>LAST NAME:</p>
+           <p className='details-label'>LAST NAME:</p>
 <p>Current user last name</p>
           </span>
           </div>
@@ -65,16 +66,15 @@ export default function Profile({currentUser, logout, setError}) {
       </div>
       <div className="p-2">
       <div className='details-group'>
-        <span><p className='user-details-label'>DATE OF BIRTH</p></span>
+        <span><p className='details-label'>DATE OF BIRTH:</p></span>
          <p className='user-details-value'>current user date of birth</p>
       </div>
-        {/* Date of Birth */}
-       
       </div>
       <div className="p-2">
         {/* Is admin */}
         <span>
-          <p className='user-details-label'>ADMIN:</p>
+          <p className='details-label'>IS ADMIN:</p>
+          {/* State whether or not user is Admin user */}
           {/* YES/NO */}
         </span>
         </div>
@@ -85,7 +85,7 @@ export default function Profile({currentUser, logout, setError}) {
       <div className="p-2">
         {/* Email */}
         <div>
-          <span><p className='user-details-label'>EMAIL:</p></span>
+          <span><p className='details-label'>EMAIL:</p></span>
         </div>
       </div>
       <div className="p-2">
