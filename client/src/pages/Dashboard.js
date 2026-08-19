@@ -9,7 +9,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ChangeTaxYearForm from '../components/ChangeTaxYearForm';
 import TaxDataDisplay from '../components/TaxDataDisplay';
-
+import { Percent } from 'lucide-react';
 
 export default function Dashboard({currentUser, logout}) {
   const [showChangeTaxYear, setShowChangeTaxYear] =useState(false)
@@ -18,6 +18,15 @@ export default function Dashboard({currentUser, logout}) {
   return (
     <div id='pageContainer' role='main'>
       <Header currentUser={currentUser} pageHeader={'DASHBOARD'}/>
+      <Row id='event-row' role='presentation'>
+        <Col id='event-col'>
+          <div className='event-bar'>
+            <div className='event-track'>
+              <Percent className='event-slide' size={32} aria-hidden='true' focusable='false'/>
+            </div>
+          </div>
+        </Col>
+      </Row>
       <section id='dashBoardSec1'>
           <div id='dashboard-panal'>
    

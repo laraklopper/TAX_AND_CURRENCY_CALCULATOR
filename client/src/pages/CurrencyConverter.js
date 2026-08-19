@@ -9,6 +9,7 @@ import Footer from '../components/Footer'
 import CurrencyConvertForm from '../components/CurrencyConvertForm';
 import CurrencyList from '../components/CurrencyList';
 
+
 // Default values used when the form is first loaded or reset
 const EMPTY_FORM = {
     amount: '',
@@ -70,6 +71,7 @@ export default function CurrencyConverter({currentUser, logout}) {
   return (
     <div id='pageContainer' role='main'>
       <Header currentUser={currentUser} pageHeader={'CURRENCY CONVERTER'}/>
+      
       <section id='currency-converter-sec1'>
         
         <Row id='currency-converter-row'>

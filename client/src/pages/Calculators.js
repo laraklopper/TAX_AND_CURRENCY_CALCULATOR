@@ -10,7 +10,7 @@ import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
 import TaxCalculator from '../components/TaxCalculator';
 import InterestCalc from '../components/InterestCalc';
-
+import { Calculator } from 'lucide-react';
 export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
@@ -36,6 +36,15 @@ export default function Calculators({currentUser, logout}) {
   return (
     <div id='pageContainer' role='main'>
       <Header currentUser={currentUser} pageHeader={'CALCULATORS'}/>
+      <Row id='event-row'>
+        <Col id='event-col'>
+          <div className='event-bar'>
+            <div className='event-track'>
+              <Calculator className='event-slide' fill='#c0c0c0' size={32} aria-hidden='true' focusable='false'/>
+            </div>
+          </div>
+        </Col>
+      </Row>
       <section id='calculatorSec1'>
       <Row id='toggleCalculatorRow'>
         <Col id='toggleCalcCol1'/>
