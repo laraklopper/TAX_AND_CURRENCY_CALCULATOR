@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // IMPORT REACT ROUTER COMPONENTS
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Bug } from 'lucide-react';
+import { Bug, GlobeOff } from 'lucide-react';
 import Dashboard from './pages/Dashboard'
 import Calculators from './pages/Calculators';
 import CurrencyConverter from './pages/CurrencyConverter'
@@ -194,7 +194,10 @@ export default function App() {
             </>
           )}
           {/* FALL BACK ROUTE: Response 404 PAGE NOT FOUND */}
-        <Route path='*' element={<h2 id='pageNotFound'>404: Page Not Found</h2>}/>
+        <Route path='*' element={<span id='pageNotFound'>
+<h2 id='pageNotFound-text'>404: Page Not Found </h2><GlobeOff fontSize={42} fontWeight={800} color='#470D09'/>
+        </span>
+        }/>
         </Routes>
         
       </Container>
