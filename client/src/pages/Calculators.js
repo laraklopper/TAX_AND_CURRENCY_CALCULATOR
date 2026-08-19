@@ -160,7 +160,13 @@ export default function Calculators({currentUser, logout}) {
             </Row>
 
       </section>
-    
+    <section>
+      <Row>
+        <Col>
+          <TaxCalculator/>
+        </Col>
+      </Row>
+    </section>
       <Footer logout={logout}/>
     </div>
   )
