@@ -125,7 +125,13 @@ export default function Profile({currentUser, logout, setError}) {
         <Button 
         id='toggleEditPswdBtn' 
         variant='light' 
-        onClick={toggleEditPswdForm}>
+        onClick={toggleEditPswdForm}
+        type='button'
+        aria-label={showEditPswd ? 'Exit': 'Edit Password'}
+        aria-pressed={showEditPswd}
+        aria-expanded={showEditPswd}
+        aria-controls='edit-user-panal'
+        >
         {showEditPswd ? 'Exit': 'Edit Password'}
         </Button>
       </div>
