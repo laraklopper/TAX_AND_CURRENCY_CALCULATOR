@@ -38,3 +38,19 @@
     letter-spacing: 2px;
     margin-bottom: 2px;
 }
+/* The detail itself, displayed alongside its .details-label */
+.details-value{
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #000;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+    word-break: break-word;
+    
+}
+/* Email addresses are stored lowercase, so show them exactly as they are stored */
+.details-value.email-value{
+    text-transform: none;
+}
