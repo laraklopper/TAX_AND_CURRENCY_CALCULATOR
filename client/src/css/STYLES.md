@@ -35,6 +35,9 @@ html, #body{
 #header{
  background-color: #B6C6D4;
 }
+.appHeading{
+  color: #591616;
+}
 .pageHeading{
     color: #470D09;
     font-size:;
@@ -151,6 +154,20 @@ padding: 0px;
 
 ```
 
+### 1.6. DETAILS
+```css
+.details-div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ background-color: #9E9E9E; 
+}
+.details-label{
+  color:#767224;
+
+}
+.details-value
+```
 ### 1.6. BUTTONS
 
 Background color for buttons is based on bootstrap variant
@@ -176,6 +193,29 @@ Background color for buttons is based on bootstrap variant
 #toggleEditPswdBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
+}
+```
+### ERROR
+
+```css
+#global-error-row{
+  margin:0px;
+  padding: 0px;
+  width: 100%;
+}
+#global-error-col{
+  margin:0px;
+  padding: 0px;
+}
+.errorMsg{
+  color: #661820;
+  font-family: "Noto Serif", serif;
+  font-weight: 700;
+}
+
+.errorIcon{
+  color: #3D0F13;
+  font-weight: 700;
 }
 ```
 ## 2. BOOTSTRAP
@@ -212,6 +252,35 @@ root {
 
 ```
 ---
+## 3. COLOURS
+
+```css
+#F8F9FA;
+#D4D5D6;
+#ACADAD;
+#838485;
+#5B5B5C
+
+#524F19
+#F5EC4C
+#CCC53F
+#A39E33
+#767224
+
+
+#941B13
+#8C1A12
+#C22419
+#470D09
+#70150F
+
+/* dark */
+#212529
+#A7BCD1
+#8797A8
+#667380
+#454E57
+```
 ## 3. GOOGLE FONTS
 
 `index.html`
