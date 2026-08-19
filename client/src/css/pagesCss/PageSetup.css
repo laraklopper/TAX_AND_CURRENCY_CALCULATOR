@@ -120,22 +120,3 @@ ANIMATIONS
         transform: translate(-50%, -50%);
     }
 }
-.web-link-item{
-    width: 80%;
-}
-.web-Link{
-     display: flex;
-    letter-spacing: 2px;
-    align-items: center;
-    text-decoration: underline #eee;
-    font-family: "Roboto Mono", monospace;
-    margin: 0px;
-    color:  #E8F0F6;
-    padding: 0px;
-    text-decoration: none;
-    height: 40px;
-    font-weight: 700;
-    justify-content: center;
-    border-radius: 5px;
-    text-align: center;
-}
