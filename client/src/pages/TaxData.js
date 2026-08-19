@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
-import '../css/pagesCss/Users.css'
+import '../css/pagesCss/TaxData.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
