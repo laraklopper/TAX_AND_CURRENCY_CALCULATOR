@@ -9,6 +9,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import EditPasswordForm from '../components/EditPasswordForm';
 import EditUserForm from '../components/EditUserForm';
+import { User } from 'lucide-react';
 
 export default function Profile({currentUser, logout, setError}) {
   const [showEditUser, setShowEditUser] = useState(false)
@@ -26,9 +27,20 @@ export default function Profile({currentUser, logout, setError}) {
   return (
     <div id='pageContainer'>
       <Header currentUser={currentUser} pageHeader={'PROFILE'}/>
+       <Row id='event-row'>
+        <Col id='event-col'>
+          <div className='event-bar'>
+            <div className='event-track'>
+              <User className='event-slide' size={32} aria-hidden='true' focusable='false'/>
+            </div>
+          </div>
+        </Col>
+      </Row>
+      {/* --------------
+      SECTION 1: USER DETAILS AND EDIT USER FORM
+      -------------------- */}
       <section id='profile-section1'>
       <div id='user-profile-div'>
-       
         <Row id='user-profileRow'>
         <Col xs={6}>
            <Stack gap={3}>
@@ -147,8 +159,7 @@ export default function Profile({currentUser, logout, setError}) {
         <Col id='edit-password-col2'></Col>
       </Row>
           </div>
-        )}
-     
+        )}     
       </section>
       <Footer logout={logout}/>
     </div>

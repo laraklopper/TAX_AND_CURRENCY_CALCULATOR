@@ -8,7 +8,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import CurrencyConvertForm from '../components/CurrencyConvertForm';
 import CurrencyList from '../components/CurrencyList';
-
+import { Scale } from 'lucide-react';
 
 // Default values used when the form is first loaded or reset
 const EMPTY_FORM = {
@@ -71,7 +71,15 @@ export default function CurrencyConverter({currentUser, logout}) {
   return (
     <div id='pageContainer' role='main'>
       <Header currentUser={currentUser} pageHeader={'CURRENCY CONVERTER'}/>
-      
+      <Row id='event-row'>
+        <Col id='event-col'>
+          <div className='event-bar'>
+            <div className='event-track'>
+              <Scale className='event-slide' size={32}/>
+            </div>
+          </div>
+        </Col>
+      </Row>
       <section id='currency-converter-sec1'>
         
         <Row id='currency-converter-row'>
