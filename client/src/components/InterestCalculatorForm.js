@@ -201,66 +201,80 @@ export default function InterestCalculatorForm({
  
   return (
     <div className="interest-calculator">
-      <div id="interest-formHeadingBlock">
+     
+      <form id='interest-calculator-form' onSubmit={handleSubmit} noValidate>
+         <div id="interest-formHeadingBlock">
         <h1 id="formHeading">Interest Calculator</h1>
         <span className='form-text-span'>
-<p className="form-text">
-          Estimate how much interest you'll earn or owe over time, using
-          simple or compound interest.
+          <p className="form-text">
+            Calculate how much interest you'll earn or owe over time, using
+            simple or compound interest. 
         </p>
         </span>
-        
       </div>
- 
       {status === "error" && (
         <div className="alert alert--error">
           <AlertCircle size={16} className="alert__icon" />
           {statusMessage}
         </div>
       )}
- 
-      <form id='interest-calculator-form' onSubmit={handleSubmit} noValidate>
-        {/* --- Interest type toggle --- */}
-        <div className="field-group1">
-          
+        <div id='interest-calculator-details-input'>
+        {/* --- GROUP 1 Interest type toggle --- */}
+        <div id="field-group1">  
+        {/* STACK 1 */}
           <Stack gap={3} id='interestForm-Stack1'>
-      <div className="p-2" id='toggle-group-block'>
-       <label className="field-label">Interest type</label>
-            {["simple", "compound"].map((t) => (
-              <Button
-              variant="outline-dark"
-                key={t}
-                type="button"
-                onClick={() => updateField("type", t)}
-                id='interest-type-selectbtn'
-                className={`toggle-button${
-                  form.type === t ? " toggle-button--active" : ""
-                }`}
-              >
-                {t}
-              </Button>
-            ))}
-        
-      </div>
-      <div className="p-2" id=''>
+          <div className="p-2" id='toggle-group-block1'>
+            <label className="field-label">Interest type</label>
+          </div>
+          <div className="p-2" id='toggle-group-block2'>
+            {/* Interest Type Buttons */}
+            <div className='button-div'>
+                  {["simple", "compound"].map((t) => (
+                    <Button
+                    variant="light"
+                      key={t}
+                      type="button"
+                      onClick={() => updateField("type", t)}
+                      id='interest-type-selectbtn'
+                      className={`toggle-button${
+                        form.type === t ? " toggle-button--active" : ""
+                      }`}
+                      // ARIA ATTRIBUTES:
+                    >
+                      {t}
+                    </Button>
+                  ))}
+            </div>
+          </div>
+          <div className="p-2" id='form-text-div'>
+            <p className='form-text'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
+            <p className='form-text'>Compound interest is calculated on the principal (original) amount and also on the added interest of previous periods.</p>
+          </div>
+        </Stack>
+        </div>
+        {/* GROUP 2 */}
+        <div id="field-group2">
+        {/* STACK 2 */}
+        <Stack gap={3} id='interestForm-Stack2'>
+       <div className="p-2" id='principal-amount-block'>
+       {/* PRINCIPAL TAX AMOUNT */}
           <div className="input-div">
-            <label className="field-label">Principal amount (R)</label>
+            <label className="field-label" htmlFor='principal-tax-amount'>Principal amount (R)</label>
             <input
               type="number"
+              id='principal-tax-amount'
               min="0"
               step="0.01"
               placeholder="10000"
               className='input'
-            //   className={fieldClass("principal")}
               value={form.principal}
               onChange={(e) => updateField("principal", e.target.value)}
             />
             {errors.principal && <p className="field-error">{errors.principal}</p>}
           </div>
- 
-          
       </div>
-      <div className="p-2">
+      {/* ANNUAL INTEREST */}
+      <div className="p-2" id='annual-interest-block'>
         <div className="input-div">
             <label className="field-label">Annual interest rate (%)</label>
             <input
@@ -270,23 +284,14 @@ export default function InterestCalculatorForm({
               step="0.01"
               placeholder="7.5"
               className='input'
-            //   className={fieldClass("rate")}
               value={form.rate}
               onChange={(e) => updateField("rate", e.target.value)}
             />
             {errors.rate && <p className="field-error">{errors.rate}</p>}
           </div>
       </div>
-    </Stack>
-
-        
-        </div>
-
- 
-        <div className="field-group2">
-         <Stack gap={3}>
+      {/* TIME PERIOD (YEARS) */}
       <div className="p-2" id='time-period-block'>
-
 <div className='input-div'>
 <label className="field-label">Time period (years)</label>
      <input
@@ -302,7 +307,13 @@ export default function InterestCalculatorForm({
             {errors.time && <p className="field-error">{errors.time}</p>}
 </div>
       </div>
-      <div className="p-2">
+    </Stack>
+     </div>
+     {/* GROUP 3: Compounding Frequency + Optional recurring monthly contribution */}
+    <div id='field-group3'>
+         <Stack gap={3} id='interestForm-Stack3'>
+      <div className="p-2" id='compounding-freq-block'>
+      {/* COMPOUNDING FREQUENCY */}
         <div className='input-div'>
  {form.type === "compound" && (
             <div className="input-div">
@@ -323,9 +334,9 @@ export default function InterestCalculatorForm({
           )}
         </div>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='opt-controbution-block'>
         <div className="input-div">
-            <label className="field-label">
+        <label className="field-label">
               Optional recurring monthly contribution (R)
             </label>
             <input
@@ -334,7 +345,6 @@ export default function InterestCalculatorForm({
               step="0.01"
               placeholder="0"
               className='input'
-            //   className={fieldClass("monthlyContribution")}
               value={form.monthlyContribution}
               onChange={(e) => updateField("monthlyContribution", e.target.value)}
             />
@@ -343,14 +353,12 @@ export default function InterestCalculatorForm({
             )}
           </div>
       </div>
-    </Stack>
-         
- 
-          
-        </div>
- 
+       </Stack>
+    </div>
+        </div>       
         <div className="form-actions">
-          <Button
+        <Stack gap={2} className="col-md-5 mx-auto" id='interest-form-'>
+       <Button
           variant='light'
             type="submit"
             disabled={status === "calculating"}
@@ -362,6 +370,8 @@ export default function InterestCalculatorForm({
           <Button variant='danger' type="button" onClick={resetForm} id='clearFormBtn'>
             <RotateCcw size={16} /> Reset
           </Button>
+    </Stack>
+         
         </div>
       </form>
  

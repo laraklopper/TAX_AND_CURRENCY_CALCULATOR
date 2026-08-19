@@ -97,39 +97,53 @@ export default function Calculators({currentUser, logout}) {
         </Col>
         <Col id='toggleCalcCol2'/>
       </Row>
-        <Row id='calculatorRow'>
-         <Col id='calculatorCol1'/>
-        <Col xs={6} id='calculatorCol'>
+        
           <div id='calculators-div'>
             {/* TAX CALCULATOR */}
             {showTaxCalc && (
               <div id='tax-calculator-panal'>
-                <TaxCalculator/>
+              <Row id='calculator1-Row'>
+<Col/>
+        <Col xs={6}>
+          <div id='tax-calculator-block'>
+            <TaxCalculator/>
+          </div>
+        </Col>
+        <Col/>
+              </Row>
+                
               </div>
             )}
             {/* INTEREST CALCULATOR */}
             {showIntCalc &&(
               <div id='int-calculator-panal'>
-      
-          <div id='interest-calculator-form-panal'>
+      <Row id='calculator2-Row'>
+      <Col/>
+        <Col xs={12} md={8}>
+<div id='interest-calculator-form-panal'>
 <InterestCalculatorForm/>
           </div>
-            
-         
+        </Col>
+        <Col/>
+      </Row>
+          
   
               </div>
             )}
             {/* BASIC CALCULATOR */}
             {showCalc && (
               <div id='calculator-panal'>
-                <NumberCalculator/>
+              <Row id='calculator3-Row'>
+        <Col/>
+        <Col xs={5}><NumberCalculator/></Col>
+        <Col/>
+      </Row>
+                
               </div>
             )}
 
           </div>
-        </Col>
-        <Col id='calculatorCol2'/>
-      </Row>
+        
       {/* Row 2:Calculator Information/Messages */}
             <Row id='info-msg-row'>
                 <Col xs={0} md id='info-msg-col1'/>

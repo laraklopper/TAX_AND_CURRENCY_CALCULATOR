@@ -174,7 +174,7 @@ CALCULATOR 3: GENERAL CALCULATOR
 ==========*/
 #calculator-panal{
     display: flex;
-    width: 80%;
+        width: 35%;
     justify-content: flex-start;
     margin: 0px;
     padding: 10px;

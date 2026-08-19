@@ -51,6 +51,16 @@
   font-size: 16px;
   font-weight: 700;
 }
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: transparent;
+}
+.input--error {
+  border-color: #f87171;
+  background-color: #fef2f2;
+}
+/* TEXT */
 .text-input{
   overflow-y: scroll;
   width: 200px;

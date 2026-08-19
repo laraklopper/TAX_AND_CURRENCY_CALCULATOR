@@ -15,22 +15,40 @@
   max-width: 786px;
   margin: 0 auto;
   padding: 10px;
-  background-color: #ffffff;
+ background-color: #8797A8;
       width: 100%;
       gap: 10px;
 }
 #interest-calculator-form{
+      gap: 10px;
+    display: flex;
+    flex-direction: column;
   background-color: #A8AEB3;
   margin: 0px;
   padding: 10px;
   width: 100%;
 }
 /* --- Header --- */
+/* ==============
+LAYOUT
+===========*/
+#interest-calculator-details-input{
+  display: flex;
+  flex-direction: column;
+  background-color: #BFBFBF;
+  margin: 0px;
+  padding: 10px;
+  gap: 10px;
+}
 #field-group1{
     display: flex;
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
 }
+/* STACK 1: https://react-bootstrap.netlify.app/docs/layout/stack */
 #interestForm-Stack1{
     display: flex;
     margin: 0px;
@@ -41,6 +59,7 @@
 
 #toggle-group-block {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
   margin: 0px;
@@ -61,9 +80,82 @@
     height: 40px;
     font-weight: 700;
 }
+#interest-type-selectbtn:hover {
+  background-color: #f9fafb;
+}
 
-/* --- Alerts --- */
+#interest-type-selectbtn--active {
+  background-color: #2563eb;
+  color: #ffffff;
+}
 
+#interest-type-selectbtn--active:hover {
+  background-color: #2563eb;
+}
+
+/* GROUP 2 */
+#field-group2{
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    /* border: solid #323A42 2px; */
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+/* STACK 2: https://react-bootstrap.netlify.app/docs/layout/stack */
+#interestForm-Stack2{
+      display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+/* GROUP 3 */
+#field-group3{
+  display: flex;
+  margin: 0px;
+  padding: 10px;
+  /* border: solid #323A42 2px; */
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+/* STACK 3: https://react-bootstrap.netlify.app/docs/layout/stack */
+#interestForm-Stack3{
+      display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+/* --- Form actions --- */
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  width: 100%;
+  border-top: 1px solid #e5e7eb;
+
+}
+/* STACK 4: https://react-bootstrap.netlify.app/docs/layout/stack */
+#interestForm-stack4{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0px;
+  padding: 10px;
+}
+/* TEXT */
+.field-label {
+  font-family: "Fira Sans", sans-serif;
+  font-weight: 700;
+  margin: 0px;
+  letter-spacing: 1px;
+  padding: 0px;
+  color: #000;
+  text-transform: uppercase;
+}
+/* ------
+ALERTS
+---------*/
 .alert {
   display: flex;
   align-items: center;
@@ -73,68 +165,13 @@
   border-radius: 0.375rem;
   font-size: 0.875rem;
 }
-
 .alert--error {
   background-color: #fef2f2;
   border: 1px solid #fecaca;
   color: #991b1b;
 }
-
 .alert__icon {
   flex-shrink: 0;
-}
-
-/* --- Form layout --- */
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-@media (min-width: 640px) {
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.form-grid__full {
-  grid-column: 1 / -1;
-}
-
-.field-group {
-  margin-bottom: 1.5rem;
-}
-
-.field-label {
-  font-family: "Fira Sans", sans-serif;
-  font-weight: 700;
-  margin: 0px;
-  letter-spacing: 1px;
-  padding: 0px;
-color: #000;
-text-transform: uppercase;
-}
-
-.field-input {
-  width: 100%;
-  border-radius: 0.375rem;
-  border: 1px solid #d1d5db;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  box-sizing: border-box;
-}
-
-.field-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #3b82f6;
-  border-color: transparent;
-}
-
-.field-input--error {
-  border-color: #f87171;
-  background-color: #fef2f2;
 }
 
 .field-error {
@@ -142,58 +179,43 @@ text-transform: uppercase;
   font-size: 0.75rem;
   color: #dc2626;
 }
-
-
-
-.toggle-button {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-transform: capitalize;
-  background-color: #ffffff;
-  color: #4b5563;
-  border: none;
-  cursor: pointer;
+.button-input-div{
+  margin: 0px;
+    padding: 0px;
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+    justify-content: flex-start;
+    width: 100%;
 }
-
-.toggle-button:hover {
-  background-color: #f9fafb;
-}
-
-.toggle-button--active {
-  background-color: #2563eb;
-  color: #ffffff;
-}
-
-.toggle-button--active:hover {
-  background-color: #2563eb;
-}
-
-/* --- Form actions --- */
-
-.form-actions {
+#interest-type-label{
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e5e7eb;
+  justify-content: center;
+  text-decoration: underline;
+  text-transform: uppercase;
+  font-family: "Fira Sans", sans-serif;
 }
-
-
+.button-div{
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 0px;
+  padding: 0px;
+}
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
-
-
+#button-div{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
 .button--primary:hover:not(:disabled) {
   background-color: #1d4ed8;
 }
 
-
 /* --- Results --- */
-
 .results {
     width: 100%;
     border: solid #999d9f 1px;
@@ -331,6 +353,7 @@ text-transform: uppercase;
      color: #E8F0F6;
     background-color: #323A42;
 }
+/* SAVE LINK */
 .save-row {
   margin-top: 1rem;
   display: flex;
@@ -351,12 +374,10 @@ text-transform: uppercase;
 .save-link:hover:not(:disabled) {
   color: #1d4ed8;
 }
-
 .save-link:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
 .save-error {
   font-size: 0.75rem;
   color: #dc2626;

@@ -175,3 +175,11 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
+#calculator1-Row,
+#calculator2-Row,
+#calculator3-Row{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
