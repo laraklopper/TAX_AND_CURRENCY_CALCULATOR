@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import './App.css'
+import './App.css';
+import './css/pagesCss/Error.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -192,7 +193,10 @@ export default function App() {
               }/>
             </>
           )}
+          {/* FALL BACK ROUTE: Response 404 PAGE NOT FOUND */}
+        <Route path='*' element={<h2 id='pageNotFound'>404: Page Not Found</h2>}/>
         </Routes>
+        
       </Container>
     </>
   )
