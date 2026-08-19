@@ -68,7 +68,13 @@ font-family: "Courier Prime", monospace;
     margin: 0px;
     padding: 0px;
 }
-
+.form-text-span{
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+}
 .msgText{
    margin: 0px;
     padding: 0px;
@@ -80,7 +86,16 @@ font-family: "Courier Prime", monospace;
     font-weight: 700;
     font-size: 14px;
 }
-
+.form-text{
+  color: #404040;
+  margin: 0px;
+  padding: 0px;
+  font-weight: 600;
+    font-size: 16px;
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 2px;
+    text-align: justify;
+}
 .infoText{
   text-transform: uppercase;
     color: #404040;

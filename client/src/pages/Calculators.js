@@ -9,8 +9,8 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
 import TaxCalculator from '../components/TaxCalculator';
-import InterestCalc from '../components/InterestCalc';
 import { Calculator } from 'lucide-react';
+import InterestCalculatorForm from '../components/InterestCalculatorForm';
 export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
@@ -110,7 +110,13 @@ export default function Calculators({currentUser, logout}) {
             {/* INTEREST CALCULATOR */}
             {showIntCalc &&(
               <div id='int-calculator-panal'>
-                <InterestCalc/>
+      
+          <div id='interest-calculator-form-panal'>
+<InterestCalculatorForm/>
+          </div>
+            
+         
+  
               </div>
             )}
             {/* BASIC CALCULATOR */}
@@ -140,6 +146,7 @@ export default function Calculators({currentUser, logout}) {
             </Row>
 
       </section>
+    
       <Footer logout={logout}/>
     </div>
   )

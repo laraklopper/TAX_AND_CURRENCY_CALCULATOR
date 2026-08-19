@@ -6,7 +6,7 @@
     margin: 0px;
     padding: 10px 0px;
     gap: 5px;
-    background-color: #878787;
+    background-color: #8dbdca;
 }
 /* ============
 LAYOUT
@@ -145,4 +145,33 @@ LAYOUT
 #toggleCalcBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
+}
+#calculatorSec2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #1262B3;
+}
+#interest-calculator-row{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#interest-calculator-col{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    
+}
+#interest-calculator-form-panal{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
 }

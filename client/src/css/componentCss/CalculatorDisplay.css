@@ -87,7 +87,7 @@ CALCULATOR 2: INTEREST CALCULATOR
 ===================*/
 #int-calculator-panal{
     display: flex;
-    width: 80%;
+    width: 100%;
     background-color: #6c757d;
     flex-direction: row;
     margin: 0px;
