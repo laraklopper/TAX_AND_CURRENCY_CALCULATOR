@@ -64,6 +64,13 @@ export default function TaxDataDisplay({ taxData = taxSeedData }) {
             </h6>
         </span>
         </div>
+        <div className="p-2" id='summary-block4'>
+          <span className='web-link-item'>
+            <a  target='blank'
+            href='https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/' 
+            className='web-Link'>https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/</a>
+          </span>
+        </div>
     </Stack>
         
        
