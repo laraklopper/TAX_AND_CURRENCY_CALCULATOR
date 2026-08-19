@@ -116,11 +116,19 @@
 }
 #toggleEditUserBtn,
 #toggleEditPswdBtn{
-    width: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
     color: #000;
     font-weight: 700;
     height: 40px;
     font-family: "Courier Prime", monospace;
     border: #323A42 solid;
     text-transform: uppercase;
+}
+#toggleEditUserBtn:hover,
+#toggleEditPswdBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
 }

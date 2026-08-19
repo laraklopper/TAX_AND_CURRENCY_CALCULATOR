@@ -96,12 +96,14 @@ export default function Profile({currentUser, logout, setError}) {
         variant='light' 
         id='toggleEditUserBtn' 
         onClick={toggleEditUserForm}
-        // aria-label=''
+        type='button'
+        // ARIA ATTRIBUTES:
+        aria-label={showEditUser ? 'Exit' : 'Edit User details'}
         aria-pressed={showEditUser}
         aria-expanded={showEditUser}
         aria-controls='edit-user-panal'
         >
-          EDIT DETAILS
+          {showEditUser ? 'Exit' : 'Edit User details'}
         </Button>
       </div>
       <div className="vr" style={{width: '2px', color: '#404040', opacity: '.75'}}/>
