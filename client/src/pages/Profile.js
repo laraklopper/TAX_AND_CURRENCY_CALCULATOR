@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Profile.css'
+import '../css/componentCss/DetailsPanal.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
