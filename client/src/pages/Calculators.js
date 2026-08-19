@@ -11,6 +11,7 @@ import NumberCalculator from '../components/NumberCalculator';
 import TaxCalculator from '../components/TaxCalculator';
 import { Calculator } from 'lucide-react';
 import InterestCalculatorForm from '../components/InterestCalculatorForm';
+import TaxCalculatorForm from '../components/TaxCalculatorForm';
 export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
@@ -163,7 +164,7 @@ export default function Calculators({currentUser, logout}) {
     <section>
       <Row>
         <Col>
-          <TaxCalculator/>
+          <TaxCalculatorForm/>
         </Col>
       </Row>
     </section>

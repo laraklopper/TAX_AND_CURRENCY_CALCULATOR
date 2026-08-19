@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Calculator, RotateCcw, TrendingUp, AlertCircle } from "lucide-react";
-import "./TaxCalculatorForm.css";
-
+import "../css/componentCss/TaxCalculatorForm.css";
+import '../css/componentCss/FormSetup.css'
+import Stack from 'react-bootstrap/Stack';
+import Button from 'react-bootstrap/Button';
 // ---------------------------------------------------------------------------
 // TaxCalculatorForm
 // SARS income tax calculator. Posts to /api/tax/calculate and renders the
@@ -141,18 +143,9 @@ export default function TaxCalculatorForm({
     }
   }
 
-  const fieldClass = (key) =>
-    `field-input${errors[key] ? " field-input--error" : ""}`;
-
   return (
     <div className="tax-calculator">
-      <div className="tax-calculator__header">
-        <h1 className="tax-calculator__title">Income Tax Calculator</h1>
-        <p className="tax-calculator__subtitle">
-          Estimate your SARS income tax liability based on your income, age,
-          and the selected tax year.
-        </p>
-      </div>
+      
 
       {status === "error" && (
         <div className="alert alert--error">
@@ -161,14 +154,31 @@ export default function TaxCalculatorForm({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} noValidate>
-        {/* --- Income type toggle --- */}
-        <div className="field-group">
-          <label className="field-label">Income is stated as</label>
-          <div className="toggle-group">
+      <form onSubmit={handleSubmit} id="tax-calculator-form">
+        <div id="tax-calculator-header">
+                        <Stack gap={3} id="tax-calc-heading-stack">
+                           <div className="p-2" id="formHeadingBlock">
+        <h1 id="tax-formHeading">Income Tax Calculator</h1>
+      </div>
+      <div className="p-2">  <p className="form-text">
+          Calculate your SARS income tax liability based on your income, age,
+          and the selected tax year.
+        </p></div>
+    </Stack>
+        </div>
+      <div id="tax-calculator-input-div">
+      {/* GROUP 1 */}
+ <div id="tax-field-group1">
+ <Stack gap={3}>
+      <div className="p-2">
+        <label className="field-label">Income is stated as</label>
+      </div>
+      <div className="p-2">
+         <div className="button-div">
             {["annual", "monthly"].map((t) => (
-              <button
+              <Button
                 key={t}
+                id="incomeStated-Btn"
                 type="button"
                 onClick={() => updateField("incomeType", t)}
                 className={`toggle-button${
@@ -176,47 +186,60 @@ export default function TaxCalculatorForm({
                 }`}
               >
                 {t}
-              </button>
+              </Button>
             ))}
           </div>
-        </div>
+      </div>
+      <div className="p-2"></div>
+    </Stack>
 
-        <div className="form-grid">
-          <div className="field-group">
-            <label className="field-label">
+          
+         
+        </div>
+{/* GROUP 2 */}
+        <div id="tax-field-group2">
+          <Stack gap={3} id="tax-calc-stack1">
+      <div className="p-2">
+       
+            <div className="input-div">
+             <label className="tax-field-label">
               {form.incomeType === "monthly" ? "Monthly income (R)" : "Annual income (R)"}
             </label>
-            <input
+<input
               type="number"
               min="0"
               step="0.01"
               placeholder={form.incomeType === "monthly" ? "25000" : "300000"}
-              className={fieldClass("income")}
+            className="input"
               value={form.income}
               onChange={(e) => updateField("income", e.target.value)}
             />
             {errors.income && <p className="field-error">{errors.income}</p>}
-          </div>
-
-          <div className="field-group">
-            <label className="field-label">Age</label>
+            </div>
+      </div>
+      <div className="p-2">
+        <div className="input-div">
+            <label className="tax-field-label">Age</label>
             <input
               type="number"
               min="16"
               max="120"
               step="1"
               placeholder="35"
-              className={fieldClass("age")}
+              className="input"
+            //   className={fieldClass("age")}
               value={form.age}
               onChange={(e) => updateField("age", e.target.value)}
             />
             {errors.age && <p className="field-error">{errors.age}</p>}
           </div>
-
-          <div className="field-group">
-            <label className="field-label">Tax year</label>
+      </div>
+      <div className="p-2">
+        
+          <div className="input-div">
+            <label className="tax-field-label">Tax year</label>
             <select
-              className={fieldClass("taxYear")}
+            className="input"
               value={form.taxYear}
               onChange={(e) => updateField("taxYear", e.target.value)}
             >
@@ -228,34 +251,55 @@ export default function TaxCalculatorForm({
             </select>
             {errors.taxYear && <p className="field-error">{errors.taxYear}</p>}
           </div>
-
-          <div className="field-group">
+      </div>
+      <div className="p-2">
+<div className="input-div">
             <label className="field-label">Medical aid dependants</label>
             <input
               type="number"
               min="0"
               step="1"
               placeholder="0"
-              className={fieldClass("dependants")}
+              className="input"
+            //   className={fieldClass("dependants")}
               value={form.dependants}
               onChange={(e) => updateField("dependants", e.target.value)}
             />
             {errors.dependants && <p className="field-error">{errors.dependants}</p>}
           </div>
-        </div>
+      </div>
+    </Stack>
+            
+            
+       
 
+          
+
+
+          
+        </div>
+      </div>
+        
+
+        
         <div className="form-actions">
-          <button
+         <Stack gap={2} className="col-md-5 mx-auto" id="calculatetaxBtn-stack">
+  <Button
             type="submit"
+            id="calculateTaxBtn"
             disabled={status === "calculating"}
             className="button button--primary"
           >
             <Calculator size={16} />
             {status === "calculating" ? "Calculating..." : "Calculate"}
-          </button>
-          <button type="button" onClick={resetForm} className="button button--ghost">
+          </Button>
+          <Button 
+          variant="danger"
+          type="button" onClick={resetForm} id="clearFormBtn">
             <RotateCcw size={16} /> Reset
-          </button>
+          </Button>
+    </Stack>
+        
         </div>
       </form>
 

@@ -1,0 +1,90 @@
+#tax-calculator-form{
+    background-color: #A8AEB3;
+margin: 0px;
+padding: 10px;
+
+}
+#tax-formHeading{
+      font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    margin: 0px;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 0px;
+    text-transform: uppercase;
+}
+#tax-calculator-input-div{
+     display: flex;
+  flex-direction: column;
+  background-color: #BFBFBF;
+  margin: 0px;
+  padding: 10px;
+  gap: 10px;
+}
+#tax-field-group1{
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#tax-field-group2{
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+/* TEXT */
+.tax-field-label {
+  font-family: "Fira Sans", sans-serif;
+  font-weight: 700;
+  margin: 0px;
+  letter-spacing: 1px;
+  padding: 0px;
+  color: #000;
+  text-transform: uppercase;
+}
+#incomeStated-Btn{
+   display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    height: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: solid 2px #323A42;
+    font-weight: 700;
+    font-family: "Courier Prime", monospace;
+}
+#calculateTaxBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    height: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: solid 2px #323A42;
+    font-weight: 700;
+    gap: 2px;
+    font-family: "Courier Prime", monospace;
+}
+#calculatetaxBtn-stack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
