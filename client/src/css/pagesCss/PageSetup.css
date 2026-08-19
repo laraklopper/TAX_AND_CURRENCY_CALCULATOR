@@ -120,3 +120,46 @@ ANIMATIONS
         transform: translate(-50%, -50%);
     }
 }
+/* ERRORS */
+#globalErrorRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#globalErrorCol{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+}
+#globalErrorCol1,
+#globalErrorCol2{
+    margin: 0px;
+    padding: 0px;
+}
+#globalErrorBlock{
+    padding: 10px 0px;
+    margin: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#error-span{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+}
+#errorMessage{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #661820;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: "Noto Serif", serif;
+}

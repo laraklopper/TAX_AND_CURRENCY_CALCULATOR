@@ -107,7 +107,7 @@ export default function App() {
       fetchUsers();
     }
   },[loggedIn, setError])
-  
+
   // ======================================
   const logout = useCallback(() => {
     //Clear localStorage
@@ -132,11 +132,14 @@ export default function App() {
       <Container role='main' id='appContainer'>
       <Row id='globalErrorRow'>
           <Col xs={0} md id='errorCol1'/>
-          <Col xs={12} md={6} id='globalErrorCol' aria-live='polite'>
+          <Col xs={12} md={8} id='globalErrorCol' aria-live='polite'>
           {/* ---------GLOBAL ERROR MESSAGE------------ */}
             <div id='globalErrorBlock' role='alert' aria-atomic='true'>
               {error && 
-              <p id='errorMessage'><Bug size={20} fontWeight={900} aria-hidden='true'/>{error}</p>
+              <span id='error-span'>
+                <Bug size={20} fontWeight={900} color='#3D0F13' aria-hidden='true'/>
+                <p id='errorMessage'>{error}</p>  
+              </span>
               }
             </div>
           </Col>
