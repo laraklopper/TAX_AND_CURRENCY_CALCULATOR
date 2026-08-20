@@ -112,8 +112,8 @@ export default function EditPasswordForm({setError}) {
             <h3 id='formHeading'>EDIT PASSWORD</h3>
         </div>
         <div id='edit-password-details'>
-            <Stack gap={3}>
-      <div className="p-2">
+            <Stack gap={3} id='edit-password-stack1'>
+      <div className="p-2" id='edit-password-block1'>
         <label className='edit-pswd-label'>CURRENT PASSWORD:</label>
         <div className='input-div'>
             <input
@@ -132,10 +132,10 @@ export default function EditPasswordForm({setError}) {
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='show-edit-password-block1'>
         <Button 
             variant='warning'
-            id='showCurrentPswdBtn'
+            id='showCurrentPasswordBtn'
             type='button'
             onClick={() => setShowCurrentPswd((prev) => !prev)}
             // ARIA ATTRIBUTES:
@@ -159,8 +159,8 @@ export default function EditPasswordForm({setError}) {
       {/* Error Message (aria)*/}
       {/* <div className="p-2"></div> */}
     </Stack>
-     <Stack gap={3}>
-      <div className="p-2">
+     <Stack gap={3} id='edit-password-stack2'>
+      <div className="p-2" id='edit-password-block2'>
         <label className='edit-pswd-label'>NEW PASSWORD:</label>
         <div className='input-div'>
             <input
@@ -177,10 +177,10 @@ export default function EditPasswordForm({setError}) {
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='show-edit-password-block2'>
         <Button
         variant='warning'
-        id='showNewPswdBtn'
+        id='showNewPasswordBtn'
         onClick={() => setShowNewPswd((prev) => !prev)}
         type='button'
          // ARIA ATTRIBUTES:
@@ -212,10 +212,16 @@ export default function EditPasswordForm({setError}) {
         </div>
         <div>
             <div>
-                <Button variant='light' type='submit' disabled={loading}>EDIT PASSWORD</Button>
+                <Button 
+                    variant='light' type='submit' disabled={loading} id='edit-password-btn'>EDIT PASSWORD</Button>
             </div>
             <div>
-                <Button variant='danger' id='clearFormBtn' type='button' onClick={resetForm}>
+                <Button 
+                    variant='danger' 
+                    id='clearFormBtn' 
+                    type='button' 
+                    onClick={resetForm}
+                    >
                     CLEAR FORM
                 </Button>
 

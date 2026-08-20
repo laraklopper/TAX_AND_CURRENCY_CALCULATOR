@@ -156,6 +156,7 @@ LAYOUT
     margin: 0px;
     padding: 10px;
     background-color: #A8AEB3;
+    gap: 10px;
 }
 .edit-pswd-label{
      font-family: "Courier Prime", monospace;
@@ -165,4 +166,93 @@ LAYOUT
 }
 #edit-password-details{
     width: 90%;
+      background-color: #BFBFBF;
+display: flex;
+align-items: center;
+flex-direction: column;
+  margin: 0px;
+padding: 0px 0px 10px 0px;
+}
+/* STACK 1: */
+#edit-password-stack1{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
+#edit-password-block1{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+#show-edit-password-block1{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+/* STACK 2: */
+#edit-password-block2{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#edit-password-block2{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+#show-edit-password-block2{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+/* STACK 3 */
+#edit-password-btn-stack{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* BUTTONS */
+#showCurrentPasswordBtn,
+#showNewPasswordBtn{
+     width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Courier Prime", monospace;
+  font-size: 16px;
+   font-weight: 700;
+   text-transform: uppercase;
+   height: 40px;
+   margin: 0px;
+   padding: 0px;
+   border: solid 2px #323A42;
+}
+#edit-password-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+      font-family: "Courier Prime", monospace;
+  font-size: 16px;
+   font-weight: 700;
+   text-transform: uppercase;
+   height: 40px;
+   width: 180px;
+   color: #000;
 }
