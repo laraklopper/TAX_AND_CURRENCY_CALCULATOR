@@ -98,6 +98,7 @@ TaxDataDisplay.js*/
     flex-direction: column;
     gap: 10px;
     margin: 0px;
+    overflow-y: scroll;
     width: 100%;
     background-color: #323A42;
 }
@@ -212,6 +213,9 @@ LAYOUT
 
 /* TAX CONCEPTS */
 #tax-concept-panal{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
     margin: 0px;
     padding: 10px;
@@ -233,23 +237,7 @@ LAYOUT
     padding: 0px;
     gap: 10px;
 }
-#tax-concepts-stack{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
-#tax-concept-block1,
-#tax-concept-block2,
-#tax-concept-block3{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #667380;
-    border-radius: 5px;
-    margin: 0px;
-    padding: 0px;
-}
-.tax-concept-head{
+h2.accordion-header{
     display: flex;
     justify-content: center;
     font-family: "Roboto", sans-serif;
@@ -258,6 +246,12 @@ LAYOUT
     margin: 0px;
     padding: 0px;
     font-weight: 900;
+    text-align: center;
+    width: 100%;
+}
+.accordion-button collapsed{
+    width: 100%;
+    text-align: center;
 }
 .concept-para{
     display: flex;
@@ -266,4 +260,26 @@ LAYOUT
     padding: 0px;
     text-align: justify;
     font-weight: 700;
+}
+.accordion-body {
+    display: flex;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+.accordion-collapse collapse{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.collapse:not(.show) {
+    display: none;
+}
+.accordion-item{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 900;
 }

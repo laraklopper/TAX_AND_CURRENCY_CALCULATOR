@@ -29,15 +29,12 @@ const rowClass = (index) => (index % 2 === 0 ? 'evenRow' : 'oddRow')
 export default function TaxDataDisplay({ taxData = taxSeedData }) {
   const { taxYear, startDate, endDate, brackets, rebates, thresholds, isActive } = taxData
   const [showTaxData, setShowTaxData] = useState(false)
-  const [showTaxConcepts, setShowTaxConcepts] = useState(false)
+ 
 
   const toggleTaxData = () => {
     setShowTaxData((prev) => !prev)
-    setShowTaxConcepts(false)
   }
-const toggleTaxConcepts = () => {setShowTaxConcepts((prev) => !prev)
-  setShowTaxData(false)
-}
+
   // LABELS FOR THE REBATE AND THRESHOLD KEYS
   const rebateRows = [
     ['primary', 'Primary (all taxpayers)', rebates.primary],
@@ -74,18 +71,6 @@ const toggleTaxConcepts = () => {setShowTaxConcepts((prev) => !prev)
        
     </Stack>      
     <Stack gap={3} id='toggle-tax-data-stack'>
-      <div className="p-2" id='toggle-tax-data-block1'>
-         <Button
-        variant='light'
-        onClick={toggleTaxConcepts}
-        id='toggleTaxConceptBtn'
-        aria-label={showTaxConcepts ? 'Hide Concepts': 'Show Tax Explainations'}
-        aria-pressed={showTaxConcepts}
-        aria-expanded={showTaxConcepts}
-        >
-        {showTaxConcepts ? 'Hide': 'Show Tax Explainations'}
-        </Button>
-      </div>
       <div className="p-2" id='toggle-tax-data-block2'>
         <Button variant='light' id='toggleTaxDataBtn' onClick={toggleTaxData}
         aria-label={showTaxData ? 'Hide tax data': 'show tax data'}
@@ -105,11 +90,11 @@ const toggleTaxConcepts = () => {setShowTaxConcepts((prev) => !prev)
         </div>
     </Stack>  
       </div>
-      {showTaxConcepts && (
+     
         <div id='tax-concept-panal'>
           <TaxConcepts/>
-        </div>
-      )}
+        
+   
       {showTaxData  && (
         <div id='tax-data-panal'>
              {/* INCOME TAX BRACKETS */}
@@ -194,7 +179,7 @@ const toggleTaxConcepts = () => {setShowTaxConcepts((prev) => !prev)
         </table>
       </div>
         </div>
-      )}
+      )}</div>
     </div>
   )
 }

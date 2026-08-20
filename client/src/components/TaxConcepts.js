@@ -2,14 +2,16 @@
 // Plain-language explanations of the three sets of figures shown by TaxDataDisplay.js.
 // Source: docs/TAX_CONCEPTS.md
 import React from 'react'
-import Stack from 'react-bootstrap/Stack';
+import Accordion from 'react-bootstrap/Accordion'
 export default function TaxConcepts() {
   return (
     <div id='tax-concept-info'>
-     <Stack gap={3} id='tax-concepts-stack'>
-      <div className="p-2" id='tax-concept-block1'>
-        <h5 className='tax-concept-head'>INCOME TAX BRACKET</h5>
-        <div className='tax-concept-div'>
+  
+         <Accordion >
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>INCOME TAX BRACKETS</Accordion.Header>
+        <Accordion.Body>
+      <div className='tax-concept-div'>
             {/* EXPLAIN INCOME TAX BRACKETS */}
             <p className='concept-para'>
               A bracket is an income band with its own tax rate. South Africa uses a
@@ -30,10 +32,12 @@ export default function TaxConcepts() {
               rebate, an effective rate of 18.84%.
             </p>
         </div>
-      </div>
-      <div className="p-2" id='tax-concept-block2'>
-        <h5 className='tax-concept-head'>REBATES</h5>
-        <div className='tax-concept-div'>
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="1">
+        <Accordion.Header>REBATES</Accordion.Header>
+        <Accordion.Body>
+          <div className='tax-concept-div'>
             {/* EXPLAIN REBATES */}
             <p className='concept-para'>
               A rebate is a flat rand amount subtracted from tax already calculated, not
@@ -54,10 +58,12 @@ export default function TaxConcepts() {
               to zero but never below it, and any excess is simply lost.
             </p>
         </div>
-      </div>
-      <div className="p-2" id='tax-concept-block3'>
-        <h5 className='tax-concept-head'>TAX THRESHOLDS</h5>
-        <div className='tax-concept-div'>
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="3">
+        <Accordion.Header>TAX THRESHOLDS</Accordion.Header>
+        <Accordion.Body>
+           <div className='tax-concept-div'>
             {/* EXPLAIN TAX THRESHOLDS */}
             <p className='concept-para'>
               The threshold is the annual income below which no income tax is payable. It is
@@ -78,8 +84,10 @@ export default function TaxConcepts() {
               is a different and much smaller benefit.
             </p>
         </div>
-      </div>
-    </Stack>
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
+    
     </div>
   )
 }
