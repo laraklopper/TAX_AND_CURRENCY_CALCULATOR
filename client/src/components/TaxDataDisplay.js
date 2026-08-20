@@ -196,8 +196,6 @@ const toggleTaxConcepts = () => {setShowTaxConcepts((prev) => !prev)
       </div>
         </div>
       )}
-
-     
     </div>
   )
 }
