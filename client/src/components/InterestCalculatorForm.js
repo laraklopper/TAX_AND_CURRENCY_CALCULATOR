@@ -357,7 +357,7 @@ export default function InterestCalculatorForm({
     </div>
         </div>       
         <div className="form-actions">
-        <Stack gap={2} className="col-md-5 mx-auto" id='interest-form-'>
+        <Stack gap={2} className="col-md-5 mx-auto" id='interestform-btn-stack'>
        <Button
           variant='light'
             type="submit"

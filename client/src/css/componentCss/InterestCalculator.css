@@ -55,6 +55,7 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
+
 /* --- Interest type toggle --- */
 
 #toggle-group-block {
@@ -206,10 +207,11 @@ ALERTS
   opacity: 0.6;
   cursor: not-allowed;
 }
-#button-div{
+#interestform-btn-stack{
   display: flex;
   flex-direction: column;
   gap: 5px;
+  align-items: center;
 }
 .button--primary:hover:not(:disabled) {
   background-color: #1d4ed8;
