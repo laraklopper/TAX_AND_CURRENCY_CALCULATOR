@@ -6,7 +6,7 @@ import Stack from 'react-bootstrap/Stack';
 export default function TaxConcepts() {
   return (
     <div id='tax-concept-info'>
-     <Stack gap={3}>
+     <Stack gap={3} id='tax-concepts-stack'>
       <div className="p-2" id='tax-concept-block1'>
         <h5 className='tax-concept-head'>INCOME TAX BRACKET</h5>
         <div className='tax-concept-div'>

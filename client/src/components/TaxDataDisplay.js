@@ -74,20 +74,19 @@ const toggleTaxConcepts = () => {setShowTaxConcepts((prev) => !prev)
        
     </Stack>      
     <Stack gap={3} id='toggle-tax-data-stack'>
-      <div className="p-2">
+      <div className="p-2" id='toggle-tax-data-block1'>
          <Button
         variant='light'
         onClick={toggleTaxConcepts}
         id='toggleTaxConceptBtn'
-        aria-label={showTaxConcepts ? 'Hide Concepts': 'Show Tax concepts'}
+        aria-label={showTaxConcepts ? 'Hide Concepts': 'Show Tax Explainations'}
         aria-pressed={showTaxConcepts}
         aria-expanded={showTaxConcepts}
         >
-        {showTaxConcepts ? 'Hide Concepts': 'Show Tax concepts'}
-
+        {showTaxConcepts ? 'Hide': 'Show Tax Explainations'}
         </Button>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='toggle-tax-data-block2'>
         <Button variant='light' id='toggleTaxDataBtn' onClick={toggleTaxData}
         aria-label={showTaxData ? 'Hide tax data': 'show tax data'}
         aria-controls=''
