@@ -40,7 +40,7 @@
 |`REST (API)`| **REPRESENTATIONAL STATE TRANSFER** | An architectural style for APIs that uses standard HTTP methods (GET, POST, PUT, DELETE) and stateless communication. |
 |`RWD`| **RESPONSIVE WEB DESIGN** | A design approach that ensures a web application looks and works correctly across different screen sizes and devices. |
 |`SARS`| **SOUTH AFRICAN REVENUE SERVICES**| |
-|`SHA`| **SECURE HASH ALGORITHM** | A family of cryptographic hash functions standardised by NIST. This application uses SHA-256 to hash password reset tokens before persisting them in the database, ensuring the raw token is never stored and cannot be recovered if the database is compromised. |
+|`SHA`| **SECURE HASH ALGORITHM** | A family of cryptographic hash functions standardised by NIST |
 |`SMTP`| **SIMPLE MAIL TRANSFER PROTOCOL** | The standard protocol for sending email across networks. In this application, the `nodemailer` package uses an SMTP connection to Gmail to deliver password reset emails to users. |
 |`SPA`| **SINGLE PAGE APPLICATION** | A web app that loads a single HTML page and dynamically updates content without full page reloads. React enables this pattern. |
 |`SRV`| **SERVICE RECORD** | A type of DNS record that specifies the hostname and port of a network service. MongoDB Atlas uses SRV records via the `mongodb+srv://` scheme to provide automatic discovery of replica set members without hardcoding IP addresses. |
