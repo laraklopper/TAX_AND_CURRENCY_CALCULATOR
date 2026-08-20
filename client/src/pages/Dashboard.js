@@ -35,7 +35,6 @@ export default function Dashboard({currentUser, logout}) {
           <TaxDataDisplay/>
         </Col>
       </Row>
-      
             </div>
       </section>
      {/* ONLY MAKE THE SECTION AVAILABLE TO ADMIN USERS */}

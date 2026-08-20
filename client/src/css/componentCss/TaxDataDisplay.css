@@ -36,6 +36,15 @@ TaxDataDisplay.js*/
     justify-content: center;
     background-color: #323A42;
 }
+#toggle-tax-data-stack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+       
+        padding: 5px;
+        margin: 0px;
+        border-radius: 8px;
+}
 /* TEXT */
 #tax-data-heading{
     color: #E8F0F6;
@@ -163,7 +172,7 @@ LAYOUT
     font-family: "Roboto Mono", monospace;
     margin: 0px;
     color:  #E8F0F6;
-    padding: 0px;
+    padding: 0px 5px;
     text-decoration: none;
     height: 40px;
     font-weight: 700;
@@ -173,9 +182,10 @@ LAYOUT
 }
 .web-Link:hover{
     color: #C9D6E0;
-    background-color: #BFBFBF;
+    background-color: #252e36;
 }
 /* BUTTONS */
+#toggleTaxConceptBtn,
 #toggleTaxDataBtn{
     display: flex;
     align-items: center;
@@ -191,6 +201,7 @@ LAYOUT
     font-weight: 700;
     font-family: "Courier Prime", monospace;
 }
+#toggleTaxConceptBtn:hover,
 #toggleTaxDataBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;

@@ -6,6 +6,7 @@ import '../css/componentCss/TaxDataDisplay.css'
 import { taxSeedData } from '../dataArrays/taxSeedData';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
+import TaxConcepts from './TaxConcepts';
 // ===========HELPER FUNCTIONS===========
 // Format a number as Rands, e.g. 237100 -> R 237 100
 const toRands = (value) =>
@@ -28,9 +29,15 @@ const rowClass = (index) => (index % 2 === 0 ? 'evenRow' : 'oddRow')
 export default function TaxDataDisplay({ taxData = taxSeedData }) {
   const { taxYear, startDate, endDate, brackets, rebates, thresholds, isActive } = taxData
   const [showTaxData, setShowTaxData] = useState(false)
+  const [showTaxConcepts, setShowTaxConcepts] = useState(false)
 
-  const toggleTaxData = () => setShowTaxData((prev) => !prev)
-
+  const toggleTaxData = () => {
+    setShowTaxData((prev) => !prev)
+    setShowTaxConcepts(false)
+  }
+const toggleTaxConcepts = () => {setShowTaxConcepts((prev) => !prev)
+  setShowTaxData(false)
+}
   // LABELS FOR THE REBATE AND THRESHOLD KEYS
   const rebateRows = [
     ['primary', 'Primary (all taxpayers)', rebates.primary],
@@ -64,18 +71,23 @@ export default function TaxDataDisplay({ taxData = taxSeedData }) {
             </h6>
         </span>
         </div>
-        <div className="p-2" id='summary-block4'>
-          <span className='web-link-item'>
-            <a  target='blank'
-            href='https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/' 
-            className='web-Link'>https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/</a>
-          </span>
-        </div>
-    </Stack>
-        
        
-       
-        <div id='toggle-tax-data-div'>
+    </Stack>      
+    <Stack gap={3} id='toggle-tax-data-stack'>
+      <div className="p-2">
+         <Button
+        variant='light'
+        onClick={toggleTaxConcepts}
+        id='toggleTaxConceptBtn'
+        aria-label={showTaxConcepts ? 'Hide Concepts': 'Show Tax concepts'}
+        aria-pressed={showTaxConcepts}
+        aria-expanded={showTaxConcepts}
+        >
+        {showTaxConcepts ? 'Hide Concepts': 'Show Tax concepts'}
+
+        </Button>
+      </div>
+      <div className="p-2">
         <Button variant='light' id='toggleTaxDataBtn' onClick={toggleTaxData}
         aria-label={showTaxData ? 'Hide tax data': 'show tax data'}
         aria-controls=''
@@ -83,11 +95,22 @@ export default function TaxDataDisplay({ taxData = taxSeedData }) {
         aria-expanded={showTaxData}
         >
            {showTaxData ? <>Hide {taxYear} Data</> : <>SHOW {taxYear} TAX DATA</>} 
-
         </Button>
       </div>
+       <div className="p-2" id='sars-link-block'>
+          <span className='web-link-item'>
+            <a  target='blank'
+            href='https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/' 
+            className='web-Link'>https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/</a>
+          </span>
+        </div>
+    </Stack>  
       </div>
-      
+      {showTaxConcepts && (
+        <div id='tax-concept-panal'>
+          <TaxConcepts/>
+        </div>
+      )}
       {showTaxData  && (
         <div id='tax-data-panal'>
              {/* INCOME TAX BRACKETS */}
