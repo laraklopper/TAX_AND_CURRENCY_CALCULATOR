@@ -11,12 +11,12 @@ export default function Header({currentUser, pageHeader}) {
         </Row>
         <Row id='headerRow2'>
             <Col/>
-        <Col xs={5}>
+        <Col xs={5} id='header-col'>
             <span className='headerSpan'>
-                <h1 id='appHeading'>APP HEADING</h1>
+                <h1 id='appHeading'>TAX, CURRENCY & INTEREST CALCULATOR</h1>
             </span>
             <span className='headerSpan'>
-            <h2>{pageHeader}</h2>
+            <h2 id='page-heading'>{pageHeader}</h2>
 
             </span>
         </Col>
