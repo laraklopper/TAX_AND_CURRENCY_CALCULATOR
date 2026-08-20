@@ -1,4 +1,6 @@
 #tax-calculator-form{
+   display: flex;
+   flex-direction: column;
     background-color: #A8AEB3;
 margin: 0px;
 padding: 10px;

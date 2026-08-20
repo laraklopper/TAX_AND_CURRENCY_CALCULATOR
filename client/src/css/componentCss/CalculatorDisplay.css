@@ -1,21 +1,25 @@
-.calculator-div{
+#calculator-layout{
+    width: 90%;
+    margin: 0px;
+    border-radius: 5px;
+    border: solid #1B1E21 2px;
+    padding: 10px 0px;
     display: flex;
+    background-color: #9E9E9E;
     flex-direction: column;
     align-items: center;
-    margin: 0px;
-    padding: 0px;
     gap: 10px;
-        width: 100%;
+   
 }
+/* HEADING */
 .calculator-heading-block{
     display: flex;
-    width: 100%;
     justify-content: center;
     margin: 0px;
     padding: 0px;
 }
-.calculatorHeading {
-    font-family: "Roboto", sans-serif;
+.calculatorHeading{
+    font-family: "Roboto Condensed", sans-serif;
     font-weight: 700;
     font-size: 24px;
     text-decoration: underline;
@@ -24,133 +28,47 @@
     padding: 0px;
     text-transform: uppercase;
 }
+/* LABEL */
 .calculatorLabel{
-  font-family: "Courier Prime", monospace;
+  font-family: "Roboto Mono", monospace;
   font-weight: 700;
   margin: 0px;
   letter-spacing: 2px;
   padding: 0px;
-  color: #000;
   text-decoration: underline 2px;
 }
-.tax-span{
-    display: flex;
-}
-#tax-div{
-    display: flex;
-    gap: 10px;
-}
-#tax-output-block{
-    display: flex;
-    flex-direction: column;
-    margin: 0px;
-    padding: 10px 5px;
-    background-color: #cacaca;
-}
-/* =====================
-CALCULATOR 1: TAX CALCULATOR
-===================*/
-#tax-calculator-panal{
-    display: flex;
-    width: 80%;
-    justify-content: center;
-    background-color: #6c757d;
-    margin: 0px;
-    padding: 10px;
-    height: 100%;
-     border-radius: 8px;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-/* =====================
-LAYOUT
-==========*/
-#tax-calculator-input{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    background-color: #9B9B9B;
-     border-radius: 8px;
-     gap: 10px;
-}
-#taxAmountBlock,
-#taxRateBlock{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0px;
-}
-/* =====================
-CALCULATOR 2: INTEREST CALCULATOR
-===================*/
-#int-calculator-panal{
-    display: flex;
-    width: 100%;
-    background-color: #6c757d;
-    flex-direction: row;
-    margin: 0px;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
-    height: 100%;
-     border-radius: 8px;
-    border: solid;
-    gap: 10px;
-}
-/* ===============
-CALCULATOR 3: GENERAL CALCULATOR
-==========*/
-#calculator-panal{
-    display: flex;
-        width: 35%;
-    justify-content: flex-start;
-    margin: 0px;
-    padding: 10px;
-    align-items: center;
-    flex-direction: column;
-    height: 100%;
-    background-color: #6c757d;
-     border-radius: 8px;
-    border: solid;
-    gap: 4px;
-}
-#basic-calculator-input{
-    display: flex;
-}
-/* BOOTSTRAP LAYOUT */
-#general-calculatorStack{
+#basic-calculator-block{
     display: flex;
     justify-content: center;
-    align-items: center;
+    width: 500px;
     margin: 0px;
     padding: 0px;
-    width: 300px;
 }
-
+/* INPUT */
 #calculator-input-block{
     display: flex;
     justify-content: center;
-    align-items: baseline;
+    background-color: silver;
+    align-items: center;
+    margin: 0px;
+    border-radius: 8px;
     gap: 10px;
-    background-color: #9B9B9B;
     padding: 5px;
 }
-#resetBtn{
-    width: 180px;
-    color: #000;
+
+#basic-calculator-input{
+        display: flex;
+    justify-content: center;
+    background-color: #A8AEB3;
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
+}
+#general-calculatorStack{
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-weight: 700;
-    height: 40px;
-    font-family: "Courier Prime", monospace;
-    border: #323A42 solid;
+    width: 300px;
 }
-#resetBtn:hover{
-    background-color: #323A42;
-    color: #E8F0F6;
+#calculator-btn-block{
+    display: flex;
+    justify-content: center;
 }

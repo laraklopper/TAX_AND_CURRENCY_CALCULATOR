@@ -1,4 +1,6 @@
+// Calculators.js
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Calculators.css'
 import Row from 'react-bootstrap/Row';
@@ -8,15 +10,17 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
-import { Calculator } from 'lucide-react';
 import InterestCalculatorForm from '../components/InterestCalculatorForm';
 import TaxCalculatorForm from '../components/TaxCalculatorForm';
+import { Calculator } from 'lucide-react';
+
+// ======MAIN CALCULATORS COMPONENT====================
 export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
 
-  //========================================
+  //================EVENT LISTENERS========================
   const toggleTaxCalc = useCallback(() => {
     setShowTaxCalc(prev => !prev)
     setShowCalc(false)
@@ -35,7 +39,9 @@ export default function Calculators({currentUser, logout}) {
   // ============================================
   return (
     <div id='pageContainer' role='main'>
+    {/* HEADER */}
       <Header currentUser={currentUser} pageHeader={'CALCULATORS'}/>
+      {/* =======EVENT/ANIMATION============ */}
       <Row id='event-row'>
         <Col id='event-col'>
           <div className='event-bar'>
@@ -45,12 +51,14 @@ export default function Calculators({currentUser, logout}) {
           </div>
         </Col>
       </Row>
+      {/* SECTION 1 */}
       <section id='calculatorSec1'>
       <Row id='toggleCalculatorRow'>
         <Col id='toggleCalcCol1'/>
         <Col xs={5} id='toggleCalcCol'>
              <Stack id='toggleCalculatorStack'>
               <div className="p-2" id='toggle-calc1-block'>
+              {/* Toggle Tax Calculator Btn */}
                 <Button 
                 variant='light' 
                 onClick={toggleTaxCalc} 
@@ -66,6 +74,7 @@ export default function Calculators({currentUser, logout}) {
               </Button>
               </div>
               <div className="p-2" id='toggle-calc2-block'>
+              {/* Toggle Interest Calculator Btn */}
                 <Button 
                 variant='light' 
                 onClick={toggleInterestCalculator} 
@@ -79,16 +88,17 @@ export default function Calculators({currentUser, logout}) {
                 >{showIntCalc ? 'HIDE CALCULATOR':'SHOW INTEREST CALCULATOR'}</Button>
               </div>
               <div className="p-2" id='toggle-calc3-block'>
+              {/* Toggle Calculator Btn */}
                 <Button 
-                  variant='light' 
-                  onClick={toggleCalculator} 
-                  id='toggleCalcBtn'
-                  type='button'
-                  // ARIA ATTRIBUTES:
-                  aria-label={showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
-                  aria-pressed={showCalc}
-                  aria-expanded={showCalc}
-                  aria-controls='calculator-panal'
+                    variant='light' 
+                    onClick={toggleCalculator} 
+                    id='toggleCalcBtn'
+                    type='button'
+                    // ARIA ATTRIBUTES:
+                    aria-label={showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
+                    aria-pressed={showCalc}
+                    aria-expanded={showCalc}
+                    aria-controls='calculator-panal'
                   >
                     {showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
                   </Button>
@@ -97,52 +107,52 @@ export default function Calculators({currentUser, logout}) {
         </Col>
         <Col id='toggleCalcCol2'/>
       </Row>
-        
+        {/* CALCULATORS */}
           <div id='calculators-div'>
-            {/* TAX CALCULATOR */}
+            {/*TOGGLE TAX CALCULATOR */}
             {showTaxCalc && (
               <div id='tax-calculator-panal'>
               <Row id='calculator1-Row'>
-                <Col/>
-                <Col xs={12} md={8}>
+                <Col id='tax-calculator-col1'/>
+                <Col xs={12} md={8} id='tax-calculator-col'>
                 <div id='tax-calculator-block'>
                   <TaxCalculatorForm/>
                 </div> 
                 </Col>
-                <Col/>
+                <Col id='tax-calculator-col2'/>
               </Row>
               </div>
             )}
-            {/* INTEREST CALCULATOR */}
+            {/* TOGGLE INTEREST CALCULATOR */}
             {showIntCalc &&(
               <div id='int-calculator-panal'>
-      <Row id='calculator2-Row'>
-      <Col/>
-        <Col xs={12} md={8}>
-          <div id='interest-calculator-form-panal'>
-<InterestCalculatorForm/>
-          </div>
-        </Col>
-        <Col/>
-      </Row>
-          
+                <Row id='calculator2-Row'>
+                <Col id='interest-calculator-col1'/>
+                  <Col xs={12} md={8} id='interest-calculator-col'>
+                    <div id='interest-calculator-form-panal'>
+                        <InterestCalculatorForm/>
+                    </div>
+                  </Col>
+                  <Col id='interest-calculator-col2'/>
+                </Row>
               </div>
             )}
-            {/* BASIC CALCULATOR */}
+            {/* TOGGLE GENERAL/BASIC CALCULATOR */}
             {showCalc && (
               <div id='calculator-panal'>
-              <Row id='calculator3-Row'>
-        <Col/>
-        <Col xs={5}><NumberCalculator/></Col>
-        <Col/>
-      </Row>
-                
+                  <Row id='calculator3-Row'>
+                    <Col id='calculator-col1'/>
+                    <Col xs={5} id='calculator-col'>
+                      <div id='basic-calculator-block'>
+                        <NumberCalculator/>
+                      </div>
+                    </Col>
+                    <Col id='calculator-col2'/>
+                  </Row>
               </div>
             )}
-
           </div>
-        
-      {/* Row 2:Calculator Information/Messages */}
+          {/* Row 2:Calculator Information/Messages */}
             <Row id='info-msg-row'>
                 <Col xs={0} md id='info-msg-col1'/>
                 <Col xs={12} md={6} id='info-msg-col'>
@@ -156,9 +166,8 @@ export default function Calculators({currentUser, logout}) {
                 </Col>
                 <Col xs={0} md id='info-msg-col1'/>
             </Row>
-
-     
-    </section>
+        </section>
+        {/* ======FOOTER============= */}
       <Footer logout={logout}/>
     </div>
   )

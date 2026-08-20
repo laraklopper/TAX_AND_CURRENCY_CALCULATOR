@@ -11,13 +11,7 @@
 /* ============
 LAYOUT
 ===========*/
-#calculators-div{
-        display: flex;
-    justify-content: center;
-    margin: 0px;
-    padding: 5px;
-    width: 100%;
-}
+
 /* BOOTSTRAP LAYOUT */
 /* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #toggleCalculatorRow{
@@ -26,11 +20,7 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-#calculatorRow{
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
+
 #toggleCalcCol{
     display: flex;
     margin: 0px;
@@ -41,7 +31,14 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-
+#calculator1-Row,
+#calculator2-Row,
+#calculator3-Row{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 #calculatorCol{
     display: flex;
     justify-content: center;
@@ -68,6 +65,71 @@ LAYOUT
 #toggle-calc3-block{
     display: flex;
     justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+/* CALCULATOR LAYOUT */
+/* HTML <div/> */
+#calculators-div{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 5px;
+    width: 100%;
+}
+/* Tax Calculator */
+#tax-calculator-panal{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#tax-calculator-col{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+}
+#tax-calculator-col1,
+#tax-calculator-col2{
+    margin: 0px;
+    padding: 0px;
+}
+/* INTEREST CALCULATOR */
+#int-calculator-panal,
+#interest-calculator-form-panal{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#interest-calculator-col{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px; 
+}
+#interest-calculator-col1,
+#interest-calculator-col2{
+    margin: 0px;
+    padding: 0px;
+}
+/* ======================
+CALCULATOR
+=====================*/
+#calculator-panal{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#calculator-col{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#calculator-col1,
+#calculator-col2{
     margin: 0px;
     padding: 0px;
 }
@@ -156,30 +218,5 @@ LAYOUT
     gap: 5px;
     background-color: #1262B3;
 }
-#interest-calculator-row{
-    display: flex;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
-#interest-calculator-col{
-    display: flex;
-    justify-content: center;
-    margin: 0px;
-    padding: 0px;
-    
-}
-#interest-calculator-form-panal{
-    display: flex;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
-#calculator1-Row,
-#calculator2-Row,
-#calculator3-Row{
-    display: flex;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
+
+

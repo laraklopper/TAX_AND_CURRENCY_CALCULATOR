@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
+import '../css/componentCss/CalculatorDisplay.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 // import Button from 'react-bootstrap/Button';
@@ -72,7 +73,7 @@ export default function NumberCalculator() {
     },[handleEquals])
 
   return (
-    <div className='calculator-div' aria-labelledby='calculator1Descrip'>
+    <div id='calculator-layout' aria-labelledby='calculator1Descrip'>
     {/* Screen-reader live region for announcing actions (hidden visually) */}
         {/*--------Screen Reader Heading--------------  */}
         <p className='visually-hidden' id='calculator1Descrip'>BASIC CALCULATOR</p>

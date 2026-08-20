@@ -8,8 +8,9 @@ LAYOUT
     padding: 300px;
     background-color: #9B9B9B;
     margin: 0px;
-    padding: 5px;
+    padding: 10px;
     border-radius: 8px;
+    border: #323A42 solid;
 }
 /*------------
  BOOTSTRAP LAYOUT
