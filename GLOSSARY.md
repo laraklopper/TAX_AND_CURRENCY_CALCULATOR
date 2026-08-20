@@ -39,6 +39,7 @@
 |`RFC`| **REQUEST FOR COMMENTS** | A formal document published by the IETF (Internet Engineering Task Force) that defines internet standards and protocols. In this application, RFC 6585 defines the `429 Too Many Requests` HTTP status code returned by rate limiters when a client exceeds its allowed request quota. |
 |`REST (API)`| **REPRESENTATIONAL STATE TRANSFER** | An architectural style for APIs that uses standard HTTP methods (GET, POST, PUT, DELETE) and stateless communication. |
 |`RWD`| **RESPONSIVE WEB DESIGN** | A design approach that ensures a web application looks and works correctly across different screen sizes and devices. |
+|`SARS`| **SOUTH AFRICAN REVENUE SERVICES**| |
 |`SHA`| **SECURE HASH ALGORITHM** | A family of cryptographic hash functions standardised by NIST. This application uses SHA-256 to hash password reset tokens before persisting them in the database, ensuring the raw token is never stored and cannot be recovered if the database is compromised. |
 |`SMTP`| **SIMPLE MAIL TRANSFER PROTOCOL** | The standard protocol for sending email across networks. In this application, the `nodemailer` package uses an SMTP connection to Gmail to deliver password reset emails to users. |
 |`SPA`| **SINGLE PAGE APPLICATION** | A web app that loads a single HTML page and dynamically updates content without full page reloads. React enables this pattern. |
