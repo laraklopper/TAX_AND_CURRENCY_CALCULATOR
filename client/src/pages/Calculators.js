@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
-import TaxCalculator from '../components/TaxCalculator';
 import { Calculator } from 'lucide-react';
 import InterestCalculatorForm from '../components/InterestCalculatorForm';
 import TaxCalculatorForm from '../components/TaxCalculatorForm';
@@ -104,15 +103,14 @@ export default function Calculators({currentUser, logout}) {
             {showTaxCalc && (
               <div id='tax-calculator-panal'>
               <Row id='calculator1-Row'>
-<Col/>
-        <Col xs={6}>
-          <div id='tax-calculator-block'>
-            <TaxCalculator/>
-          </div>
-        </Col>
-        <Col/>
+                <Col/>
+                <Col xs={12} md={8}>
+                <div id='tax-calculator-block'>
+                  <TaxCalculatorForm/>
+                </div> 
+                </Col>
+                <Col/>
               </Row>
-                
               </div>
             )}
             {/* INTEREST CALCULATOR */}
@@ -121,14 +119,13 @@ export default function Calculators({currentUser, logout}) {
       <Row id='calculator2-Row'>
       <Col/>
         <Col xs={12} md={8}>
-<div id='interest-calculator-form-panal'>
+          <div id='interest-calculator-form-panal'>
 <InterestCalculatorForm/>
           </div>
         </Col>
         <Col/>
       </Row>
           
-  
               </div>
             )}
             {/* BASIC CALCULATOR */}
@@ -160,13 +157,7 @@ export default function Calculators({currentUser, logout}) {
                 <Col xs={0} md id='info-msg-col1'/>
             </Row>
 
-      </section>
-    <section>
-      <Row>
-        <Col>
-          <TaxCalculatorForm/>
-        </Col>
-      </Row>
+     
     </section>
       <Footer logout={logout}/>
     </div>
