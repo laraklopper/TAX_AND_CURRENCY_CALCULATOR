@@ -23,15 +23,18 @@ padding: 10px;
 #tax-calculator-input-div{
      display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #BFBFBF;
   margin: 0px;
   padding: 10px;
   gap: 10px;
+  border-radius: 5px;
 }
 #tax-field-group1{
     display: flex;
     margin: 0px;
     padding: 10px;
+    width: 80%;
     border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
@@ -40,6 +43,7 @@ padding: 10px;
     display: flex;
     margin: 0px;
     padding: 10px;
+    width: 80%;
     border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
@@ -89,4 +93,18 @@ padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+        margin: 0px;
+    padding: 10px 0px;
+}
+#tax-calc-income-block1{
+    display: flex;
+    justify-content: center;
+}
+#incomestated-field-label{
+    display: flex;
+    text-align: center;
+    text-decoration: underline;
+    margin: 0px;
+    padding: 0px;
+    letter-spacing: 2px;
 }

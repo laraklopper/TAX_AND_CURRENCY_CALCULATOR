@@ -169,11 +169,11 @@ export default function TaxCalculatorForm({
       <div id="tax-calculator-input-div">
       {/* GROUP 1 */}
  <div id="tax-field-group1">
- <Stack gap={3}>
-      <div className="p-2">
-        <label className="field-label">Income is stated as</label>
+ <Stack gap={3} id="tax-calc-income-stack1">
+      <div className="p-2" id="tax-calc-income-block1">
+        <label id="incomestated-field-label" className="tax-field-label">Income is stated as</label>
       </div>
-      <div className="p-2">
+      <div className="p-2" id="tax-calc-income-block2">
          <div className="button-div">
             {["annual", "monthly"].map((t) => (
               <Button
@@ -192,18 +192,15 @@ export default function TaxCalculatorForm({
       </div>
       <div className="p-2"></div>
     </Stack>
-
-          
-         
         </div>
 {/* GROUP 2 */}
         <div id="tax-field-group2">
           <Stack gap={3} id="tax-calc-stack1">
       <div className="p-2">
-       
+       {/* ANNUAL/MONTHLY INCOME */}
             <div className="input-div">
              <label className="tax-field-label">
-              {form.incomeType === "monthly" ? "Monthly income (R)" : "Annual income (R)"}
+              {form.incomeType === "monthly" ? "Monthly income (R)" : "Annual income (R)"}:
             </label>
 <input
               type="number"
@@ -218,8 +215,9 @@ export default function TaxCalculatorForm({
             </div>
       </div>
       <div className="p-2">
+      {/* AGE */}
         <div className="input-div">
-            <label className="tax-field-label">Age</label>
+            <label className="tax-field-label">Age:</label>
             <input
               type="number"
               min="16"
@@ -235,9 +233,9 @@ export default function TaxCalculatorForm({
           </div>
       </div>
       <div className="p-2">
-        
+        {/* TAX YEAR */}
           <div className="input-div">
-            <label className="tax-field-label">Tax year</label>
+            <label className="tax-field-label">Tax year:</label>
             <select
             className="input"
               value={form.taxYear}
@@ -253,15 +251,15 @@ export default function TaxCalculatorForm({
           </div>
       </div>
       <div className="p-2">
+      {/* MEDICAL AID DEPENDENTS */}
 <div className="input-div">
-            <label className="field-label">Medical aid dependants</label>
+            <label className="field-label">Medical aid dependants:</label>
             <input
               type="number"
               min="0"
               step="1"
               placeholder="0"
               className="input"
-            //   className={fieldClass("dependants")}
               value={form.dependants}
               onChange={(e) => updateField("dependants", e.target.value)}
             />
@@ -269,26 +267,15 @@ export default function TaxCalculatorForm({
           </div>
       </div>
     </Stack>
-            
-            
-       
-
-          
-
-
-          
         </div>
       </div>
-        
-
-        
         <div className="form-actions">
          <Stack gap={2} className="col-md-5 mx-auto" id="calculatetaxBtn-stack">
   <Button
             type="submit"
             id="calculateTaxBtn"
             disabled={status === "calculating"}
-            className="button button--primary"
+            variant="light"
           >
             <Calculator size={16} />
             {status === "calculating" ? "Calculating..." : "Calculate"}
@@ -299,10 +286,8 @@ export default function TaxCalculatorForm({
             <RotateCcw size={16} /> Reset
           </Button>
     </Stack>
-        
         </div>
       </form>
-
       {/* --- Results --- */}
       {result && (
         <div className="results">
