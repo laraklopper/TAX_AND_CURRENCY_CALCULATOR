@@ -183,6 +183,7 @@ export default function TaxCalculatorForm({
  <Stack gap={3} id="tax-calc-income-stack1">
       <div className="p-2" id="tax-calc-income-block1">
         <label id="incomestated-field-label" className="tax-field-label">Income is stated as</label>
+      <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
       </div>
       <div className="p-2" id="tax-calc-income-block2">
          <div className="button-div">
@@ -239,7 +240,6 @@ export default function TaxCalculatorForm({
               step="1"
               placeholder="35"
               className="input"
-            //   className={fieldClass("age")}
               value={form.age}
               onChange={(e) => updateField("age", e.target.value)}
             />
@@ -282,7 +282,11 @@ export default function TaxCalculatorForm({
             {errors.dependants && <p className="field-error">{errors.dependants}</p>}
             {/* Recorded with the calculation, but no credit is applied yet -
             the tax year data holds no medical scheme fees credit figures. */}
-            <p className="form-text">
+          
+          </div>
+          </div>
+          <div className="p-2">
+              <p className="form-text">
               Saved with your calculation for reference. Medical scheme fees tax
               credits are not applied to the result.
             </p>
@@ -291,7 +295,7 @@ export default function TaxCalculatorForm({
               <p className='infoText' aria-live='polite' aria-hidden='true'>
                   <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
               </p>
-            </div>
+           
       </div>
     </Stack>
         </div>
