@@ -81,9 +81,9 @@ LAYOUT
     height: 40px;
     font-weight: 700;
 }
-#interest-type-selectbtn:hover {
+/* #interest-type-selectbtn:hover {
   background-color: #f9fafb;
-}
+} */
 
 /* SELECTED INTEREST TYPE
    Qualified with the button id so it outranks the color: #000 set above

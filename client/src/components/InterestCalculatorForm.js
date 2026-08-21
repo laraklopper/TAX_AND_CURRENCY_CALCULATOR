@@ -274,7 +274,22 @@ export default function InterestCalculatorForm({
             {errors.principal && <p className="field-error">{errors.principal}</p>}
           </div>
       </div>
-      {/* ANNUAL INTEREST */}
+      <div className="p-2" id='interest-time-block'>
+        <label className='field-label'>TIME PERIOD:</label>
+        <div id='buttons-div'>
+          {["Annual", "Monthly"].map((p) => (
+            <Button
+              variant='light'
+              key={p}
+              type='button'
+              // onClick={}
+              id='interest-period-select-btn'>
+                {p}
+              </Button>
+          ))}
+        </div>
+      </div>
+      {/* MONTHLY ANNUAL INTEREST */}
       <div className="p-2" id='annual-interest-block'>
         <div className="input-div">
             <label className="field-label">Annual interest rate (%)</label>
