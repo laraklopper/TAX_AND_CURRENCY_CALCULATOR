@@ -38,7 +38,8 @@ const toFullName = (fullName) => {
 // Row striping: STYLES.md 1.5. TABLES
 const rowClass = (index) => (index % 2 === 0 ? 'evenRow' : 'oddRow')
 
-export default function UsersList(
+// UserList.js function component
+export default function UsersList(//Export UserList.js function component
   {//PROPS PASSED FROM PARENT COMPONENT(Profile.js)
     users = [],
     setUsers,
