@@ -121,3 +121,14 @@ SECTION 2
     gap: 5px;
     background-color: #8dbdca;
 }
+/* USER LIST HEADING: UsersList.js is rendered below it for admin users */
+#user-list-heading{
+    margin: 0px;
+    padding: 5px 0px;
+    font-family: "Roboto Condensed", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-decoration: underline;
+    color: #470D09;
+}

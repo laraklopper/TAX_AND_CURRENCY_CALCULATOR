@@ -1,5 +1,193 @@
+/* UserList.css
+UsersList.js */
 #users-list{
     width: 100%;
     margin: 0px;
     padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+/* ===============
+USER LIST TABLE
+============*/
+#user-list{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 15px;
+    overflow-x: auto;
+    background-color: #404040;
+}
+#user-list-table{
+    width: 100%;
+    margin: 0px;
+    font-family: "Courier Prime", monospace;
+    text-align: left;
+    border-collapse: collapse;
+    border: solid 2px;
+}
+#user-list-table th,
+#user-list-table td{
+    padding: 8px 12px;
+    border: 1px solid #9E9E9E;
+    vertical-align: middle;
+}
+#user-list-table thead th{
+    text-transform: uppercase;
+    text-align: center;
+    background-color: #C9D6E0;
+    color: #323A42;
+}
+/* Emails are stored lowercase, so show them exactly as they are stored */
+#user-list-table .user-email-cell{
+    text-transform: none;
+}
+/* TABLE ROWS: STYLES.md 1.5. TABLES */
+#user-list-table .evenRow{
+    color: #404040;
+    background-color: #E8F0F6;
+}
+#user-list-table .oddRow{
+    color: #404040;
+    background-color: #9BB1C7;
+}
+#user-list-table tbody tr:hover{
+    background-color: #C9D6E0;
+}
+/* The row whose details are open in the panal below */
+#user-list-table tbody tr.selectedRow{
+    color: #E8F0F6;
+    background-color: #323A42;
+    outline: solid 2px #767224;
+}
+/* VIEW/HIDE BUTTON https://react-bootstrap.netlify.app/docs/components/buttons */
+#user-list-table .viewUserBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 32px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+}
+#user-list-table .viewUserBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+/* ===============
+USER DETAILS PANAL
+============*/
+#user-details-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #D4D5D6;
+    border: solid 2px #323A42;
+}
+/* PANAL HEAD: full name, close button and admin status */
+#user-panal-head-stack{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    border-bottom: solid 2px #838485;
+}
+#user-panal-heading{
+    margin: 0px;
+    padding: 0px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: underline;
+    color: #470D09;
+}
+#closeUserPanalBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+}
+#closeUserPanalBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+/* PANAL BODY: the two detail columns */
+#user-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 0px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background-color: #ACADAD;
+}
+#user-details-stack1,
+#user-details-stack2{
+    width: 50%;
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+}
+/* PANAL FOOTER: delete user */
+#user-panal-status{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+}
+#user-panal-footer-stack{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    border-top: solid 2px #838485;
+}
+#user-panal-footer-stack h6{
+    margin: 0px;
+    padding: 0px;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #70150F;
+}
+#deleteUserBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+}
+#deleteUserBtn:disabled{
+    opacity: .65;
 }
