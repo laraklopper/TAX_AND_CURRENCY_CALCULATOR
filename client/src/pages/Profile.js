@@ -12,6 +12,7 @@ import Footer from '../components/Footer'
 import EditPasswordForm from '../components/EditPasswordForm';
 import EditUserForm from '../components/EditUserForm';
 import { User } from 'lucide-react';
+import { useCallback } from 'react';
 
 // ===========HELPER FUNCTIONS===========
 // Shown in place of any detail the user has not supplied (address line2 and
@@ -37,6 +38,19 @@ const toLongDate = (value) => {
 export default function Profile({currentUser, logout, setError}) {
   const [showEditUser, setShowEditUser] = useState(false)
   const [showEditPswd, setShowEditPswd] = useState(false)
+  const [editUserData, setEditUserData] = useState({
+    fullName: {
+      firstName: '',
+      lastName: '',
+    },
+    email: '',
+    address: {
+      line1: '',
+      line2: '',
+      city: '',
+      province: '',
+    }
+  })
 
   /*Destructure the current user's details, defaulting to an empty object so the
   page still renders while the user details are being fetched*/
@@ -50,6 +64,16 @@ export default function Profile({currentUser, logout, setError}) {
     setShowEditPswd(prev => (!prev))
     setShowEditUser(false)
   }
+
+  // ======REQUESTS/CALLBACKS===========
+
+  const editUser = useCallback(async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  },[])
   //=======================================
   return (
     <div id='pageContainer'>
@@ -186,7 +210,12 @@ export default function Profile({currentUser, logout, setError}) {
           <div id='edit-user-panal'>
             <Row id='edit-user-row'>
         <Col>
-          <EditUserForm/>
+          <EditUserForm
+            editUserData={editUserData}
+            setEditUserData={setEditUserData}
+            currentUser={currentUser}
+            editUser={editUser}
+          />
         </Col>
       </Row>
 
