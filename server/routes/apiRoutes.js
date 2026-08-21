@@ -4,7 +4,13 @@ const { checkJwtToken } = require('./middleware');
 const { currencies } = require('../dataArrays/currencies');
 const User = require('../models/userSchema');
 const CurrencyConvert = require('../models/curConvertSchema');
+const { calculateInterest, COMPOUND_FREQUENCIES, MAX_DURATION } = require('../utils/interestCalculator');
 const router = express.Router()
+
+// Values the interest calculator accepts for the time period unit
+const PERIOD_UNITS = ['years', 'months'];
+// Values the interest calculator accepts for the interest type
+const INTEREST_TYPES = ['simple', 'compound'];
 
 router.get('/convert', checkJwtToken ,async (req,res) => {
   const {from, to, amount} = req.query;
@@ -100,6 +106,111 @@ router.get('/convert', checkJwtToken ,async (req,res) => {
     } catch (error) {
         console.error('[ERROR: apiRoutes.js, /convert]', error.message);
         return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+})
+
+/*=====================================
+INTEREST CALCULATION
+=======================================*/
+/* Works out simple or compound interest over a period the user supplies in
+either YEARS (annual) or MONTHS (monthly). The rate is always an annual
+nominal rate; the calculator converts it to the requested period so both
+options can be compared against the same quoted rate.
+
+The client also has a local fallback calculation for previewing, but this
+route is the source of truth for anything that gets saved. */
+router.post('/interest/calculate', checkJwtToken, (req, res) => {
+    const {
+        type,
+        principal,
+        rate,
+        duration,
+        periodUnit,
+        compoundingFrequency,
+        monthlyContribution
+    } = req.body || {};
+
+    // Conditional rendering to check the interest type is one that is supported
+    if (!INTEREST_TYPES.includes(type)) {
+        return res.status(400).json({// Send a 400 (Bad Request) status code with a message
+            success: false,
+            message: `type must be one of: ${INTEREST_TYPES.join(', ')}`//JSON message
+        });
+    }
+
+    // Conditional rendering to check the time period unit is one that is supported
+    if (!PERIOD_UNITS.includes(periodUnit)) {
+        return res.status(400).json({// Send a 400 (Bad Request) status code with a message
+            success: false,
+            message: `periodUnit must be one of: ${PERIOD_UNITS.join(', ')}`//JSON message
+        });
+    }
+
+    const parsedPrincipal = parseFloat(principal);// Convert the principal to a number
+    // Conditional rendering to validate that the principal is a positive number
+    if (isNaN(parsedPrincipal) || parsedPrincipal <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'principal must be a number greater than 0'
+        });
+    }
+
+    const parsedRate = parseFloat(rate);// Convert the annual interest rate to a number
+    // Conditional rendering to validate that the rate is a percentage between 0 and 100
+    if (isNaN(parsedRate) || parsedRate <= 0 || parsedRate > 100) {
+        return res.status(400).json({
+            success: false,
+            message: 'rate must be a number greater than 0 and no more than 100'
+        });
+    }
+
+    const parsedDuration = Number(duration);// Convert the time period to a number
+    /* Conditional rendering to validate the duration: whole periods only, and
+    capped per unit so a single request cannot ask for a huge breakdown. */
+    if (!Number.isInteger(parsedDuration) || parsedDuration <= 0 || parsedDuration > MAX_DURATION[periodUnit]) {
+        return res.status(400).json({
+            success: false,
+            message: `duration must be a whole number of ${periodUnit} between 1 and ${MAX_DURATION[periodUnit]}`
+        });
+    }
+
+    /* Conditional rendering to validate the compounding frequency. Only
+    required for compound interest; simple interest ignores it. */
+    if (type === 'compound' && !Object.keys(COMPOUND_FREQUENCIES).includes(compoundingFrequency)) {
+        return res.status(400).json({
+            success: false,
+            message: `compoundingFrequency must be one of: ${Object.keys(COMPOUND_FREQUENCIES).join(', ')}`
+        });
+    }
+
+    // The recurring monthly contribution is optional, so default it to 0
+    const parsedContribution = monthlyContribution === undefined || monthlyContribution === null || monthlyContribution === ''
+        ? 0
+        : parseFloat(monthlyContribution);
+    // Conditional rendering to validate that the contribution is not negative
+    if (isNaN(parsedContribution) || parsedContribution < 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'monthlyContribution must be a number of 0 or more'
+        });
+    }
+
+    try {
+        const result = calculateInterest({
+            type,
+            principal: parsedPrincipal,
+            rate: parsedRate,
+            duration: parsedDuration,
+            periodUnit,
+            compoundingFrequency,
+            monthlyContribution: parsedContribution,
+        });
+
+        console.log('[SUCCESS: apiRoutes.js, /interest/calculate] Calculated', type, 'interest over', parsedDuration, periodUnit);
+        return res.status(200).json({ success: true, result });
+    } catch (error) {
+        console.error('[ERROR: apiRoutes.js, /interest/calculate]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })
 module.exports= router

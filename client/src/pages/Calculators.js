@@ -36,6 +36,33 @@ export default function Calculators({currentUser, logout}) {
     setShowIntCalc(false)
     setShowTaxCalc(false)
    },[])
+
+  /* Sends the interest calculator's inputs to the backend, which is the source
+  of truth for the maths. The payload carries `periodUnit` ('years' or 'months')
+  so the same annual rate can be worked out over annual or monthly periods.
+  Throws on failure so the form can show the API's message. */
+  const calculateInterest = useCallback(async (payload) => {
+    const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
+    const response = await fetch('http://localhost:3001/api/interest/calculate', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
+      },
+      body: JSON.stringify(payload)
+    })
+
+    const data = await response.json();
+
+    //Conditional rendering to check the request succeeded
+    if (!response.ok) {
+      console.error('[ERROR: Calculators.js, calculateInterest]', data.message || 'Calculation failed.');//Log an error message in the console for debugging purposes
+      throw new Error(data.message || 'Could not calculate interest. Please try again.');
+    }
+
+    return data.result;// The form renders the summary and breakdown from this
+  },[])
   // ============================================
   return (
     <div id='pageContainer' role='main'>
@@ -130,7 +157,10 @@ export default function Calculators({currentUser, logout}) {
                 <Col id='interest-calculator-col1'/>
                   <Col xs={12} md={8} id='interest-calculator-col'>
                     <div id='interest-calculator-form-panal'>
-                        <InterestCalculatorForm/>
+                        <InterestCalculatorForm
+                          onCalculate={calculateInterest}
+                          isAuthenticated={!!currentUser}
+                        />
                     </div>
                   </Col>
                   <Col id='interest-calculator-col2'/>
@@ -159,7 +189,7 @@ export default function Calculators({currentUser, logout}) {
                     <div id='info-msg-div'>
                         <span className='info-msg-span'>
                             {/* Display default (SOUTH AFRICAN)15% tax rate */}
-                            <h6 className='calculator-info-text'>INTEREST PERIOD CALCULATED IN MONTHS</h6>
+                            <h6 className='calculator-info-text'>INTEREST PERIOD CAN BE CALCULATED IN YEARS (ANNUAL) OR MONTHS (MONTHLY)</h6>
                             <h6 className='calculator-info-text'>DEFAULT TAX RATE IS SET TO SOUTH AFRICAN 15% TAX RATE</h6>
                         </span>
                     </div>

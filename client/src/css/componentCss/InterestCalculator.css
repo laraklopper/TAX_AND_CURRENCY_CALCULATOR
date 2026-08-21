@@ -99,6 +99,53 @@ LAYOUT
   text-decoration: underline;
 }
 
+/* --- Time period toggle (annual / monthly) --- */
+#interest-time-block{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+#time-period-label{
+  display: flex;
+  justify-content: flex-start;
+}
+#buttons-div{
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 0px;
+  padding: 0px;
+}
+#interest-period-select-btn{
+  width: 180px;
+  font-family: "Courier Prime", monospace;
+  color: #000;
+  margin: 0px;
+  padding: 0px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  font-weight: 700;
+}
+/* SELECTED TIME PERIOD
+   Qualified with the button id so it outranks the color: #000 set above
+   and Bootstrap's own .btn-light rules. */
+#interest-period-select-btn.toggle-button--active,
+#interest-period-select-btn.toggle-button--active:hover,
+#interest-period-select-btn.toggle-button--active:focus,
+#interest-period-select-btn.toggle-button--active:active {
+  background-color: #323A42;
+  color: #E8F0F6;
+  border-color: #323A42;
+  box-shadow: inset 0 0 0 2px #E8F0F6;
+  text-decoration: underline;
+}
+
 /* GROUP 2 */
 #field-group2{
     display: flex;
@@ -276,7 +323,8 @@ ALERTS
     display: flex;
 }
 #results-block1,
-#results-block2{
+#results-block2,
+#results-block3{
     display: flex;
     align-items: baseline;
     gap: 10px;
