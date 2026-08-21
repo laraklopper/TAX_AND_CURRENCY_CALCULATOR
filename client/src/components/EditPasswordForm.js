@@ -123,12 +123,16 @@ export default function EditPasswordForm({setError}) {
     //===========================================
   return (
     <form id='edit-password-form' aria-labelledby='formHeading' aria-busy={loading} onSubmit={editPassword}>
-        <div>
+    {/* -------FORM HEADING--------------- */}
+        <div id='formHeadingBlock'>
             <h3 id='formHeading'>EDIT PASSWORD</h3>
         </div>
+        {/* =======FORM DETAILS INPUT=================== */}
         <div id='edit-password-details'>
+        {/* STACK 1: CURRENT PASSWORD, SHOW CURRENT PASSWORD BUTTON */}
             <Stack gap={3} id='edit-password-stack1'>
       <div className="p-2" id='edit-password-block1'>
+      {/* CURRENT PASSWORD */}
         <label className='edit-pswd-label' htmlFor='currentPasswordInput'>CURRENT PASSWORD:</label>
         <div className='input-div'>
             <input
@@ -140,6 +144,7 @@ export default function EditPasswordForm({setError}) {
                 id='currentPasswordInput'
                 name='currentPassword'
                 value={currentPassword}
+                // EVENTS
                 onFocus={() => setShowPswdMsg(true)}
                 onBlur={() => setShowPswdMsg(false)}
                 onChange={(e) => setCurrentPassword(e.target.value)}
@@ -151,6 +156,7 @@ export default function EditPasswordForm({setError}) {
         </div>
       </div>
       <div className="p-2" id='show-edit-password-block1'>
+      {/* Show current password button */}
         <Button
             variant='warning'
             id='showCurrentPasswordBtn'
@@ -175,8 +181,10 @@ export default function EditPasswordForm({setError}) {
         </Button>
       </div>
     </Stack>
+    {/* STACK 3: NEW PASSWORD, SHOW NEW PASSWORD,  */}
      <Stack gap={3} id='edit-password-stack2'>
       <div className="p-2" id='edit-password-block2'>
+      {/* NEW PASSWORD */}
         <label className='edit-pswd-label' htmlFor='newPasswordInput'>NEW PASSWORD:</label>
         <div className='input-div'>
             <input
@@ -198,11 +206,13 @@ export default function EditPasswordForm({setError}) {
             />
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
         </div>
+        {/* Password Requirements */}
         <small id='newPasswordHelp' className='msgText'>
             At least 8 characters and one special character.
         </small>
       </div>
       <div className="p-2" id='show-edit-password-block2'>
+      {/* Show New Password Btn */}
         <Button
         variant='warning'
         id='showNewPasswordBtn'
@@ -233,11 +243,11 @@ export default function EditPasswordForm({setError}) {
       </div>)}
 
     </Stack>
-
-
         </div>
+        {/* STACK 3 : CONFIRM PASSWORD, EDIT PASSWORD BUTTON, CLEARFORM BUTTON */}
         <Stack gap={3} id='edit-password-stack3'>
        <div className='p-2' id='confirm-password-block'>
+       {/* CONFIRM NEW PASSWORD */}
             <label className='edit-pswd-label' htmlFor='confirmPasswordInput'>CONFIRM PASSWORD:</label>
         <div id='confirmpswd-input-div'>
             <input
@@ -268,18 +278,15 @@ export default function EditPasswordForm({setError}) {
         >
         {showPasswordConfirm ? (
             <>
-
                 <EyeOff aria-hidden='true' focusable='false'  fontWeight={700}/>
             </>
          ):(
             <>
-
                 <Eye aria-hidden="true" focusable='false'  fontWeight={700} />
             </>
         )}
         </Button>
         </div>
-
       </div>
       {/* Inline request/validation feedback, announced to screen readers */}
       {status && (
@@ -295,6 +302,7 @@ export default function EditPasswordForm({setError}) {
         </div>
       )}
       <div className="p-2" id='edit-passwordbtn-block1'>
+      {/* SUBMIT/Edit password Button */}
          <Button
             variant='light'
             type='submit'
@@ -316,11 +324,10 @@ export default function EditPasswordForm({setError}) {
             aria-disabled={loading}
             aria-label='clear form'
             >
-                    CLEAR FORM
-                </Button>
+          CLEAR FORM
+          </Button>
       </div>
     </Stack>
-
         <div>
         </div>
     </form>
