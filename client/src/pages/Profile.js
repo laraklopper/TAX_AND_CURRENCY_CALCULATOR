@@ -327,6 +327,12 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
           </div>
         )}     
       </section>
+      {currentUser.admin && (
+        <section id='profile-section2'>
+          useR LIST
+
+        </section>
+      )}
       <Footer logout={logout}/>
     </div>
   )
