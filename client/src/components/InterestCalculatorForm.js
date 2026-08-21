@@ -455,6 +455,7 @@ export default function InterestCalculatorForm({
       </div>
        </Stack>
     </div>
+    {/* GROUP 4 */}
         </div>
         <div className="form-actions">
         <Stack gap={2} className="col-md-5 mx-auto" id='interestform-btn-stack'>
@@ -463,8 +464,12 @@ export default function InterestCalculatorForm({
             type="submit"
             disabled={status === "calculating"}
             id='calculate-interest-btn'
+            // ARIA ATTRIBUTES
+            role='button'
+            aria-label={status === "calculating" ? "Calculating..." : "Calculate"}
+            aria-disabled={status === "calculating"}
           >
-            <Calculator size={16} />
+            <Calculator fontWeight={700} size={16} aria-hidden='true' focusable='false' />
             {status === "calculating" ? "Calculating..." : "Calculate"}
           </Button>
           <Button variant='danger' type="button" onClick={resetForm} id='clearFormBtn'>
@@ -503,15 +508,9 @@ export default function InterestCalculatorForm({
               <p className="results-value">
                 {formatCurrency(result.finalAmount)}
               </p>
-
       </div>
-
     </Stack>
-
-
-
           </div>
-
           {result.breakdown?.length > 0 && (
             <div className="table-wrapper">
               <table className="breakdown-table">
@@ -538,7 +537,6 @@ export default function InterestCalculatorForm({
               </table>
             </div>
           )}
-
           {isAuthenticated && onSave && (
             <div className="save-row">
               <Button
