@@ -8,13 +8,21 @@
 /save deliberately RECALCULATES from the user's inputs instead of storing the
 figures the browser sends. A saved record is therefore always internally
 consistent, and a tampered request cannot write false totals to the database. */
+
+/* Load environment variables from a .env
+file using the dotenv package*/
 require('dotenv').config()
+// Import Required modules and packages
 const express = require('express');
+// IMPORT CUSTOM MIDDLEWARE
 const { checkJwtToken } = require('./middleware');
+// Import schemas
 const User = require('../models/userSchema');
 const TaxCalc = require('../models/taxCalcSchema');
+// Import Utility functions
 const { calculateTax, getTaxYearConfig, listTaxYears } = require('../utils/taxCalculator');
-const router = express.Router()
+
+const router = express.Router()// Create a new router object using Express
 
 // Bounds accepted for a taxpayer's age, matching taxCalcSchema
 const MIN_AGE = 16;
@@ -54,6 +62,9 @@ const parseTaxInput = (body = {}) => ({
     taxYear: typeof body.taxYear === 'string' ? body.taxYear.trim() : body.taxYear,
 });
 
+/*──────────────────────────── GET ROUTES ─────────────────────────────────────
+   GET: READ — Used to fetch information from the database
+────────────────────────────────────────────────────────────────────────────────*/
 /*=====================================
 TAX YEAR CONFIG
 =======================================*/

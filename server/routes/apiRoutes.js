@@ -68,6 +68,9 @@ const validateInterestInput = ({ type, principal, rate, duration, periodUnit, co
     return null;
 };
 
+/*──────────────────────────── GET ROUTES ─────────────────────────────────────
+   GET: READ — Used to fetch information from the database
+────────────────────────────────────────────────────────────────────────────────*/
 router.get('/convert', checkJwtToken ,async (req,res) => {
   const {from, to, amount} = req.query;
     if (!from || !to || !amount) {// Conditional rendering to check if all required query params are present
@@ -165,15 +168,19 @@ router.get('/convert', checkJwtToken ,async (req,res) => {
     }
 })
 
+/*──────────────────────────── POST ROUTES ──────────────────────────────
+    POST: Used to create a new resource/submit data to the database
+ ─────────────────────────────────────────────────────────────────────────*/
 /*=====================================
 INTEREST CALCULATION
 =======================================*/
 /* Works out simple or compound interest over a period the user supplies in
 either YEARS (annual) or MONTHS (monthly). The rate is always an annual
 nominal rate; the calculator converts it to the requested period so both
-options can be compared against the same quoted rate.
+options can be compared against the same quoted rate.*/
 
-The client also has a local fallback calculation for previewing, but this
+
+/*The client also has a local fallback calculation for previewing, but this
 route is the source of truth for anything that gets saved. */
 router.post('/interest/calculate', checkJwtToken, (req, res) => {
     const input = parseInterestInput(req.body);
@@ -195,9 +202,8 @@ router.post('/interest/calculate', checkJwtToken, (req, res) => {
     }
 })
 
-/*=====================================
-SAVE AN INTEREST CALCULATION
-=======================================*/
+
+// ROUTE TO SAVE AN INTEREST CALCULATION
 /* Saves an interest calculation to the logged in user's history. The user is
 taken from the JWT, never from the request body, so a user can only ever write
 a record against themselves.
@@ -205,6 +211,7 @@ a record against themselves.
 The result is RECALCULATED from the submitted inputs rather than read from the
 request, so a saved record is always internally consistent and a tampered
 request cannot write false totals to the database. */
+
 router.post('/interest/save', checkJwtToken, async (req, res) => {
     const input = parseInterestInput(req.body);
 
