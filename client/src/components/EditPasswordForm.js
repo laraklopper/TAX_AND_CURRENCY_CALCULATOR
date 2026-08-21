@@ -10,6 +10,7 @@ export default function EditPasswordForm({setError}) {
     const [showCurrentPswd, setShowCurrentPswd] = useState(false)
     const [showNewPswd, setShowNewPswd] = useState(false)
     const [currentPassword, setCurrentPassword] = useState('')
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
     const [newPassword, setNewPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
@@ -217,7 +218,7 @@ export default function EditPasswordForm({setError}) {
         <Stack gap={3} id='edit-password-stack3'>
        <div className='p-2' id='confirm-password-block'>
             <label className='edit-pswd-label'>CONFIRM PASSWORD:</label>
-        <div className='input-div'>
+        <div id='confirmpswd-input-div'>
             <input
                 className='input'
                 placeholder='CONFIRM PASSWORD'
@@ -228,20 +229,54 @@ export default function EditPasswordForm({setError}) {
                 // ARIA ATTRIBUTES:
             />
             <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+             <Button
+        variant='warning'
+        id='showConfirmPswdBtn'
+        size='sm'
+        onClick={() => setShowNewPswd((prev) => !prev)}
+        type='button'
+         // ARIA ATTRIBUTES:
+        aria-pressed={showPasswordConfirm}
+        aria-expanded={showPasswordConfirm}
+        aria-label={showPasswordConfirm ? 'Hide  Password' : 'Show Password'}
+        >
+        {showPasswordConfirm ? (
+            <>
+               
+                <EyeOff aria-hidden='true' focusable='false'  fontWeight={700}/>
+            </>
+         ):(
+            <>
+              
+                <Eye aria-hidden="true" focusable='false'  fontWeight={700} />
+            </>
+        )}
+        </Button>
         </div>
 
       </div>
       <div className="p-2" id='edit-passwordbtn-block1'>
          <Button 
-                    variant='light' type='submit' disabled={loading} id='edit-password-btn'>EDIT PASSWORD</Button>
+            variant='light' 
+            type='submit' 
+            disabled={loading} 
+            id='edit-password-btn'
+            // ARIA ATTRIBUTES:
+            aria-disabled={loading}
+            aria-label='EDIT PASSWORD'
+            role='button'
+            >EDIT PASSWORD</Button>
       </div>
       <div className="p-2" id='edit-passwordbtn-block2'>
          <Button 
-                    variant='danger' 
-                    id='clearFormBtn' 
-                    type='button' 
-                    onClick={resetForm}
-                    >
+            variant='danger' 
+            id='clearFormBtn' 
+            type='button' 
+            onClick={resetForm}
+            // ARIA ATTRIBUTES:
+            aria-disabled={loading}
+            aria-label='clear form'
+            >
                     CLEAR FORM
                 </Button>
       </div>
