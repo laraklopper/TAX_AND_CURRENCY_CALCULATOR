@@ -39,7 +39,7 @@ app.use('/auth', authRoutes)
 app.use('/api', apiRoutes)
 app.use('/api/tax', taxRoutes)// Income tax: /config, /calculate and /save
 app.use('/users', userRoutes)
-app.use('/interest', interestRoutes)
+app.use('/api/interest', interestRoutes)// Interest: /calculate and /save
 mongoose.set('strictPopulate', false)
 
 //=============START THE SERVER=============
