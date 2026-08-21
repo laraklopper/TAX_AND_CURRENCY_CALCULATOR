@@ -216,6 +216,7 @@ LAYOUT
     color: #E8F0F6;
     background-color: #323A42;
 }
+/* SECTION 2 */
 #calculatorSec2{
     width: 100%;
     display: flex;
@@ -226,5 +227,63 @@ LAYOUT
     gap: 5px;
     background-color: #1262B3;
 }
-
-
+#calculations-list-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#calculations-list-col{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#toggle-calculations-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+}
+#toggle-calculations-stack{
+        display: flex;
+        align-items: center;
+    justify-content: center;
+    background-color: #B6C6D4;
+    border-radius: 8px;
+    margin: 0px;
+    padding: 10px;
+}
+#tax-calculations-panal,
+#interest-calculations-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+/* BOOTSTRAP LAYOUT */
+/* Grid */
+#tax-calculations-row,
+#int-calculations-row{
+    margin: 0px;
+    width: 0px;
+    padding: 0px;
+}
+#tax-calculations-col,
+#int-calculations-col{
+    margin: 0px;
+    width: 0px;
+    padding: 0px;
+}
+/* BUTTONS */
+#showTax-calculationsBtn,
+#showInterest-calculationsBtn{
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    letter-spacing: 1px;
+    margin: 0px;
+    padding: 0px;
+    width: 300px;
+    text-transform: uppercase;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    border: solid 2px #323A42;
+}

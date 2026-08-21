@@ -23,6 +23,8 @@ export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
+  const [showTaxCalculations, setShowTaxCalculations] = useState(false)
+  const [showInterestCalculations, setShowInterestCalculations] = useState(false)
   /* Tax years offered by the tax calculator's dropdown. Starts as the seeded
   year and is replaced by whatever GET /api/tax/config returns. */
   const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
@@ -44,6 +46,15 @@ export default function Calculators({currentUser, logout}) {
     setShowTaxCalc(false)
    },[])
 
+   const toggleTaxCalculations = useCallback(() => {
+    setShowTaxCalculations(prev => !prev)
+    setShowInterestCalculations(false)
+   },[])
+
+   const toggleInterestCalculations = useCallback(() => {
+    setShowInterestCalculations(prev => !prev)
+    setShowTaxCalculations(false)
+   },[])
   /* Shared POST helper for the calculator endpoints. Attaches the JWT, sends
   the payload as JSON and throws the API's own message on failure, so each form
   can show the real reason a request was rejected. */
@@ -268,6 +279,42 @@ export default function Calculators({currentUser, logout}) {
                 </Col>
                 <Col xs={0} md id='info-msg-col1'/>
             </Row>
+        </section>
+        <section id='calculatorSec2'>
+          <Row id='calculations-list-row'>
+            <Col id='calculations-list-col'>
+              <div id='toggle-calculations-panal'>
+                <Stack gap={2} className="col-md-5 mx-auto" id='toggle-calculations-stack'>
+      <Button variant="light" id='showTax-calculationsBtn' onClick={toggleTaxCalculations}>
+        {showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
+      </Button>
+      <Button variant="light" id='showInterest-calculationsBtn' onClick={toggleInterestCalculations}>
+        {showInterestCalculations ? 'Hide Calculations': 'SHOW INTEREST CALCULATIONS'}
+      </Button>
+    </Stack>
+              </div>
+            </Col>
+          </Row>
+          {showTaxCalculations && (
+            <div id='tax-calculations-panal'>
+              <Row id='tax-calculations-row'>
+                <Col id='tax-calculations-col'>
+                  TAX CALCULATIONS
+
+                </Col>
+              </Row>
+            </div>
+          )}
+          {showInterestCalculations && (
+            <div id='interest-calculations-panal'>
+              <Row id='int-calculations-row'>
+                <Col id='int-calculations-col'>
+                  INTEREST CALCULATIONS
+                </Col>
+              </Row>
+
+            </div>
+          )}
         </section>
         {/* ======FOOTER============= */}
       <Footer logout={logout}/>
