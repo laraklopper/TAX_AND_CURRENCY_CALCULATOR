@@ -5,6 +5,7 @@ require('dotenv').config();
 // Import Required modules and packages
 const jwt = require('jsonwebtoken');// Import the JSON Web Token (JWT) library
 const bcrypt = require('bcrypt');
+const User = require('../models/userSchema');
 // Extract enviromental variables
 const secretKey = process.env.JWT_SECRET_KEY || 'secretKey';
 
@@ -68,6 +69,57 @@ const checkJwtToken = (req, res, next) => {
             success: false, //Success status
             message: 'Invalid or expired token.'//JSON message
         });
+    }
+}
+
+/*=============================
+ADMIN AUTHORISATION MIDDLEWARE
+ ====================================*/
+/*Middleware function to check that the requester has admin privileges.
+Must run AFTER checkJwtToken, which attaches the decoded token to req.user.
+The admin flag is re-read from the database rather than trusted from the token:
+a token signed before the user's privileges changed would otherwise still grant
+admin access until it expired.*/
+const checkAdmin = async (req, res, next) => {
+    console.log('[DEBUG: middleware.js] [checkAdmin] Middleware triggered');// Log a message in the console for debugging purposes
+    try {
+        const userId = req.user?.userId;// The token payload signed in authRoutes.js uses `userId`
+
+        //Conditional rendering to check that checkJwtToken ran before this middleware
+        if (!userId) {
+            console.warn('[WARN: middleware.js, checkAdmin] No user attached to the request');// Log a warning message in the console for debugging purposes
+            return res.status(401).json({// Respond with a 401 (Unauthorised) status code and an error message
+                success: false,//Success status
+                message: 'Access denied. No token provided.'//JSON message
+            });
+        }
+
+        const requester = await User.findById(userId).select('admin').exec();
+
+        //Conditional rendering to check if the requester still exists
+        if (!requester) {
+            console.error('[ERROR: middleware.js, checkAdmin] User not found with ID:', userId);// Log an error message in the console for debugging purposes
+            return res.status(401).json({// Respond with a 401 (Unauthorised) status code and an error message
+                success: false,//Success status
+                message: 'Invalid token. Please login again.'//JSON message
+            });
+        }
+
+        //Conditional rendering to check if the requester has admin privileges
+        if (!requester.admin) {
+            console.warn('[WARN: middleware.js, checkAdmin] Non-admin user attempted an admin action:', userId);// Log a warning message in the console for debugging purposes
+            return res.status(403).json({// Respond with a 403 (Forbidden) status code and an error message
+                success: false,//Success status
+                message: 'Access denied. Admin privileges are required.'//JSON message
+            });
+        }
+
+        req.isAdmin = true;// Flag the request as made by an admin for the route handler
+        console.log('[SUCCESS: middleware.js, checkAdmin] Admin access granted:', userId);//Log a message in the console for debugging purposes
+        next()// Call the next middleware or route handler
+    } catch (error) {
+        console.error('[ERROR: middleware.js, checkAdmin]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return 500 (Internal Server Error) response
     }
 }
 
@@ -190,4 +242,4 @@ const checkAge = (req, res, next) => {
         return res.status(500).json({ message: 'Internal Server Error' });// Return 500 (Internal Server Error) response
     }
 }
-module.exports = {checkJwtToken, checkPassword, checkAge, hashPassword}
+module.exports = {checkJwtToken, checkAdmin, checkPassword, checkAge, hashPassword}

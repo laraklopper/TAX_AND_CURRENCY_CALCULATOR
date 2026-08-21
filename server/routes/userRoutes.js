@@ -3,10 +3,11 @@
 file using the dotenv package*/
 require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router()
 
 const User = require('../models/userSchema');
-const { checkJwtToken, checkPassword } = require('./middleware');
+const { checkJwtToken, checkAdmin, checkPassword } = require('./middleware');
 
 // ======ROUTES=====================
 /*──────────────────────────── GET ROUTES ─────────────────────────────────────
@@ -239,27 +240,75 @@ router.patch('/editPassword', checkJwtToken, checkPassword, async (req, res) => 
     DELETE: Used to remove an item from the database
  ────────────────────────────────────────────────────────────────────────────────*/
  //Route to send a DELETE request to the /deleteUser/:id endpoint
- router.delete('/deleteUser/:id', async (req, res) => {
+ // checkJwtToken identifies the requester from the token; checkAdmin confirms
+ // the requester still holds admin privileges in the database.
+ // Admin users cannot be removed, and an admin cannot delete their own account.
+ router.delete('/deleteUser/:id', checkJwtToken, checkAdmin, async (req, res) => {
     try {
         const {id} = req.params;
-        const removedUser = await User.findByIdAndDelete(id);
+        const requesterId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
 
-        if (!removedUser) {
+        /* Conditional rendering to check the id is a valid ObjectId: findById
+        raises a CastError on a malformed id, which would return a 500 */
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            console.error('[ERROR: userRoutes.js, DELETE /deleteUser/:id] Invalid user id:', id);
+            return res.status(400).json({//Send a 400 (Bad Request) status response with an error message in JSON response
+                success: false,
+                message: 'Invalid user id' //JSON message
+            });
+        }
+
+        // An admin cannot delete the account they are logged in with
+        if (String(id) === String(requesterId)) {
+            console.error('[ERROR: userRoutes.js, DELETE /deleteUser/:id] Admin attempted to delete their own account:', id);
+            return res.status(403).json({//Send a 403 (Forbidden) status response with an error message in JSON response
+                success: false,
+                message: 'You cannot delete the account you are logged in with' //JSON message
+            });
+        }
+
+        /* Fetch the user first so the admin flag can be checked before the
+        record is removed */
+        const user = await User.findById(id).select('admin email').exec();
+
+        //Conditional rendering to check if the user exists
+        if (!user) {
             console.error('[ERROR: userRoutes.js, /deleteUser/:id] : User not found');
              return res.status(404).json({//Send a 404(Not Found) status response with an error message in JSON response
-                success: false, 
+                success: false,
                 message: 'User not found' //JSON message
             });
         }
 
-        console.log(`[SUCCESS: userRoutes.js, DELETE /deleteUser/:id] Deleted user: ${id}`);
+        // Admin users cannot be removed
+        if (user.admin) {
+            console.error('[ERROR: userRoutes.js, DELETE /deleteUser/:id] Attempted to delete an admin user:', id);
+            return res.status(403).json({//Send a 403 (Forbidden) status response with an error message in JSON response
+                success: false,
+                message: 'Admin users cannot be removed' //JSON message
+            });
+        }
+
+        const removedUser = await User.findByIdAndDelete(id).select('-password').exec();
+
+        //Conditional rendering to check the user was not already deleted by another request
+        if (!removedUser) {
+            console.error('[ERROR: userRoutes.js, /deleteUser/:id] : User not found');
+             return res.status(404).json({//Send a 404(Not Found) status response with an error message in JSON response
+                success: false,
+                message: 'User not found' //JSON message
+            });
+        }
+
+        console.log(`[SUCCESS: userRoutes.js, DELETE /deleteUser/:id] Deleted user: ${id} by admin: ${requesterId}`);
         return res.status(200).json({
-             success: true, 
-             message: 'User deleted successfully.' 
+             success: true,
+             message: 'User deleted successfully.',
+             userId: id// Returned so the client can drop the user from the list on screen
             });
     } catch (error) {
-        console.error('Error deleting user:', error.message);
-        res.status(500).json({ error: 'Failed to delete User' });
+        console.error('[ERROR: userRoutes.js, DELETE /deleteUser/:id] Error deleting user:', error.message);
+        return res.status(500).json({ success: false, message: 'Failed to delete User' });
     }
  })
 // =====================
