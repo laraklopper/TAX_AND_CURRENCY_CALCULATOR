@@ -13,6 +13,7 @@ const connectDB = require('./config/connect')
 // ============IMPORT ROUTES===================
 const authRoutes = require('./routes/authRoutes')
 const apiRoutes = require('./routes/apiRoutes')
+const userRoutes = require('./routes/userRoutes')
 // Extract enviromental variables
 const port = process.env.PORT || 3001;
 
@@ -34,6 +35,7 @@ app.use(express.urlencoded({extended:true}))
 // Prefix all route modules with their base path.
 app.use('/auth', authRoutes)
 app.use('/api', apiRoutes)
+app.use('/users', userRoutes)
 mongoose.set('strictPopulate', false)
 
 
