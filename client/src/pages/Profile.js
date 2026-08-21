@@ -23,6 +23,26 @@ const NOT_PROVIDED = 'NOT PROVIDED'
 const orPlaceholder = (value) =>
   (typeof value === 'string' && value.trim()) || NOT_PROVIDED
 
+// Blank edit form: reused for the initial state and after a successful update.
+// Left empty on purpose — the PATCH request only sends the fields the user
+// fills in, so any detail left blank keeps its stored value.
+const EMPTY_EDIT_USER_DATA = {
+  fullName: {
+    firstName: '',
+    lastName: '',
+  },
+  email: '',
+  address: {
+    line1: '',
+    line2: '',
+    city: '',
+    province: '',
+  }
+}
+
+// Trim a form value, tolerating undefined/non-string values
+const trimValue = (value) => (typeof value === 'string' ? value.trim() : '')
+
 // Format an ISO date string as e.g. 01 March 2025
 const toLongDate = (value) => {
   if (!value) return NOT_PROVIDED
@@ -35,22 +55,13 @@ const toLongDate = (value) => {
   })
 }
 
-export default function Profile({currentUser, logout, setError}) {
+export default function Profile({currentUser, setCurrentUser, logout, setError}) {
   const [showEditUser, setShowEditUser] = useState(false)
   const [showEditPswd, setShowEditPswd] = useState(false)
-  const [editUserData, setEditUserData] = useState({
-    fullName: {
-      firstName: '',
-      lastName: '',
-    },
-    email: '',
-    address: {
-      line1: '',
-      line2: '',
-      city: '',
-      province: '',
-    }
-  })
+  const [editUserData, setEditUserData] = useState(EMPTY_EDIT_USER_DATA)
+  // Inline feedback shown inside the edit user form: {type: 'error' | 'success', text: string}
+  const [editUserStatus, setEditUserStatus] = useState(null)
+  const [editUserLoading, setEditUserLoading] = useState(false)
 
   /*Destructure the current user's details, defaulting to an empty object so the
   page still renders while the user details are being fetched*/
@@ -67,13 +78,89 @@ export default function Profile({currentUser, logout, setError}) {
 
   // ======REQUESTS/CALLBACKS===========
 
+  /* Report a validation/request failure in one place: inline message and
+     parent error state stay in sync */
+  const failWith = useCallback((msg) => {
+    setEditUserStatus({ type: 'error', text: msg });// Show the message inside the form
+    setError?.(msg);// Set the error state to display the error in the UI
+  },[setError])
+
+  // PATCH /users/editUser: send only the details the user filled in
   const editUser = useCallback(async () => {
+    setEditUserLoading(true)//Set the loading state while the request is in flight
+    setEditUserStatus(null)// Clear feedback from the previous attempt
     try {
-      
+      /* Build the payload from the filled-in fields only. A blank field is
+      left out of the request so the stored value is kept as is */
+      const payload = {}
+
+      const fullNameUpdates = {}
+      if (trimValue(editUserData.fullName?.firstName)) {
+        fullNameUpdates.firstName = trimValue(editUserData.fullName.firstName)
+      }
+      if (trimValue(editUserData.fullName?.lastName)) {
+        fullNameUpdates.lastName = trimValue(editUserData.fullName.lastName)
+      }
+      if (Object.keys(fullNameUpdates).length) payload.fullName = fullNameUpdates
+
+      if (trimValue(editUserData.email)) payload.email = trimValue(editUserData.email)
+
+      const addressUpdates = {}
+      // line1 (street), line2, city and province all live on the nested address object
+      for (const field of ['line1', 'line2', 'city', 'province']) {
+        const value = trimValue(editUserData.address?.[field])
+        if (value) addressUpdates[field] = value
+      }
+      if (Object.keys(addressUpdates).length) payload.address = addressUpdates
+
+      // Conditional rendering to check that at least one detail was supplied
+      if (Object.keys(payload).length === 0) {
+        failWith('Fill in at least one detail to update your profile.');
+        return;// Exit the function early
+      }
+
+      const token = localStorage.getItem('token');// Retrieve the JWT token from localStorage
+
+      //Conditional rendering to check if token exists
+      if (!token) {
+        failWith('User is not authenticated. Please log in again.');
+        return;// Exit the function early
+      }
+
+      const response = await fetch('http://localhost:3001/users/editUser', {
+        method: 'PATCH',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',// Specify the Content-Type in the request payload
+          'Authorization': `Bearer ${token}`,// Attach JWT token for authorization
+        },
+        body: JSON.stringify(payload)// Convert the updated details to a JSON string
+      });
+
+      const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
+      /* Conditional rendering to check if the response
+         is not successful (status code is not in the range 200-299)*/
+      if (!response.ok) {
+        failWith(data.message || 'Failed to update profile.');//Default error message
+        return;// Exit the function early
+      }
+
+      // Refresh the details on screen with the user returned by the server
+      if (data.user) setCurrentUser?.(data.user)
+      setEditUserData(EMPTY_EDIT_USER_DATA)// Clear the form fields
+      setError?.(null)//Clear any previous error messages
+      const successMessage = data.message || 'Profile updated successfully.';
+      setEditUserStatus({ type: 'success', text: successMessage });// Show the success message inside the form
+      console.log('[SUCCESS: Profile.js, editUser] Profile successfully updated');// Log success message to console for debugging
     } catch (error) {
-      
+      const msg = error?.message || 'An error occurred while updating the profile.';// Default error message
+      setEditUserStatus({ type: 'error', text: msg });// Show the message inside the form
+      setError?.(msg);// Set the error state to display the error in the UI
+      console.error('[ERROR: Profile.js, editUser]', msg);// Log the error message in the console for debugging
+    } finally {
+      setEditUserLoading(false)//Set Loading state to false
     }
-  },[])
+  },[editUserData, setCurrentUser, setError, failWith])
   //=======================================
   return (
     <div id='pageContainer'>
@@ -215,6 +302,8 @@ export default function Profile({currentUser, logout, setError}) {
             setEditUserData={setEditUserData}
             currentUser={currentUser}
             editUser={editUser}
+            status={editUserStatus}
+            loading={editUserLoading}
           />
         </Col>
       </Row>

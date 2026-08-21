@@ -9,10 +9,12 @@ import { MapPin } from 'lucide-react';
 
 export default function EditUserForm(
   {//PROPS PASSED FROM PARENT COMPONENT(Profile.js)
-    editUserData, 
+    editUserData,
     setEditUserData,
     currentUser,
-    editUser
+    editUser,
+    status,// Inline request feedback: {type: 'error' | 'success', text: string}
+    loading// True while the PATCH request is in flight
   }) {
     // ========STATE VARIABLES=====================
   const [showEmailMsg, setShowEmailMsg] = useState(false)
@@ -48,23 +50,25 @@ export default function EditUserForm(
 
     if (!confirmReset) return;
 
+    /* Blank every field: the stored details stay untouched because only
+    filled-in fields are sent with the request */
     setEditUserData({
       fullName :{
-        firstName: currentUser?.fullName?.firstName || '',
-        lastName: currentUser?.fullName?.lastName || '',
+        firstName: '',
+        lastName: '',
       },
-      email: currentUser?.email || '',
+      email: '',
       address: {
-        line1: currentUser?.address?.line1 || '',
-        line2: currentUser?.address?.line2 || '',
-        city: currentUser?.address?.city || '',
-        province: currentUser?.address?.province || ''
-      }, 
+        line1: '',
+        line2: '',
+        city: '',
+        province: ''
+      },
     })
-  }, [currentUser, setEditUserData])
+  }, [setEditUserData])
   //===============JSX RENDERING===================
   return (
-    <form id='edit-user-form' method='PATCH' onClick={handleSubmit} aria-labelledby='formHeading'>
+    <form id='edit-user-form' onSubmit={handleSubmit} aria-labelledby='formHeading' aria-busy={loading}>
     <div id='formHeadingBlock'>
         <h3 id='formHeading'>EDIT USER PROFILE</h3>
     </div>
@@ -87,7 +91,8 @@ export default function EditUserForm(
         <input
           className='input'
           type='text'
-          placeholder='FIRST NAME'//Display currentUser firstName if provided
+          id='editFirstName'
+          placeholder={currentUser?.fullName?.firstName || 'FIRST NAME'}//Display currentUser firstName if provided
           name='fullName.firstName'
           value={editUserData.fullName.firstName}
           onChange={handleInputChange}
@@ -100,8 +105,9 @@ export default function EditUserForm(
         <label className='edit-user-label' htmlFor='editUserLastName'>LAST NAME:</label>
         <input
           className='input'
+          type='text'
           id='editUserLastName'
-          placeholder='LAST NAME'
+          placeholder={currentUser?.fullName?.lastName || 'LAST NAME'}//Display currentUser lastName if provided
           name='fullName.lastName'
           value={editUserData.fullName.lastName}
           onChange={handleInputChange}
@@ -122,7 +128,7 @@ export default function EditUserForm(
           className='input'
           type='email'
           id='editUserEmail'
-          placeholder='EMAIL'//Current User email or email if notFound or provided
+          placeholder={currentUser?.email || 'EMAIL'}//Current User email or email if notFound or provided
           name='email'
           value={editUserData.email}
           // EVENTS:
@@ -157,7 +163,7 @@ export default function EditUserForm(
             id='newStreetAddress'
             rows={2}
             className='text-input'
-            placeholder='STREET'//CurrentUser address line 1 if provided or STREET ADDRESS if not provided
+            placeholder={currentUser?.address?.line1 || 'STREET'}//CurrentUser address line 1 if provided or STREET ADDRESS if not provided
             name='address.line1'
             value={editUserData.address.line1}
             onChange={handleInputChange}
@@ -172,7 +178,7 @@ export default function EditUserForm(
             className='text-input'
             id='editUserAddressline2'
             rows={2}
-            placeholder='ADDITIONAL ADDRESS DETAILS'//CurrentUser address line2 if provided or ADDITIONAL ADDRESS DETAILS if not provided
+            placeholder={currentUser?.address?.line2 || 'ADDITIONAL ADDRESS DETAILS'}//CurrentUser address line2 if provided or ADDITIONAL ADDRESS DETAILS if not provided
             name='address.line2'
             value={editUserData.address.line2}
             onChange={handleInputChange}
@@ -189,7 +195,8 @@ export default function EditUserForm(
           <input
             className='input'
             id='editUserCity'
-            placeholder='CITY/TOWN'//CurrentUser address city if provided or CITY/TOWN if not provided
+            type='text'
+            placeholder={currentUser?.address?.city || 'CITY/TOWN'}//CurrentUser address city if provided or CITY/TOWN if not provided
             name='address.city'
             value={editUserData.address.city}
             onChange={handleInputChange}
@@ -200,18 +207,18 @@ export default function EditUserForm(
         </div>
         {/* PROVINCE */}
         <div className='input-div'>
-          <label className='edit-user-label'>PROVINCE:</label>
+          <label className='edit-user-label' htmlFor='editUserProvince'>PROVINCE:</label>
           <select
             className='input'
             id='editUserProvince'
             name='address.province'
             value={editUserData.address.province}
-            // onChange={}
+            onChange={handleInputChange}
             // ARIA ATTRIBUTES:
             aria-required='false'
           >
           {/* SET CURRENT PROVINCE AS PLACEHOLDER OR SELECT IF NOT PROVIDED */}
-             <option value=''>SELECT</option>
+             <option value=''>{currentUser?.address?.province || 'SELECT'}</option>
                 {provinces.map(p => (
                     <option key={p} value={p}>{p}</option>
                 ))}
@@ -224,16 +231,31 @@ export default function EditUserForm(
     {/* =====END OF INPUT======== */}
     {/* GROUP 3: CLEAR FORM BUTTON + SUBMIT/EDIT USER BUTTON */}
     <div id='edit-user-group3'>
+    {/* Inline request/validation feedback, announced to screen readers */}
+    {status && (
+      <div className='p-2' id='edit-user-status'>
+        <p
+          className='msgText'
+          role={status.type === 'error' ? 'alert' : 'status'}
+          aria-live={status.type === 'error' ? 'assertive' : 'polite'}
+          style={{ color: status.type === 'error' ? '#C22419' : '#1B6E2F' }}
+        >
+          {status.text}
+        </p>
+      </div>
+    )}
     {/* STACK 4 */}
       <Stack direction="horizontal" gap={3} id='edit-user-stack4'>
       <div className="p-2"></div>
       <div className="p-2 ms-auto">
-        <Button 
-        variant='danger' 
+        <Button
+        variant='danger'
         id='clearFormBtn'
         type='button'
         onClick={clearEditUserForm}
+        disabled={loading}
         // ARIA ATTRIBUTES:
+        aria-disabled={loading}
         aria-label='clear form'
         >CLEAR</Button>
       </div>
@@ -242,11 +264,12 @@ export default function EditUserForm(
         variant='light'
         id='edit-userBtn'
         type='submit'
+        disabled={loading}
         // ARIA ATTRIBUTES:
-        aria-label='EDIT USER'
-        role='button'
+        aria-disabled={loading}
+        aria-label={loading ? 'SAVING...' : 'EDIT USER'}
         >
-        EDIT USER
+        {loading ? 'SAVING...' : 'EDIT USER'}
         </Button>
       </div>
     </Stack>
