@@ -73,6 +73,22 @@ padding: 10px;
     font-weight: 700;
     font-family: "Courier Prime", monospace;
 }
+#incomeStated-Btn:hover{
+    background-color: #f9fafb;
+}
+/* SELECTED INCOME TYPE
+   Qualified with the button id so it outranks the color: #000 set above
+   and Bootstrap's own .btn-light rules. */
+#incomeStated-Btn.toggle-button--active,
+#incomeStated-Btn.toggle-button--active:hover,
+#incomeStated-Btn.toggle-button--active:focus,
+#incomeStated-Btn.toggle-button--active:active{
+    background-color: #323A42;
+    color: #E8F0F6;
+    border-color: #323A42;
+    box-shadow: inset 0 0 0 2px #E8F0F6;
+    text-decoration: underline;
+}
 #calculateTaxBtn{
     display: flex;
     align-items: center;

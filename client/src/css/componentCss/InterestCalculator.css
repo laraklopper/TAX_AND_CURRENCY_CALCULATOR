@@ -85,13 +85,18 @@ LAYOUT
   background-color: #f9fafb;
 }
 
-#interest-type-selectbtn--active {
-  background-color: #2563eb;
-  color: #ffffff;
-}
-
-#interest-type-selectbtn--active:hover {
-  background-color: #2563eb;
+/* SELECTED INTEREST TYPE
+   Qualified with the button id so it outranks the color: #000 set above
+   and Bootstrap's own .btn-light rules. */
+#interest-type-selectbtn.toggle-button--active,
+#interest-type-selectbtn.toggle-button--active:hover,
+#interest-type-selectbtn.toggle-button--active:focus,
+#interest-type-selectbtn.toggle-button--active:active {
+  background-color: #323A42;
+  color: #E8F0F6;
+  border-color: #323A42;
+  box-shadow: inset 0 0 0 2px #E8F0F6;
+  text-decoration: underline;
 }
 
 /* GROUP 2 */

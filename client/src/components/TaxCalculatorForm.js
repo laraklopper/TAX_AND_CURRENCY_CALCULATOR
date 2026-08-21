@@ -180,10 +180,12 @@ export default function TaxCalculatorForm({
                 key={t}
                 id="incomeStated-Btn"
                 type="button"
+                variant="light"
                 onClick={() => updateField("incomeType", t)}
                 className={`toggle-button${
                   form.incomeType === t ? " toggle-button--active" : ""
                 }`}
+                aria-pressed={form.incomeType === t}
               >
                 {t}
               </Button>

@@ -240,6 +240,7 @@ export default function InterestCalculatorForm({
                         form.type === t ? " toggle-button--active" : ""
                       }`}
                       // ARIA ATTRIBUTES:
+                      aria-pressed={form.type === t}
                     >
                       {t}
                     </Button>
