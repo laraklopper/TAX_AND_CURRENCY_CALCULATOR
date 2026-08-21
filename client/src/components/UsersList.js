@@ -1,4 +1,6 @@
 import React from 'react'
+import '../css/componentCss/UserList.css'
+import '../css/componentCss/DetailsPanal.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 export default function UsersList() {

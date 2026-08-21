@@ -108,3 +108,16 @@ LAYOUT
     color: #E8F0F6;
     background-color: #323A42;
 }
+/* =========
+SECTION 2
+========*/
+#profile-section2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #8dbdca;
+}
