@@ -182,7 +182,7 @@ export default function TaxCalculatorForm({
  <div id="tax-field-group1">
  <Stack gap={3} id="tax-calc-income-stack1">
       <div className="p-2" id="tax-calc-income-block1">
-        <label id="incomestated-field-label" className="tax-field-label">Income is stated as</label>
+        <label id="incomestated-field-label" className="tax-field-label">Income Period:</label>
       <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
       </div>
       <div className="p-2" id="tax-calc-income-block2">
@@ -216,25 +216,29 @@ export default function TaxCalculatorForm({
              <label className="tax-field-label">
               {form.incomeType === "monthly" ? "Monthly income (R)" : "Annual income (R)"}:
             </label>
-<input
+            <input
               type="number"
               min="0"
               step="0.01"
               placeholder={form.incomeType === "monthly" ? "25000" : "300000"}
-            className="input"
+              className="input"
               value={form.income}
+              required
               onChange={(e) => updateField("income", e.target.value)}
+              // ARIA ATTRIBUTES:
+              aria-required='true'
             />
-                        <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.income && <p className="field-error">{errors.income}</p>}
             </div>
       </div>
       <div className="p-2">
       {/* AGE */}
         <div className="input-div">
-            <label className="tax-field-label">Age:</label>
+            <label className="tax-field-label" htmlFor="taxAgeInput">Age:</label>
             <input
               type="number"
+              required
               min="16"
               max="120"
               step="1"
@@ -242,6 +246,8 @@ export default function TaxCalculatorForm({
               className="input"
               value={form.age}
               onChange={(e) => updateField("age", e.target.value)}
+              id="taxAgeInput"
+              aria-required='true'
             />
                         <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.age && <p className="field-error">{errors.age}</p>}
