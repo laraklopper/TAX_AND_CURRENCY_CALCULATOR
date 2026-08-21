@@ -2,8 +2,10 @@
 // Admin only: a table of every registered user, and a details panal showing the
 // full record (everything except the password) of the user selected on the table.
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/UserList.css'
 import '../css/componentCss/DetailsPanal.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 // ===========HELPER FUNCTIONS===========
@@ -148,9 +150,7 @@ export default function UsersList(
   return (
     <div id='users-list'>
         <div id='user-list'>
-            {/* display a table showing list of users
-            show userFullName, Email, Date of birth and admin status
-         */}
+        {/* ------USER LIST TABLE------------- */}
         {users.length === 0 ? (
           <p className='infoText' aria-live='polite'>NO REGISTERED USERS TO DISPLAY</p>
         ) : (
