@@ -15,6 +15,7 @@ const authRoutes = require('./routes/authRoutes')
 const apiRoutes = require('./routes/apiRoutes')
 const taxRoutes = require('./routes/taxRoutes')
 const userRoutes = require('./routes/userRoutes')
+const interestRoutes = require('./routes/interestRoutes')
 // Extract enviromental variables
 const port = process.env.PORT || 3001;
 
@@ -38,8 +39,8 @@ app.use('/auth', authRoutes)
 app.use('/api', apiRoutes)
 app.use('/api/tax', taxRoutes)// Income tax: /config, /calculate and /save
 app.use('/users', userRoutes)
+app.use('/interest', interestRoutes)
 mongoose.set('strictPopulate', false)
-
 
 //=============START THE SERVER=============
 // Connect to MongoDB first; only start listening once the DB is available.
