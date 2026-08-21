@@ -219,11 +219,28 @@ padding: 0px 0px 10px 0px;
     align-items: center;
     width: 100%;
 }
+
 /* STACK 3 */
-#edit-password-btn-stack{
+#edit-password-stack3{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+#confirm-password-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin: 0px;
+    padding: auto;
+    background-color: #BFBFBF;
+}
+#edit-passwordbtn-block1,
+#edit-passwordbtn-block2{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
 }
 
 /* BUTTONS */

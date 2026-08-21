@@ -167,6 +167,7 @@ export default function EditPasswordForm({setError}) {
             type={showNewPswd ? 'text' : 'password'}
                 className='input'
                 required
+                placeholder='NEW PASSWORD'
                 id='newPasswordInput'
                 name='newPassword'
                 value={newPassword}
@@ -201,22 +202,41 @@ export default function EditPasswordForm({setError}) {
         )}
         </Button>
       </div>
+      {/* Error message */}
       {/* <div className="p-2"></div> */}
       {showPswdMsg &&(
         <div className="p-2">
             <p className='msgText'>WE WILL NEVER SHARE YOUR PASSWORD</p>
         
       </div>)}
+     
     </Stack>
+    
 
         </div>
-        <div>
-            <div>
-                <Button 
+        <Stack gap={3} id='edit-password-stack3'>
+       <div className='p-2' id='confirm-password-block'>
+            <label className='edit-pswd-label'>CONFIRM PASSWORD:</label>
+        <div className='input-div'>
+            <input
+                className='input'
+                placeholder='CONFIRM PASSWORD'
+                required
+                // name=''
+                // value={}
+                // onChange={}
+                // ARIA ATTRIBUTES:
+            />
+            <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+        </div>
+
+      </div>
+      <div className="p-2" id='edit-passwordbtn-block1'>
+         <Button 
                     variant='light' type='submit' disabled={loading} id='edit-password-btn'>EDIT PASSWORD</Button>
-            </div>
-            <div>
-                <Button 
+      </div>
+      <div className="p-2" id='edit-passwordbtn-block2'>
+         <Button 
                     variant='danger' 
                     id='clearFormBtn' 
                     type='button' 
@@ -224,8 +244,10 @@ export default function EditPasswordForm({setError}) {
                     >
                     CLEAR FORM
                 </Button>
+      </div>
+    </Stack>
 
-            </div>
+        <div>
         </div>
     </form>
   )
