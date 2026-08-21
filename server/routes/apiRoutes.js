@@ -4,6 +4,7 @@ const { checkJwtToken } = require('./middleware');
 const { currencies } = require('../dataArrays/currencies');
 const User = require('../models/userSchema');
 const CurrencyConvert = require('../models/curConvertSchema');
+const Interest = require('../models/interestSchema');
 const { calculateInterest, COMPOUND_FREQUENCIES, MAX_DURATION } = require('../utils/interestCalculator');
 const router = express.Router()
 
@@ -11,6 +12,61 @@ const router = express.Router()
 const PERIOD_UNITS = ['years', 'months'];
 // Values the interest calculator accepts for the interest type
 const INTEREST_TYPES = ['simple', 'compound'];
+
+/*=====================================
+INTEREST INPUT PARSING AND VALIDATION
+=======================================*/
+/* Reads the interest calculator's fields off a request body and coerces them
+to numbers. Shared by /interest/calculate and /interest/save so both routes
+parse a request in exactly the same way. */
+const parseInterestInput = (body = {}) => ({
+    type: body.type,
+    principal: parseFloat(body.principal),
+    rate: parseFloat(body.rate),
+    duration: Number(body.duration),
+    periodUnit: body.periodUnit,
+    compoundingFrequency: body.compoundingFrequency,
+    // The recurring monthly contribution is optional, so default it to 0
+    monthlyContribution: body.monthlyContribution === undefined || body.monthlyContribution === null || body.monthlyContribution === ''
+        ? 0
+        : parseFloat(body.monthlyContribution),
+});
+
+/* Validates a parsed interest request. Returns a message describing the first
+problem found, or null when the input is usable. */
+const validateInterestInput = ({ type, principal, rate, duration, periodUnit, compoundingFrequency, monthlyContribution }) => {
+    // Conditional rendering to check the interest type is one that is supported
+    if (!INTEREST_TYPES.includes(type)) {
+        return `type must be one of: ${INTEREST_TYPES.join(', ')}`;
+    }
+    // Conditional rendering to check the time period unit is one that is supported
+    if (!PERIOD_UNITS.includes(periodUnit)) {
+        return `periodUnit must be one of: ${PERIOD_UNITS.join(', ')}`;
+    }
+    // Conditional rendering to validate that the principal is a positive number
+    if (isNaN(principal) || principal <= 0) {
+        return 'principal must be a number greater than 0';
+    }
+    // Conditional rendering to validate that the rate is a percentage between 0 and 100
+    if (isNaN(rate) || rate <= 0 || rate > 100) {
+        return 'rate must be a number greater than 0 and no more than 100';
+    }
+    /* Conditional rendering to validate the duration: whole periods only, and
+    capped per unit so a single request cannot ask for a huge breakdown. */
+    if (!Number.isInteger(duration) || duration <= 0 || duration > MAX_DURATION[periodUnit]) {
+        return `duration must be a whole number of ${periodUnit} between 1 and ${MAX_DURATION[periodUnit]}`;
+    }
+    /* Conditional rendering to validate the compounding frequency. Only
+    required for compound interest; simple interest ignores it. */
+    if (type === 'compound' && !Object.keys(COMPOUND_FREQUENCIES).includes(compoundingFrequency)) {
+        return `compoundingFrequency must be one of: ${Object.keys(COMPOUND_FREQUENCIES).join(', ')}`;
+    }
+    // Conditional rendering to validate that the contribution is not negative
+    if (isNaN(monthlyContribution) || monthlyContribution < 0) {
+        return 'monthlyContribution must be a number of 0 or more';
+    }
+    return null;
+};
 
 router.get('/convert', checkJwtToken ,async (req,res) => {
   const {from, to, amount} = req.query;
@@ -120,96 +176,82 @@ options can be compared against the same quoted rate.
 The client also has a local fallback calculation for previewing, but this
 route is the source of truth for anything that gets saved. */
 router.post('/interest/calculate', checkJwtToken, (req, res) => {
-    const {
-        type,
-        principal,
-        rate,
-        duration,
-        periodUnit,
-        compoundingFrequency,
-        monthlyContribution
-    } = req.body || {};
+    const input = parseInterestInput(req.body);
 
-    // Conditional rendering to check the interest type is one that is supported
-    if (!INTEREST_TYPES.includes(type)) {
-        return res.status(400).json({// Send a 400 (Bad Request) status code with a message
-            success: false,
-            message: `type must be one of: ${INTEREST_TYPES.join(', ')}`//JSON message
-        });
-    }
-
-    // Conditional rendering to check the time period unit is one that is supported
-    if (!PERIOD_UNITS.includes(periodUnit)) {
-        return res.status(400).json({// Send a 400 (Bad Request) status code with a message
-            success: false,
-            message: `periodUnit must be one of: ${PERIOD_UNITS.join(', ')}`//JSON message
-        });
-    }
-
-    const parsedPrincipal = parseFloat(principal);// Convert the principal to a number
-    // Conditional rendering to validate that the principal is a positive number
-    if (isNaN(parsedPrincipal) || parsedPrincipal <= 0) {
-        return res.status(400).json({
-            success: false,
-            message: 'principal must be a number greater than 0'
-        });
-    }
-
-    const parsedRate = parseFloat(rate);// Convert the annual interest rate to a number
-    // Conditional rendering to validate that the rate is a percentage between 0 and 100
-    if (isNaN(parsedRate) || parsedRate <= 0 || parsedRate > 100) {
-        return res.status(400).json({
-            success: false,
-            message: 'rate must be a number greater than 0 and no more than 100'
-        });
-    }
-
-    const parsedDuration = Number(duration);// Convert the time period to a number
-    /* Conditional rendering to validate the duration: whole periods only, and
-    capped per unit so a single request cannot ask for a huge breakdown. */
-    if (!Number.isInteger(parsedDuration) || parsedDuration <= 0 || parsedDuration > MAX_DURATION[periodUnit]) {
-        return res.status(400).json({
-            success: false,
-            message: `duration must be a whole number of ${periodUnit} between 1 and ${MAX_DURATION[periodUnit]}`
-        });
-    }
-
-    /* Conditional rendering to validate the compounding frequency. Only
-    required for compound interest; simple interest ignores it. */
-    if (type === 'compound' && !Object.keys(COMPOUND_FREQUENCIES).includes(compoundingFrequency)) {
-        return res.status(400).json({
-            success: false,
-            message: `compoundingFrequency must be one of: ${Object.keys(COMPOUND_FREQUENCIES).join(', ')}`
-        });
-    }
-
-    // The recurring monthly contribution is optional, so default it to 0
-    const parsedContribution = monthlyContribution === undefined || monthlyContribution === null || monthlyContribution === ''
-        ? 0
-        : parseFloat(monthlyContribution);
-    // Conditional rendering to validate that the contribution is not negative
-    if (isNaN(parsedContribution) || parsedContribution < 0) {
-        return res.status(400).json({
-            success: false,
-            message: 'monthlyContribution must be a number of 0 or more'
-        });
+    const validationMessage = validateInterestInput(input);
+    // Conditional rendering to check the submitted figures are usable
+    if (validationMessage) {
+        return res.status(400).json({ success: false, message: validationMessage });// Send a 400 (Bad Request) status code with a message
     }
 
     try {
-        const result = calculateInterest({
-            type,
-            principal: parsedPrincipal,
-            rate: parsedRate,
-            duration: parsedDuration,
-            periodUnit,
-            compoundingFrequency,
-            monthlyContribution: parsedContribution,
-        });
+        const result = calculateInterest(input);
 
-        console.log('[SUCCESS: apiRoutes.js, /interest/calculate] Calculated', type, 'interest over', parsedDuration, periodUnit);
+        console.log('[SUCCESS: apiRoutes.js, /interest/calculate] Calculated', input.type, 'interest over', input.duration, input.periodUnit);
         return res.status(200).json({ success: true, result });
     } catch (error) {
         console.error('[ERROR: apiRoutes.js, /interest/calculate]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
+
+/*=====================================
+SAVE AN INTEREST CALCULATION
+=======================================*/
+/* Saves an interest calculation to the logged in user's history. The user is
+taken from the JWT, never from the request body, so a user can only ever write
+a record against themselves.
+
+The result is RECALCULATED from the submitted inputs rather than read from the
+request, so a saved record is always internally consistent and a tampered
+request cannot write false totals to the database. */
+router.post('/interest/save', checkJwtToken, async (req, res) => {
+    const input = parseInterestInput(req.body);
+
+    const validationMessage = validateInterestInput(input);
+    // Conditional rendering to check the submitted figures are usable
+    if (validationMessage) {
+        return res.status(400).json({ success: false, message: validationMessage });// Send a 400 (Bad Request) status code with a message
+    }
+
+    try {
+        // The fullName is read from the database rather than trusted from the body
+        const user = await User.findById(req.user.userId).select('fullName').exec();
+        // Conditional rendering to check the user on the token still exists
+        if (!user) {
+            console.warn('[WARN: apiRoutes.js, /interest/save] No user found for id', req.user.userId);
+            return res.status(401).json({ success: false, message: 'Invalid token. Please login again.' });
+        }
+
+        const result = calculateInterest(input);
+
+        const saved = await Interest.create({
+            user: user._id,
+            fullName: user.fullName,
+            principal: result.principal,
+            interestRate: result.rate,
+            // The schema stores the duration and its unit separately
+            time: { duration: input.duration, unit: result.periodUnit },
+            interestType: result.type,
+            /* The schema stores the compounding frequency as a NUMBER of times
+            per year, so the frequency name is mapped to its count here. Simple
+            interest does not compound, so it falls back to 1. */
+            compoundFrequency: COMPOUND_FREQUENCIES[input.compoundingFrequency] || 1,
+            monthlyContribution: result.monthlyContribution,
+            totalContributions: result.totalContributions,
+            totalInterest: result.totalInterest,
+            finalAmount: result.finalAmount,
+        });
+
+        console.log('[SUCCESS: apiRoutes.js, /interest/save] Saved interest calculation', saved._id, 'for user', user._id);
+        return res.status(201).json({ success: true, message: 'Calculation saved to your history', saved, result });
+    } catch (error) {
+        // A schema validation failure is the user's input, not a server fault
+        if (error.name === 'ValidationError') {
+            console.error('[ERROR: apiRoutes.js, /interest/save] Validation failed:', error.message);
+            return res.status(400).json({ success: false, message: error.message });
+        }
+        console.error('[ERROR: apiRoutes.js, /interest/save]', error.message);// Log an error message in the console for debugging purposes
         return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })

@@ -84,6 +84,14 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
+#tax-calculator-block{
+    margin: 0px;
+    padding: 10px;
+    background-color: #9E9E9E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 #tax-calculator-col{
     display: flex;
     margin: 0px;

@@ -1,5 +1,5 @@
 // Calculators.js
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Calculators.css'
@@ -13,12 +13,19 @@ import NumberCalculator from '../components/NumberCalculator';
 import InterestCalculatorForm from '../components/InterestCalculatorForm';
 import TaxCalculatorForm from '../components/TaxCalculatorForm';
 import { Calculator } from 'lucide-react';
+import { taxSeedData } from '../dataArrays/taxSeedData';
+
+// Base URL of the API the calculators post to
+const API_BASE_URL = 'http://localhost:3001';
 
 // ======MAIN CALCULATORS COMPONENT====================
 export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
+  /* Tax years offered by the tax calculator's dropdown. Starts as the seeded
+  year and is replaced by whatever GET /api/tax/config returns. */
+  const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
 
   //================EVENT LISTENERS========================
   const toggleTaxCalc = useCallback(() => {
@@ -37,13 +44,12 @@ export default function Calculators({currentUser, logout}) {
     setShowTaxCalc(false)
    },[])
 
-  /* Sends the interest calculator's inputs to the backend, which is the source
-  of truth for the maths. The payload carries `periodUnit` ('years' or 'months')
-  so the same annual rate can be worked out over annual or monthly periods.
-  Throws on failure so the form can show the API's message. */
-  const calculateInterest = useCallback(async (payload) => {
+  /* Shared POST helper for the calculator endpoints. Attaches the JWT, sends
+  the payload as JSON and throws the API's own message on failure, so each form
+  can show the real reason a request was rejected. */
+  const postToApi = useCallback(async (endpoint, payload, fallbackMessage) => {
     const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
-    const response = await fetch('http://localhost:3001/api/interest/calculate', {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -57,11 +63,71 @@ export default function Calculators({currentUser, logout}) {
 
     //Conditional rendering to check the request succeeded
     if (!response.ok) {
-      console.error('[ERROR: Calculators.js, calculateInterest]', data.message || 'Calculation failed.');//Log an error message in the console for debugging purposes
-      throw new Error(data.message || 'Could not calculate interest. Please try again.');
+      console.error(`[ERROR: Calculators.js, ${endpoint}]`, data.message || fallbackMessage);//Log an error message in the console for debugging purposes
+      throw new Error(data.message || fallbackMessage);
     }
 
+    return data;
+  },[])
+
+  /* Sends the interest calculator's inputs to the backend, which is the source
+  of truth for the maths. The payload carries `periodUnit` ('years' or 'months')
+  so the same annual rate can be worked out over annual or monthly periods. */
+  const calculateInterest = useCallback(async (payload) => {
+    const data = await postToApi('/api/interest/calculate', payload, 'Could not calculate interest. Please try again.');
     return data.result;// The form renders the summary and breakdown from this
+  },[postToApi])
+
+  /* Saves an interest calculation to the logged in user's history. Only the
+  inputs are sent: the backend recalculates the totals before storing them, so
+  a saved record can never disagree with the maths. */
+  const saveInterest = useCallback(async (payload) => {
+    await postToApi('/api/interest/save', payload, 'Could not save the calculation. Please try again.');
+  },[postToApi])
+
+  /* Sends the tax calculator's inputs to the backend, which resolves the tax
+  year's brackets, rebates and thresholds and works out the tax payable. */
+  const calculateTax = useCallback(async (payload) => {
+    const data = await postToApi('/api/tax/calculate', payload, 'Could not calculate tax. Please try again.');
+    return data.result;// The form renders the summary and bracket breakdown from this
+  },[postToApi])
+
+  // Saves a tax calculation to the logged in user's history
+  const saveTax = useCallback(async (payload) => {
+    await postToApi('/api/tax/save', payload, 'Could not save the calculation. Please try again.');
+  },[postToApi])
+
+  /* Loads the tax years the calculator can work with. Runs once on mount so
+  the tax year dropdown is populated before the user opens the form. The
+  seeded year is used as a fallback if the request fails, so the calculator
+  stays usable while the API is unreachable. */
+  useEffect(() => {
+    let ignore = false;// Guards against setting state after the page unmounts
+
+    const loadTaxYears = async () => {
+      const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/tax/config`, {
+          method: 'GET',
+          mode: 'cors',
+          headers: { 'Authorization': `Bearer ${token}` }// Attach the token in the Authorization header
+        })
+        const data = await response.json();
+
+        //Conditional rendering to check the request succeeded
+        if (!response.ok) {
+          console.error('[ERROR: Calculators.js, loadTaxYears]', data.message || 'Could not load tax years.');//Log an error message in the console for debugging purposes
+          return;
+        }
+
+        if (!ignore && data.taxYears?.length) setTaxYears(data.taxYears);
+      } catch (error) {
+        console.error('[ERROR: Calculators.js, loadTaxYears]', error.message);//Log an error message in the console for debugging purposes
+      }
+    }
+
+    loadTaxYears();
+    return () => { ignore = true }
   },[])
   // ============================================
   return (
@@ -143,7 +209,12 @@ export default function Calculators({currentUser, logout}) {
                 <Col id='tax-calculator-col1'/>
                 <Col xs={12} md={8} id='tax-calculator-col'>
                 <div id='tax-calculator-block'>
-                  <TaxCalculatorForm/>
+                  <TaxCalculatorForm
+                    taxYears={taxYears}
+                    onCalculate={calculateTax}
+                    onSave={saveTax}
+                    isAuthenticated={!!currentUser}
+                  />
                 </div> 
                 </Col>
                 <Col id='tax-calculator-col2'/>
@@ -159,6 +230,7 @@ export default function Calculators({currentUser, logout}) {
                     <div id='interest-calculator-form-panal'>
                         <InterestCalculatorForm
                           onCalculate={calculateInterest}
+                          onSave={saveInterest}
                           isAuthenticated={!!currentUser}
                         />
                     </div>

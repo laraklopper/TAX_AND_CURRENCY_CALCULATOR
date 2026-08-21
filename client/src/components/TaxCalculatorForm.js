@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calculator, RotateCcw, TrendingUp, AlertCircle } from "lucide-react";
 import "../css/componentCss/TaxCalculatorForm.css";
 import '../css/componentCss/FormSetup.css'
@@ -56,6 +56,16 @@ export default function TaxCalculatorForm({
   const [status, setStatus] = useState(null); // null | "calculating" | "error"
   const [statusMessage, setStatusMessage] = useState("");
   const [saveStatus, setSaveStatus] = useState(null); // null | "saving" | "saved" | "error"
+
+  /* The tax year list is fetched from the API, so it can arrive after this
+  form has mounted. If the selected year is not in the list that arrives (or
+  nothing was selected yet), fall back to the newest year offered. */
+  useEffect(() => {
+    if (!taxYears.length) return;
+    setForm((prev) =>
+      taxYears.includes(prev.taxYear) ? prev : { ...prev, taxYear: taxYears[0] }
+    );
+  }, [taxYears]);
 
   const updateField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -270,6 +280,12 @@ export default function TaxCalculatorForm({
               onChange={(e) => updateField("dependants", e.target.value)}
             />
             {errors.dependants && <p className="field-error">{errors.dependants}</p>}
+            {/* Recorded with the calculation, but no credit is applied yet -
+            the tax year data holds no medical scheme fees credit figures. */}
+            <p className="form-text">
+              Saved with your calculation for reference. Medical scheme fees tax
+              credits are not applied to the result.
+            </p>
           </div>
           <div className="p-2" id='required-calculafInfo'>
               <p className='infoText' aria-live='polite' aria-hidden='true'>

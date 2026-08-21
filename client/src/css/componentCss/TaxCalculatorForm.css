@@ -125,3 +125,125 @@ padding: 10px;
     padding: 0px;
     letter-spacing: 2px;
 }
+/* ==================
+RESULTS
+   The .results, .table-wrapper, .breakdown-table, .save-row and .save-link
+   rules are shared with the interest calculator and live in
+   InterestCalculator.css. Only the tax-specific blocks are styled here.
+===================== */
+.tax-calculator{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 786px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #8797A8;
+    width: 100%;
+    gap: 10px;
+}
+.results__header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 0px 5px 0px;
+    padding: 10px 0px;
+    background-color: #d1d5db;
+    border-top: #404040 solid 2px;
+    border-bottom: #404040 solid 2px;
+    gap: 10px;
+    font-family: "Fira Sans", sans-serif;
+}
+.results__title{
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #1f2937;
+    margin: 0;
+}
+/* Scoped to the tax calculator so the shared .results-summary rule used by
+   the interest calculator is left alone. */
+.tax-calculator .results-summary{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+}
+/* SUMMARY CARDS: gross tax, rebate applied and net tax payable */
+.results-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 180px;
+    gap: 5px;
+    margin: 0px;
+    padding: 10px;
+    background-color: #D6D6D6;
+    border: solid #999d9f 1px;
+    border-radius: 5px;
+}
+/* The figure the user actually came for gets the emphasis */
+.results-card--highlight{
+    background-color: #323A42;
+    border-color: #323A42;
+}
+.results-card--highlight .results-card__label,
+.results-card--highlight .results-card__value{
+    color: #E8F0F6;
+}
+.results-card__label{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+.results-card__value{
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    font-size: 18px;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+}
+/* EFFECTIVE AND MARGINAL RATE PILLS */
+.results-summary--rates{
+    justify-content: center;
+    gap: 10px;
+}
+.rate-pill{
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    padding: 5px 10px;
+    background-color: #D6D6D6;
+    border: solid #999d9f 1px;
+    border-radius: 20px;
+}
+.rate-pill__label{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    color: #000;
+}
+.rate-pill__value{
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    color: #000;
+}
+.disclaimer{
+    font-family: "Fira Sans", sans-serif;
+    font-size: 12px;
+    font-style: italic;
+    color: #323A42;
+    margin: 0px;
+    padding: 5px 0px;
+}
