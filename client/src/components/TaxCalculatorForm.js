@@ -4,6 +4,7 @@ import "../css/componentCss/TaxCalculatorForm.css";
 import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+import { Asterisk } from 'lucide-react';
 // ---------------------------------------------------------------------------
 // TaxCalculatorForm
 // SARS income tax calculator. Posts to /api/tax/calculate and renders the
@@ -213,6 +214,7 @@ export default function TaxCalculatorForm({
               value={form.income}
               onChange={(e) => updateField("income", e.target.value)}
             />
+                        <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.income && <p className="field-error">{errors.income}</p>}
             </div>
       </div>
@@ -231,6 +233,7 @@ export default function TaxCalculatorForm({
               value={form.age}
               onChange={(e) => updateField("age", e.target.value)}
             />
+                        <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.age && <p className="field-error">{errors.age}</p>}
           </div>
       </div>
@@ -249,6 +252,7 @@ export default function TaxCalculatorForm({
                 </option>
               ))}
             </select>
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.taxYear && <p className="field-error">{errors.taxYear}</p>}
           </div>
       </div>
@@ -267,13 +271,19 @@ export default function TaxCalculatorForm({
             />
             {errors.dependants && <p className="field-error">{errors.dependants}</p>}
           </div>
+          <div className="p-2" id='required-calculafInfo'>
+              <p className='infoText' aria-live='polite' aria-hidden='true'>
+                  <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
+              </p>
+            </div>
       </div>
     </Stack>
         </div>
       </div>
         <div className="form-actions">
          <Stack gap={2} className="col-md-5 mx-auto" id="calculatetaxBtn-stack">
-  <Button
+          
+           <Button
             type="submit"
             id="calculateTaxBtn"
             disabled={status === "calculating"}

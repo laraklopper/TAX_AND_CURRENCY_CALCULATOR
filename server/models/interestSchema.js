@@ -61,6 +61,10 @@ const interestSchema = new mongoose.Schema({
         default: 1,
         min: [1, 'Compound frequency must be at least 1'],
     },
+    // Optional contribution
+    monthlyContribution: {
+        type: Number,
+    }
 },{
     timestamps:true,
     toJSON: {virtuals: true},

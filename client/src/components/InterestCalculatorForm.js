@@ -4,6 +4,7 @@ import '../css/componentCss/InterestCalculator.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Calculator, RotateCcw, TrendingUp, AlertCircle } from "lucide-react";
+import { Asterisk } from 'lucide-react';
 
 
 // ---------------------------------------------------------------------------
@@ -282,7 +283,7 @@ export default function InterestCalculatorForm({
       </div>
       {status === "error" && (
         <div className="alert alert--error">
-          <AlertCircle size={16} className="alert__icon" />
+          <AlertCircle size={16} color='#C22419' className="alert__icon" />
           {statusMessage}
         </div>
       )}
@@ -292,9 +293,7 @@ export default function InterestCalculatorForm({
         {/* STACK 1 */}
           <Stack gap={3} id='interestForm-Stack1'>
           <div className="p-2" id='toggle-group-block1'>
-            <label className="field-label">Interest type</label>
-          </div>
-          <div className="p-2" id='toggle-group-block2'>
+            <label className="field-label">Interest type:</label><small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {/* Interest Type Buttons */}
             <div className='button-div'>
                   {["simple", "compound"].map((t) => (
@@ -314,6 +313,7 @@ export default function InterestCalculatorForm({
                     </Button>
                   ))}
             </div>
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
           </div>
           <div className="p-2" id='form-text-div'>
             <p className='form-text'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
@@ -328,7 +328,7 @@ export default function InterestCalculatorForm({
        <div className="p-2" id='principal-amount-block'>
        {/* PRINCIPAL TAX AMOUNT */}
           <div className="input-div">
-            <label className="field-label" htmlFor='principal-tax-amount'>Principal amount (R)</label>
+            <label className="field-label" htmlFor='principal-tax-amount'>Principal amount: (R)</label>
             <input
               type="number"
               id='principal-tax-amount'
@@ -339,13 +339,15 @@ export default function InterestCalculatorForm({
               value={form.principal}
               onChange={(e) => updateField("principal", e.target.value)}
             />
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.principal && <p className="field-error">{errors.principal}</p>}
           </div>
       </div>
       {/* TIME PERIOD TOGGLE: calculate over annual or monthly periods */}
       <div className="p-2" id='interest-time-block'>
-        <label className='field-label' id='time-period-label'>TIME PERIOD:</label>
+        
         <div id='buttons-div' role='group' aria-label='Time period'>
+        <label className='field-label' id='time-period-label'>TIME PERIOD:</label>
           {PERIOD_UNITS.map((p) => (
             <Button
               variant='light'
@@ -361,6 +363,7 @@ export default function InterestCalculatorForm({
                 {p.label}
               </Button>
           ))}
+          <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
         </div>
         <p className='form-text'>
           {form.periodUnit === "months"
@@ -382,6 +385,7 @@ export default function InterestCalculatorForm({
               value={form.rate}
               onChange={(e) => updateField("rate", e.target.value)}
             />
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.rate && <p className="field-error">{errors.rate}</p>}
           </div>
           <p className='form-text'>
@@ -405,6 +409,7 @@ export default function InterestCalculatorForm({
               // ARIA ATTRIBUTES:
               aria-label={`Time period in ${period.noun}`}
             />
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.time && <p className="field-error">{errors.time}</p>}
 </div>
       </div>
@@ -436,9 +441,7 @@ export default function InterestCalculatorForm({
       </div>
       <div className="p-2" id='opt-controbution-block'>
         <div className="input-div">
-        <label className="field-label">
-              Optional recurring monthly contribution (R)
-            </label>
+        <label className="field-label">Optional recurring monthly contribution (R)</label>
             <input
               type="number"
               min="0"
@@ -453,12 +456,37 @@ export default function InterestCalculatorForm({
             )}
           </div>
       </div>
+      {/* INPUT REQUIRED TO SAVE CALCULATION */}
+      <div className='p-2' id='user-fullname-input' hidden>
+        <div className='input-div'>
+          <label className='field-label'>FIRST NAME</label>
+          <input
+            className='input'
+            readOnly
+              // placeholder={currentUser.fullName.firstName} //
+            />
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+        </div>
+        <div className='input-div'>
+          <label className='field-label'>LAST NAME:</label>
+          <input
+            className='input'
+              readOnly
+              // placeholder={currentUser.fullName.lastName} //
+            />
+            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+        </div>
+      </div>
        </Stack>
     </div>
-    {/* GROUP 4 */}
         </div>
         <div className="form-actions">
         <Stack gap={2} className="col-md-5 mx-auto" id='interestform-btn-stack'>
+        <div className="p-2" id='requiredInfo'>
+              <p className='infoText' aria-live='polite' aria-hidden='true'>
+                  <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
+              </p>
+        </div>
        <Button
           variant='light'
             type="submit"
@@ -487,7 +515,6 @@ export default function InterestCalculatorForm({
             <TrendingUp size={32} className="results__icon" />
             <h4 className="results__title">Result</h4>
           </div>
-
           <div className="results-summary">
             <Stack gap={1} id='result-summary-stack'>
       <div className="p-2" id='results-block1'>
