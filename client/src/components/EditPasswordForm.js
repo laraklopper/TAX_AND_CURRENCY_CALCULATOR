@@ -302,7 +302,7 @@ export default function EditPasswordForm({setError}) {
             id='edit-password-btn'
             // ARIA ATTRIBUTES:
             aria-disabled={loading}
-            aria-label='EDIT PASSWORD'
+            aria-label={loading ? 'SAVING...' : 'EDIT PASSWORD'}
             >{loading ? 'SAVING...' : 'EDIT PASSWORD'}</Button>
       </div>
       <div className="p-2" id='edit-passwordbtn-block2'>
