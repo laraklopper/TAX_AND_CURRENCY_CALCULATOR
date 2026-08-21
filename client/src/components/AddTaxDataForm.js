@@ -249,7 +249,6 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
                 type="text"
                 placeholder="2025-2026"
                 className="tax-field"
-                // className={fieldCls("taxYear")}
                 value={form.taxYear}
                 disabled={isEditMode}
                 onChange={(e) => updateField("taxYear", e.target.value)}
