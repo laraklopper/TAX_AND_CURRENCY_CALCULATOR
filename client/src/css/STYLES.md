@@ -55,14 +55,15 @@ html, #body{
     margin: 0px;
     padding: 0px;
     width: 100%;
-    background-color: #7A7A7A;
+    background-color: #4da6ff;
 }
 #section2{
   display: flex;
   margin: 0px;
   padding: 0px;
   width: 100%;
-  background-color: #C4C4C4;
+  
+  background-color: #8dbdca;
 }
 ```
 ### 1.3. NAVIGATION BAR

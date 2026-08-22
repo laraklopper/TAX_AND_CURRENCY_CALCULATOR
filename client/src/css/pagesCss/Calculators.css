@@ -6,7 +6,8 @@
     margin: 0px;
     padding: 10px 0px;
     gap: 5px;
-    background-color: #8dbdca;
+    background-color: #4da6ff;
+    ;
 }
 /* ============
 LAYOUT
@@ -225,7 +226,7 @@ LAYOUT
     margin: 0px;
     padding: 10px 0px;
     gap: 5px;
-    background-color: #1262B3;
+    background-color: #8dbdca
 }
 #calculations-list-row{
     width: 100%;
