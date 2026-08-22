@@ -12,9 +12,11 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import AddTaxDataForm from '../components/AddTaxDataForm';
 import TaxDataDisplay from '../components/TaxDataDisplay';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { HandCoins } from 'lucide-react';
 
-export default function TaxData(
+//============MAIN TAXDATA COMPONENT=============
+export default function TaxData(//Export default TaxData.js component
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
     currentUser, 
     logout
