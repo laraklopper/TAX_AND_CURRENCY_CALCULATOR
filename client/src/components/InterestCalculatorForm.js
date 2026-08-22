@@ -160,7 +160,7 @@ export default function InterestCalculatorForm({
   const [status, setStatus] = useState(null); // null | "calculating" | "error"
   const [statusMessage, setStatusMessage] = useState("");
   const [saveStatus, setSaveStatus] = useState(null); // null | "saving" | "saved" | "error"
-
+const [showInterestCalculations, setShowInterestCalculations] = useState(false)
   // Config (label, noun, max) for the time period unit the user selected
   const period = periodConfig(form.periodUnit);
 
