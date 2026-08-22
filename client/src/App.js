@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Registration from './pages/Registration'
 import Profile from './pages/Profile'
 import TaxData from './pages/TaxData';
+import Users from './pages/Users'
 import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute';
 export default function App() {
@@ -180,6 +181,12 @@ export default function App() {
               <Route path='/taxes' element={
                 <ProtectedAdminRoute currentUser={currentUser}>
                 <TaxData users={users} currentUser={currentUser} logout={logout}/>
+                </ProtectedAdminRoute>
+              }/>
+              <Route path='/users' element={
+                <ProtectedAdminRoute currentUser={currentUser}>
+                  <Users/>
+
                 </ProtectedAdminRoute>
               }/>
             </>
