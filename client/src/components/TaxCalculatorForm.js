@@ -56,7 +56,7 @@ export default function TaxCalculatorForm({
   const [status, setStatus] = useState(null); // null | "calculating" | "error"
   const [statusMessage, setStatusMessage] = useState("");
   const [saveStatus, setSaveStatus] = useState(null); // null | "saving" | "saved" | "error"
-const [showTaxCalculations, setShowTaxCalculations] = useState(false)
+
   
   /* The tax year list is fetched from the API, so it can arrive after this
   form has mounted. If the selected year is not in the list that arrives (or
