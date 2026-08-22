@@ -3,16 +3,22 @@ import React, { useCallback, useEffect, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Calculators.css'
+// BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
 import InterestCalculatorForm from '../components/InterestCalculatorForm';
 import TaxCalculatorForm from '../components/TaxCalculatorForm';
+import InterestCalculations from '../components/InterestCalculations';
+import TaxCalculations from '../components/TaxCalculations';
+// IMPORT ICONS FROM LUCIDE REACT
 import { Calculator } from 'lucide-react';
+// IMPORT DATA
 import { taxSeedData } from '../dataArrays/taxSeedData';
 
 // Base URL of the API the calculators post to
@@ -20,6 +26,7 @@ const API_BASE_URL = 'http://localhost:3001';
 
 // ======MAIN CALCULATORS COMPONENT====================
 export default function Calculators({currentUser, logout}) {
+  // ==========STATE VARIABLES================
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
@@ -30,27 +37,32 @@ export default function Calculators({currentUser, logout}) {
   const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
 
   //================EVENT LISTENERS========================
+  // Function to toggle tax calculator
   const toggleTaxCalc = useCallback(() => {
     setShowTaxCalc(prev => !prev)
     setShowCalc(false)
     setShowIntCalc(false)
   },[])
+  // Function to toggle interest calculator
    const toggleInterestCalculator = useCallback(() => {
     setShowIntCalc(prev => !prev)
     setShowCalc(false)
     setShowTaxCalc(false)
    },[])
+  //  Function to toggle general/number calculator
    const toggleCalculator = useCallback(() => {
     setShowCalc(prev => !prev)
     setShowIntCalc(false)
     setShowTaxCalc(false)
    },[])
 
+  // Function to toggle taxCalculations List
    const toggleTaxCalculations = useCallback(() => {
     setShowTaxCalculations(prev => !prev)
     setShowInterestCalculations(false)
    },[])
 
+   //Function to toggle Interest calculations list
    const toggleInterestCalculations = useCallback(() => {
     setShowInterestCalculations(prev => !prev)
     setShowTaxCalculations(false)
@@ -119,11 +131,11 @@ export default function Calculators({currentUser, logout}) {
       const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
       try {
         const response = await fetch(`${API_BASE_URL}/api/tax/config`, {
-          method: 'GET',
-          mode: 'cors',
+          method: 'GET',//HTTP request method
+          mode: 'cors',//Enable cors 
           headers: { 'Authorization': `Bearer ${token}` }// Attach the token in the Authorization header
         })
-        const data = await response.json();
+        const data = await response.json();//Parse the data as json
 
         //Conditional rendering to check the request succeeded
         if (!response.ok) {
@@ -318,7 +330,7 @@ export default function Calculators({currentUser, logout}) {
             <div id='tax-calculations-panal'>
               <Row id='tax-calculations-row'>
                 <Col id='tax-calculations-col'>
-                  TAX CALCULATIONS
+                  <TaxCalculations/>
                 </Col>
               </Row>
             </div>
@@ -327,10 +339,9 @@ export default function Calculators({currentUser, logout}) {
             <div id='interest-calculations-panal'>
               <Row id='int-calculations-row'>
                 <Col id='int-calculations-col'>
-                  INTEREST CALCULATIONS
+                  <InterestCalculations/>
                 </Col>
               </Row>
-
             </div>
           )}
         </div>
