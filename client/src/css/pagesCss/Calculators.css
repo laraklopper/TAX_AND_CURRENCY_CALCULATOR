@@ -217,16 +217,35 @@ LAYOUT
     color: #E8F0F6;
     background-color: #323A42;
 }
-/* SECTION 2 */
-#calculatorSec2{
-    width: 100%;
+#calculators-tab-panal{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     margin: 0px;
-    padding: 10px 0px;
-    gap: 5px;
-    background-color: #8dbdca
+    padding: 0px;
+    width: 100%;
+}
+#toggle-calculation-list-row{
+    width: 100%;
+}
+#tab-nav-tabpane-CALCULATIONS{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#tab-nav-tabpane-calculators{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+#calculations-tab-panal{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
 }
 #calculations-list-row{
     width: 100%;

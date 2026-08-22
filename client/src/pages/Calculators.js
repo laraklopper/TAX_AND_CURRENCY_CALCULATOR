@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
@@ -23,6 +25,7 @@ export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
+  const [key, setKey] = useState('home')
   const [showTaxCalculations, setShowTaxCalculations] = useState(false)
   const [showInterestCalculations, setShowInterestCalculations] = useState(false)
   /* Tax years offered by the tax calculator's dropdown. Starts as the seeded
@@ -157,7 +160,20 @@ export default function Calculators({currentUser, logout}) {
       </Row>
       {/* SECTION 1 */}
       <section id='calculatorSec1'>
-      <Row id='toggleCalculatorRow'>
+       <Tabs
+      id="tab-nav"
+      activeKey={key}
+      onSelect={(k) => setKey(k)}
+      className="mb-3"
+    >
+      <Tab eventKey="home" title="Home">
+       <div>
+        {/* EXPLAIN CALCULATORS AND SAVED CALCULATIONS */}
+       </div>
+      </Tab>
+      <Tab eventKey="calculators" title="CALCULATORS">
+        <div id='calculators-tab-panal'>
+          <Row id='toggleCalculatorRow'>
         <Col id='toggleCalcCol1'/>
         <Col xs={5} id='toggleCalcCol'>
              <Stack id='toggleCalculatorStack'>
@@ -211,7 +227,7 @@ export default function Calculators({currentUser, logout}) {
         </Col>
         <Col id='toggleCalcCol2'/>
       </Row>
-        {/* CALCULATORS */}
+       {/* CALCULATORS */}
           <div id='calculators-div'>
             {/*TOGGLE TAX CALCULATOR */}
             {showTaxCalc && (
@@ -279,20 +295,19 @@ export default function Calculators({currentUser, logout}) {
                 </Col>
                 <Col xs={0} md id='info-msg-col1'/>
             </Row>
-        </section>
-        <section id='calculatorSec2'>
-          <Row id='calculations-list-row'>
+        </div>
+      </Tab>
+      <Tab eventKey="CALCULATIONS" title="CALCULATIONS" id='calculations-tab'>
+        <div id='calculations-tab-panal'>
+          <Row id='toggle-calculation-list-row'>
             <Col id='calculations-list-col'>
-              <div id='toggle-calculations-panal'>
-                <Stack gap={2} className="col-md-5 mx-auto" id='toggle-calculations-stack'>
-      <Button variant="light" id='showTax-calculationsBtn' onClick={toggleTaxCalculations}>
+               <Button 
+                variant="light" id='showTax-calculationsBtn' onClick={toggleTaxCalculations}>
         {showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
       </Button>
       <Button variant="light" id='showInterest-calculationsBtn' onClick={toggleInterestCalculations}>
         {showInterestCalculations ? 'Hide Calculations': 'SHOW INTEREST CALCULATIONS'}
       </Button>
-    </Stack>
-              </div>
             </Col>
           </Row>
           {showTaxCalculations && (
@@ -300,7 +315,6 @@ export default function Calculators({currentUser, logout}) {
               <Row id='tax-calculations-row'>
                 <Col id='tax-calculations-col'>
                   TAX CALCULATIONS
-
                 </Col>
               </Row>
             </div>
@@ -315,7 +329,13 @@ export default function Calculators({currentUser, logout}) {
 
             </div>
           )}
+        </div>
+      </Tab>
+    </Tabs>
+      
+       
         </section>
+       
         {/* ======FOOTER============= */}
       <Footer logout={logout}/>
     </div>
