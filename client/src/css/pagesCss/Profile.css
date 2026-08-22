@@ -1,3 +1,5 @@
+/* Profile.css
+Profile.js*/
 #profile-section1{
     width: 100%;
     display: flex;
@@ -108,27 +110,4 @@ LAYOUT
     color: #E8F0F6;
     background-color: #323A42;
 }
-/* =========
-SECTION 2
-========*/
-#profile-section2{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0px;
-    padding: 10px 0px;
-    gap: 5px;
-    background-color: #8dbdca;
-}
-/* USER LIST HEADING: UsersList.js is rendered below it for admin users */
-#user-list-heading{
-    margin: 0px;
-    padding: 5px 0px;
-    font-family: "Roboto Condensed", sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-decoration: underline;
-    color: #470D09;
-}
+

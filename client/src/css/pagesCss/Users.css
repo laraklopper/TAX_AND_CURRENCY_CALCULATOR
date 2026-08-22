@@ -12,8 +12,27 @@
 /* ===============
 LAYOUT
 ================*/
+#users-list-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    display: flex;
+}
+/* BOOTSTRAP LAYOUT */
 #usersListHead-row{
     display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#userslist-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#users-list-col{
+    display: flex;
+    justify-content: center;
     width: 100%;
     margin: 0px;
     padding: 0px;
