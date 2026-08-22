@@ -1,0 +1,30 @@
+#users-section1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #8dbdca;
+}
+/* ===============
+LAYOUT
+================*/
+#usersListHead-row{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#userlist-head-col{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
+#userlist-head-col1,
+#userlist-head-col2{
+    margin: 0px;
+    padding: 0px;
+}

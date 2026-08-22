@@ -200,7 +200,13 @@ export default function App() {//Export default App function component
               }/>
               <Route path='/users' element={
                 <ProtectedAdminRoute currentUser={currentUser}>
-                  <Users/>
+                  <Users
+                    currentUser={currentUser} 
+                    users={users}
+                    setUsers={setUsers}
+                    setError={setError}
+                    logout={logout}
+                  />
 
                 </ProtectedAdminRoute>
               }/>
