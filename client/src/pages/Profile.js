@@ -163,8 +163,12 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
   },[editUserData, setCurrentUser, setError, failWith])
   //=======================================
   return (
-    <div id='pageContainer'>
+    <div id='pageContainer' role='main'>
+    {/* =========HEADER========= */}
+    {/* Render the Header.js function component 
+    with 'PROFILE' as the pageHeader */}
       <Header currentUser={currentUser} pageHeader={'PROFILE'}/>
+      {/* =====EVENT/ANIMATION======== */}
        <Row id='event-row'>
         <Col id='event-col'>
           <div className='event-bar'>
@@ -179,6 +183,13 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
       -------------------- */}
       <section id='profile-section1'>
       <div id='user-profile-div'>
+      <Row id='profile-heading-row'>
+        <Col id='profile-head-col'/>
+        <Col xs={5} id='profile-head-col'>
+        <h3 id='profile-heading'>{fullName?.firstName} {fullName?.lastName} PROFILE</h3>
+        </Col>
+        <Col id='profile-head-col'/>
+      </Row>
         <Row id='user-profileRow'>
         <Col xs={6}>
           <Stack gap={3}>
@@ -292,11 +303,12 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
         </Row>
       </div>
       {/* EDIT PROFILE and EDIT PASSWORD FORM */}
-      
+                  {/* TOGGLE THE EDIT PROFILE FORM */}
         {showEditUser && (
           <div id='edit-user-panal'>
             <Row id='edit-user-row'>
-        <Col>
+        <Col id='edit-user-col'>
+        {/* Render the EditUserForm.js component */}
           <EditUserForm
             editUserData={editUserData}
             setEditUserData={setEditUserData}
@@ -307,16 +319,16 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
           />
         </Col>
       </Row>
-
-
           </div>
         )}
+        {/* TOGGLE THE EDIT PASSWORD FORM */}
         {showEditPswd &&(
           <div id='edit-password-panal'>
  <Row id='edit-password-row'>
         <Col id='edit-password-col1'></Col>
         <Col xs={6} id='edit-password-col'>
           <div id='edit-password-block'>
+          {/* Render the EditPasswordForm.js component */}
             <EditPasswordForm
               setError={setError}
             />
@@ -327,6 +339,8 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
           </div>
         )}     
       </section>
+      {/* ======FOOTER=========== */}
+      {/* Render the Footer.js component */}
       <Footer logout={logout}/>
     </div>
   )

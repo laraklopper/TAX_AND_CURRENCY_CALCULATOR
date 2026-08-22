@@ -30,6 +30,7 @@ LAYOUT
     display: flex;
 }
 #edit-password-panal{
+    display: flex;
      margin: 0px;
     padding: 0px;
     width: 100%;
@@ -40,6 +41,8 @@ LAYOUT
     width: 100%;
     margin: 0px;
     padding: 0px;
+    border: solid 1px #323A42;
+    border-radius: 8px;
 }
 #toggle-edit-user-row{
     width: 100%;
@@ -57,6 +60,32 @@ LAYOUT
     margin: 0px;
     padding: 0px;
     display: flex;
+}
+#profile-heading-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#profile-head-col{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#profile-head-col1,
+#profile-head-col2{
+    margin: 0px;
+    padding: 0px;
+}
+#edit-user-row{
+    margin: 0px;
+    width: 100%;
+}
+#edit-user-col{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
 }
 #edit-password-col{
     display: flex;
@@ -87,7 +116,16 @@ LAYOUT
     justify-content: center;
     margin: 0px;
     padding: 5px;
-    width: 100%;
+    width: 70%;
+    background-color: #9E9E9E;
+}
+/* TEXT */
+#profile-heading{
+    font-family: "Roboto Condensed", sans-serif;
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px;
+    text-transform: uppercase;
 }
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
