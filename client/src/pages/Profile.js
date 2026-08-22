@@ -11,7 +11,6 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import EditPasswordForm from '../components/EditPasswordForm';
 import EditUserForm from '../components/EditUserForm';
-import UsersList from '../components/UsersList';
 import { User } from 'lucide-react';
 import { useCallback } from 'react';
 
@@ -56,7 +55,7 @@ const toLongDate = (value) => {
   })
 }
 
-export default function Profile({currentUser, setCurrentUser, users, setUsers, logout, setError}) {
+export default function Profile({currentUser, setCurrentUser, logout, setError}) {
   const [showEditUser, setShowEditUser] = useState(false)
   const [showEditPswd, setShowEditPswd] = useState(false)
   const [editUserData, setEditUserData] = useState(EMPTY_EDIT_USER_DATA)
@@ -328,20 +327,6 @@ export default function Profile({currentUser, setCurrentUser, users, setUsers, l
           </div>
         )}     
       </section>
-      {/* --------------
-      SECTION 2: USER LIST AND USER DETAILS PANAL (ADMIN USERS ONLY)
-      -------------------- */}
-      {currentUser?.admin && (
-        <section id='profile-section2' aria-labelledby='user-list-heading'>
-          <h4 id='user-list-heading'>REGISTERED USERS</h4>
-          <UsersList
-            users={users}
-            setUsers={setUsers}
-            currentUser={currentUser}
-            setError={setError}
-          />
-        </section>
-      )}
       <Footer logout={logout}/>
     </div>
   )
