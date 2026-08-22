@@ -1,3 +1,6 @@
+/*===============
+SECTION 1: TAX DATA + TAX CONCEPTS DETAILS
+===========*/
 #dashBoardSec1{
     width: 100%;
     display: flex;
@@ -10,7 +13,9 @@
 }
 
 
-/* LAYOUT */
+/*=========
+ LAYOUT
+ =========== */
 #dashboard-panal{
     display: flex;
     flex-direction: column;
@@ -18,9 +23,8 @@
     margin: 0px;
     padding: 0px;
 }
-
 /* BOOTSTRAP LAYOUT */
-/* Grid: https://react-bootstrap.netlify.app/docs/layout/grid */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #tax-year-head-row{
     width: 100%;
     margin: 0px;
@@ -38,17 +42,7 @@ margin: 0px;
     margin: 0px;
     padding: 0px;
 }
-#change-tax-year-row{
-        width: 100%;
-    margin: 0px;
-    padding: 10px 0px;
-    display: flex;
-}
-#change-tax-year-col1,
-#change-tax-year-col2{
-    margin: 0px;
-    padding: 0px;
-}
+
 #tax-year-data-row{
     display: flex;
     margin: 0px;
@@ -89,13 +83,10 @@ margin: 0px;
     padding: 5px 3px 5px 0px;
     gap: 10px;
 }
-#change-tax-year-panal{
-        width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 0px;
-}
-/* SECTION 2 */
+
+/* ========
+SECTION 2 (ADMIN ONLY):  CHANGE TAX YEAR FORM 
+========== */
 #dashBoardSec2{
     width: 100%;
     display: flex;
@@ -106,7 +97,31 @@ margin: 0px;
     gap: 5px;
     background-color: #8dbdca;
 }
-/* BUTTON */
+/* =============
+LAYOUT
+===========*/
+#change-tax-year-panal{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+}
+/* BOOTSTRAP LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
+#change-tax-year-row{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 0px;
+    display: flex;
+}
+#change-tax-year-col1,
+#change-tax-year-col2{
+    margin: 0px;
+    padding: 0px;
+}
+/* ===============
+ BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
+ =================*/
 #toggle-tax-year-btn{
     display: flex;
     justify-content: center;
@@ -123,9 +138,7 @@ margin: 0px;
     font-size: 16px;
     border: solid 2px #323A42;
 }
-
 #toggle-tax-year-btn:hover{
     color: #E8F0F6;
     background-color: #323A42;
-
 }

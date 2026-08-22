@@ -19,6 +19,7 @@ LAYOUT
     display: flex;
 }
 /* BOOTSTRAP LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #usersListHead-row{
     display: flex;
     width: 100%;

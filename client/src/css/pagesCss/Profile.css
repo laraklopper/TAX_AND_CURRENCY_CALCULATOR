@@ -35,6 +35,8 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
+
+/* User Profile */
 /* BOOTSTRAP LAYOUT */
 /* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #user-profileRow{
@@ -43,23 +45,6 @@ LAYOUT
     padding: 0px;
     border: solid 1px #323A42;
     border-radius: 8px;
-}
-#toggle-edit-user-row{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
-#edit-user-row{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-}
-#edit-password-row{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
 }
 #profile-heading-row{
     width: 100%;
@@ -76,6 +61,26 @@ LAYOUT
 #profile-head-col2{
     margin: 0px;
     padding: 0px;
+}
+/* USER EDIT BUTTONS LAYOUT*/
+/* BOOTSTRAP LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
+#toggle-edit-user-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#edit-user-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+#edit-password-row{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
 }
 #edit-user-row{
     margin: 0px;
@@ -103,7 +108,7 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-/* STACK */
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
 #edit-user-stack{
     display: flex;
     align-items: baseline;

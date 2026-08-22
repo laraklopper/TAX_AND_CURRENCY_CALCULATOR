@@ -1,5 +1,6 @@
 /* CurrencyList.css
 CurrencyList.js*/
+/* AVAILABLE CURRENCIES */
 #currency-list-block{
     width: 100%;
     margin: 0px;
@@ -7,6 +8,7 @@ CurrencyList.js*/
     overflow-x: auto;
     background-color: #404040
 }
+/*AVAILABLE CURRENCIES TABLE */
 #currency-list-table{
     width: 100%;
     margin: 0px;
@@ -38,3 +40,7 @@ CurrencyList.js*/
 #currency-list-table tbody tr:hover{
     background-color: #C9D6E0;
 }
+/* CURRENCY CALCULATION DATA */
+/* =============
+LAYOUT
+================*/

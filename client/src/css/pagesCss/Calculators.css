@@ -12,7 +12,6 @@
 /* ============
 LAYOUT
 ===========*/
-
 /* BOOTSTRAP LAYOUT */
 /* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #toggleCalculatorRow{
@@ -21,7 +20,6 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-
 #toggleCalcCol{
     display: flex;
     margin: 0px;
@@ -51,7 +49,7 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-/* STACK */
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
 #toggleCalculatorStack{
     display: flex;
     justify-content: center;
@@ -226,17 +224,7 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-/* Both tab panes share the same centred column layout so the CALCULATIONS
-tab sits on the page exactly like the CALCULATORS tab */
-#tab-nav-tabpane-calculators,
-#tab-nav-tabpane-CALCULATIONS{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
+
 #calculations-tab-panal{
     display: flex;
     flex-direction: column;
@@ -313,4 +301,17 @@ stands in for the .p-2 wrapper each of those buttons sits in */
 #showInterest-calculationsBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
+}
+/* ===============
+
+=================*/
+#calculator-section2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+    gap: 5px;
+    background-color: #8dbdca;
 }

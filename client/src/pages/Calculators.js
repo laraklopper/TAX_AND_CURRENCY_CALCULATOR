@@ -281,20 +281,37 @@ export default function Calculators({currentUser, logout}) {
                 <Col xs={0} md id='info-msg-col1'/>
             </Row>
         </div>
- 
-       
         </section>
-       <section>
-<div id='calculations-tab-panal'>
+       <section id='calculator-section2'>
+        <div id='calculations-tab-panal'>
           <Row id='toggle-calculation-list-row'>
             <Col id='toggle-calculationst-col'>
                <Button 
-                variant="light" id='showTax-calculationsBtn' onClick={toggleTaxCalculations}>
-        {showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
-      </Button>
-      <Button variant="light" id='showInterest-calculationsBtn' onClick={toggleInterestCalculations}>
-        {showInterestCalculations ? 'Hide Calculations': 'SHOW INTEREST CALCULATIONS'}
-      </Button>
+                variant="light" 
+                id='showTax-calculationsBtn' 
+                onClick={toggleTaxCalculations}
+                type='button'
+                // ARIA ATTRIBUTES:
+                aria-label={showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
+                aria-controls='tax-calculations-panal'
+                aria-pressed={showTaxCalculations}
+                aria-expanded={showTaxCalculations}
+                >
+                {showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
+              </Button>
+              <Button 
+              variant="light" 
+              id='showInterest-calculationsBtn' 
+              onClick={toggleInterestCalculations}
+              type='button'
+              // ARIA ATTRIBUTES:
+              aria-label={showInterestCalculations ? 'Hide Calculations': 'SHOW INTEREST CALCULATIONS'}
+              aria-controls='interest-calculations-panal'
+              aria-pressed={showInterestCalculations}
+              aria-expanded={showInterestCalculations}
+              >
+                {showInterestCalculations ? 'Hide Calculations': 'SHOW INTEREST CALCULATIONS'}
+              </Button>
             </Col>
           </Row>
           {showTaxCalculations && (

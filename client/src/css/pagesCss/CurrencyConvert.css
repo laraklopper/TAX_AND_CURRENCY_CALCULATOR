@@ -1,5 +1,8 @@
 /* CurrencyConvert.css
 CurrencyConverter.js*/
+/* ============
+SECTOPN 1
+==========*/
 #currency-converter-sec1{
     width: 100%;
     display: flex;
@@ -29,7 +32,7 @@ LAYOUT
     padding: 0px;
 }
 #currency-convert-col{
-        display: flex;
+    display: flex;
     margin: 0px;
     padding: 0px 5px;
     justify-content: center;
@@ -40,7 +43,7 @@ LAYOUT
     padding: 0px;
 }
 /* ==================
-SECTION 2:
+SECTION 2: AVAILABLE CURRENCIES + CURRENCY CALCULATIONS
 ===========*/
 #currency-converter-sec2{
     width: 100%;
@@ -50,7 +53,7 @@ SECTION 2:
     margin: 0px;
     padding: 10px 0px;
     gap: 10px;
-    background-color: #6E6E6E;
+    background-color: #8dbdca;
 }
 /* ================
 LAYOUT
@@ -61,8 +64,15 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
+/* BOOTSTRAP:LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #toggle-currencies-row{
     width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#toggle-currencies-col{
+    display: flex;
     margin: 0px;
     padding: 0px;
 }
@@ -78,8 +88,17 @@ LAYOUT
     width: 100%;
     justify-content: center;
 }
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
+#toggle-currencies-stack{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+/* CURRENCIES LISTS: AVAILABLE CURRENCIES AND CURRENY CALCULATIONS */
 #curreny-list-display{
-        width: 100%;
+    width: 100%;
     /* background-color: #404040; */
     border-radius: 8px;
     margin: 0px;
@@ -88,6 +107,7 @@ LAYOUT
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/
+ #toggleCurrCalc-listBtn,
 #toggle-currencies-listbtn{
      width: 280px;
     color: #000;
@@ -103,6 +123,7 @@ LAYOUT
     border: #323A42 solid;
 
 }
+#toggleCurrCalc-listBtn:hover,
 #toggle-currencies-listbtn:hover{
     background-color: #323A42;
     color: #E8F0F6;

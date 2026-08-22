@@ -4,6 +4,7 @@ import '../css/pagesCss/CurrencyConvert.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Stack from 'react-bootstrap/Stack';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import CurrencyConvertForm from '../components/CurrencyConvertForm';
@@ -24,11 +25,17 @@ export default function CurrencyConverter({currentUser, logout}) {
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
     const [error, setError] = useState('');// Stores any error messages shown to the user
     const [showCurrencies, setShowCurrencies] = useState(false)
+    const [showCurrCalculations, setShowCurrCalculations] = useState(false)
 
-    const toggleCurrencyList = () =>{
+    const toggleCurrencyList = useCallback(() =>{
       setShowCurrencies((prev) => !prev)
-    }
+      setShowCurrCalculations(false)
+    },[])
 
+    const toggleCalculationsList = useCallback(() => {
+      setShowCurrCalculations(prev => !prev)
+      setShowCurrencies(false)
+    },[])
 
     //===============
     const submitConvert = useCallback(async () => {//Define async function to convert currency
@@ -109,8 +116,20 @@ submitConvert={submitConvert}
             <Row id='toggle-currencies-row'>
         <Col id='toggle-currencies-col1'/>
         <Col xs={5} id='toggle-currencies-col'>
-          <div className='toggle-div'>
-            <Button 
+        <Stack gap={3} id='toggle-currencies-stack'>
+      <div className="p-2" id='curreny-block1'>
+          <Button
+          onClick={toggleCalculationsList}
+          variant='light'
+          id='toggleCurrCalc-listBtn'
+          type='button'
+          // ARIA ATTRIBUTES:
+          >
+            {showCurrCalculations ? 'Hide Calculations': 'Show Currency Calculations'}
+          </Button>
+      </div>
+      <div className="p-2" id='curreny-block2'>
+          <Button 
               variant='light' 
               id='toggle-currencies-listbtn' 
               type='button'
@@ -118,10 +137,20 @@ submitConvert={submitConvert}
               >
               {showCurrencies ? 'Hide currencies list':'Show available currencies'}
             </Button>
-          </div>
+      </div>
+    </Stack>
         </Col>
         <Col id='toggle-currencies-col2'/>
       </Row>
+      {showCurrCalculations && (
+        <div id='currency-calculations-panal'>
+          <Row id='currency-calculations-row'>
+            <Col id='currency-calculations-col'>
+              CURRENCY CALCULATIONS
+            </Col>
+          </Row>
+        </div>
+      )}
       {showCurrencies && (
         <div id='currencies-display-panal'>
 <Row id='currencies-list-row'>
