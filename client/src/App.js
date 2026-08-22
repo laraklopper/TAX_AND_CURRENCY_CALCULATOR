@@ -1,4 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+// App.js
+//IMPORT REQUIRED MODULES AND PACKAGES
+import React, { useCallback, useEffect, useState } from 'react';
+// IMPORT CSS STYLESHEETS
 import './App.css';
 import './css/pagesCss/Error.css'
 // IMPORT BOOTSTRAP COMPONENTS
@@ -7,18 +10,27 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // IMPORT REACT ROUTER COMPONENTS
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Bug, GlobeOff } from 'lucide-react';
+
+// IMPORT PAGES
+// LOGGED OUT PAGES
+import Login from './pages/Login';
+import Registration from './pages/Registration'
+// LOGGED IN PAGES
 import Dashboard from './pages/Dashboard'
 import Calculators from './pages/Calculators';
 import CurrencyConverter from './pages/CurrencyConverter'
-import Login from './pages/Login';
-import Registration from './pages/Registration'
 import Profile from './pages/Profile'
 import TaxData from './pages/TaxData';
 import Users from './pages/Users'
+// PROTECTED ROUTES
 import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute';
-export default function App() {
+// IMPORT ICONS FROM LUCIDE-REACT
+import { Bug, GlobeOff } from 'lucide-react';
+
+// MAIN APP FUNCTION COMPONENT
+export default function App() {//Export default App function component
+  // ====STATE VARIABLES================
   const [users, setUsers] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
   const [loggedIn, setLoggedIn] = useState(false)
@@ -34,8 +46,12 @@ export default function App() {
     admin: false,
   })
 
+  //=======NAVIGATE=======
+  // Hook to navigate between different routes
   const navigate = useNavigate()
 
+  //=================USE EFFECT HOOK TO FETCH USERS================
+  //Fetch users when the component mounts or when loggedIn changes
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -74,7 +90,6 @@ export default function App() {
     //Function to fetch current loggedIn user
     const fetchCurrentUser = async () => {//Define an async function to fetch current user details
       try {
-      
         const token = localStorage.getItem('token');// Retrieve the JWT token from localStorage
         if (!token || !loggedIn) return;// If no token is found, exit the function
         const response = await fetch('http://localhost:3001/users/me', {
@@ -110,7 +125,7 @@ export default function App() {
     }
   },[loggedIn, setError])
 
-  // ======================================
+  // ===========EVENT LISTENERS===========================
   const logout = useCallback(() => {
     //Clear localStorage
        localStorage.removeItem('token');
