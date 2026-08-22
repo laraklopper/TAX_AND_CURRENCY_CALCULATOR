@@ -7,8 +7,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NumberCalculator from '../components/NumberCalculator';
@@ -25,7 +23,6 @@ export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
-  const [key, setKey] = useState('home')
   const [showTaxCalculations, setShowTaxCalculations] = useState(false)
   const [showInterestCalculations, setShowInterestCalculations] = useState(false)
   /* Tax years offered by the tax calculator's dropdown. Starts as the seeded
@@ -160,18 +157,6 @@ export default function Calculators({currentUser, logout}) {
       </Row>
       {/* SECTION 1 */}
       <section id='calculatorSec1'>
-       <Tabs
-      id="tab-nav"
-      activeKey={key}
-      onSelect={(k) => setKey(k)}
-      className="mb-3"
-    >
-      <Tab eventKey="home" title="Home">
-       <div>
-        {/* EXPLAIN CALCULATORS AND SAVED CALCULATIONS */}
-       </div>
-      </Tab>
-      <Tab eventKey="calculators" title="CALCULATORS">
         <div id='calculators-tab-panal'>
           <Row id='toggleCalculatorRow'>
         <Col id='toggleCalcCol1'/>
@@ -296,11 +281,13 @@ export default function Calculators({currentUser, logout}) {
                 <Col xs={0} md id='info-msg-col1'/>
             </Row>
         </div>
-      </Tab>
-      <Tab eventKey="CALCULATIONS" title="CALCULATIONS" id='calculations-tab'>
-        <div id='calculations-tab-panal'>
+ 
+       
+        </section>
+       <section>
+<div id='calculations-tab-panal'>
           <Row id='toggle-calculation-list-row'>
-            <Col id='calculations-list-col'>
+            <Col id='toggle-calculationst-col'>
                <Button 
                 variant="light" id='showTax-calculationsBtn' onClick={toggleTaxCalculations}>
         {showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
@@ -330,12 +317,7 @@ export default function Calculators({currentUser, logout}) {
             </div>
           )}
         </div>
-      </Tab>
-    </Tabs>
-      
-       
-        </section>
-       
+       </section>
         {/* ======FOOTER============= */}
       <Footer logout={logout}/>
     </div>

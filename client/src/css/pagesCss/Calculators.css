@@ -226,50 +226,47 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-#toggle-calculation-list-row{
-    width: 100%;
-}
+/* Both tab panes share the same centred column layout so the CALCULATIONS
+tab sits on the page exactly like the CALCULATORS tab */
+#tab-nav-tabpane-calculators,
 #tab-nav-tabpane-CALCULATIONS{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
-#tab-nav-tabpane-calculators{
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 #calculations-tab-panal{
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
-#calculations-list-row{
+/* Mirrors #toggleCalculatorRow */
+#toggle-calculation-list-row{
+    display: flex;
+    justify-content: center;
     width: 100%;
     margin: 0px;
     padding: 0px;
 }
+/* Stands in for the Stack on the CALCULATORS tab: same 5/12 column width,
+panel colour and rounded corners as #toggleCalcCol + #toggleCalculatorStack */
 #calculations-list-col{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
-#toggle-calculations-panal{
-    width: 100%;
-    margin: 0px;
-    padding: 10px;
-}
-#toggle-calculations-stack{
-        display: flex;
-        align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
     background-color: #B6C6D4;
     border-radius: 8px;
     margin: 0px;
-    padding: 10px;
+    padding: 0px;
 }
 #tax-calculations-panal,
 #interest-calculations-panal{
@@ -281,29 +278,39 @@ LAYOUT
 /* Grid */
 #tax-calculations-row,
 #int-calculations-row{
+    display: flex;
     margin: 0px;
-    width: 0px;
+    width: 100%;
     padding: 0px;
 }
 #tax-calculations-col,
 #int-calculations-col{
+    display: flex;
+    justify-content: center;
     margin: 0px;
-    width: 0px;
+    width: 100%;
     padding: 0px;
 }
 /* BUTTONS */
+/* Sized and spaced like the CALCULATORS tab's toggle buttons: the 8px margin
+stands in for the .p-2 wrapper each of those buttons sits in */
 #showTax-calculationsBtn,
 #showInterest-calculationsBtn{
-     display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 40px;
     letter-spacing: 1px;
-    margin: 0px;
+    margin: 8px 0px;
     padding: 0px;
-    width: 300px;
+    width: 280px;
     text-transform: uppercase;
     font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: solid 2px #323A42;
+}
+#showTax-calculationsBtn:hover,
+#showInterest-calculationsBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
 }
