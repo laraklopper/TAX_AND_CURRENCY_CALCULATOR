@@ -1,7 +1,9 @@
 import React from 'react'
-import '../css/componentCss/Header.css'
+import '../css/componentCss/Header.css';
+import '../css/componentCss/Navbar.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Stack from 'react-bootstrap/Stack';
 import { NavLink } from 'react-router-dom';
 export default function Header({currentUser, pageHeader}) {
   return (
@@ -24,10 +26,12 @@ export default function Header({currentUser, pageHeader}) {
         </Row>
         <Row id='headerNavRow'>
             <Col md={12} xs={12} id='navCol'>
-            <div>
+          
                 <nav id='navigation'>
-                    <ul id='navbar'>
-                        {currentUser && (
+                    <ul id='navbar' gap={2} >
+                    <Stack gap={3} className="col-md-5 mx-auto">
+      <div className="p-2" id='navbar-block1'>
+        {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/' className='refLink'>DASHBOARD</NavLink>
                             </li> 
@@ -42,7 +46,9 @@ export default function Header({currentUser, pageHeader}) {
                                 <NavLink to='/currencyConverter' className='refLink'>CURRENCY CONVERTER</NavLink>
                             </li>
                         )}
-                        {currentUser && (
+      </div>
+      <div className="p-2" id='navbar-block2'>
+         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/profile' className='refLink'>PROFILE</NavLink>
                             </li>
@@ -52,9 +58,19 @@ export default function Header({currentUser, pageHeader}) {
                                 <NavLink to='/taxes' className='refLink'>TAX DATA</NavLink>
                             </li>
                         )}
+                        {currentUser.admin && (
+                            <li>
+                                <NavLink to='/users' className='refLink'>USERS</NavLink>
+                            </li>
+                        )}
+      </div>
+    
+    </Stack>
+                        
+                       
                     </ul>
                 </nav>
-            </div>
+           
 
             </Col>
         </Row>

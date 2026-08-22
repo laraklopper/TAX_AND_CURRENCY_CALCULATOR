@@ -80,6 +80,13 @@
     margin: 0px;
     padding: 0px;
 }
+#navbar-block1,
+#navbar-block2{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+}
 /*===============
  loggedIn = true 
  ====================*/
