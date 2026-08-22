@@ -190,6 +190,7 @@ LAYOUT
     font-family: "Open Sans", sans-serif;
     font-weight: 700;
     font-size: 14px;
+    text-align: center;
 }
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 

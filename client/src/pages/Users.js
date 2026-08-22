@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import UsersList from '../components/UsersList';
-
+import { FileUser } from 'lucide-react';
 // =======MAIN USERS PAGE COMPONENT===========
 export default function Users(
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
@@ -25,6 +25,15 @@ export default function Users(
   return (
     <div id='pageContainer'>
       <Header pageHeader='USERS' currentUser={currentUser}/>
+      <Row id='event-row'>
+        <Col id='event-col'>
+          <div className='event-bar'>
+            <div className='event-track'>
+              <FileUser className='event-slide' size={32} aria-hidden='true' focusable='false' />
+            </div>
+          </div>
+        </Col>
+      </Row>
       <section id='users-section1'>
       <Row id='usersListHead-row'>
         <Col id='userlist-head-col1'/>
