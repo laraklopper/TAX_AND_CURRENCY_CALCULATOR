@@ -570,6 +570,7 @@ export default function InterestCalculatorForm({
                 onClick={handleSave}
                 disabled={saveStatus === "saving" || saveStatus === "saved"}
                 className="save-link"
+                id='save-int-calcBtn'
               >
                 {saveStatus === "saving"
                   ? "Saving..."

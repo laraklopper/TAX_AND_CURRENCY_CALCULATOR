@@ -315,3 +315,20 @@ stands in for the .p-2 wrapper each of those buttons sits in */
     gap: 5px;
     background-color: #8dbdca;
 }
+#toggle-calculation-list-row{
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+
+}
+#toggle-calculationst-col{
+      display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}

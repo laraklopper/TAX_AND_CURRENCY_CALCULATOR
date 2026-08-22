@@ -418,12 +418,32 @@ ALERTS
 }
 /* SAVE LINK */
 .save-row {
-  margin-top: 1rem;
+  margin-top: 16px;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 12px;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
 }
-
+#save-int-calcBtn{
+  width: 180px;
+  height: 40px;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  font-family: "Courier Prime", monospace;
+  border: solid 2px #323A42;
+  text-transform: uppercase;
+}
+#save-int-calcBtn:hover{
+  background-color: #323A42;
+  color:#E8F0F6;
+}
 .save-link {
   font-size: 0.875rem;
   font-weight: 500;
