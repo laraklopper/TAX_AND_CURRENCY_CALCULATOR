@@ -33,6 +33,7 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
    // ================STATE VARIABLES===================
    const [conversions, setConversions] = useState([])//State to store saved conversions
    const [conversionId, setConversionId] = useState(null)
+   const [conversion, setConversion] = useState()
     const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
