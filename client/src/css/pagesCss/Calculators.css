@@ -245,7 +245,7 @@ LAYOUT
 }
 /* Stands in for the Stack on the CALCULATORS tab: same 5/12 column width,
 panel colour and rounded corners as #toggleCalcCol + #toggleCalculatorStack */
-#calculations-list-col{
+#toggle-calculations-col{
     display: flex;
     flex-direction: column;
     align-items: center;

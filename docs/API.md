@@ -80,6 +80,8 @@ All three save endpoints re-run the calculation from the submitted inputs and st
 
 A conversion history is READ-ONLY apart from the delete: nothing is refetched from Frankfurter, so each record reports the rate its own save fetched rather than being repriced at today's rate.
 
+All three histories are now read by a saved-calculations list in the client — `CurrencyCalculations.js` on the converter page, `TaxCalculations.js` and `InterestCalculations.js` on the calculators page. The three share their behaviour through `client/src/utils/useCalculationsList.js` and their formatting through `client/src/utils/formatCalculations.js`, so a change to how a history is loaded, deleted or displayed applies to all three at once.
+
 **The currency list comes from the provider, not from an array.**
 Both currency routes go through [server/utils/currencyService.js](../server/utils/currencyService.js), the only module that talks to Frankfurter. `GET /currencies` serves what Frankfurter reports it supports (165 codes) with the response shape `{ success, live, total, currencies }`, and `/convert` validates `from` and `to` against that same list, so the codes the browser can pick and the codes the server accepts cannot drift apart. The list is cached in memory for 24 hours; each conversion fetches its own rate, so a rate written to history is the rate that was quoted. `live` is `false` when the list came from the offline snapshot in [server/dataArrays/currencies.js](../server/dataArrays/currencies.js), which is used only while the provider is unreachable. A `/convert` response also carries `date`, the day Frankfurter published the rate — except when `from` and `to` match, which short-circuits at a rate of 1 without calling out.
 

@@ -6,70 +6,27 @@
 // rate its save fetched, so an old conversion is never repriced at today's rate.
 // `convertedAmount` is a virtual on the currency schema, recomputed here from
 // amount * rate only if a record arrives without it.
-import React, { useCallback, useEffect, useState } from 'react'
+//
+// The table/panal behaviour is shared with the tax and interest lists through
+// useCalculationsList; only the columns and the details below are its own.
+import React from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculationsList.css'
 import '../css/componentCss/DetailsPanal.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT SHARED LIST BEHAVIOUR/FORMATTING
+import CalculationsStatus from './CalculationsStatus';
+import useCalculationsList from '../utils/useCalculationsList';
+import { NOT_AVAILABLE, rowClass, toDecimal, toFullName, toLongDate, toLongDateTime, toMoney } from '../utils/formatCalculations';
 // ===========HELPER FUNCTIONS===========
-// Shown in place of any detail a record does not carry
-const NOT_AVAILABLE = 'NOT AVAILABLE'
-
-// Format an ISO date string as e.g. 01 March 2025
-const toLongDate = (value) => {
-  if (!value) return NOT_AVAILABLE
-  const date = new Date(value)
-  if (isNaN(date.getTime())) return NOT_AVAILABLE
-  return date.toLocaleDateString('en-ZA', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  })
-}
-
-// Format an ISO date string as e.g. 01 March 2025, 14:30
-const toLongDateTime = (value) => {
-  if (!value) return NOT_AVAILABLE
-  const date = new Date(value)
-  if (isNaN(date.getTime())) return NOT_AVAILABLE
-  return `${toLongDate(value)}, ${date.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' })}`
-}
-
-// Join the first and last name, tolerating a missing half
-const toFullName = (fullName) => {
-  const name = [fullName?.firstName, fullName?.lastName].filter(Boolean).join(' ')
-  return name || NOT_AVAILABLE
-}
-
-/* Format an amount in its own currency, e.g. 1 500,00 ZAR. The code is a
-3-letter code off the record, so it is handed to Intl rather than looked up in a
-symbol table of our own; a record missing its code still shows its figure. */
-const toMoney = (value, code) => {
-  if (typeof value !== 'number' || isNaN(value)) return NOT_AVAILABLE
-  if (!code) return value.toFixed(2)
-  try {
-    return value.toLocaleString('en-ZA', {
-      style: 'currency',
-      currency: code,
-      currencyDisplay: 'code',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    })
-  } catch (error) {
-    // An unusable currency code should not cost the user the figure itself
-    return `${code} ${value.toFixed(2)}`
-  }
-}
-
-/* Format an exchange rate. Rates are quoted to far more than 2 decimals, and
-rounding one to currency precision would show a weak pair as 0.00, so a rate is
-shown to 6 decimals and labelled with the pair it prices. */
+/* Format an exchange rate with the pair it prices. Rates are quoted to far more
+than 2 decimals, so a rate is shown to 6 rather than being rounded to currency
+precision, which would show a weak pair as 0,00. */
 const toRate = (rate, baseCurrency, targetCurrency) => {
-  if (typeof rate !== 'number' || isNaN(rate)) return NOT_AVAILABLE
-  const formatted = rate.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 6 })
-  if (!baseCurrency || !targetCurrency) return formatted
+  const formatted = toDecimal(rate, 6)
+  if (formatted === NOT_AVAILABLE || !baseCurrency || !targetCurrency) return formatted
   return `${formatted} ${targetCurrency} PER 1 ${baseCurrency}`
 }
 
@@ -83,9 +40,6 @@ const convertedAmountOf = (conversion) => {
   return null
 }
 
-// Row striping: STYLES.md 1.5. TABLES
-const rowClass = (index) => (index % 2 === 0 ? 'evenRow' : 'oddRow')
-
 //CurrencyCalculations.js function component
 export default function CurrencyCalculations(
   {//PROPS PASSED FROM PARENT COMPONENT(CurrencyConverter.js)
@@ -96,75 +50,28 @@ export default function CurrencyCalculations(
     deleteConversion,
     setError
   }) {
-    // ========STATE VARIABLES=====================
-    /* The _id of the conversion selected on the table: the details panal is
-    only rendered once a conversion has been selected */
-    const [selectConversionId, setSelectConversionId] = useState(null)
-    // Inline feedback shown above the table: {type: 'error' | 'success', text: string}
-    const [status, setStatus] = useState(null)
-    const [deleteLoading, setDeleteLoading] = useState(false)
-
-  /* Load the saved conversions once the panel is shown. Guarded on `loggedIn`
-  because the history is scoped to the token: without one there is nothing to
-  fetch. */
-  useEffect(() => {
-    if (loggedIn) {
-      fetchConversions()
-    }
-  },[fetchConversions, loggedIn])
-
-    /* The full record of the selected conversion, looked up on every render so
-    the panal always shows the latest details held in the conversions list */
-    const selectedConversion = conversions.find(conversion => String(conversion._id) === String(selectConversionId)) || null
-
-    /* True when the user has more saved conversions than GET /api/history
-    returns, so the list can say so rather than looking complete */
-    const isTruncated = conversionsTotal > conversions.length
-
-    // ======HANDLERS/REQUESTS===========
-    // Open the details panal for the conversion selected on the table
-    const selectConversion = (id) => {
-      setSelectConversionId(id)
-      setStatus(null)// Clear feedback left over from the previously selected conversion
-    }
-
-    // Close the details panal
-    const closeConversionPanal = () => {
-      setSelectConversionId(null)
-      setStatus(null)
-    }
-
-    /* DELETE /api/history/:id: remove the selected conversion. The parent owns
-    the request and throws on failure, so the message is reported here, beside
-    the button the user pressed. */
-    const removeConversion = useCallback(async () => {
-      //Conditional rendering to check a conversion is selected
-      if (!selectedConversion) return;
-
-      const confirmDelete = window.confirm(
-        'Are you sure you want to delete this saved conversion? This cannot be undone.'
-      )
-
-      if (!confirmDelete) return;// Exit the function early if the user cancels
-
-      setDeleteLoading(true)//Set the loading state while the request is in flight
-      setStatus(null)// Clear feedback from the previous attempt
-      try {
-        await deleteConversion?.(selectedConversion._id)
-        /* The parent has already dropped the record from the list, so the panal
-        is closed and the outcome reported above the table instead */
-        setSelectConversionId(null)
-        setStatus({ type: 'success', text: 'CONVERSION REMOVED FROM YOUR HISTORY' })
-        setError?.('')//Clear any previous error messages
-      } catch (error) {
-        const msg = error?.message || 'An error occurred while removing the conversion.';// Default error message
-        setStatus({ type: 'error', text: msg })// Show the message above the table
-        setError?.(msg)// Set the error state to display the error in the UI
-        console.error('[ERROR: CurrencyCalculations.js, removeConversion]', msg);//Log an error message in the console for debugging purposes
-      } finally {
-        setDeleteLoading(false)//Set Loading state to false
-      }
-    }, [selectedConversion, deleteConversion, setError])
+    /* Loading, selection, delete and status handling, shared with the tax and
+    interest calculation lists */
+    const {
+      selectedId,
+      selected: selectedConversion,
+      status,
+      deleteLoading,
+      isTruncated,
+      selectItem,
+      closePanal,
+      removeSelected
+    } = useCalculationsList({
+      items: conversions,
+      total: conversionsTotal,
+      loggedIn,
+      fetchItems: fetchConversions,
+      deleteItem: deleteConversion,
+      confirmMessage: 'Are you sure you want to delete this saved conversion? This cannot be undone.',
+      successMessage: 'CONVERSION REMOVED FROM YOUR HISTORY',
+      setError,
+      logLabel: 'CurrencyCalculations.js'
+    })
     //=============JSX RENDERING===============
   return (
     <div id='conversions-list' className='calculations-list'>
@@ -172,18 +79,7 @@ export default function CurrencyCalculations(
       with a details panal displayed after clicking on the conversion*/}
 
       {/* Inline request feedback, announced to screen readers */}
-      {status && (
-        <div className='calculations-status'>
-          <p
-            className='msgText'
-            role={status.type === 'error' ? 'alert' : 'status'}
-            aria-live={status.type === 'error' ? 'assertive' : 'polite'}
-            style={{ color: status.type === 'error' ? '#C22419' : '#1B6E2F' }}
-          >
-            {status.text}
-          </p>
-        </div>
-      )}
+      <CalculationsStatus status={status}/>
 
       {/* ------CONVERSION CALCULATIONS TABLE------------- */}
       <div className='calculations-table-block'>
@@ -205,7 +101,7 @@ export default function CurrencyCalculations(
           <tbody>
             {/* MAP EACH SAVED CONVERSION: selecting a row opens the details panal below */}
             {conversions.map((conversion, index) => {
-              const isSelected = String(conversion._id) === String(selectConversionId)
+              const isSelected = String(conversion._id) === String(selectedId)
               const baseCurrency = conversion.currency?.baseCurrency
               const targetCurrency = conversion.currency?.targetCurrency
               return (
@@ -218,14 +114,14 @@ export default function CurrencyCalculations(
                   <td>{toMoney(conversion.amount, baseCurrency)}</td>
                   <td>{baseCurrency || NOT_AVAILABLE}</td>
                   <td>{targetCurrency || NOT_AVAILABLE}</td>
-                  <td>{typeof conversion.rate === 'number' ? conversion.rate.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 6 }) : NOT_AVAILABLE}</td>
+                  <td>{toDecimal(conversion.rate, 6)}</td>
                   <td>{toMoney(convertedAmountOf(conversion), targetCurrency)}</td>
                   <td>
                     <Button
                       variant='light'
                       className='viewCalculationBtn'
                       type='button'
-                      onClick={() => (isSelected ? closeConversionPanal() : selectConversion(conversion._id))}
+                      onClick={() => (isSelected ? closePanal() : selectItem(conversion._id))}
                       // ARIA ATTRIBUTES:
                       aria-label={`${isSelected ? 'Hide' : 'View'} details for the conversion saved on ${toLongDate(conversion.createdAt)}`}
                       aria-pressed={isSelected}
@@ -265,7 +161,7 @@ export default function CurrencyCalculations(
             variant='light'
             className='closeCalculationPanalBtn'
             type='button'
-            onClick={closeConversionPanal}
+            onClick={closePanal}
             // ARIA ATTRIBUTES:
             aria-label='Close conversion details'
             aria-controls='conversion-details-panal'
@@ -346,7 +242,7 @@ export default function CurrencyCalculations(
             variant='danger'
             className='deleteCalculationBtn'
             type='button'
-            onClick={removeConversion}
+            onClick={removeSelected}
             disabled={deleteLoading}
             // ARIA ATTRIBUTES:
             aria-disabled={deleteLoading}
