@@ -77,7 +77,7 @@ export default function CurrencyConvertForm(
       <label className='converterLabel' htmlFor='converterFrom'>CONVERT FROM:</label>
         <div className='input-div'>
             <select
-             className='input'
+             className='select-currency'
                 id='converterFrom'
                 required
                 name='from'
@@ -99,7 +99,7 @@ export default function CurrencyConvertForm(
         <label className='converterLabel' htmlFor='converterTo'>CONVERT TO:</label>
         <div className='input-div'>
             <select
-                 className='input'
+                 className='select-currency'
                  id='converterTo'
                 required
                 name='to'
@@ -162,6 +162,7 @@ export default function CurrencyConvertForm(
                     1 {result.from} = {Number(result.rate).toFixed(4)} {result.to} (rate of {result.date})
                 </p>
             )}
+            {/* <Button>SAVE CALCULATION</Button> */}
             </>
         )}
       </div>

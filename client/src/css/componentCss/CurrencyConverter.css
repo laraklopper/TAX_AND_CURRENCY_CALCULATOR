@@ -50,13 +50,35 @@ padding: 0px;
     justify-content: center;
 }
 #submit-converter-btn-block,
-#clearFormBtn-block,
-#converterResultBlock{
+#clearFormBtn-block{
     display: flex;
     justify-content: center;
     margin: 0px;
     padding: 0px;
 
+}
+#converterResultBlock{
+    display: flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+
+}
+.select-currency{
+    width: 200px;
+    text-align: center;
+  border: solid black 2px;
+  border-radius: 5px;
+  padding: 5px;
+  font-family: "Courier Prime", monospace;
+  font-size: 16px;
+  font-weight: 700;
+}
+.select-currency:focus{
+    display: flex;
+    flex-direction: column;
 }
 /* ====================
 TEXT
