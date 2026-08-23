@@ -128,6 +128,7 @@ Model `currency` — [server/models/curConvertSchema.js](../server/models/curCon
 
 | Field | Type | Required | Default | Constraints | Notes |
 |---|---|---|---|---|---|
+| `user` | ObjectId | Yes | — | ref `user`, indexed | Owner of the saved conversion |
 | `fullName.firstName` | String | Yes | — | trim, 2–50 chars | Logged in user |
 | `fullName.lastName` | String | Yes | — | trim, 2–50 chars | Logged in user |
 | `currency.baseCurrency` | String | Yes | — | trim, uppercase, match `/^[A-Z]{3}$/` | Convert from |
@@ -152,6 +153,15 @@ whitelist baked into the schema would drift away from it and could start
 rejecting conversions the API had already quoted. `GET /api/convert` decides
 whether a code is supported; the schema only insists the stored value is a
 3-letter uppercase code.
+
+### OWNED BY A USER, NOT A NAME
+
+`user` was added alongside `POST /api/save` and mirrors the same field on
+`interestSchema`. The conversion is tied to a user id rather than to `fullName`,
+so a history lookup cannot return another user's conversions when two users
+share a name. `fullName` is kept as a snapshot of the name at the time of the
+save, and is read from the database by the route rather than trusted from the
+request body.
 
 ## 5. TAX YEAR CONFIG
 

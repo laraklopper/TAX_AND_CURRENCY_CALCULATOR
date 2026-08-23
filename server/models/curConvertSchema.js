@@ -10,6 +10,15 @@ whether a code is supported; the schema only insists the stored value is a
 const CURRENCY_CODE_PATTERN = /^[A-Z]{3}$/;
 
 const currencyConvertSchema = new mongoose.Schema({
+    /* The user the saved conversion belongs to. Stored as a reference rather
+    than relying on fullName, so a history lookup cannot return another user's
+    conversions when two users share a name. */
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: [true, 'user is required'],
+        index: true,
+    },
     //===============NESTED FULL NAME OBJECT=========
     // Current logged in user fullName
     fullName : {

@@ -1,5 +1,5 @@
 // CurrencyConvertForm.js
-import React from 'react'
+import React, { useState } from 'react'
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/CurrencyConverter.css'
 import Stack from 'react-bootstrap/Stack';
@@ -13,21 +13,36 @@ codes the converter can actually price. */
 export default function CurrencyConvertForm(
     {
         submitConvert,
-        EMPTY_FORM, 
-        currencyOptions = [], 
-        loading, 
-        setLoading, 
-        error, 
-        setError, 
-        result, 
-        setResult, 
-        form, 
+        saveConversion,
+        EMPTY_FORM,
+        currencyOptions = [],
+        loading,
+        setLoading,
+        error,
+        setError,
+        result,
+        setResult,
+        form,
         setForm
     }) {
 
         // ==========================================
-        
+        /* Status of the save request for the conversion currently on screen:
+        null | 'saving' | 'saved' | 'error'. Kept here rather than on the page
+        because it describes this button, not the conversion itself. */
+        const [saveStatus, setSaveStatus] = useState(null);
+        // Message from a failed save, so the user sees why it was rejected
+        const [saveError, setSaveError] = useState('');
+
       //===========EVENT LISTENERS===============
+    /* Clears the save button back to its unsaved state. Called whenever the
+    result on screen is replaced, so a 'Saved' label can never be left over from
+    a previous conversion. */
+    const resetSaveStatus = () => {
+        setSaveStatus(null);
+        setSaveError('');
+    };
+
     //Function to handle inputChanges in the form
     const handleChange = (e) => {
         const { name, value } = e.target;// Extract the name and current value of the input that triggered the event.
@@ -41,6 +56,7 @@ export default function CurrencyConvertForm(
         has changed the input values and a new conversion is needed. */
         setResult(null);
         setError('');// Remove any previous error message once the user begins editing.
+        resetSaveStatus();// The old save status no longer describes anything on screen
     };
     //Function to clear the form
     const handleClear = () => {
@@ -48,13 +64,31 @@ export default function CurrencyConvertForm(
         setResult(null);// Remove the previous conversion result from the screen.
 
         setError('');// Clear any displayed error messages.
+        resetSaveStatus();// Clear the save status along with the result it belonged to
     };
 
     // Function to submit currency converter form
     const handleConvert = (event) =>{
         event.preventDefault()
+        resetSaveStatus()// A new conversion is about to replace the saved one
         submitConvert()
     }
+
+    /* Function to save the displayed conversion to the user's history. The
+    result is passed straight through, so the record is built from the figures
+    on screen rather than from the inputs, which may have moved on. */
+    const handleSave = async () => {
+        if (!result || !saveConversion) return;// Nothing to save, or the page did not supply a handler
+        setSaveStatus('saving');
+        setSaveError('');
+        try {
+            await saveConversion({ amount: result.amount, from: result.from, to: result.to });
+            setSaveStatus('saved');
+        } catch (err) {
+            setSaveStatus('error');
+            setSaveError(err?.message || 'Could not save the conversion. Please try again.');
+        }
+    };
 
     //==============JSX RENDERING===================
     return (
@@ -178,16 +212,34 @@ export default function CurrencyConvertForm(
                     1 {result.from} = {Number(result.rate).toFixed(4)} {result.to} (rate of {result.date})
                 </p>
             )}
-            {/* BUTTON TO SAVE CURRENCY CONVERTER CALSCULATION */}
-            <Button 
-                id='saveConversionBtn' 
+            {/* BUTTON TO SAVE CURRENCY CONVERTER CALCULATION.
+            Only rendered once a conversion is on screen, and disabled while the
+            request is running or after it has succeeded, so the same conversion
+            cannot be written to the history twice. */}
+            {saveConversion && (
+                <>
+            <Button
+                id='saveConversionBtn'
                 variant='light'
-                // type=''
-                // onClick={}
+                type='button'
+                onClick={handleSave}
+                disabled={saveStatus === 'saving' || saveStatus === 'saved'}
                 // ARIA ATTRIBUTES:
+                aria-label='Save this conversion to your history'
+                aria-disabled={saveStatus === 'saving' || saveStatus === 'saved'}
                 >
-                SAVE CALCULATION
+                {saveStatus === 'saving'
+                    ? 'SAVING...'
+                    : saveStatus === 'saved'
+                    ? 'SAVED TO HISTORY'
+                    : 'SAVE CALCULATION'}
                 </Button>
+                {/* Only shown when the save itself failed; the conversion is unaffected */}
+                {saveStatus === 'error' && (
+                    <p className='infoText' style={{ color: '#C22419' }} role='alert'>{saveError}</p>
+                )}
+                </>
+            )}
             </>
         )}
       </div>

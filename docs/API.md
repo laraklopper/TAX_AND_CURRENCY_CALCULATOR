@@ -54,8 +54,8 @@ HTTP defines a set of request methods to indicate the purpose of the request and
 |---|---|---|---|---|
 | GET | /currencies | Every currency the converter can offer, as `{ code, name, symbol }` | Yes | Built |
 | GET | /rates?base=ZAR | Get latest exchange rates | No | Not built |
-| GET | /convert?from=&to=&amount= | Convert amount between currencies | Yes | Built |
-| POST | /save | Save a conversion to history | Yes | Not built (see note) |
+| GET | /convert?from=&to=&amount= | Convert amount between currencies (returns a quote, doesn't save) | Yes | Built |
+| POST | /save | Save a conversion to history | Yes | Built |
 | GET | /history | Get user's saved conversions | Yes | Not built |
 
 ## 5. Interest Routes (`/api/interest`)
@@ -72,7 +72,7 @@ HTTP defines a set of request methods to indicate the purpose of the request and
  - `/api/convert` requires a token, so the calculate endpoints follow that same convention and require a JWT.
 
 **`/save` recalculates.** 
-Both save endpoints re-run the calculation from the submitted inputs and store their own figures, ignoring any totals sent by the browser. The user is taken from the JWT, never from the request body.
+All three save endpoints re-run the calculation from the submitted inputs and store their own figures, ignoring any totals sent by the browser. `/api/tax/save` and `/api/interest/save` recompute the maths; `/api/save` fetches its own exchange rate from the provider rather than storing the `rate` the browser sends. The user is taken from the JWT, never from the request body, and `fullName` is read from the database.
 
 **History is scoped to the token, and capped.** 
 `GET /history` and `DELETE /history/:id` on both `/api/tax` and `/api/interest` filter on the user id in the JWT, never on an id from the request, so a user can only read and delete their own records. The delete matches `_id` and `user` in one query, so another user's calculation returns the same 404 as one that does not exist rather than a 403 that would confirm it exists. `GET /history` returns the newest 100 records with the response shape `{ success, total, limit, calculations }` — compare `total` against `calculations.length` to detect a truncated view. Because both schemas set `toJSON: { virtuals: true }`, each returned record also carries its virtuals (`taxableIncome`, `netIncome`, `monthlyTax` for tax; `durationInYears`, `totalCapital` for interest).
@@ -80,8 +80,10 @@ Both save endpoints re-run the calculation from the submitted inputs and store t
 **The currency list comes from the provider, not from an array.**
 Both currency routes go through [server/utils/currencyService.js](../server/utils/currencyService.js), the only module that talks to Frankfurter. `GET /currencies` serves what Frankfurter reports it supports (165 codes) with the response shape `{ success, live, total, currencies }`, and `/convert` validates `from` and `to` against that same list, so the codes the browser can pick and the codes the server accepts cannot drift apart. The list is cached in memory for 24 hours; each conversion fetches its own rate, so a rate written to history is the rate that was quoted. `live` is `false` when the list came from the offline snapshot in [server/dataArrays/currencies.js](../server/dataArrays/currencies.js), which is used only while the provider is unreachable. A `/convert` response also carries `date`, the day Frankfurter published the rate — except when `from` and `to` match, which short-circuits at a rate of 1 without calling out.
 
-**Currency conversions save themselves.** 
-`/convert` was planned as a POST with a matching `/save`, but it is implemented as a GET that takes query params and writes the `CurrencyConvert` history record itself as a best-effort side effect. Saving is therefore implicit rather than user-controlled, and a failed write is logged without failing the conversion. A separate `/save` is only needed if the user should choose which conversions are kept.
+**Currency conversions are saved by the user, not by `/convert`.** 
+`/convert` was planned as a POST with a matching `/save`. It is implemented as a GET that takes query params, and it used to write the `CurrencyConvert` history record itself as a best-effort side effect — so every conversion was kept whether the user wanted it or not. Now that the converter has a SAVE CALCULATION button, that implicit write has been removed: `/convert` only quotes, and `POST /api/save` is the only thing that writes a record. `/save` takes `{ amount, from, to }` as JSON, validates the codes against the same supported list as `/convert`, fetches its own rate, and responds `201` with `{ success, message, saved }` — where `saved` carries the record's `convertedAmount` virtual. A conversion between a currency and itself is stored at a rate of 1, matching the short-circuit in `/convert`.
+
+`GET /api/history` for conversions is still unbuilt, so saved conversions are not yet readable by the client; the currency calculations panel on the converter page is a placeholder until it is.
 
 ---
 

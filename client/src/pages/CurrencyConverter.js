@@ -123,39 +123,41 @@ export default function CurrencyConverter({currentUser, logout}) {
 
     },[setLoading, form.to, form.from, form.amount])
 
-    const saveConversion = useCallback(async () => {
-      setLoading(true)
-            try {
-                const token = localStorage.getItem('token')
-                const response = await fetch('http://localhost:3001/api/saveConversion',{
-                  method: 'POST',
-                  mode: 'cors',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer %{token}`,
-                  }, body: JSON.stringify({
+    /* Saves the conversion currently on screen to the logged in user's history.
+    Only the inputs are sent (amount, from, to): the backend fetches its own
+    rate and stores that, so a saved record can never disagree with the rate the
+    provider quoted. The figures come from `result` rather than `form`, so what
+    is saved is what the user is looking at, not whatever has since been typed
+    into the inputs.
 
-                  })
-                  
-                  const data = await response.json()
+    Errors are thrown rather than written to `error`, because the form owns the
+    save button's own status message; `error` belongs to the conversion itself. */
+    const saveConversion = useCallback(async (conversion) => {
+      const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
+      const response = await fetch(`${API_BASE_URL}/api/save`,{
+        method: 'POST',//HTTP request method
+        mode: 'cors',//Enable Cross-Origin Resource Sharing
+        headers: {
+          'Content-Type': 'application/json',// Specify that we're sending JSON data in the request body
+          'Authorization': `Bearer ${token}`,// Attach the token in the Authorization header
+        },
+        body: JSON.stringify({// Send the conversion's inputs in the request body as JSON
+          amount: conversion.amount,
+          from: conversion.from,
+          to: conversion.to,
+        })
+      })
 
-                  if (response.ok) {
-                    setError?.(null)
-                    alert('conversion calculation successfully saved')
-                  }else{
-                    const message = data.message || 'Registration failed.';
-        setError?.(message);
-        console.error(`error saving conversion data: ${message}`);
-                  }
-                })
-              }
-            } catch (error) {
-                setError(`Error saving convertion data, ${error.message}`)
-                console.error(`Error saving convertion data, ${error.message}`);
-                
-            }finally{
-              setLoading(false)
-            }
+      const data = await response.json();//Parse the response as json
+
+      //Conditional rendering to check the request succeeded
+      if (!response.ok) {
+        const message = data.message || 'Could not save the conversion. Please try again.';
+        console.error('[ERROR: CurrencyConverter.js, saveConversion]', message);//Log an error message in the console for debugging purposes
+        throw new Error(message);
+      }
+
+      return data;
         },[])
     //================================
   return (
@@ -179,6 +181,7 @@ export default function CurrencyConverter({currentUser, logout}) {
 {/*Currency Converter form  */}
 <CurrencyConvertForm
 submitConvert={submitConvert}
+  saveConversion={saveConversion}
   EMPTY_FORM={EMPTY_FORM}
   currencyOptions={currencyOptions}
   form={form}
