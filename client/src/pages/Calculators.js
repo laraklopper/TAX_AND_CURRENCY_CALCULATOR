@@ -73,16 +73,16 @@ export default function Calculators({currentUser, logout}) {
   const postToApi = useCallback(async (endpoint, payload, fallbackMessage) => {
     const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      method: 'POST',
-      mode: 'cors',
+      method: 'POST',//HTTP request method
+      mode: 'cors',//Enable Cross-Origin Resource Sharing 
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json',// Specify that we're sending JSON data in the request body
         'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload)// Send the new payload in the request body as JSON
     })
 
-    const data = await response.json();
+    const data = await response.json();//Parse the response as json
 
     //Conditional rendering to check the request succeeded
     if (!response.ok) {
