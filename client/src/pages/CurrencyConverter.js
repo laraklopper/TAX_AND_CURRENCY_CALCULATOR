@@ -32,6 +32,7 @@ const FALLBACK_CURRENCIES = currencyCountries.map(({ code, name }) => ({ code, n
 export default function CurrencyConverter({currentUser, logout, error, setError, loggedIn}) {
    // ================STATE VARIABLES===================
    const [conversions, setConversions] = useState([])//State to store saved conversions
+   const [conversionId, setConversionId] = useState(null)
     const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
@@ -188,6 +189,36 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
 
       return data;
         },[])
+
+        // --------------DELETE----------------------
+        // Function to delete a currency conversion calculation
+        const deleteConversion = useCallback(async (conversionId) => {
+          try {
+            const token = localStorage.getItem('token')
+            const response = await fetch(`${API_BASE_URL}/api/delete/${conversionId}`, {
+              method: 'DELETE',
+              mode: 'cors',
+              headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
+            })
+
+            
+
+            if (!response.ok) {
+              throw new Error("Failed to remove conversion calculation");// Throw an error if the DELETE request is unsuccessful
+            }
+ setConversions((prev) => 
+                prev.filter((conversion) => conversion._id !== conversionId))
+              
+            console.log('Conversion successfully removed');
+            alert('Convesion calculation successfully removed')
+          } catch (error) {
+            setError('Error removing conversion', error);// Set the error state to display the error in the UI
+            console.error('Error removing conversion:', error.message);//Log an error message in the console for debugging purposes
+          }
+        },[setError])
     //================================
   return (
     <div id='pageContainer' role='main'>
@@ -201,8 +232,10 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
           </div>
         </Col>
       </Row>
+      {/* ===============
+      SECTION 1: CURRENCY CONVERTER FORM
+      ============ */}
       <section id='currency-converter-sec1'>
-        
         <Row id='currency-converter-row'>
         <Col id='currency-convert-col1'/>
         <Col xs={6} id='currency-convert-col'>
@@ -226,8 +259,10 @@ submitConvert={submitConvert}
         </Col>
         <Col id='currency-convert-col2'/>
       </Row>
-
       </section>
+      {/* ================
+      SECTION 2: CURRENCIES LIST + CONVERSION CALCULATIONS LIST
+      =============== */}
       <section id='currency-converter-sec2'>
             <Row id='toggle-currencies-row'>
         <Col id='toggle-currencies-col1'/>
@@ -266,7 +301,9 @@ submitConvert={submitConvert}
                 <CurrencyCalculations 
                 loggedIn={loggedIn}
                 fetchConversions={fetchConversions}
-                conversions={conversions}/>
+                conversions={conversions}
+                deleteConversion={deleteConversion}
+                />
               </div>
             </Col>
           </Row>

@@ -1,12 +1,20 @@
 //CurrencyCalculations.js
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../css/componentCss/CalculationsList.css'
 import '../css/componentCss/CurrencyList.css'
 
-export default function CurrencyCalculations() {
+export default function CurrencyCalculations({fetchConversions, loggedIn, conversions, deleteConversion}) {
 
+  useEffect(() => {
+    if (loggedIn) {
+      fetchConversions()
+    }
+  },[fetchConversions, loggedIn])
   
+  //=============JSX RENDERING===============
   return (
-    <div>CurrencyCalculations</div>
+    <div consversions-list>
+      {/* Display conversion calculations list*/}
+    </div>
   )
 }
