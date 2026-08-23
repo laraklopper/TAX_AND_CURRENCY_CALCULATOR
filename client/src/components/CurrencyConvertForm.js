@@ -12,7 +12,18 @@ built from it rather than from a local array, so the codes on offer are always
 codes the converter can actually price. */
 export default function CurrencyConvertForm(
     {
-        submitConvert,EMPTY_FORM, currencyOptions = [], loading, setLoading, error, setError, result, setResult, form, setForm}) {
+        submitConvert,
+        EMPTY_FORM, 
+        currencyOptions = [], 
+        loading, 
+        setLoading, 
+        error, 
+        setError, 
+        result, 
+        setResult, 
+        form, 
+        setForm
+    }) {
       //===========EVENT LISTENERS===============
     //Function to handle inputChanges in the form
     const handleChange = (e) => {
@@ -36,10 +47,12 @@ export default function CurrencyConvertForm(
         setError('');// Clear any displayed error messages.
     };
 
+    // Function to submit currency converter form
     const handleConvert = (event) =>{
         event.preventDefault()
         submitConvert()
     }
+
     //==============JSX RENDERING===================
     return (
     <form id='currency-converter-form' method='GET' aria-labelledby='formHeading' onSubmit={handleConvert} aria-busy={loading} >
@@ -162,7 +175,16 @@ export default function CurrencyConvertForm(
                     1 {result.from} = {Number(result.rate).toFixed(4)} {result.to} (rate of {result.date})
                 </p>
             )}
-            {/* <Button>SAVE CALCULATION</Button> */}
+            {/* BUTTON TO SAVE CURRENCY CONVERTER CALSCULATION */}
+            <Button 
+                id='saveConversionBtn' 
+                variant='light'
+                // type=''
+                // onClick={}
+                // ARIA ATTRIBUTES:
+                >
+                SAVE CALCULATION
+                </Button>
             </>
         )}
       </div>

@@ -100,7 +100,8 @@ TEXT
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/
-#submitConvertBtn{
+#saveConversionBtn,
+ #submitConvertBtn{
     width: 180px;
     margin: 0px;
     padding: 0px;
@@ -114,6 +115,7 @@ TEXT
     border: #323A42 solid 2px;
     color: #000;
 }
+#saveConversionBtn:hover,
 #submitConvertBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
