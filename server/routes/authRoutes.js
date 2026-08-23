@@ -44,8 +44,9 @@ const signToken = (user) => {
 // Send a POST request to the /auth/login route
 router.post('/login', async (req, res) => {
     try {
-        const {email, password} = req.body || {};
+        const {email, password} = req.body || {};//Extract the usersername and password from the request body
 
+        // Conditional rendering to check that both email and password are present
         if (!email || !password) {
             console.error('[ERROR: authRoutes.js, /login] email and password are required');
             return res.status(400).json({ message: 'email and password are required' });// Send a 400 (Bad Request) status code with a  JSON message
@@ -57,7 +58,9 @@ router.post('/login', async (req, res) => {
         }
 
         // Password field is select:false on the schema, so it must be explicitly requested
-        const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
+        const user = await User.findOne({ email: email.toLowerCase().trim() })
+            .select('+password')
+            .exec();
 
         // Use Plaintext passwords for development - compare directly, no hashing
         if (!user || user.password !== password) {

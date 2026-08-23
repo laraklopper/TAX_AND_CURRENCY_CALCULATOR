@@ -6,9 +6,9 @@ const User = require('../models/userSchema');
 const CurrencyConvert = require('../models/curConvertSchema');
 const router = express.Router()
 
-/*â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ GET ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   GET: READ â€” Used to fetch information from the database
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
+/*──────────────────────────── GET ROUTES ─────────────────────────────────────
+   GET: READ — Used to fetch information from the database
+────────────────────────────────────────────────────────────────────────────────*/
 router.get('/convert', checkJwtToken ,async (req,res) => {
   const {from, to, amount} = req.query;
     if (!from || !to || !amount) {// Conditional rendering to check if all required query params are present
@@ -106,4 +106,5 @@ router.get('/convert', checkJwtToken ,async (req,res) => {
     }
 })
 
+//Export the router
 module.exports= router
