@@ -37,9 +37,9 @@ app.use(express.urlencoded({extended:true}))
 // Prefix all route modules with their base path.
 app.use('/auth', authRoutes)
 app.use('/api', apiRoutes)
-app.use('/api/tax', taxRoutes)// Income tax: /config, /calculate and /save
+app.use('/api/tax', taxRoutes)// Income tax: /config, /calculate, /save and /history
 app.use('/users', userRoutes)
-app.use('/api/interest', interestRoutes)// Interest: /calculate and /save
+app.use('/api/interest', interestRoutes)// Interest: /calculate, /save and /history
 mongoose.set('strictPopulate', false)
 
 //=============START THE SERVER=============

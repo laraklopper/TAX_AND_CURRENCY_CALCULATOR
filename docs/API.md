@@ -45,8 +45,8 @@ HTTP defines a set of request methods to indicate the purpose of the request and
 | GET | /config | Available tax years + active year's brackets/rebates/thresholds | Yes | Built |
 | POST | /calculate | Calculate tax (returns result, doesn't save) | Yes | Built |
 | POST | /save | Save a calculation to user history | Yes | Built |
-| GET | /history | Get user's saved tax calculations | Yes | Not built |
-| DELETE | /history/:id | Delete a saved calculation | Yes | Not built |
+| GET | /history | Get user's saved tax calculations, newest first (see history note) | Yes | Built |
+| DELETE | /history/:id | Delete a saved calculation | Yes | Built |
 
 
 ## 4. Currency Routes (`/api`)
@@ -62,8 +62,8 @@ HTTP defines a set of request methods to indicate the purpose of the request and
 |---|---|---|---|---|
 | POST | /calculate | Calculate simple/compound interest (annual or monthly periods) | Yes | Built |
 | POST | /save | Save calculation | Yes | Built |
-| GET | /history | Get saved interest calculations | Yes | Not built |
-| DELETE | /history/:id | Delete saved calculation | Yes | Not built |
+| GET | /history | Get saved interest calculations, newest first (see history note) | Yes | Built |
+| DELETE | /history/:id | Delete saved calculation | Yes | Built |
 ---
 ## 6. NOTES
 **Auth note:** 
@@ -72,6 +72,9 @@ HTTP defines a set of request methods to indicate the purpose of the request and
 
 **`/save` recalculates.** 
 Both save endpoints re-run the calculation from the submitted inputs and store their own figures, ignoring any totals sent by the browser. The user is taken from the JWT, never from the request body.
+
+**History is scoped to the token, and capped.** 
+`GET /history` and `DELETE /history/:id` on both `/api/tax` and `/api/interest` filter on the user id in the JWT, never on an id from the request, so a user can only read and delete their own records. The delete matches `_id` and `user` in one query, so another user's calculation returns the same 404 as one that does not exist rather than a 403 that would confirm it exists. `GET /history` returns the newest 100 records with the response shape `{ success, total, limit, calculations }` — compare `total` against `calculations.length` to detect a truncated view. Because both schemas set `toJSON: { virtuals: true }`, each returned record also carries its virtuals (`taxableIncome`, `netIncome`, `monthlyTax` for tax; `durationInYears`, `totalCapital` for interest).
 
 **Currency conversions save themselves.** 
 `/convert` was planned as a POST with a matching `/save`, but it is implemented as a GET that takes query params and writes the `CurrencyConvert` history record itself as a best-effort side effect. Saving is therefore implicit rather than user-controlled, and a failed write is logged without failing the conversion. A separate `/save` is only needed if the user should choose which conversions are kept.
