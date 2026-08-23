@@ -1,6 +1,13 @@
 // curConvertSchema.js
 const mongoose = require('mongoose');
-const { currencies, apiCurrencies } = require('../dataArrays/currencies');
+
+/* Both currency codes are validated by format rather than against a list of
+codes. The set of currencies the converter accepts is read from Frankfurter at
+runtime, so a whitelist baked in here would drift away from it and could start
+rejecting conversions the API had already quoted. /convert is what decides
+whether a code is supported; the schema only insists the stored value is a
+3-letter uppercase code. */
+const CURRENCY_CODE_PATTERN = /^[A-Z]{3}$/;
 
 const currencyConvertSchema = new mongoose.Schema({
     //===============NESTED FULL NAME OBJECT=========
@@ -31,18 +38,15 @@ const currencyConvertSchema = new mongoose.Schema({
             required: [true, 'base currency is required'],
             trim: true,
             uppercase: true,
-            minlength: [3, 'Base currency must be a 3-letter currency code'],
-            maxlength: [3, 'Base currency must be a 3-letter currency code'],
+            match: [CURRENCY_CODE_PATTERN, 'Base currency must be a 3-letter currency code'],
         },
         // Field for target currency
         targetCurrency:{
             type: String,
             required: [true, 'target currency is required'],
             trim: true,
-            enum: apiCurrencies,
             uppercase: true,
-            minlength: [3, 'Target currency must be a 3-letter currency code'],
-            maxlength: [3, 'Target currency must be a 3-letter currency code'],
+            match: [CURRENCY_CODE_PATTERN, 'Target currency must be a 3-letter currency code'],
         },
     },
     // Amount entered by the user in the base currency

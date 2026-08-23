@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/CurrencyConvert.css'
 import Row from 'react-bootstrap/Row';
@@ -10,6 +10,11 @@ import Footer from '../components/Footer'
 import CurrencyConvertForm from '../components/CurrencyConvertForm';
 import CurrencyList from '../components/CurrencyList';
 import { Scale } from 'lucide-react';
+// IMPORT DATA
+import { currencyCountries } from '../dataArrays/currencyCountries';
+
+// Base URL of the API the converter talks to
+const API_BASE_URL = 'http://localhost:3001';
 
 // Default values used when the form is first loaded or reset
 const EMPTY_FORM = {
@@ -17,6 +22,11 @@ const EMPTY_FORM = {
     from: '',
     to: ''
 };
+
+/* Currencies offered until GET /api/currencies answers, and kept if it never
+does. The local country data covers the same codes, so an unreachable API leaves
+the converter working off a curated list rather than an empty dropdown. */
+const FALLBACK_CURRENCIES = currencyCountries.map(({ code, name }) => ({ code, name, symbol: '' }));
 
 export default function CurrencyConverter({currentUser, logout}) {
    // ================STATE VARIABLES===================
@@ -26,6 +36,44 @@ export default function CurrencyConverter({currentUser, logout}) {
     const [error, setError] = useState('');// Stores any error messages shown to the user
     const [showCurrencies, setShowCurrencies] = useState(false)
     const [showCurrCalculations, setShowCurrCalculations] = useState(false)
+    /* Currencies the converter can work with. Starts as the local fallback and
+    is replaced by whatever GET /api/currencies reports Frankfurter supports. */
+    const [currencyOptions, setCurrencyOptions] = useState(FALLBACK_CURRENCIES)
+
+    /* Loads the currencies Frankfurter supports, so the dropdowns and the
+    currency table are built from the provider's own list instead of a hardcoded
+    array that has to be kept in step by hand. Runs once on mount, before the
+    user opens the form. A failure is logged and the fallback list is kept, so
+    the converter stays usable while the API is unreachable. */
+    useEffect(() => {
+      let ignore = false;// Guards against setting state after the page unmounts
+
+      const loadCurrencies = async () => {
+        const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/currencies`, {
+            method: 'GET',//HTTP request method
+            mode: 'cors',//Enable Cross-Origin Resource Sharing
+            headers: { 'Authorization': `Bearer ${token}` }// Attach the token in the Authorization header
+          })
+
+          const data = await response.json();//Parse the response as json
+
+          //Conditional rendering to check the request succeeded
+          if (!response.ok) {
+            console.error('[ERROR: CurrencyConverter.js, loadCurrencies]', data.message || 'Could not load currencies.');//Log an error message in the console for debugging purposes
+            return;
+          }
+
+          if (!ignore && data.currencies?.length) setCurrencyOptions(data.currencies);
+        } catch (error) {
+          console.error('[ERROR: CurrencyConverter.js, loadCurrencies]', error.message);//Log an error message in the console for debugging purposes
+        }
+      }
+
+      loadCurrencies();
+      return () => { ignore = true }
+    },[])
 
     const toggleCurrencyList = useCallback(() =>{
       setShowCurrencies((prev) => !prev)
@@ -49,7 +97,7 @@ export default function CurrencyConverter({currentUser, logout}) {
       const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
       // if (!token) return;// Return if no token is found
       try {
-        const response = await fetch(`http://localhost:3001/api/convert?amount=${encodeURIComponent(form.amount)}&from=${encodeURIComponent(form.from)}&to=${encodeURIComponent(form.to)}`,{
+        const response = await fetch(`${API_BASE_URL}/api/convert?amount=${encodeURIComponent(form.amount)}&from=${encodeURIComponent(form.from)}&to=${encodeURIComponent(form.to)}`,{
           method: 'GET',
           mode: 'cors',
           headers: {
@@ -97,6 +145,7 @@ export default function CurrencyConverter({currentUser, logout}) {
 <CurrencyConvertForm
 submitConvert={submitConvert}
   EMPTY_FORM={EMPTY_FORM}
+  currencyOptions={currencyOptions}
   form={form}
   setForm={setForm}
   error={error}
@@ -158,7 +207,7 @@ submitConvert={submitConvert}
         <Col md={12} id='currencies-list-col'>
           <div id='currency-list-display'>
             {/* CURRENCY LIST COMPONENT */}
-            <CurrencyList />
+            <CurrencyList currencyOptions={currencyOptions} />
           </div>
           
         </Col>

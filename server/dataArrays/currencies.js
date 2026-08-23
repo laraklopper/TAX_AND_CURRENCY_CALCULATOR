@@ -1,15 +1,16 @@
-const currencies = [
-    'AED', 'AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EGP',
-    'EUR', 'GBP', 'HKD', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW',
-    'MXN', 'MYR', 'NGN', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN', 'SAR',
-    'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'UAH', 'USD', 'ZAR',
-];
+// currencies.js
+/* Offline fallback for utils/currencyService.js, not the source of truth.
 
+The currencies the converter offers are read from Frankfurter at runtime
+(GET https://api.frankfurter.dev/v2/currencies). This snapshot is only used when
+that request has never succeeded, so the dropdowns still populate and /convert
+still validates its input while the provider is unreachable. Names and symbols
+are deliberately left out: they come from the API, and a second hand-maintained
+copy of them here would only drift.
 
-// Source: https://api.frankfurter.dev/v2/currencies (165 codes, retrieved 2026-08-23)
-// The v2 API aggregates 84 central banks, so it covers far more than the 30 ECB
-// reference rates the older v1 endpoints were limited to. Every code in the
-// `currencies` display list above is supported here.
+Snapshot source: https://api.frankfurter.dev/v2/currencies (165 codes, retrieved
+2026-08-23). The v2 API aggregates 84 central banks, so it covers far more than
+the 30 ECB reference rates the older v1 endpoints were limited to. */
 const apiCurrencies = [
     'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN',
     'BAM', 'BBD', 'BDT', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD',
@@ -29,4 +30,5 @@ const apiCurrencies = [
     'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XCG', 'XDR', 'XOF', 'XPD', 'XPF',
     'XPT', 'YER', 'ZAR', 'ZMW', 'ZWG',
 ];
-module.exports = { currencies, apiCurrencies };
+
+module.exports = { apiCurrencies };

@@ -1,15 +1,18 @@
+// CurrencyConvertForm.js
 import React from 'react'
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/CurrencyConverter.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
-import { currencies } from '../dataArrays/currencies';
 
-
+/* `currencyOptions` is the list of { code, name, symbol } the page loaded from
+GET /api/currencies, which reports what Frankfurter supports. The dropdowns are
+built from it rather than from a local array, so the codes on offer are always
+codes the converter can actually price. */
 export default function CurrencyConvertForm(
     {
-        submitConvert,EMPTY_FORM, loading, setLoading, error, setError, result, setResult, form, setForm}) {
+        submitConvert,EMPTY_FORM, currencyOptions = [], loading, setLoading, error, setError, result, setResult, form, setForm}) {
       //===========EVENT LISTENERS===============
     //Function to handle inputChanges in the form
     const handleChange = (e) => {
@@ -85,8 +88,8 @@ export default function CurrencyConvertForm(
                 aria-label='convert from currency'>
                     <option value=''>SELECT</option>
                     {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
-                    {currencies.map(c => (
-                        <option key={c} value={c}>{c}</option>
+                    {currencyOptions.map(({ code, name }) => (
+                        <option key={code} value={code}>{name ? `${code} - ${name}` : code}</option>
                     ))}
                 </select>
                 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
@@ -108,8 +111,8 @@ export default function CurrencyConvertForm(
             >
                <option value=''>SELECT</option>
                 {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
-                    {currencies.map(c => (
-                        <option key={c} value={c}>{c}</option>
+                    {currencyOptions.map(({ code, name }) => (
+                        <option key={code} value={code}>{name ? `${code} - ${name}` : code}</option>
                     ))}
                 </select>
                 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
@@ -149,9 +152,17 @@ export default function CurrencyConvertForm(
       <div className="p-2" id='converterResultBlock' aria-live='polite'>
         {/* Only display the Result after form submission */}
         {result && (
+            <>
             <p className='infoText'>
                 {result.amount} {result.from} = {Number(result.result).toFixed(2)} {result.to}
             </p>
+            {/* The day Frankfurter published the rate, so the figure is dated */}
+            {result.date && (
+                <p className='infoText'>
+                    1 {result.from} = {Number(result.rate).toFixed(4)} {result.to} (rate of {result.date})
+                </p>
+            )}
+            </>
         )}
       </div>
         {/* ========ERROR MESSAGE==================== */}

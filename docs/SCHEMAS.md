@@ -130,8 +130,8 @@ Model `currency` — [server/models/curConvertSchema.js](../server/models/curCon
 |---|---|---|---|---|---|
 | `fullName.firstName` | String | Yes | — | trim, 2–50 chars | Logged in user |
 | `fullName.lastName` | String | Yes | — | trim, 2–50 chars | Logged in user |
-| `currency.baseCurrency` | String | Yes | — | trim, uppercase, exactly 3 chars | Convert from |
-| `currency.targetCurrency` | String | Yes | — | trim, uppercase, exactly 3 chars, enum: `currencies` | Convert to; see [server/dataArrays/currencies.js](../server/dataArrays/currencies.js) |
+| `currency.baseCurrency` | String | Yes | — | trim, uppercase, match `/^[A-Z]{3}$/` | Convert from |
+| `currency.targetCurrency` | String | Yes | — | trim, uppercase, match `/^[A-Z]{3}$/` | Convert to |
 | `amount` | Number | Yes | — | min 0 | Entered in the base currency |
 | `rate` | Number | Yes | — | min 0 | Exchange rate used (target per base) |
 
@@ -141,12 +141,17 @@ Model `currency` — [server/models/curConvertSchema.js](../server/models/curCon
 |---|---|---|
 | `convertedAmount` | Number | `amount * rate` |
 
-### ENUM — `currency.targetCurrency`
+### NO CURRENCY ENUM
 
-`AED`, `AUD`, `BRL`, `CAD`, `CHF`, `CNY`, `CZK`, `DKK`, `EGP`, `EUR`, `GBP`,
-`HKD`, `HUF`, `IDR`, `ILS`, `INR`, `JPY`, `KRW`, `MXN`, `MYR`, `NGN`, `NOK`,
-`NZD`, `PHP`, `PKR`, `PLN`, `SAR`, `SEK`, `SGD`, `THB`, `TRY`, `TWD`, `UAH`,
-`USD`, `ZAR`
+Both currency codes are validated by format, not against a list of codes.
+`targetCurrency` used to carry an `enum` while `baseCurrency` did not, which
+made the two fields disagree about what a valid code was. The set of currencies
+the converter accepts is now read from Frankfurter at runtime
+([server/utils/currencyService.js](../server/utils/currencyService.js)), so a
+whitelist baked into the schema would drift away from it and could start
+rejecting conversions the API had already quoted. `GET /api/convert` decides
+whether a code is supported; the schema only insists the stored value is a
+3-letter uppercase code.
 
 ## 5. TAX YEAR CONFIG
 
