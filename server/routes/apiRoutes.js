@@ -1,16 +1,22 @@
 // apiRoutes.js
 /* Currency endpoints, mounted at /api by app.js.
 
-  GET  /currencies                  - every currency the converter can offer
-  GET  /convert?from=&to=&amount=   - convert an amount between two currencies
-  POST /save                        - save a conversion to the logged in user's history
+  GET    /currencies                  - every currency the converter can offer
+  GET    /convert?from=&to=&amount=   - convert an amount between two currencies
+  POST   /save                        - save a conversion to the logged in user's history
+  GET    /history                     - the logged in user's saved conversions, newest first
+  DELETE /history/:id                 - remove one of the logged in user's saved conversions
 
-All three are backed by Frankfurter through utils/currencyService.js, which is
-the only module that talks to the provider. The currency list is no longer a
-hardcoded array: /currencies serves what Frankfurter reports it supports, and
-both /convert and /save validate `from` and `to` against that same list, so the
-codes the browser can pick and the codes the server accepts can never drift
-apart.
+/currencies, /convert and /save are backed by Frankfurter through
+utils/currencyService.js, which is the only module that talks to the provider.
+The currency list is no longer a hardcoded array: /currencies serves what
+Frankfurter reports it supports, and both /convert and /save validate `from` and
+`to` against that same list, so the codes the browser can pick and the codes the
+server accepts can never drift apart.
+
+/history and DELETE /history/:id read and write nothing but the database, and
+both scope every query to the user id on the JWT, matching /api/tax and
+/api/interest: a user can only ever see and remove their own conversions.
 
 /convert only converts. It used to write a history record itself as a
 best-effort side effect, which meant every conversion was kept whether the user
@@ -28,12 +34,18 @@ record is returned so the client can show what was actually stored. */
 file using the dotenv package*/
 require('dotenv').config()
 const express = require('express');
+const mongoose = require('mongoose');
 const { checkJwtToken } = require('./middleware');
 const User = require('../models/userSchema');
 const CurrencyConvert = require('../models/curConvertSchema');
 // Import utility functions
 const { getSupportedCurrencies, getConversionRate } = require('../utils/currencyService');
 const router = express.Router()
+
+/* Most saved conversions a single /history response will return. A user's
+history grows without limit, so the newest records are returned and the total
+is reported alongside them rather than the response growing unbounded. */
+const HISTORY_LIMIT = 100;
 
 /*=====================================
 CONVERSION INPUT PARSING AND VALIDATION
@@ -145,6 +157,48 @@ router.get('/convert', checkJwtToken ,async (req,res) => {
     }
 })
 
+/*=====================================
+SAVED CONVERSION HISTORY
+=======================================*/
+/* Returns the logged in user's saved conversions, newest first. The user is
+taken from the JWT rather than a query param, so this can only ever return the
+requester's own records.
+
+`total` is reported separately from the returned array: only the newest
+HISTORY_LIMIT records are sent, so the client can tell when it is looking at a
+truncated view rather than the user's whole history.
+
+Nothing is fetched from Frankfurter here. Each record already holds the rate its
+save fetched, so a history response reports what was actually stored rather than
+repricing old conversions at today's rate. The `convertedAmount` virtual rides
+along on each record, because the schema sets `toJSON: { virtuals: true }`. */
+router.get('/history', checkJwtToken, async (req, res) => {
+    try {
+        const userId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
+
+        /* Counted and fetched together: the count is what tells the client the
+        list was truncated, so it has to reflect the same filter. */
+        const [total, conversions] = await Promise.all([
+            CurrencyConvert.countDocuments({ user: userId }).exec(),
+            CurrencyConvert.find({ user: userId })
+                .sort({ createdAt: -1 })// Newest conversion first
+                .limit(HISTORY_LIMIT)
+                .exec(),
+        ]);
+
+        console.log('[SUCCESS: apiRoutes.js, GET /history] Returned', conversions.length, 'of', total, 'conversion(s) for user', userId);
+        return res.status(200).json({
+            success: true,
+            total,
+            limit: HISTORY_LIMIT,
+            conversions,
+        });
+    } catch (error) {
+        console.error('[ERROR: apiRoutes.js, GET /history]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
+
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
  ─────────────────────────────────────────────────────────────────────────*/
@@ -213,6 +267,51 @@ router.post('/save', checkJwtToken, async (req, res) => {
             return res.status(400).json({ success: false, message: error.message });
         }
         console.error('[ERROR: apiRoutes.js, /save]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
+
+/*──────────────────────────── DELETE ROUTES ────────────────────────────────────
+   DELETE: Used to remove an item from the database
+────────────────────────────────────────────────────────────────────────────────*/
+/*=====================================
+DELETE A SAVED CONVERSION
+=======================================*/
+/* Removes one of the logged in user's saved conversions.
+
+The id and the user are matched in a SINGLE query rather than fetching the
+record and then checking who owns it. A conversion belonging to another user
+therefore behaves exactly like one that does not exist, so an id cannot be
+guessed at to find out whether it is someone else's. */
+router.delete('/history/:id', checkJwtToken, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
+
+        /* Conditional rendering to check the id is a valid ObjectId: querying
+        on a malformed id raises a CastError, which would return a 500 */
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            console.error('[ERROR: apiRoutes.js, DELETE /history/:id] Invalid conversion id:', id);
+            return res.status(400).json({ success: false, message: 'Invalid conversion id' });// Send a 400 (Bad Request) status code with a message
+        }
+
+        const removed = await CurrencyConvert.findOneAndDelete({ _id: id, user: userId }).exec();
+
+        /* Conditional rendering to check a record was actually removed. Covers
+        both a conversion that does not exist and one owned by another user. */
+        if (!removed) {
+            console.warn('[WARN: apiRoutes.js, DELETE /history/:id] No conversion', id, 'for user', userId);
+            return res.status(404).json({ success: false, message: 'Conversion not found' });// Send a 404 (Not Found) status code with a message
+        }
+
+        console.log('[SUCCESS: apiRoutes.js, DELETE /history/:id] Deleted conversion', id, 'for user', userId);
+        return res.status(200).json({
+            success: true,
+            message: 'Conversion removed from your history',
+            conversionId: id,// Returned so the client can drop the conversion from the list on screen
+        });
+    } catch (error) {
+        console.error('[ERROR: apiRoutes.js, DELETE /history/:id]', error.message);// Log an error message in the console for debugging purposes
         return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })

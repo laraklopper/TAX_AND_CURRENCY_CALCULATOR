@@ -40,7 +40,5 @@ CurrencyList.js*/
 #currency-list-table tbody tr:hover{
     background-color: #C9D6E0;
 }
-/* CURRENCY CALCULATION DATA */
-/* =============
-LAYOUT
-================*/
+/* Saved conversion calculations are a separate list with its own stylesheet:
+componentCss/CalculationsList.css */

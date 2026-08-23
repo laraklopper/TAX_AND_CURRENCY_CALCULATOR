@@ -1,0 +1,213 @@
+/* CalculationsList.css
+CurrencyCalculations.js, TaxCalculations.js, InterestCalculations.js
+
+Shared by all three saved-calculation lists, so these are classes rather than
+the per-component ids used elsewhere: the three lists are the same table and
+details panal over different figures, and styling them once keeps them from
+drifting apart. Each component still carries its own id on the outer block
+(#conversions-list, and so on) for anything it needs to style on its own.
+Detail labels and values come from DetailsPanal.css. */
+.calculations-list{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+/* ===============
+CALCULATIONS TABLE
+============*/
+.calculations-table-block{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 15px;
+    overflow-x: auto;
+    background-color: #404040;
+}
+.calculations-table{
+    width: 100%;
+    margin: 0px;
+    font-family: "Courier Prime", monospace;
+    text-align: left;
+    border-collapse: collapse;
+    border: solid 2px;
+}
+.calculations-table th,
+.calculations-table td{
+    padding: 8px 12px;
+    border: 1px solid #9E9E9E;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.calculations-table thead th{
+    text-transform: uppercase;
+    text-align: center;
+    background-color: #C9D6E0;
+    color: #323A42;
+}
+/* TABLE ROWS: STYLES.md 1.5. TABLES */
+.calculations-table .evenRow{
+    color: #404040;
+    background-color: #E8F0F6;
+}
+.calculations-table .oddRow{
+    color: #404040;
+    background-color: #9BB1C7;
+}
+.calculations-table tbody tr:hover{
+    background-color: #C9D6E0;
+}
+/* The row whose details are open in the panal below */
+.calculations-table tbody tr.selectedRow{
+    color: #E8F0F6;
+    background-color: #323A42;
+    outline: solid 2px #767224;
+}
+/* VIEW/HIDE BUTTON https://react-bootstrap.netlify.app/docs/components/buttons */
+.calculations-table .viewCalculationBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 32px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+}
+.calculations-table .viewCalculationBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+/* EMPTY LIST/TRUNCATED LIST MESSAGE: .infoText comes from FormSetup.css */
+.calculations-table-block .infoText{
+    color: #E8F0F6;
+}
+/* REQUEST FEEDBACK: .msgText comes from FormSetup.css */
+.calculations-status{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+/* ===============
+CALCULATION DETAILS PANAL
+============*/
+.calculations-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #D4D5D6;
+    border: solid 2px #323A42;
+}
+/* PANAL HEAD: what was calculated, and the close button */
+.calculations-panal-head{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    border-bottom: solid 2px #838485;
+}
+.calculations-panal-heading{
+    margin: 0px;
+    padding: 0px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: underline;
+    color: #470D09;
+}
+.closeCalculationPanalBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+}
+.closeCalculationPanalBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+/* PANAL BODY: the two detail columns */
+.calculations-panal-body{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 0px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background-color: #ACADAD;
+}
+.calculations-details-stack{
+    width: 50%;
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+}
+/* PANAL FOOTER: delete the saved calculation */
+.calculations-panal-footer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    border-top: solid 2px #838485;
+}
+.calculations-panal-footer h6{
+    margin: 0px;
+    padding: 0px;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #70150F;
+}
+.deleteCalculationBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+}
+.deleteCalculationBtn:disabled{
+    opacity: .65;
+}
+/* ===============
+NARROW SCREENS
+============*/
+@media (max-width: 768px){
+    .calculations-panal-body{
+        flex-direction: column;
+    }
+    .calculations-details-stack{
+        width: 100%;
+    }
+}

@@ -32,8 +32,10 @@ const FALLBACK_CURRENCIES = currencyCountries.map(({ code, name }) => ({ code, n
 export default function CurrencyConverter({currentUser, logout, error, setError, loggedIn}) {
    // ================STATE VARIABLES===================
    const [conversions, setConversions] = useState([])//State to store saved conversions
-   const [conversionId, setConversionId] = useState(null)
-   const [conversion, setConversion] = useState()
+   /* How many saved conversions the user has in total. GET /api/history only
+   returns the newest 100, so this is what tells the calculations list it is
+   showing a truncated view rather than the whole history. */
+   const [conversionsTotal, setConversionsTotal] = useState(0)
     const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
@@ -129,6 +131,11 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
 
     },[setError,setLoading, form.to, form.from, form.amount])
 
+    /* Loads the logged in user's saved conversions for the calculations list.
+    GET /api/history answers `{ success, total, limit, conversions }` — the same
+    shape as the tax and interest histories — so the array is read off
+    `conversions` rather than from the body itself, and `total` is kept so the
+    list can say when it is showing a truncated view of a longer history. */
     // Function to fetch currency conversions list
     const fetchConversions = useCallback(async () => {
       try {
@@ -141,13 +148,21 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
           'Authorization': `Bearer ${token}`
         }
        } )
-       const fetchedConversions = await response.json().catch(() =>({}))
+       const data = await response.json().catch(() =>({}))
 
-       if (Array.isArray(fetchedConversions)) {
-        setConversions(fetchedConversions)
-        setError();
-        console.log(`Fetched ${fetchedConversions.length} conversions`);
+       //Conditional rendering to check the request succeeded
+       if (!response.ok) {
+        const message = data.message || 'Could not load your saved conversions.';
+        console.error('[ERROR: CurrencyConverter.js, fetchConversions]', message);//Log an error message in the console for debugging purposes
+        setError(message);// Set the error state to display the error in the UI
+        return;// Exit the function early, keeping whatever list is already on screen
        }
+
+       const fetchedConversions = Array.isArray(data.conversions) ? data.conversions : [];
+       setConversions(fetchedConversions)
+       setConversionsTotal(typeof data.total === 'number' ? data.total : fetchedConversions.length)
+       setError('');//Clear any previous error messages
+       console.log(`[SUCCESS: CurrencyConverter.js, fetchConversions] Fetched ${fetchedConversions.length} of ${data.total ?? fetchedConversions.length} conversions`);
       } catch (error) {
         console.error(`Error fetching conversion data`, error.message);
         setError(`Error fetching conversion data, ${error.message}`)
@@ -188,38 +203,53 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
         throw new Error(message);
       }
 
+      /* Refresh the calculations list so a save is visible straight away. The
+      list fetches on mount, so this only matters while it is already open — but
+      without it the panel would sit there missing the conversion just saved. */
+      fetchConversions();
+
       return data;
-        },[])
+        },[fetchConversions])
 
         // --------------DELETE----------------------
+        /* Removes one of the user's saved conversions and drops it from the list
+        on screen. The record is deleted through DELETE /api/history/:id, which
+        matches the id against the user on the token, so a conversion belonging
+        to someone else is refused server-side.
+
+        Errors are thrown rather than written to `error`, matching
+        `saveConversion`: the calculations list owns the delete button's own
+        status message, and reports the failure beside the button the user
+        pressed instead of at the top of the page. */
         // Function to delete a currency conversion calculation
         const deleteConversion = useCallback(async (conversionId) => {
-          try {
-            const token = localStorage.getItem('token')
-            const response = await fetch(`${API_BASE_URL}/api/delete/${conversionId}`, {
-              method: 'DELETE',
-              mode: 'cors',
+            const token = localStorage.getItem('token')//Retrieve Jwt Token From LocalStorage
+            const response = await fetch(`${API_BASE_URL}/api/history/${conversionId}`, {
+              method: 'DELETE',//HTTP request method
+              mode: 'cors',//Enable Cross-Origin Resource Sharing
               headers:{
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Content-Type': 'application/json',// Specify that we're sending JSON data in the request body
+                'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
               }
             })
 
-            
+            const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
 
+            //Conditional rendering to check the request succeeded
             if (!response.ok) {
-              throw new Error("Failed to remove conversion calculation");// Throw an error if the DELETE request is unsuccessful
+              const message = data.message || 'Failed to remove the conversion calculation.';
+              console.error('[ERROR: CurrencyConverter.js, deleteConversion]', message);//Log an error message in the console for debugging purposes
+              throw new Error(message);// Throw an error if the DELETE request is unsuccessful
             }
- setConversions((prev) => 
-                prev.filter((conversion) => conversion._id !== conversionId))
-              
-            console.log('Conversion successfully removed');
-            alert('Convesion calculation successfully removed')
-          } catch (error) {
-            setError('Error removing conversion', error);// Set the error state to display the error in the UI
-            console.error('Error removing conversion:', error.message);//Log an error message in the console for debugging purposes
-          }
-        },[setError])
+
+            // Drop the deleted conversion from the list on screen
+            setConversions((prev) =>
+                prev.filter((conversion) => String(conversion._id) !== String(conversionId)))
+            setConversionsTotal((prev) => Math.max(0, prev - 1))
+
+            console.log('[SUCCESS: CurrencyConverter.js, deleteConversion] Removed conversion', conversionId);//Log a success message in the console for debugging purposes
+            return data;
+        },[])
     //================================
   return (
     <div id='pageContainer' role='main'>
@@ -298,12 +328,15 @@ submitConvert={submitConvert}
         <div id='currency-calculations-panal'>
           <Row id='currency-calculations-row'>
             <Col id='currency-calculations-col'>
-              <div>
-                <CurrencyCalculations 
+              <div id='currency-calculations-display'>
+                {/* CURRENCY CONVERSION CALCULATIONS COMPONENT */}
+                <CurrencyCalculations
                 loggedIn={loggedIn}
                 fetchConversions={fetchConversions}
                 conversions={conversions}
+                conversionsTotal={conversionsTotal}
                 deleteConversion={deleteConversion}
+                setError={setError}
                 />
               </div>
             </Col>

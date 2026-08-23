@@ -58,11 +58,11 @@ SECTION 2: AVAILABLE CURRENCIES + CURRENCY CALCULATIONS
 /* ================
 LAYOUT
 ============*/
-#currencies-display-panal{
+#currencies-display-panal,
+#currency-calculations-panal{
     width: 100%;
     margin: 0px;
     padding: 0px;
-    width: 100%;
 }
 /* BOOTSTRAP:LAYOUT */
 /* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
@@ -76,12 +76,14 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-#currencies-list-row{
+#currencies-list-row,
+#currency-calculations-row{
     width: 100%;
     margin: 0px;
     padding: 0px;
 }
-#currencies-list-col{
+#currencies-list-col,
+#currency-calculations-col{
     display: flex;
     margin: 0px;
     padding: 0px;
@@ -96,8 +98,9 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-/* CURRENCIES LISTS: AVAILABLE CURRENCIES AND CURRENY CALCULATIONS */
-#curreny-list-display{
+/* CURRENCIES LISTS: AVAILABLE CURRENCIES AND CURRENCY CALCULATIONS */
+#currency-list-display,
+#currency-calculations-display{
     width: 100%;
     /* background-color: #404040; */
     border-radius: 8px;
