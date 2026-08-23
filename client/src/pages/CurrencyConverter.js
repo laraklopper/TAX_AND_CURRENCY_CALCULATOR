@@ -122,6 +122,41 @@ export default function CurrencyConverter({currentUser, logout}) {
       }
 
     },[setLoading, form.to, form.from, form.amount])
+
+    const saveConversion = useCallback(async () => {
+      setLoading(true)
+            try {
+                const token = localStorage.getItem('token')
+                const response = await fetch('http://localhost:3001/api/saveConversion',{
+                  method: 'POST',
+                  mode: 'cors',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer %{token}`,
+                  }, body: JSON.stringify({
+
+                  })
+                  
+                  const data = await response.json()
+
+                  if (response.ok) {
+                    setError?.(null)
+                    alert('conversion calculation successfully saved')
+                  }else{
+                    const message = data.message || 'Registration failed.';
+        setError?.(message);
+        console.error(`error saving conversion data: ${message}`);
+                  }
+                })
+              }
+            } catch (error) {
+                setError(`Error saving convertion data, ${error.message}`)
+                console.error(`Error saving convertion data, ${error.message}`);
+                
+            }finally{
+              setLoading(false)
+            }
+        },[])
     //================================
   return (
     <div id='pageContainer' role='main'>
