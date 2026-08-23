@@ -1,6 +1,6 @@
 // curConvertSchema.js
 const mongoose = require('mongoose');
-const { currencies } = require('../dataArrays/currencies');
+const { currencies, apiCurrencies } = require('../dataArrays/currencies');
 
 const currencyConvertSchema = new mongoose.Schema({
     //===============NESTED FULL NAME OBJECT=========
@@ -39,7 +39,7 @@ const currencyConvertSchema = new mongoose.Schema({
             type: String,
             required: [true, 'target currency is required'],
             trim: true,
-            enum: currencies,
+            enum: apiCurrencies,
             uppercase: true,
             minlength: [3, 'Target currency must be a 3-letter currency code'],
             maxlength: [3, 'Target currency must be a 3-letter currency code'],
