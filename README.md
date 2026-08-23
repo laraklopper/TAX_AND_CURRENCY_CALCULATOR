@@ -63,13 +63,13 @@ The MongoDB connection URI is constructed using the database name and MongoDB cl
 | PATCH | UPDATE | Partial update of a resource on the database |
 | DELETE | DELETE | Deletes a specific resource |
 
-The application also integrates external APIs via server-side proxy routes to keep API keys off the client:
+The application also integrates external APIs via server-side proxy routes:
 
-- *CurrencyFreaks* — live currency conversion rates.
+- *Frankfurter* — live currency conversion rates. Free and keyless, aggregating published rates from 84 central banks.
 
 ### 3.2. Financial Tools
 
-- **Currency converter** — backed by the live CurrencyFreaks API.
+- **Currency converter** — backed by the live Frankfurter API.
 - **Basic calculator** — general arithmetic expression evaluator with full keyboard support.
 - **Interest calculator** — simple interest from principal, rate, and time period (months).
 - **Tax calculator** — computes tax and total from an amount and tax rate (defaults to the South African 15% VAT rate).

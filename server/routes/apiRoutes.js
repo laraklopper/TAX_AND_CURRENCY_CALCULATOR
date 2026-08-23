@@ -45,37 +45,31 @@ router.get('/convert', checkJwtToken ,async (req,res) => {
             rate: 1, from: fromCurrency, to: toCurrency, amount: parsedAmount });// Return the original amount with a rate of 1
     }
 
-    const apiKey = process.env.CURRENCY_FREAKS_API_KEY;// Read the CurrencyFreaks API key from environment variables
-    if (!apiKey) {// Conditional rendering to check if the API key is configured
-        console.error('[ERROR: apiRoutes.js, /convert] CURRENCY_FREAKS_API_KEY not set');//Log an error message in the console for debugging purposes
-        return res.status(500).json({ success: false, message: 'Currency API not configured' });// Return a 500 (Internal Server Error) status code with a message
-    }
-
     try {
-        // CurrencyFreaks free tier always prices against USD as the base,
-        // so USD itself is never listed in the "rates" object.
-        const symbols = [fromCurrency, toCurrency].filter((code) => code !== 'USD').join(',');
-        const url = `https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${apiKey}&symbols=${encodeURIComponent(symbols)}`;
+        // Frankfurter is a free, keyless API. Unlike a fixed-base provider it accepts an
+        // arbitrary base, so the rate for the requested pair comes back directly and no
+        // cross-rate calculation is needed.
+        const url = `https://api.frankfurter.dev/v2/rates?base=${encodeURIComponent(fromCurrency)}&quotes=${encodeURIComponent(toCurrency)}`;
 
         const apiResponse = await fetch(url);
         if (!apiResponse.ok) {// Conditional rendering to check the upstream API responded successfully
-            console.error('[ERROR: apiRoutes.js, /convert] CurrencyFreaks request failed with status', apiResponse.status);
+            console.error('[ERROR: apiRoutes.js, /convert] Frankfurter request failed with status', apiResponse.status);
             return res.status(502).json({ success: false, message: 'Failed to retrieve exchange rates' });
         }
 
+        // /v2/rates responds with an array of { date, base, quote, rate } objects,
+        // one per requested quote currency
         const data = await apiResponse.json();
-        const rates = data.rates || {};
+        const match = Array.isArray(data)
+            ? data.find((entry) => entry && entry.quote === toCurrency)
+            : null;
+        const conversionRate = match ? parseFloat(match.rate) : NaN;
 
-        // USD has an implicit rate of 1 since it is the API's base currency
-        const rateFrom = fromCurrency === 'USD' ? 1 : parseFloat(rates[fromCurrency]);
-        const rateTo = toCurrency === 'USD' ? 1 : parseFloat(rates[toCurrency]);
-
-        if (!rateFrom || !rateTo || isNaN(rateFrom) || isNaN(rateTo)) {// Conditional rendering to guard against a missing/malformed rate
+        if (!conversionRate || isNaN(conversionRate)) {// Conditional rendering to guard against a missing/malformed rate
             console.error('[ERROR: apiRoutes.js, /convert] Missing exchange rate for', fromCurrency, toCurrency);
             return res.status(502).json({ success: false, message: 'Exchange rate unavailable for the requested currencies' });
         }
 
-        const conversionRate = rateTo / rateFrom;// Cross rate via the shared USD base
         const convertedAmount = parsedAmount * conversionRate;
 
         // Best-effort history log tied to the requesting user; must never block the response

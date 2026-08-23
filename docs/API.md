@@ -84,6 +84,6 @@ Both save endpoints re-run the calculation from the submitted inputs and store t
 ## 7. REFERENCES
 
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
-- https://currencyfreaks.com/
+- https://api.frankfurter.dev/v2/rates
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/PATCH
 - https://frankfurter.dev/
