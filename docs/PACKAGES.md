@@ -32,4 +32,23 @@ NPM (Node Package Manager) is the default package manager for Node.js. It is use
 ## 2. APPLICATION PACKAGES
 
 ### 2.1 SERVER-SIDE(BACK-END)
+
+| _PACKAGE_ | _CLI / TERMINAL_ | _PURPOSE_ | _VERSION_ |
+|-----------|-----------------|-----------|-----------|
+| bcrypt | `npm install bcrypt` | Password hashing and encryption | 6.0.0 |
+| cors | `npm install cors` | Cross-Origin Resource Sharing middleware | 2.8.6 |
+| csv-parser | `npm install csv-parser` | Streaming CSV file parser | 3.2.1 |
+| csv-stringify | `npm install csv-stringify` | CSV file generation and serialisation | 6.7.0 |
+| dotenv | `npm install dotenv` | Loads environment variables from `.env` file | 17.4.2 |
+| express | `npm install express` | Web application framework | 5.2.1 |
+| express-rate-limit | `npm install express-rate-limit` | Rate limiting middleware for Express | 8.5.2 |
+| helmet | `npm install helmet` | Sets secure HTTP response headers | 8.2.0 |
+| jsonwebtoken | `npm install jsonwebtoken` | JSON Web Token creation and verification | 9.0.3 |
+| mongoose | `npm install mongoose` | MongoDB object modelling (ODM) | 9.6.3 |
+| mongoose-autopopulate | `npm install mongoose-autopopulate` | Auto-populates Mongoose document references | 1.2.1 |
+| nodemailer | `npm install nodemailer` | Sends transactional emails via SMTP (password reset) | 9.0.1 |
+| nodemon | `npm install nodemon` | Automatically restarts server on file changes | 3.1.14 |
+| supertest | `npm install supertest` | HTTP server testing library | 7.2.2 |
+| xlsx | `npm install xlsx` | Excel and spreadsheet file parsing and generation | 0.18.5 |
+
 ### 2.2 CLIENT-SIDE(FRONT-END)
