@@ -3,26 +3,7 @@
 Explains the three sets of figures shown by [TaxDataDisplay.js](client/src/components/TaxDataDisplay.js) and stored on the `TaxYearConfig` model in [TaxYearSchema.js](server/models/TaxYearSchema.js).
 
 All examples use the SARS **2025-2026** year of assessment (1 March 2025 – 28 February 2026) held in [taxSeedData.js](client/src/dataArrays/taxSeedData.js).
-
----
-
-## THE ONE-LINE SUMMARY
-
-| **CONCEPT** | **WHAT IT DOES** | **WHEN IT IS APPLIED** |
-|---|---|---|
-| **BRACKET** | Works out how much tax the income *earns* | Step 1 — calculate gross tax |
-| **REBATE** | Subtracts a flat amount from that tax | Step 2 — reduce tax already calculated |
-| **THRESHOLD** | Tells you if any tax is payable at all | Not a calculation step — it is the *result* of steps 1 and 2 |
-
-The order matters: **brackets produce a tax figure, rebates reduce it, and the threshold is simply the income level at which the rebate happens to wipe the tax out completely.**
-
----
-
-## 1. INCOME TAX BRACKETS
-
-A bracket is an **income band with its own tax rate**. South Africa uses a *progressive, sliced* system: each slice of income is taxed at the rate for its own band, not the top rate on the whole amount.
-
-Rather than re-adding every slice on each calculation, SARS publishes each band as a **base amount** (the total tax already accumulated by everyone below that band) plus a **marginal rate** (the rate charged on the portion inside that band).
+[p']
 
 ### 2025-2026 BRACKETS
 
