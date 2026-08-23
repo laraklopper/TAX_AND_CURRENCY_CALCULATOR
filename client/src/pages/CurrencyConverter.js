@@ -12,6 +12,7 @@ import CurrencyList from '../components/CurrencyList';
 import { Scale } from 'lucide-react';
 // IMPORT DATA
 import { currencyCountries } from '../dataArrays/currencyCountries';
+import CurrencyCalculations from '../components/CurrencyCalculations';
 
 // Base URL of the API the converter talks to
 const API_BASE_URL = 'http://localhost:3001';
@@ -28,12 +29,13 @@ does. The local country data covers the same codes, so an unreachable API leaves
 the converter working off a curated list rather than an empty dropdown. */
 const FALLBACK_CURRENCIES = currencyCountries.map(({ code, name }) => ({ code, name, symbol: '' }));
 
-export default function CurrencyConverter({currentUser, logout}) {
+export default function CurrencyConverter({currentUser, logout, error, setError, loggedIn}) {
    // ================STATE VARIABLES===================
+   const [conversions, setConversions] = useState([])//State to store saved conversions
     const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
-    const [error, setError] = useState('');// Stores any error messages shown to the user
+    // const [error, setError] = useState('');// Stores any error messages shown to the user
     const [showCurrencies, setShowCurrencies] = useState(false)
     const [showCurrCalculations, setShowCurrCalculations] = useState(false)
     /* Currencies the converter can work with. Starts as the local fallback and
@@ -85,7 +87,9 @@ export default function CurrencyConverter({currentUser, logout}) {
       setShowCurrencies(false)
     },[])
 
-    //===============
+    //========REQUESTS/CALLBACK=======
+    // -------GET--------------------
+    // Function to convert currency converter
     const submitConvert = useCallback(async () => {//Define async function to convert currency
       setError('')
       setResult(null)
@@ -121,17 +125,42 @@ export default function CurrencyConverter({currentUser, logout}) {
         setLoading(false)
       }
 
-    },[setLoading, form.to, form.from, form.amount])
+    },[setError,setLoading, form.to, form.from, form.amount])
 
+    // Function to fetch currency conversions list
+    const fetchConversions = useCallback(async () => {
+      try {
+       const token = localStorage.getItem('token')
+       const response =  await fetch(`${API_BASE_URL}/api/history`,{
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+       } )
+       const fetchedConversions = await response.json().catch(() =>({}))
+
+       if (Array.isArray(fetchedConversions)) {
+        setConversions(fetchedConversions)
+        setError();
+        console.log(`Fetched ${fetchedConversions.length} conversions`);
+       }
+      } catch (error) {
+        console.error(`Error fetching conversion data`, error.message);
+        setError(`Error fetching conversion data, ${error.message}`)
+      }
+    },[setError])
+    // ------------POST---------------------
     /* Saves the conversion currently on screen to the logged in user's history.
     Only the inputs are sent (amount, from, to): the backend fetches its own
     rate and stores that, so a saved record can never disagree with the rate the
     provider quoted. The figures come from `result` rather than `form`, so what
     is saved is what the user is looking at, not whatever has since been typed
     into the inputs.
-
     Errors are thrown rather than written to `error`, because the form owns the
     save button's own status message; `error` belongs to the conversion itself. */
+    // Function to save a user conversion
     const saveConversion = useCallback(async (conversion) => {
       const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
       const response = await fetch(`${API_BASE_URL}/api/save`,{
@@ -233,7 +262,12 @@ submitConvert={submitConvert}
         <div id='currency-calculations-panal'>
           <Row id='currency-calculations-row'>
             <Col id='currency-calculations-col'>
-              CURRENCY CALCULATIONS
+              <div>
+                <CurrencyCalculations 
+                loggedIn={loggedIn}
+                fetchConversions={fetchConversions}
+                conversions={conversions}/>
+              </div>
             </Col>
           </Row>
         </div>

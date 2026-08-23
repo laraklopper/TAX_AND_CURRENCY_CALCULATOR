@@ -178,7 +178,14 @@ export default function App() {//Export default App function component
               }/>
               <Route path='/currencyConverter' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <CurrencyConverter currentUser={currentUser} logout={logout}/>
+                  <CurrencyConverter 
+                    currentUser={currentUser} 
+                    error={error}
+                    setError={setError}
+                    logout={logout}
+                    loggedIn={loggedIn}
+        
+                    />
                 </ProtectedUserRoute>
               }/>
               <Route path='/profile' element={
