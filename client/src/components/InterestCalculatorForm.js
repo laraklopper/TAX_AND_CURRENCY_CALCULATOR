@@ -320,23 +320,37 @@ export default function InterestCalculatorForm({
             )}
           </div>
       </div>
+      {/* HIDDEN FULL NAME FIELDS */}
       {/* INPUT REQUIRED TO SAVE CALCULATION */}
       <div className='p-2' id='user-fullname-input' hidden>
+      <label className='field-label'>FULL NAME:</label>
         <div className='input-div'>
-          <label className='field-label'>FIRST NAME</label>
+          <label className='field-label' htmlFor='interest-firstName'>FIRST NAME</label>
           <input
             className='input'
             readOnly
+            id='interest-firstName'
               // placeholder={currentUser.fullName.firstName} //
+              // name=''
+              // value={}
+              // ARIA ATTRIBUTES:
+              aria-required='true'
+              aria-readonly='true'
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
         </div>
         <div className='input-div'>
-          <label className='field-label'>LAST NAME:</label>
+          <label className='field-label' htmlFor='interest-lastName'>LAST NAME:</label>
           <input
             className='input'
               readOnly
+              id='interest-lastName'
               // placeholder={currentUser.fullName.lastName} //
+              // name=''
+              // value={}
+              // ARIA ATTRIBUTES:
+              aria-required='true'
+              aria-readonly='true'
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
         </div>
