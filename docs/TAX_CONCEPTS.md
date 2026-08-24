@@ -5,6 +5,17 @@ Explains the three sets of figures shown by [TaxDataDisplay.js](client/src/compo
 All examples use the SARS **2025-2026** year of assessment (1 March 2025 – 28 February 2026) held in [taxSeedData.js](client/src/dataArrays/taxSeedData.js).
 [p']
 
+### 2027 TAX YEAR (1 March 2026 – 28 February 2027)
+
+|**TAXABLE INCOME (R)**|**RATES ON TAX**|
+|----|-----|
+|1 – 245 100 |18% of taxable income|
+|245 101 – 383 100 |44 118 + 26% of taxable income above 245 100 |
+|383 101 – 530 200|	79 998 + 31% of taxable income above 383 100|
+|530 201 – 695 800	|125 599 + 36% of taxable income above 530 200|
+|695 801 – 887 000	|185 215 + 39% of taxable income above 695 800|
+|887 001 – 1 878 600|	259 783 + 41% of taxable income above 887 000|
+|1 878 601 and above|	666 339 + 45% of taxable income above 1 878 600|
 ### 2025-2026 BRACKETS
 
 | **TAXABLE INCOME (R)** | **BASE AMOUNT (R)** | **MARGINAL RATE** |
@@ -59,6 +70,13 @@ A R1 000 deduction saves an 18% taxpayer R180 and a 45% taxpayer R450. A R1 000 
 | Secondary | Age 65 to below 75 | 9 444 | 26 679 |
 | Tertiary | Age 75 and older | 3 145 | 29 824 |
 
+## HISTORY
+|Tax Rebate|2027   |2026   | 2025 |2024 |	    2023|
+|----------|-------|-------|------  |------|---------|
+|Primary   |R17 820|R17 235| R17 235| R17 235 |	R16 425|
+|Secondary (65 and older)|	R9 765 |	R9 444	|R9 444	|R9 444|	R9 000|
+|Tertiary (75 and older)|	R3 249	|R3 145 |R3 145	|R3 145 |R2 997|
+
 Rebates are **cumulative, not alternatives**. A 78-year-old receives all three: `17 235 + 9 444 + 3 145 = R29 824`.
 
 Two rules worth knowing:
@@ -85,6 +103,13 @@ threshold = totalRebates ÷ 0.18        (0.18 = the lowest bracket's rate)
 | Under 65 | 17 235 | 17 235 ÷ 0.18 | 95 750 |
 | 65 to below 75 | 26 679 | 26 679 ÷ 0.18 | 148 217 |
 | 75 and older | 29 824 | 29 824 ÷ 0.18 | 165 689 |
+### HISTORY
+
+|  Age|  2027	|2026	|2025 |	2024	|2023| 	 
+|------|-------|------|--------|-----|----|
+|Under 65|	R99 000	|R95 750	|R95 750	|R95 750	|R91 250|
+|65 and older|	R153 250 |	R148 217|	R148 217 |	R148 217 |	R141 250|
+|75 and older	|R171 300|	R165 689|	R165 689|	R165 689|	R157 900|
 
 Because every threshold falls inside the first bracket, the divisor is always 18%.
 
