@@ -130,7 +130,9 @@ router.get('/history', checkJwtToken, async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })
-
+/*──────────────────────────── POST ROUTES ──────────────────────────────
+    POST: Used to create a new resource/submit data to the database
+ ─────────────────────────────────────────────────────────────────────────*/
 /*=====================================
 TAX CALCULATION
 =======================================*/
