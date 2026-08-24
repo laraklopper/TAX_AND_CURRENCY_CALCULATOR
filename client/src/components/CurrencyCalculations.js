@@ -180,10 +180,17 @@ export default function CurrencyCalculations(
                   <span className='nested-details-span'>
                     <p className='details-label'>BASE CURRENCY:</p>
                     <p className='details-value'>{selectedConversion.currency?.baseCurrency || NOT_AVAILABLE}</p>
+                    {/* SHOW FULL BASE CURRENCY */}
+                    <p className='details-value'>(e.g. Bangladeshi Taka)</p>
                   </span>
                   <span className='nested-details-span'>
                     <p className='details-label'>TARGET CURRENCY:</p>
-                    <p className='details-value'>{selectedConversion.currency?.targetCurrency || NOT_AVAILABLE}</p>
+                    <span className='currency-span'>
+ <p className='details-value'>{selectedConversion.currency?.targetCurrency || NOT_AVAILABLE}</p>
+ {/* SHOW FULL TARGET CURRENCY */}
+                    <p className='details-value'>(e.g Bermudian Dollar)</p>
+                    </span>
+                   
                   </span>
                 </div>
               </div>
