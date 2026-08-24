@@ -35,11 +35,10 @@
 |`ODM`| **OBJECT DOCUMENT MAPPER** | A library (Mongoose in this project) that maps JavaScript objects to MongoDB documents, providing schema validation and query helpers. |
 |`RBAC`| **ROLE BASED ACCESS CONTROL** | A security model that restricts system access based on a user's assigned role. In this application, the `admin` boolean field on the User model controls whether a user can access admin-only routes and actions. Regular users have standard access; admin users have elevated privileges. |
 |`REGEX`| **REGULAR EXPRESSION** | A sequence of characters that defines a search or match pattern. Used in this application to validate email format and enforce password strength requirements. |
-|`REIT`| **REAL ESTATE INVESTMENT TRUST** | A company that owns and typically operates income-producing real estate. Supported as a security type in the watchlist. |
 |`RFC`| **REQUEST FOR COMMENTS** | A formal document published by the IETF (Internet Engineering Task Force) that defines internet standards and protocols. In this application, RFC 6585 defines the `429 Too Many Requests` HTTP status code returned by rate limiters when a client exceeds its allowed request quota. |
 |`REST (API)`| **REPRESENTATIONAL STATE TRANSFER** | An architectural style for APIs that uses standard HTTP methods (GET, POST, PUT, DELETE) and stateless communication. |
 |`RWD`| **RESPONSIVE WEB DESIGN** | A design approach that ensures a web application looks and works correctly across different screen sizes and devices. |
-|`SARS`| **SOUTH AFRICAN REVENUE SERVICES**| |
+|`SARS`| **SOUTH AFRICAN REVENUE SERVICES**| The South African tax collecting authority. Established in terms of the `South African Revenue Service Act 34 of 1997`. |
 |`SHA`| **SECURE HASH ALGORITHM** | A family of cryptographic hash functions standardised by NIST |
 |`SMTP`| **SIMPLE MAIL TRANSFER PROTOCOL** | The standard protocol for sending email across networks. In this application, the `nodemailer` package uses an SMTP connection to Gmail to deliver password reset emails to users. |
 |`SPA`| **SINGLE PAGE APPLICATION** | A web app that loads a single HTML page and dynamically updates content without full page reloads. React enables this pattern. |
