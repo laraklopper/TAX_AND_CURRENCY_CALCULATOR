@@ -112,6 +112,11 @@ export default function InterestCalculatorForm({
     }
   }
 
+  /* Bootstrap variant for the save button, so its colour reports the outcome
+  of the save rather than staying neutral once the button is disabled. */
+  const saveButtonVariant =
+    saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
+
   async function handleSave() {
     if (!result || !onSave) return;
     setSaveStatus("saving");
@@ -427,6 +432,9 @@ export default function InterestCalculatorForm({
             <div className="save-row">
               <Button
                 type="button"
+                /* Turns green once the calculation is safely in the user's
+                history, red when the save was rejected. */
+                variant={saveButtonVariant}
                 onClick={handleSave}
                 disabled={saveStatus === "saving" || saveStatus === "saved"}
                 className="save-link"

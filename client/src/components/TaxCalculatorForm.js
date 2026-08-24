@@ -108,6 +108,11 @@ export default function TaxCalculatorForm({
     }
   }
 
+  /* Bootstrap variant for the save button, so its colour reports the outcome
+  of the save rather than staying neutral once the button is disabled. */
+  const saveButtonVariant =
+    saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
+
   async function handleSave() {
     if (!result || !onSave) return;
     setSaveStatus("saving");
@@ -359,12 +364,14 @@ export default function TaxCalculatorForm({
             constitute tax advice. Consult SARS or a registered tax
             practitioner for official calculations.
           </p>
-
+          {/* RESULT */}
           {isAuthenticated && onSave && (
             <div className="save-row">
               <Button
                 type="button"
-                variant="success"
+                /* Turns green once the calculation is safely in the user's
+                history, red when the save was rejected. */
+                variant={saveButtonVariant}
                 id="saveCalculationBtn"
                 onClick={handleSave}
                 disabled={saveStatus === "saving" || saveStatus === "saved"}

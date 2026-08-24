@@ -36,6 +36,11 @@ export default function CurrencyConvertForm(
         // Message from a failed save, so the user sees why it was rejected
         const [saveError, setSaveError] = useState('');
 
+        /* Bootstrap variant for the save button, so its colour reports the
+        outcome of the save rather than staying neutral once it is disabled. */
+        const saveButtonVariant =
+            saveStatus === 'saved' ? 'success' : saveStatus === 'error' ? 'danger' : 'light';
+
       //===========EVENT LISTENERS===============
     /* Clears the save button back to its unsaved state. Called whenever the
     result on screen is replaced, so a 'Saved' label can never be left over from
@@ -222,7 +227,9 @@ export default function CurrencyConvertForm(
                 <>
             <Button
                 id='saveConversionBtn'
-                variant='success'
+                /* Turns green once the conversion is safely in the user's
+                history, red when the save was rejected. */
+                variant={saveButtonVariant}
                 type='button'
                 onClick={handleSave}
                 disabled={saveStatus === 'saving' || saveStatus === 'saved'}
