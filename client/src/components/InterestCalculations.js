@@ -21,53 +21,7 @@ import Button from 'react-bootstrap/Button';
 import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
-// ===========HELPER FUNCTIONS===========
-/* The schema stores the compounding frequency as a NUMBER of times per year,
-because that is what the maths needs; these are the names the calculator form
-offers for those counts. */
-const COMPOUND_FREQUENCY_LABELS = {
-  1: 'ANNUALLY',
-  2: 'SEMI-ANNUALLY',
-  4: 'QUARTERLY',
-  12: 'MONTHLY',
-  365: 'DAILY'
-}
-
-/* Label a stored compounding frequency. Simple interest does not compound, and
-the schema falls back to 1 for it, so the frequency is reported as not applicable
-rather than as a misleading "ANNUALLY". */
-const toCompounding = (calculation) => {
-  if (calculation?.interestType === 'simple') return 'NOT APPLICABLE (SIMPLE INTEREST)'
-  const frequency = calculation?.compoundFrequency
-  if (typeof frequency !== 'number') return NOT_AVAILABLE
-  return COMPOUND_FREQUENCY_LABELS[frequency] || `${frequency} TIMES PER YEAR`
-}
-
-/* The term as stored, e.g. 18 MONTHS. A whole number of periods is shown
-without decimals, because "18 MONTHS" reads better than "18,00 MONTHS". */
-const toTerm = (time) => {
-  if (typeof time?.duration !== 'number') return NOT_AVAILABLE
-  const duration = time.duration.toLocaleString('en-ZA', { maximumFractionDigits: 2 })
-  return `${duration} ${(time.unit || 'years').toUpperCase()}`
-}
-
-/* The term converted to years. Exposed as a virtual by the schema, so it
-arrives on the record; it is recomputed only as a fallback. */
-const durationInYearsOf = (calculation) => {
-  if (typeof calculation?.durationInYears === 'number') return calculation.durationInYears
-  if (typeof calculation?.time?.duration !== 'number') return null
-  return calculation.time.unit === 'months' ? calculation.time.duration / 12 : calculation.time.duration
-}
-
-/* The capital the user paid in themselves, as opposed to the interest earned on
-top of it. Exposed as a virtual by the schema, as above. */
-const totalCapitalOf = (calculation) => {
-  if (typeof calculation?.totalCapital === 'number') return calculation.totalCapital
-  if (typeof calculation?.principal === 'number') {
-    return calculation.principal + (calculation.totalContributions || 0)
-  }
-  return null
-}
+import { durationInYearsOf, toCompounding, toTerm, totalCapitalOf } from '../utils/calculationFunc';
 
 //InterestCalculations.js function component
 export default function InterestCalculations(

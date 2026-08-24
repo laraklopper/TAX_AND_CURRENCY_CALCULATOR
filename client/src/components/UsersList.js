@@ -8,35 +8,9 @@ import '../css/componentCss/DetailsPanal.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-// ===========HELPER FUNCTIONS===========
-// Shown in place of any detail the user has not supplied (address line2 and
-// province are the only optional fields on the user schema)
-const NOT_PROVIDED = 'NOT PROVIDED'
-
-// Fall back to a placeholder when a detail is missing or blank
-const orPlaceholder = (value) =>
-  (typeof value === 'string' && value.trim()) || NOT_PROVIDED
-
-// Format an ISO date string as e.g. 01 March 2025
-const toLongDate = (value) => {
-  if (!value) return NOT_PROVIDED
-  const date = new Date(value)
-  if (isNaN(date.getTime())) return NOT_PROVIDED
-  return date.toLocaleDateString('en-ZA', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  })
-}
-
-// Join the first and last name, tolerating a missing half
-const toFullName = (fullName) => {
-  const name = [fullName?.firstName, fullName?.lastName].filter(Boolean).join(' ')
-  return name || NOT_PROVIDED
-}
-
-// Row striping: STYLES.md 1.5. TABLES
-const rowClass = (index) => (index % 2 === 0 ? 'evenRow' : 'oddRow')
+// IMPORT UTILITY FUNCTIONS
+import { orPlaceholder, toUserDate, toUserFullName } from '../utils/userFunc';
+import { rowClass } from '../utils/formatCalculations';
 
 // UserList.js function component
 export default function UsersList(//Export UserList.js function component
@@ -101,7 +75,7 @@ export default function UsersList(//Export UserList.js function component
     }
 
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete ${toFullName(selectedUser.fullName)}? This cannot be undone.`
+      `Are you sure you want to delete ${toUserFullName(selectedUser.fullName)}? This cannot be undone.`
     )
 
     if (!confirmDelete) return;// Exit the function early if the admin cancels
@@ -175,9 +149,9 @@ export default function UsersList(//Export UserList.js function component
                     className={`${rowClass(index)}${isSelected ? ' selectedRow' : ''}`}
                     aria-selected={isSelected}
                   >
-                    <th scope='row'>{toFullName(user.fullName)}</th>
+                    <th scope='row'>{toUserFullName(user.fullName)}</th>
                     <td className='user-email-cell'>{orPlaceholder(user.email)}</td>
-                    <td>{toLongDate(user.dateOfBirth)}</td>
+                    <td>{toUserDate(user.dateOfBirth)}</td>
                     <td>{user.admin ? 'YES' : 'NO'}</td>
                     <td>
                       <Button
@@ -186,7 +160,7 @@ export default function UsersList(//Export UserList.js function component
                         type='button'
                         onClick={() => (isSelected ? closePanal() : selectUser(user._id))}
                         // ARIA ATTRIBUTES:
-                        aria-label={`${isSelected ? 'Hide' : 'View'} details for ${toFullName(user.fullName)}`}
+                        aria-label={`${isSelected ? 'Hide' : 'View'} details for ${toUserFullName(user.fullName)}`}
                         aria-pressed={isSelected}
                         aria-expanded={isSelected}
                         aria-controls='user-details-panal'
@@ -208,7 +182,7 @@ export default function UsersList(//Export UserList.js function component
          <Stack direction="horizontal" gap={3} id='user-panal-head-stack'>
       <div className="p-2">
         {/* USER FULL NAME */}
-        <h5 id='user-panal-heading'>{toFullName(selectedUser.fullName)}</h5>
+        <h5 id='user-panal-heading'>{toUserFullName(selectedUser.fullName)}</h5>
       </div>
       <div className="p-2 ms-auto">
         <Button
@@ -252,14 +226,14 @@ export default function UsersList(//Export UserList.js function component
         {/* DATE OF BIRTH */}
         <div className='details-group'>
           <span><p className='details-label'>DATE OF BIRTH:</p></span>
-          <p className='details-value'>{toLongDate(selectedUser.dateOfBirth)}</p>
+          <p className='details-value'>{toUserDate(selectedUser.dateOfBirth)}</p>
         </div>
       </div>
       <div className="p-2">
         {/* REGISTERED: createdAt timestamp on the user schema */}
         <div className='details-group'>
           <span><p className='details-label'>REGISTERED:</p></span>
-          <p className='details-value'>{toLongDate(selectedUser.createdAt)}</p>
+          <p className='details-value'>{toUserDate(selectedUser.createdAt)}</p>
         </div>
       </div>
 
@@ -300,7 +274,7 @@ export default function UsersList(//Export UserList.js function component
         {/* LAST UPDATED: updatedAt timestamp on the user schema */}
         <div className='details-group'>
           <span><p className='details-label'>LAST UPDATED:</p></span>
-          <p className='details-value'>{toLongDate(selectedUser.updatedAt)}</p>
+          <p className='details-value'>{toUserDate(selectedUser.updatedAt)}</p>
         </div>
       </div>
     </Stack>

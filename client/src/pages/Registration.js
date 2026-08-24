@@ -9,23 +9,11 @@ import Stack from 'react-bootstrap/Stack';
 import MainHeader from '../components/MainHeader'
 import RegistrationForm from '../components/RegistrationForm';
 import { useNavigate } from 'react-router-dom';
+// IMPORT UTILITY FUNCTIONS
+import { emptyNewUserData } from '../utils/userFunc';
+
 export default function Registration({setError}) {
-  const [newUserData, setNewUserData] = useState({
-    fullName: {
-      firstName: '',
-      lastName: '',
-    },
-    email: '',
-    dateOfBirth: '',
-    address: {
-      line1: '',
-      line2: '',
-      city: '',
-      province: '',
-    },
-    admin: false,
-    password: '',
-  })
+  const [newUserData, setNewUserData] = useState(emptyNewUserData)
 
   const navigate = useNavigate();
 

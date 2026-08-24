@@ -20,25 +20,7 @@ import Button from 'react-bootstrap/Button';
 import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toDecimal, toFullName, toLongDate, toLongDateTime, toMoney } from '../utils/formatCalculations';
-// ===========HELPER FUNCTIONS===========
-/* Format an exchange rate with the pair it prices. Rates are quoted to far more
-than 2 decimals, so a rate is shown to 6 rather than being rounded to currency
-precision, which would show a weak pair as 0,00. */
-const toRate = (rate, baseCurrency, targetCurrency) => {
-  const formatted = toDecimal(rate, 6)
-  if (formatted === NOT_AVAILABLE || !baseCurrency || !targetCurrency) return formatted
-  return `${formatted} ${targetCurrency} PER 1 ${baseCurrency}`
-}
-
-/* The converted amount as stored. The schema exposes it as a virtual, so it
-arrives on the record; it is recomputed from amount * rate only as a fallback. */
-const convertedAmountOf = (conversion) => {
-  if (typeof conversion?.convertedAmount === 'number') return conversion.convertedAmount
-  if (typeof conversion?.amount === 'number' && typeof conversion?.rate === 'number') {
-    return conversion.amount * conversion.rate
-  }
-  return null
-}
+import { convertedAmountOf, toRate } from '../utils/currencyFunc';
 
 //CurrencyCalculations.js function component
 export default function CurrencyCalculations(

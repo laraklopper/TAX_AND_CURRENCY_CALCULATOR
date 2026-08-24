@@ -11,11 +11,16 @@ amount is written. */
 // Shown in place of any detail a record does not carry
 export const NOT_AVAILABLE = 'NOT AVAILABLE'
 
-// Format an ISO date string as e.g. 01 March 2025
-export const toLongDate = (value) => {
-  if (!value) return NOT_AVAILABLE
+/* Format an ISO date string as e.g. 01 March 2025.
+
+`fallback` is what stands in for a date that is missing or unreadable. The saved
+calculation lists want NOT_AVAILABLE, while the user records say NOT PROVIDED,
+so the wording is the caller's to choose (see userFunc.js) and the parsing
+itself is written once. */
+export const toLongDate = (value, fallback = NOT_AVAILABLE) => {
+  if (!value) return fallback
   const date = new Date(value)
-  if (isNaN(date.getTime())) return NOT_AVAILABLE
+  if (isNaN(date.getTime())) return fallback
   return date.toLocaleDateString('en-ZA', {
     day: '2-digit',
     month: 'long',
@@ -32,9 +37,9 @@ export const toLongDateTime = (value) => {
 }
 
 // Join the first and last name, tolerating a missing half
-export const toFullName = (fullName) => {
+export const toFullName = (fullName, fallback = NOT_AVAILABLE) => {
   const name = [fullName?.firstName, fullName?.lastName].filter(Boolean).join(' ')
-  return name || NOT_AVAILABLE
+  return name || fallback
 }
 
 // Row striping: STYLES.md 1.5. TABLES

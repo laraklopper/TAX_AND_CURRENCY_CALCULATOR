@@ -5,6 +5,8 @@ import '../css/componentCss/CurrencyConverter.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
+import { currencyOptionLabel, toConvertedAmount, toQuotedRate } from '../utils/currencyFunc';
 
 /* `currencyOptions` is the list of { code, name, symbol } the page loaded from
 GET /api/currencies, which reports what Frankfurter supports. The dropdowns are
@@ -14,7 +16,7 @@ export default function CurrencyConvertForm(
     {
         submitConvert,
         saveConversion,
-        EMPTY_FORM,
+        EMPTY_CONVERT_FORM,
         currencyOptions = [],
         loading,
         setLoading,
@@ -60,7 +62,7 @@ export default function CurrencyConvertForm(
     };
     //Function to clear the form
     const handleClear = () => {
-        setForm(EMPTY_FORM);// Reset all form inputs (amount, from, and to) to their default values.
+        setForm(EMPTY_CONVERT_FORM);// Reset all form inputs (amount, from, and to) to their default values.
         setResult(null);// Remove the previous conversion result from the screen.
 
         setError('');// Clear any displayed error messages.
@@ -139,7 +141,7 @@ export default function CurrencyConvertForm(
                     <option value=''>SELECT</option>
                     {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
                     {currencyOptions.map(({ code, name }) => (
-                        <option key={code} value={code}>{name ? `${code} - ${name}` : code}</option>
+                        <option key={code} value={code}>{currencyOptionLabel(code, name)}</option>
                     ))}
                 </select>
                 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
@@ -162,7 +164,7 @@ export default function CurrencyConvertForm(
                <option value=''>SELECT</option>
                 {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
                     {currencyOptions.map(({ code, name }) => (
-                        <option key={code} value={code}>{name ? `${code} - ${name}` : code}</option>
+                        <option key={code} value={code}>{currencyOptionLabel(code, name)}</option>
                     ))}
                 </select>
                 <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
@@ -204,12 +206,12 @@ export default function CurrencyConvertForm(
         {result && (
             <>
             <p className='infoText'>
-                {result.amount} {result.from} = {Number(result.result).toFixed(2)} {result.to}
+                {result.amount} {result.from} = {toConvertedAmount(result.result)} {result.to}
             </p>
             {/* The day Frankfurter published the rate, so the figure is dated */}
             {result.date && (
                 <p className='infoText'>
-                    1 {result.from} = {Number(result.rate).toFixed(4)} {result.to} (rate of {result.date})
+                    1 {result.from} = {toQuotedRate(result.rate)} {result.to} (rate of {result.date})
                 </p>
             )}
             {/* BUTTON TO SAVE CURRENCY CONVERTER CALCULATION.

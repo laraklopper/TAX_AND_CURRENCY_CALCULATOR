@@ -5,6 +5,14 @@ import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
+import {
+  BLANK_TAX_FORM,
+  buildTaxPayload,
+  formatCurrency,
+  formatPercent,
+  validateTaxForm
+} from '../utils/calculationFunc';
 // ---------------------------------------------------------------------------
 // TaxCalculatorForm
 // SARS income tax calculator. Posts to /api/tax/calculate and renders the
@@ -21,26 +29,6 @@ import { Asterisk } from 'lucide-react';
 //   isAuthenticated - boolean, controls whether "Save to history" is shown
 // ---------------------------------------------------------------------------
 
-const blankForm = {
-  incomeType: "annual", // "annual" | "monthly"
-  income: "",
-  age: "",
-  taxYear: "",
-  dependants: "0",
-};
-
-function formatCurrency(value) {
-  return new Intl.NumberFormat("en-ZA", {
-    style: "currency",
-    currency: "ZAR",
-    maximumFractionDigits: 2,
-  }).format(value || 0);
-}
-
-function formatPercent(value) {
-  return `${(value || 0).toFixed(2)}%`;
-}
-
 export default function TaxCalculatorForm({
   taxYears = ["2025-2026"],
   onCalculate,
@@ -48,7 +36,7 @@ export default function TaxCalculatorForm({
   isAuthenticated = false,
 }) {
   const [form, setForm] = useState({
-    ...blankForm,
+    ...BLANK_TAX_FORM,
     taxYear: taxYears[0] ?? "",
   });
   const [errors, setErrors] = useState({});
@@ -75,43 +63,19 @@ export default function TaxCalculatorForm({
   };
 
   const resetForm = () => {
-    setForm({ ...blankForm, taxYear: taxYears[0] ?? "" });
+    setForm({ ...BLANK_TAX_FORM, taxYear: taxYears[0] ?? "" });
     setErrors({});
     setResult(null);
     setStatus(null);
     setSaveStatus(null);
   };
 
+  /* Check the inputs and show any field errors. Returns true when the form is
+  good to submit. */
   function validate() {
-    const errs = {};
-    if (!form.income || Number(form.income) <= 0) {
-      errs.income = "Enter an income amount greater than 0";
-    }
-    if (!form.age || Number(form.age) < 16 || Number(form.age) > 120) {
-      errs.age = "Enter a valid age";
-    }
-    if (!form.taxYear) {
-      errs.taxYear = "Select a tax year";
-    }
-    if (form.dependants === "" || Number(form.dependants) < 0) {
-      errs.dependants = "Cannot be negative";
-    }
+    const errs = validateTaxForm(form);
     setErrors(errs);
     return Object.keys(errs).length === 0;
-  }
-
-  function buildPayload() {
-    const annualIncome =
-      form.incomeType === "monthly"
-        ? Number(form.income) * 12
-        : Number(form.income);
-
-    return {
-      annualIncome,
-      age: Number(form.age),
-      taxYear: form.taxYear,
-      dependants: Number(form.dependants) || 0,
-    };
   }
 
   async function handleSubmit(e) {
@@ -130,7 +94,7 @@ export default function TaxCalculatorForm({
       return;
     }
 
-    const payload = buildPayload();
+    const payload = buildTaxPayload(form);
     setStatus("calculating");
     setStatusMessage("");
 
@@ -148,7 +112,7 @@ export default function TaxCalculatorForm({
     if (!result || !onSave) return;
     setSaveStatus("saving");
     try {
-      await onSave(buildPayload(), result);
+      await onSave(buildTaxPayload(form), result);
       setSaveStatus("saved");
     } catch (err) {
       setSaveStatus("error");

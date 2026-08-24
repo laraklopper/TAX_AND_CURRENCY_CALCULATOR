@@ -5,6 +5,8 @@ import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Eye, EyeOff, Bug } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
+import { isBlank } from '../utils/userFunc';
 
 // LoginForm function component
 export default function LoginForm({ userData, setUserData, submitLogin }) {
@@ -17,11 +19,11 @@ export default function LoginForm({ userData, setUserData, submitLogin }) {
     })
 
     const emailEmpty = useMemo( // Memorises the validation result until userData.email changes
-        () => !String(userData.email || '').trim(), // Returns true if email is empty, missing, or only contains spaces
+        () => isBlank(userData.email), // Returns true if email is empty, missing, or only contains spaces
         [userData.email] // Recalculate only when the email value changes
     )
     const passwordEmpty = useMemo( // Memorises the validation result until userData.password changes
-        () => !String(userData.password || '').trim(), // Returns true if password is empty, missing, or only contains spaces
+        () => isBlank(userData.password), // Returns true if password is empty, missing, or only contains spaces
         [userData.password] // Recalculate only when the password value changes
     )
     // Only show validation errors AFTER field was touched

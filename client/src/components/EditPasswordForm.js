@@ -4,6 +4,8 @@ import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk , Eye, EyeOff} from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
+import { isStrongPassword } from '../utils/userFunc';
 
 export default function EditPasswordForm({setError}) {
     const [showPswdMsg, setShowPswdMsg] = useState(false)
@@ -16,14 +18,6 @@ export default function EditPasswordForm({setError}) {
     const [loading, setLoading] = useState(false)
     // Inline feedback shown inside the form: {type: 'error' | 'success', text: string}
     const [status, setStatus] = useState(null)
-
-    const isStrongPassword = useCallback((pwd) => {
-        //Regex pattern to check for at least 8 characters and one special character
-        return /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/
-            .test(
-                String(pwd || '')// Ensure pwd is a string before testing
-            );
-    },[])
 
     /* Report a validation/request failure in one place: inline message,
        parent error state and alert all stay in sync */
@@ -119,7 +113,7 @@ export default function EditPasswordForm({setError}) {
             setLoading(false)//Set Loading state to false
         }
 
-    },[currentPassword, newPassword, confirmPassword, setError, isStrongPassword, failWith])
+    },[currentPassword, newPassword, confirmPassword, setError, failWith])
     //===========================================
   return (
     <form id='edit-password-form' aria-labelledby='formHeading' aria-busy={loading} onSubmit={editPassword}>

@@ -5,6 +5,13 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Plus, Trash2, Save, RotateCcw, CheckCircle2, AlertCircle } from "lucide-react";
+// IMPORT UTILITY FUNCTIONS
+import {
+  buildTaxYearPayload,
+  emptyBracket,
+  toTaxYearFormShape,
+  validateTaxYearForm
+} from '../utils/calculationFunc';
 
 // ---------------------------------------------------------------------------
 // TaxYearConfigForm
@@ -16,50 +23,9 @@ import { Plus, Trash2, Save, RotateCcw, CheckCircle2, AlertCircle } from "lucide
 //   onSubmit(data)- async fn called with the assembled payload on save
 // ---------------------------------------------------------------------------
 
-const emptyBracket = () => ({ min: "", max: "", baseAmount: "", rate: "" });
-
-const blankForm = {
-  taxYear: "",
-  startDate: "",
-  endDate: "",
-  brackets: [emptyBracket()],
-  rebates: { primary: "", secondary: "", tertiary: "" },
-  thresholds: { under65: "", age65to74: "", age75plus: "" },
-  isActive: true,
-};
-
-function toFormShape(data) {
-  if (!data) return blankForm;
-  return {
-    taxYear: data.taxYear ?? "",
-    startDate: data.startDate ? data.startDate.slice(0, 10) : "",
-    endDate: data.endDate ? data.endDate.slice(0, 10) : "",
-    brackets:
-      data.brackets?.length > 0
-        ? data.brackets.map((b) => ({
-            min: b.min ?? "",
-            max: b.max ?? "",
-            baseAmount: b.baseAmount ?? "",
-            rate: b.rate != null ? b.rate * 100 : "", // store as % in the UI
-          }))
-        : [emptyBracket()],
-    rebates: {
-      primary: data.rebates?.primary ?? "",
-      secondary: data.rebates?.secondary ?? "",
-      tertiary: data.rebates?.tertiary ?? "",
-    },
-    thresholds: {
-      under65: data.thresholds?.under65 ?? "",
-      age65to74: data.thresholds?.age65to74 ?? "",
-      age75plus: data.thresholds?.age75plus ?? "",
-    },
-    isActive: data.isActive ?? true,
-  };
-}
-
 export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
   const isEditMode = Boolean(initialData);
-  const [form, setForm] = useState(() => toFormShape(initialData));
+  const [form, setForm] = useState(() => toTaxYearFormShape(initialData));
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null); // null | "saving" | "success" | "error"
   const [statusMessage, setStatusMessage] = useState("");
@@ -93,94 +59,22 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
     }));
 
   const resetForm = () => {
-    setForm(toFormShape(initialData));
+    setForm(toTaxYearFormShape(initialData));
     setErrors({});
     setStatus(null);
   };
 
   // --- validation --------------------------------------------------------
 
+  /* Check the inputs and show any field errors. Returns true when the form is
+  good to submit. */
   function validate() {
-    const errs = {};
-
-    if (!/^\d{4}-\d{4}$/.test(form.taxYear.trim())) {
-      errs.taxYear = "Use the format YYYY-YYYY, e.g. 2025-2026";
-    }
-    if (!form.startDate) errs.startDate = "Start date is required";
-    if (!form.endDate) errs.endDate = "End date is required";
-    if (form.startDate && form.endDate && form.startDate >= form.endDate) {
-      errs.endDate = "End date must be after start date";
-    }
-
-    if (form.brackets.length === 0) {
-      errs.brackets = "At least one bracket is required";
-    }
-
-    form.brackets.forEach((b, i) => {
-      if (b.min === "" || Number(b.min) < 0) {
-        errs[`bracket-${i}-min`] = "Required";
-      }
-      if (b.max !== "" && Number(b.max) <= Number(b.min)) {
-        errs[`bracket-${i}-max`] = "Must be greater than min";
-      }
-      if (b.baseAmount === "" || Number(b.baseAmount) < 0) {
-        errs[`bracket-${i}-baseAmount`] = "Required";
-      }
-      if (b.rate === "" || Number(b.rate) <= 0 || Number(b.rate) > 100) {
-        errs[`bracket-${i}-rate`] = "0–100";
-      }
-      if (i > 0) {
-        const prev = form.brackets[i - 1];
-        if (prev.max !== "" && b.min !== "" && Number(b.min) !== Number(prev.max) + 1) {
-          errs[`bracket-${i}-min`] = `Should follow previous bracket (${
-            prev.max === "" ? "?" : Number(prev.max) + 1
-          })`;
-        }
-      }
-    });
-
-    ["primary", "secondary", "tertiary"].forEach((k) => {
-      if (form.rebates[k] === "" || Number(form.rebates[k]) < 0) {
-        errs[`rebate-${k}`] = "Required";
-      }
-    });
-
-    ["under65", "age65to74", "age75plus"].forEach((k) => {
-      if (form.thresholds[k] === "" || Number(form.thresholds[k]) < 0) {
-        errs[`threshold-${k}`] = "Required";
-      }
-    });
-
+    const errs = validateTaxYearForm(form);
     setErrors(errs);
     return Object.keys(errs).length === 0;
   }
 
   // --- submit --------------------------------------------------------
-
-  function buildPayload() {
-    return {
-      taxYear: form.taxYear.trim(),
-      startDate: form.startDate,
-      endDate: form.endDate,
-      brackets: form.brackets.map((b) => ({
-        min: Number(b.min),
-        max: b.max === "" ? null : Number(b.max),
-        baseAmount: Number(b.baseAmount),
-        rate: Number(b.rate) / 100, // convert % back to decimal
-      })),
-      rebates: {
-        primary: Number(form.rebates.primary),
-        secondary: Number(form.rebates.secondary),
-        tertiary: Number(form.rebates.tertiary),
-      },
-      thresholds: {
-        under65: Number(form.thresholds.under65),
-        age65to74: Number(form.thresholds.age65to74),
-        age75plus: Number(form.thresholds.age75plus),
-      },
-      isActive: form.isActive,
-    };
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -192,7 +86,7 @@ export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
       return;
     }
 
-    const payload = buildPayload();
+    const payload = buildTaxYearPayload(form);
     setStatus("saving");
     try {
       if (onSubmit) {

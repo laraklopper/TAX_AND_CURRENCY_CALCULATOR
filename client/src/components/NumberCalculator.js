@@ -3,11 +3,11 @@ import '../css/componentCss/CalculatorDisplay.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 // import Button from 'react-bootstrap/Button';
-// IMPORT COMPONENTS FROM math.js
-import {evaluate} from 'mathjs'
 // IMPORT ICONS FROM LUCIDE-REACT
 import { Equal } from 'lucide-react';
 import ButtonGrid from './ButtonGrid';
+// IMPORT UTILITY FUNCTIONS
+import { evaluateExpression, isCalculatorKey } from '../utils/calculationFunc';
 
 export default function NumberCalculator() {
     const [input, setInput] = useState('');// State to store the mathematical expression entered by the user
@@ -37,14 +37,17 @@ export default function NumberCalculator() {
        //--------CALCULATOR  LOGIC------------
     // Memoized function that evaluates the mathematical expression
     const handleEquals = useCallback(() => {
-        try {
-            const evalResult = evaluate(input)// Evaluate the mathematical expression using math.js
-            setResult(evalResult) // Display the calculated result
-            setLiveMessage(`Result is ${evalResult}`);// Announce the result for screen readers
-        } catch (error) {
-            setResult(Error) // Display an error if the expression is invalid
+        const { ok, value } = evaluateExpression(input)// Evaluate the mathematical expression using math.js
+
+        //Conditional rendering to check the expression could be worked out
+        if (!ok) {
+            setResult('Error') // Display an error if the expression is invalid
             setLiveMessage('Invalid expression');// Announce the invalid expression
+            return;// Exit the function early
         }
+
+        setResult(value) // Display the calculated result
+        setLiveMessage(`Result is ${value}`);// Announce the result for screen readers
     }, [input])
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -56,7 +59,7 @@ export default function NumberCalculator() {
             if (isOtherInput) return;// Exit if another input has focus
             const { key } = event;
             // Accept numbers, decimal point and mathematical operators
-            if (/[0-9+\-*/.]/.test(key)) {
+            if (isCalculatorKey(key)) {
                 handleClick(key, key);            // Treat keyboard input the same as clicking a calculator button
             } else if (key === 'Enter' || key === '=') {
                 handleEquals();// Calculate the expression when Enter or '=' is pressed

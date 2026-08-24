@@ -7,24 +7,9 @@ import { taxSeedData } from '../dataArrays/taxSeedData';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import TaxConcepts from './TaxConcepts';
-// ===========HELPER FUNCTIONS===========
-// Format a number as Rands, e.g. 237100 -> R 237 100
-const toRands = (value) =>
-  `R ${new Intl.NumberFormat('en-ZA').format(value)}`
-
-// Format a decimal rate as a percentage, e.g. 0.18 -> 18%
-const toPercent = (rate) => `${(rate * 100).toFixed(rate * 100 % 1 === 0 ? 0 : 2)}%`
-
-// Format an ISO date string as e.g. 01 March 2025
-const toLongDate = (value) =>
-  new Date(value).toLocaleDateString('en-ZA', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  })
-
-// Row striping: STYLES.md 1.5. TABLES
-const rowClass = (index) => (index % 2 === 0 ? 'evenRow' : 'oddRow')
+// IMPORT UTILITY FUNCTIONS
+import { toRatePercent, toWholeRands } from '../utils/calculationFunc';
+import { rowClass, toLongDate } from '../utils/formatCalculations';
 
 export default function TaxDataDisplay({ taxData = taxSeedData }) {
   const { taxYear, startDate, endDate, brackets, rebates, thresholds, isActive } = taxData
@@ -118,11 +103,11 @@ export default function TaxDataDisplay({ taxData = taxSeedData }) {
               <tr key={min} className={rowClass(index)}>
                 <th scope='row'>
                   {max === null
-                    ? `${toRands(min)} and above`
-                    : `${toRands(min)} – ${toRands(max)}`}
+                    ? `${toWholeRands(min)} and above`
+                    : `${toWholeRands(min)} – ${toWholeRands(max)}`}
                 </th>
-                <td>{toRands(baseAmount)}</td>
-                <td>{toPercent(rate)}</td>
+                <td>{toWholeRands(baseAmount)}</td>
+                <td>{toRatePercent(rate)}</td>
               </tr>
             ))}
           </tbody>
@@ -147,7 +132,7 @@ export default function TaxDataDisplay({ taxData = taxSeedData }) {
             {rebateRows.map(([key, label, amount], index) => (
               <tr key={key} className={rowClass(index)}>
                 <th scope='row'>{label}</th>
-                <td>{toRands(amount)}</td>
+                <td>{toWholeRands(amount)}</td>
               </tr>
             ))}
           </tbody>
@@ -172,7 +157,7 @@ export default function TaxDataDisplay({ taxData = taxSeedData }) {
             {thresholdRows.map(([key, label, amount], index) => (
               <tr key={key} className={rowClass(index)}>
                 <th scope='row'>{label}</th>
-                <td>{toRands(amount)}</td>
+                <td>{toWholeRands(amount)}</td>
               </tr>
             ))}
           </tbody>

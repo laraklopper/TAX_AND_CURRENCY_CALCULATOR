@@ -1,14 +1,9 @@
 // CurrencyList.js
 import React from 'react'
 import '../css/componentCss/CurrencyList.css'
-import { currencyCountries } from '../dataArrays/currencyCountries';
-
-/* Country lookup by currency code, built once from the static data rather than
-searched through for every row. */
-const COUNTRIES_BY_CODE = currencyCountries.reduce((lookup, { code, countries }) => {
-  lookup[code] = countries;
-  return lookup;
-}, {});
+// IMPORT UTILITY FUNCTIONS
+import { countriesForCode } from '../utils/currencyFunc';
+import { rowClass } from '../utils/formatCalculations';
 
 /* Displays every currency the converter can work with in table format.
 
@@ -33,11 +28,11 @@ export default function CurrencyList({ currencyOptions = [] }) {
             <tbody>
                 {/* MAP EACH CURRENCY WITH ITS NAME, SYMBOL AND COUNTRY/S */}
                 {currencyOptions.map(({ code, name, symbol }, index) => (
-                    <tr key={code} className={index % 2 === 0 ? 'evenRow' : 'oddRow'}>
+                    <tr key={code} className={rowClass(index)}>
                         <th scope='row'>{code}</th>
                         <td>{name || code}</td>
                         <td>{symbol || '—'}</td>
-                        <td>{COUNTRIES_BY_CODE[code] ? COUNTRIES_BY_CODE[code].join(', ') : '—'}</td>
+                        <td>{countriesForCode(code)}</td>
                     </tr>
                 ))}
             </tbody>

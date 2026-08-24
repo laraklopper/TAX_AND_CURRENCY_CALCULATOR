@@ -10,24 +10,12 @@ import Footer from '../components/Footer'
 import CurrencyConvertForm from '../components/CurrencyConvertForm';
 import CurrencyList from '../components/CurrencyList';
 import { Scale } from 'lucide-react';
-// IMPORT DATA
-import { currencyCountries } from '../dataArrays/currencyCountries';
 import CurrencyCalculations from '../components/CurrencyCalculations';
+// IMPORT UTILITY FUNCTIONS
+import { EMPTY_CONVERT_FORM, FALLBACK_CURRENCIES } from '../utils/currencyFunc';
 
 // Base URL of the API the converter talks to
 const API_BASE_URL = 'http://localhost:3001';
-
-// Default values used when the form is first loaded or reset
-const EMPTY_FORM = {
-    amount: '',
-    from: '',
-    to: ''
-};
-
-/* Currencies offered until GET /api/currencies answers, and kept if it never
-does. The local country data covers the same codes, so an unreachable API leaves
-the converter working off a curated list rather than an empty dropdown. */
-const FALLBACK_CURRENCIES = currencyCountries.map(({ code, name }) => ({ code, name, symbol: '' }));
 
 export default function CurrencyConverter({currentUser, logout, error, setError, loggedIn}) {
    // ================STATE VARIABLES===================
@@ -36,7 +24,7 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
    returns the newest 100, so this is what tells the calculations list it is
    showing a truncated view rather than the whole history. */
    const [conversionsTotal, setConversionsTotal] = useState(0)
-    const [form, setForm] = useState(EMPTY_FORM); // Stores the user's form inputs
+    const [form, setForm] = useState(EMPTY_CONVERT_FORM); // Stores the user's form inputs
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
     // const [error, setError] = useState('');// Stores any error messages shown to the user
@@ -275,7 +263,7 @@ export default function CurrencyConverter({currentUser, logout, error, setError,
 <CurrencyConvertForm
 submitConvert={submitConvert}
   saveConversion={saveConversion}
-  EMPTY_FORM={EMPTY_FORM}
+  EMPTY_CONVERT_FORM={EMPTY_CONVERT_FORM}
   currencyOptions={currencyOptions}
   form={form}
   setForm={setForm}

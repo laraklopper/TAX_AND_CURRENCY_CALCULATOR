@@ -13,52 +13,18 @@ import EditPasswordForm from '../components/EditPasswordForm';
 import EditUserForm from '../components/EditUserForm';
 import { User } from 'lucide-react';
 import { useCallback } from 'react';
-
-// ===========HELPER FUNCTIONS===========
-// Shown in place of any detail the user has not supplied (address line2 and
-// province are the only optional fields on the user schema)
-const NOT_PROVIDED = 'NOT PROVIDED'
-
-// Fall back to a placeholder when a detail is missing or blank
-const orPlaceholder = (value) =>
-  (typeof value === 'string' && value.trim()) || NOT_PROVIDED
-
-// Blank edit form: reused for the initial state and after a successful update.
-// Left empty on purpose — the PATCH request only sends the fields the user
-// fills in, so any detail left blank keeps its stored value.
-const EMPTY_EDIT_USER_DATA = {
-  fullName: {
-    firstName: '',
-    lastName: '',
-  },
-  email: '',
-  address: {
-    line1: '',
-    line2: '',
-    city: '',
-    province: '',
-  }
-}
-
-// Trim a form value, tolerating undefined/non-string values
-const trimValue = (value) => (typeof value === 'string' ? value.trim() : '')
-
-// Format an ISO date string as e.g. 01 March 2025
-const toLongDate = (value) => {
-  if (!value) return NOT_PROVIDED
-  const date = new Date(value)
-  if (isNaN(date.getTime())) return NOT_PROVIDED
-  return date.toLocaleDateString('en-ZA', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  })
-}
+// IMPORT UTILITY FUNCTIONS
+import {
+  buildEditUserPayload,
+  emptyEditUserData,
+  orPlaceholder,
+  toUserDate
+} from '../utils/userFunc';
 
 export default function Profile({currentUser, setCurrentUser, logout, setError}) {
   const [showEditUser, setShowEditUser] = useState(false)
   const [showEditPswd, setShowEditPswd] = useState(false)
-  const [editUserData, setEditUserData] = useState(EMPTY_EDIT_USER_DATA)
+  const [editUserData, setEditUserData] = useState(emptyEditUserData)
   // Inline feedback shown inside the edit user form: {type: 'error' | 'success', text: string}
   const [editUserStatus, setEditUserStatus] = useState(null)
   const [editUserLoading, setEditUserLoading] = useState(false)
@@ -92,26 +58,7 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
     try {
       /* Build the payload from the filled-in fields only. A blank field is
       left out of the request so the stored value is kept as is */
-      const payload = {}
-
-      const fullNameUpdates = {}
-      if (trimValue(editUserData.fullName?.firstName)) {
-        fullNameUpdates.firstName = trimValue(editUserData.fullName.firstName)
-      }
-      if (trimValue(editUserData.fullName?.lastName)) {
-        fullNameUpdates.lastName = trimValue(editUserData.fullName.lastName)
-      }
-      if (Object.keys(fullNameUpdates).length) payload.fullName = fullNameUpdates
-
-      if (trimValue(editUserData.email)) payload.email = trimValue(editUserData.email)
-
-      const addressUpdates = {}
-      // line1 (street), line2, city and province all live on the nested address object
-      for (const field of ['line1', 'line2', 'city', 'province']) {
-        const value = trimValue(editUserData.address?.[field])
-        if (value) addressUpdates[field] = value
-      }
-      if (Object.keys(addressUpdates).length) payload.address = addressUpdates
+      const payload = buildEditUserPayload(editUserData)
 
       // Conditional rendering to check that at least one detail was supplied
       if (Object.keys(payload).length === 0) {
@@ -147,7 +94,7 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
 
       // Refresh the details on screen with the user returned by the server
       if (data.user) setCurrentUser?.(data.user)
-      setEditUserData(EMPTY_EDIT_USER_DATA)// Clear the form fields
+      setEditUserData(emptyEditUserData())// Clear the form fields
       setError?.(null)//Clear any previous error messages
       const successMessage = data.message || 'Profile updated successfully.';
       setEditUserStatus({ type: 'success', text: successMessage });// Show the success message inside the form
@@ -213,7 +160,7 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
             <div className="p-2">
               <div className='details-group'>
                 <span><p className='details-label'>DATE OF BIRTH:</p></span>
-                <p className='details-value'>{toLongDate(dateOfBirth)}</p>
+                <p className='details-value'>{toUserDate(dateOfBirth)}</p>
               </div>
             </div>
             {/* IS ADMIN: state whether or not the user is an Admin user */}

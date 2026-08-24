@@ -5,6 +5,17 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Calculator, RotateCcw, TrendingUp, AlertCircle } from "lucide-react";
 import { Asterisk } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
+import {
+  BLANK_INTEREST_FORM,
+  buildInterestPayload,
+  calculateInterestLocally,
+  COMPOUND_FREQUENCIES,
+  formatCurrency,
+  PERIOD_UNITS,
+  periodConfig,
+  validateInterestForm
+} from '../utils/calculationFunc';
 
 
 // ---------------------------------------------------------------------------
@@ -28,133 +39,12 @@ import { Asterisk } from 'lucide-react';
 //   isAuthenticated - boolean, controls whether "Save to history" is shown
 // ---------------------------------------------------------------------------
 
-const COMPOUND_FREQUENCIES = [
-  { value: "annually", label: "Annually", timesPerYear: 1 },
-  { value: "semiannually", label: "Semi-annually", timesPerYear: 2 },
-  { value: "quarterly", label: "Quarterly", timesPerYear: 4 },
-  { value: "monthly", label: "Monthly", timesPerYear: 12 },
-  { value: "daily", label: "Daily", timesPerYear: 365 },
-];
-
-/* The time period options. `value` matches the `time.unit` enum the backend
-stores, while `label` is what the user sees on the toggle buttons. */
-const PERIOD_UNITS = [
-  { value: "years", label: "Annual", noun: "years", max: 100, placeholder: "10" },
-  { value: "months", label: "Monthly", noun: "months", max: 1200, placeholder: "18" },
-];
-
-// Helper returning the config for the currently selected time period unit
-const periodConfig = (unit) =>
-  PERIOD_UNITS.find((p) => p.value === unit) ?? PERIOD_UNITS[0];
-
-const blankForm = {
-  type: "compound", // "simple" | "compound"
-  principal: "",
-  rate: "",
-  time: "",
-  periodUnit: "years", // "years" (annual) | "months" (monthly)
-  compoundingFrequency: "annually",
-  monthlyContribution: "",
-};
-
-// Round a currency value to two decimals without accumulating float drift
-const round2 = (value) => Math.round((value + Number.EPSILON) * 100) / 100;
-
-/* Local fallback calculation, used if no onCalculate prop is supplied
-(e.g. for preview/demo). The backend should always recompute and be
-the source of truth for anything saved, so this mirrors the maths in
-server/utils/interestCalculator.js exactly.
-
-The balance is simulated one month at a time - the finest granularity the
-form allows for contributions - and those months are then grouped into the
-reporting period the user selected. */
-function calculateLocally(form) {
-  const isCompound = form.type === "compound";
-  const unit = form.periodUnit === "months" ? "months" : "years";
-  const P = Number(form.principal);
-  const annualRate = Number(form.rate) / 100;
-  const contribution = Number(form.monthlyContribution) || 0;
-
-  // Months to simulate, and how many of those months make up one output row
-  const totalMonths = Math.round(
-    unit === "months" ? Number(form.duration) : Number(form.duration) * 12
-  );
-  const monthsPerRow = unit === "months" ? 1 : 12;
-
-  const timesPerYear =
-    COMPOUND_FREQUENCIES.find((f) => f.value === form.compoundingFrequency)
-      ?.timesPerYear ?? 1;
-  /* Monthly growth factor for compound interest: over twelve months this
-  multiplies out to exactly (1 + r/n)^n, so the annual total still matches
-  the standard compound interest formula. */
-  const monthlyGrowth = isCompound
-    ? Math.pow(1 + annualRate / timesPerYear, timesPerYear / 12)
-    : 1;
-  const monthlySimpleRate = annualRate / 12;
-
-  let balance = P;// Running balance, including interest earned
-  let capitalBase = P;// Capital paid in, used for simple interest only
-  let totalInterest = 0;
-  let totalContributions = 0;
-  let rowInterest = 0;
-  let rowContributions = 0;
-  const breakdown = [];
-
-  for (let month = 1; month <= totalMonths; month++) {
-    // Simple interest is only ever charged on capital paid in, never on interest
-    const interest = isCompound
-      ? balance * (monthlyGrowth - 1)
-      : capitalBase * monthlySimpleRate;
-    balance += interest;
-    totalInterest += interest;
-    rowInterest += interest;
-
-    // Recurring contribution is paid in at the end of the month
-    if (contribution > 0) {
-      balance += contribution;
-      capitalBase += contribution;
-      totalContributions += contribution;
-      rowContributions += contribution;
-    }
-
-    /* Close off a row on every reporting boundary, and always on the final
-    month so a part-year is still reported rather than silently dropped. */
-    if (month % monthsPerRow === 0 || month === totalMonths) {
-      breakdown.push({
-        period: breakdown.length + 1,
-        contributions: round2(rowContributions),
-        interest: round2(rowInterest),
-        balance: round2(balance),
-      });
-      rowInterest = 0;
-      rowContributions = 0;
-    }
-  }
-
-  return {
-    periodUnit: unit,
-    periodLabel: unit === "months" ? "month" : "year",
-    totalContributions: round2(totalContributions),
-    totalInterest: round2(totalInterest),
-    finalAmount: round2(balance),
-    breakdown,
-  };
-}
-
-function formatCurrency(value) {
-  return new Intl.NumberFormat("en-ZA", {
-    style: "currency",
-    currency: "ZAR",
-    maximumFractionDigits: 2,
-  }).format(value || 0);
-}
-
 export default function InterestCalculatorForm({
   onCalculate,
   onSave,
   isAuthenticated = false,
 }) {
-  const [form, setForm] = useState(blankForm);
+  const [form, setForm] = useState(BLANK_INTEREST_FORM);
   const [errors, setErrors] = useState({});
   const [result, setResult] = useState(null);
   const [status, setStatus] = useState(null); // null | "calculating" | "error"
@@ -181,49 +71,19 @@ export default function InterestCalculatorForm({
   };
 
   const resetForm = () => {
-    setForm(blankForm);
+    setForm(BLANK_INTEREST_FORM);
     setErrors({});
     setResult(null);
     setStatus(null);
     setSaveStatus(null);
   };
 
+  /* Check the inputs and show any field errors. Returns true when the form is
+  good to submit. */
   function validate() {
-    const errs = {};
-    if (!form.principal || Number(form.principal) <= 0) {
-      errs.principal = "Enter an amount greater than 0";
-    }
-    if (!form.rate || Number(form.rate) <= 0 || Number(form.rate) > 100) {
-      errs.rate = "Enter a rate between 0 and 100";
-    }
-    // The time period is validated against the unit the user selected
-    if (
-      !form.time ||
-      Number(form.time) <= 0 ||
-      !Number.isInteger(Number(form.time)) ||
-      Number(form.time) > period.max
-    ) {
-      errs.time = `Enter a whole number of ${period.noun} between 1 and ${period.max}`;
-    }
-    if (form.monthlyContribution && Number(form.monthlyContribution) < 0) {
-      errs.monthlyContribution = "Cannot be negative";
-    }
+    const errs = validateInterestForm(form);
     setErrors(errs);
     return Object.keys(errs).length === 0;
-  }
-
-  function buildPayload() {
-    return {
-      type: form.type,
-      principal: Number(form.principal),
-      rate: Number(form.rate),
-      // `duration` is measured in whatever `periodUnit` says
-      duration: Number(form.time),
-      periodUnit: form.periodUnit,
-      compoundingFrequency:
-        form.type === "compound" ? form.compoundingFrequency : null,
-      monthlyContribution: Number(form.monthlyContribution) || 0,
-    };
   }
 
   async function handleSubmit(e) {
@@ -236,14 +96,14 @@ export default function InterestCalculatorForm({
       return;
     }
 
-    const payload = buildPayload();
+    const payload = buildInterestPayload(form);
     setStatus("calculating");
     setStatusMessage("");
 
     try {
       const data = onCalculate
         ? await onCalculate(payload)
-        : calculateLocally(payload);
+        : calculateInterestLocally(payload);
       setResult(data);
       setStatus(null);
     } catch (err) {
@@ -256,7 +116,7 @@ export default function InterestCalculatorForm({
     if (!result || !onSave) return;
     setSaveStatus("saving");
     try {
-      await onSave(buildPayload(), result);
+      await onSave(buildInterestPayload(form), result);
       setSaveStatus("saved");
     } catch (err) {
       setSaveStatus("error");

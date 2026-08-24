@@ -10,6 +10,18 @@ import Button from 'react-bootstrap/Button';
 import { Asterisk } from 'lucide-react';
 import { Eye, EyeOff, MapPin  } from 'lucide-react';
 import {provinces} from '../dataArrays/locations'
+// IMPORT UTILITY FUNCTIONS
+import {
+    ADMIN_MIN_AGE,
+    applyFieldChange,
+    emptyNewUserData,
+    emptyTouchedFields,
+    isBlank,
+    isUnderMinAge,
+    minAgeToRegister,
+    touchedFieldKey
+} from '../utils/userFunc'
+import { maxDateOfBirth } from '../utils/timeFunctions'
 
 //RegistrationForm Function component
 export default function RegistrationForm(
@@ -23,82 +35,56 @@ export default function RegistrationForm(
     const [emailMsg, setEmailMsg] = useState(false)
     // Tracks whether each input field has been touched/blurred
     // This prevents validation errors from showing before the user interacts with a field
-    const [touched, setTouched] = useState({
-        firstName: false,    // Tracks if first name field was touched
-        lastName: false,     // Tracks if last name field was touched
-        email: false,        // Tracks if email field was touched
-        dateOfBirth: false,  // Tracks if date of birth field was touched
-        line1: false,
-        city: false,
-        province:false,
-        password: false,     // Tracks if password field was touched
-    })
+    const [touched, setTouched] = useState(emptyTouchedFields)
 
     // Minimum age: depends on whether the user registers as admin.
     //  21 for admin, 18 for regular user
-    const minAge = newUserData.admin === true ? 21 : 18;
+    const minAge = minAgeToRegister(newUserData.admin);
 
     // Latest acceptable date of birth for the minimum age requirement
-    const today = new Date(); // Get today's date
-    // Calculate the latest acceptable date of birth.
-    // Example: If the minimum age is 18, the user's DOB must be on or before today's date minus 18 years.
-    const maxDob = new Date(
-        today.getFullYear() - minAge,
-        today.getMonth(),
-        today.getDate()
-    )
-        .toISOString()
-        .split('T')[0];
+    const maxDob = maxDateOfBirth(minAge);
 
     //========== EMPTY FIELD VALIDATION ====================
     // Checks if first name is empty
     const firstNameEmpty = useMemo(
-        () => !String(newUserData.fullName?.firstName || '').trim(), [newUserData.fullName?.firstName]
+        () => isBlank(newUserData.fullName?.firstName), [newUserData.fullName?.firstName]
     )
     // Checks if last name is empty
     const lastNameEmpty = useMemo(
-        () => !String(newUserData.fullName?.lastName || '').trim(), [newUserData.fullName?.lastName]
+        () => isBlank(newUserData.fullName?.lastName), [newUserData.fullName?.lastName]
     );
     // Checks if email is empty
     const emailEmpty = useMemo(
-        () => !String(newUserData.email || '').trim(), [newUserData.email]
+        () => isBlank(newUserData.email), [newUserData.email]
     );
 
     // Checks if date of birth is empty
     const dateOfBirthEmpty = useMemo(
-        () => !String(newUserData.dateOfBirth || '').trim(), [newUserData.dateOfBirth]
+        () => isBlank(newUserData.dateOfBirth), [newUserData.dateOfBirth]
     );
 
     // Checks if password is empty
     const passwordEmpty = useMemo(
-        () => !String(newUserData.password || '').trim(), [newUserData.password]
+        () => isBlank(newUserData.password), [newUserData.password]
     );
     // Checks if street address (line1) is empty
     const line1Empty = useMemo(
-        () => !String(newUserData.address?.line1 || '').trim(), [newUserData.address?.line1]
+        () => isBlank(newUserData.address?.line1), [newUserData.address?.line1]
     );
     // Checks if city/town is empty
     const cityEmpty = useMemo(
-        () => !String(newUserData.address?.city || '').trim(), [newUserData.address?.city]
+        () => isBlank(newUserData.address?.city), [newUserData.address?.city]
     );
     // Checks if province is empty
     const provinceEmpty = useMemo(
-        () => !String(newUserData.address?.province || '').trim(), [newUserData.address?.province]
+        () => isBlank(newUserData.address?.province), [newUserData.address?.province]
     );
     //========== AGE VALIDATION ====================
     // Checks whether the selected date of birth makes the user too young
-    const dateOfBirthTooYoung = useMemo(() => {
-        if (!newUserData.dateOfBirth) return false; // If no date of birth was selected, do not check age yet
-        const dob = new Date(newUserData.dateOfBirth); // Convert the selected date of birth into a Date object
-        const now = new Date(); // Get the current date
-        let age = now.getFullYear() - dob.getFullYear(); // Calculate age based on year difference
-        const m = now.getMonth() - dob.getMonth(); // Calculate month difference
-        // If the user's birthday has not happened yet this year,
-        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
-            age--; // subtract 1 from the calculated age
-        }
-        return age < minAge; // Return true if the user is younger than the required minimum age
-    }, [newUserData.dateOfBirth, minAge]);
+    const dateOfBirthTooYoung = useMemo(
+        () => isUnderMinAge(newUserData.dateOfBirth, minAge),
+        [newUserData.dateOfBirth, minAge]
+    );
 
     // Only show validation errors AFTER field was touched
     // Show email error only if the email field was touched and is empty
@@ -125,16 +111,9 @@ export default function RegistrationForm(
     const handleRegistration = (e) => {
         e.preventDefault();
         // Mark every field as touched so validation errors show if the user submits an incomplete form
-        setTouched({
-            firstName: true,
-            lastName: true,
-            email: true,
-            dateOfBirth: true,
-            line1: true,
-            city: true,
-            province: true,
-            password: true,
-        });
+        setTouched((prev) =>
+            Object.fromEntries(Object.keys(prev).map((field) => [field, true]))
+        );
         const hasErrors =
             firstNameEmpty ||
             lastNameEmpty ||
@@ -152,30 +131,15 @@ export default function RegistrationForm(
 
     const handleInputChange = (event) => {
         const { name, value } = event.target; // Get the input name and value from the changed field
-        // Conditionl rendering to check if the input name represents a nested object field
-        if (name.includes('.')) {
-            const [parent, field] = name.split('.'); // Split the field name into parent and child keys
-            setNewUserData((prevState) => ({ // Update nested state without removing existing nested values
-                ...prevState,
-                [parent]: { // Update the parent object, such as fullName or preferences
-                    ...prevState[parent],
-                    [field]: value // Update only the specific nested field
-
-                }
-            }))
-        } else {
-            // Update normal top-level fields
-            setNewUserData((prev) => ({  // Example: email, dateOfBirth, password
-                ...prev,
-                [name]: value
-            }))
-        }
+        /* Write the value to the matching field, nested (fullName.firstName,
+        address.city) or top-level (email, dateOfBirth, password) */
+        setNewUserData(applyFieldChange(name, value))
     };
 
     // Maps nested field names (e.g. fullName.firstName) to their flat touched key
     const handleBlur = (e) => {
         const { name } = e.target; // Get the input name
-        const key = name.includes('.') ? name.split('.')[1] : name; // If the name is nested, use the second part as the touched key.
+        const key = touchedFieldKey(name); // If the name is nested, use the second part as the touched key.
         setTouched(prev => ({ ...prev, [key]: true })); // Mark this field as touched
     };
 
@@ -186,24 +150,8 @@ export default function RegistrationForm(
         );
         if (!confirmClear) return; // Stop if the user clicks Cancel
         // Reset the registration form data to its default values
-        setNewUserData({
-            fullName: { firstName: '', lastName: '' },
-            email: '',
-            dateOfBirth: '',
-            address: { line1: '', line2: '', city: '', province: '' },
-            admin: false,
-            password: '',
-        });
-        setTouched({
-            firstName: false,
-            lastName: false,
-            email: false,
-            dateOfBirth: false,
-            line1: false,
-            city: false,
-            province: false,
-            password: false,
-        });
+        setNewUserData(emptyNewUserData());
+        setTouched(emptyTouchedFields());
     }
     // ========= IDs USED BY aria-labelledby / aria-describedby =========
     // Keeps ARIA references stable and readable
@@ -526,7 +474,7 @@ export default function RegistrationForm(
                         </div>
                         <div className="p-2"></div>
                         <div className="p-2 ms-auto">
-                            <p className='infoText'>ADMIN USERS MUST BE AT LEAST 21 YEARS OLD</p>
+                            <p className='infoText'>ADMIN USERS MUST BE AT LEAST {ADMIN_MIN_AGE} YEARS OLD</p>
                         </div>
                     </Stack>
                     {/* STACK 5 */}

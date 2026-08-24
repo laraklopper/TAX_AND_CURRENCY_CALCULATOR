@@ -6,6 +6,8 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { provinces } from '../dataArrays/locations';
 import { MapPin } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
+import { applyFieldChange, emptyEditUserData } from '../utils/userFunc';
 
 export default function EditUserForm(
   {//PROPS PASSED FROM PARENT COMPONENT(Profile.js)
@@ -26,22 +28,9 @@ export default function EditUserForm(
 
   const handleInputChange = (event) => {
     const {name, value} = event.target;
-    if (name.includes('.')) {
-      const [parent, field] = name.split('.');
-      setEditUserData((prevState) => ({// Update nested state without removing existing nested values
-                ...prevState,
-                [parent]: {// Update the parent object, such as fullName or preferences
-                    ...prevState[parent],
-                    [field]: value// Update only the specific nested field
-
-                }
-            }))
-    } else {
-      setEditUserData((prev) => ({
-        ...prev,
-        [name]: value
-    }))
-  }
+    /* Write the value to the matching field, nested (fullName.firstName,
+    address.city) or top-level (email) */
+    setEditUserData(applyFieldChange(name, value))
   }
   const clearEditUserForm = useCallback(() => {
     const confirmReset = window.confirm(
@@ -52,19 +41,7 @@ export default function EditUserForm(
 
     /* Blank every field: the stored details stay untouched because only
     filled-in fields are sent with the request */
-    setEditUserData({
-      fullName :{
-        firstName: '',
-        lastName: '',
-      },
-      email: '',
-      address: {
-        line1: '',
-        line2: '',
-        city: '',
-        province: ''
-      },
-    })
+    setEditUserData(emptyEditUserData())
   }, [setEditUserData])
   //===============JSX RENDERING===================
   return (

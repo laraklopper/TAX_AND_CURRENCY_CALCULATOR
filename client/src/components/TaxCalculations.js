@@ -22,44 +22,7 @@ import Button from 'react-bootstrap/Button';
 import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
-// ===========HELPER FUNCTIONS===========
-/* The age bands the rebates are applied from. The schema stores the band as an
-enum resolved at calculation time, so the record still explains itself if the
-rebate rules later change; these are the labels for those stored values. */
-const AGE_GROUP_LABELS = {
-  under65: 'UNDER 65',
-  age65to74: '65 TO 74',
-  age75plus: '75 AND OVER'
-}
-
-// Label a stored age group, falling back to the raw value for an unknown band
-const toAgeGroup = (ageGroup) => AGE_GROUP_LABELS[ageGroup] || ageGroup || NOT_AVAILABLE
-
-/* Income remaining after deductions. Exposed as a virtual by the schema, so it
-arrives on the record; it is recomputed only as a fallback. */
-const taxableIncomeOf = (calculation) => {
-  if (typeof calculation?.taxableIncome === 'number') return calculation.taxableIncome
-  if (typeof calculation?.income?.grossIncome === 'number') {
-    return calculation.income.grossIncome - (calculation.deductions || 0)
-  }
-  return null
-}
-
-// Income remaining after tax, as above
-const netIncomeOf = (calculation) => {
-  if (typeof calculation?.netIncome === 'number') return calculation.netIncome
-  if (typeof calculation?.income?.grossIncome === 'number' && typeof calculation?.netTax === 'number') {
-    return calculation.income.grossIncome - calculation.netTax
-  }
-  return null
-}
-
-// The monthly PAYE equivalent of the annual tax payable, as above
-const monthlyTaxOf = (calculation) => {
-  if (typeof calculation?.monthlyTax === 'number') return calculation.monthlyTax
-  if (typeof calculation?.netTax === 'number') return calculation.netTax / 12
-  return null
-}
+import { monthlyTaxOf, netIncomeOf, taxableIncomeOf, toAgeGroup } from '../utils/calculationFunc';
 
 //TaxCalculations.js function component
 export default function TaxCalculations(
