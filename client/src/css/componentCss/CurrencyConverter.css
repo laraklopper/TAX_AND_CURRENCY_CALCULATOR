@@ -59,11 +59,13 @@ padding: 0px;
 }
 #converterResultBlock{
     display: flex;
+    flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0px;
     padding: 0px;
+    
 
 }
 .select-currency{
@@ -100,7 +102,20 @@ TEXT
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/
-#saveConversionBtn,
+#saveConversionBtn{
+    width: 280px;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    height: 40px;
+     font-family: "Courier Prime", monospace;
+     letter-spacing: 2px;
+     font-weight: 700;
+    justify-content: center;
+    align-items: center;
+    border: #323A42 solid 2px;
+    color: #000;
+}
  #submitConvertBtn{
     width: 180px;
     margin: 0px;

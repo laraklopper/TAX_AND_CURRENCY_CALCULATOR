@@ -21,7 +21,7 @@ import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toDecimal, toFullName, toLongDate, toLongDateTime, toMoney } from '../utils/formatCalculations';
 import { convertedAmountOf, toRate } from '../utils/currencyFunc';
-
+import { X } from 'lucide-react';
 //CurrencyCalculations.js function component
 export default function CurrencyCalculations(
   {//PROPS PASSED FROM PARENT COMPONENT(CurrencyConverter.js)
@@ -140,14 +140,14 @@ export default function CurrencyCalculations(
           <div className="p-2 ms-auto"></div>
           <div className="p-2">
             <Button
-            variant='light'
-            className='closeCalculationPanalBtn'
+            variant='warning'
+            id='closeCalculationPanalBtn'
             type='button'
             onClick={closePanal}
             // ARIA ATTRIBUTES:
             aria-label='Close conversion details'
             aria-controls='conversion-details-panal'
-            >CLOSE</Button>
+            ><X fontWeight={700} fontSize={16} aria-hidden='true' focusable='false'/>CLOSE</Button>
           </div>
         </Stack>
         <div className='calculations-panal-body'>
@@ -222,7 +222,7 @@ export default function CurrencyCalculations(
           <div className="p-2">
             <Button
             variant='danger'
-            className='deleteCalculationBtn'
+            id='deleteCalculationBtn'
             type='button'
             onClick={removeSelected}
             disabled={deleteLoading}

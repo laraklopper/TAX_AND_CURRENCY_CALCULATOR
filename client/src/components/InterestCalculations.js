@@ -22,6 +22,7 @@ import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
 import { durationInYearsOf, toCompounding, toTerm, totalCapitalOf } from '../utils/calculationFunc';
+import { X } from 'lucide-react';
 
 //InterestCalculations.js function component
 export default function InterestCalculations(
@@ -148,7 +149,7 @@ export default function InterestCalculations(
             // ARIA ATTRIBUTES:
             aria-label='Close interest calculation details'
             aria-controls='interest-calculation-details-panal'
-            >CLOSE</Button>
+            ><X fontWeight={700} fontSize={16} aria-hidden='true' focusable='false'/>CLOSE</Button>
           </div>
         </Stack>
         <div className='calculations-panal-body'>

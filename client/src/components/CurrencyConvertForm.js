@@ -222,7 +222,7 @@ export default function CurrencyConvertForm(
                 <>
             <Button
                 id='saveConversionBtn'
-                variant='light'
+                variant='success'
                 type='button'
                 onClick={handleSave}
                 disabled={saveStatus === 'saving' || saveStatus === 'saved'}

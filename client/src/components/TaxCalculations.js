@@ -23,6 +23,7 @@ import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
 import { monthlyTaxOf, netIncomeOf, taxableIncomeOf, toAgeGroup } from '../utils/calculationFunc';
+import { X } from 'lucide-react';
 
 //TaxCalculations.js function component
 export default function TaxCalculations(
@@ -148,7 +149,7 @@ export default function TaxCalculations(
             // ARIA ATTRIBUTES:
             aria-label='Close tax calculation details'
             aria-controls='tax-calculation-details-panal'
-            >CLOSE</Button>
+            ><X fontWeight={700} fontSize={16} aria-hidden='true' focusable='false'/>CLOSE</Button>
           </div>
         </Stack>
         <div className='calculations-panal-body'>
