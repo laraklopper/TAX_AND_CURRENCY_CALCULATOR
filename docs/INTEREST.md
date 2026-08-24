@@ -17,6 +17,7 @@
 #### **Definition**
 Interest is a charge for borrowing money, typically expressed as a percentage of the principal amount borrowed. For lenders, it's the compensation for temporarily parting with their funds.
 
+- [InterestCalculatorForm.js]('../client/src/components/InterestCalculatorForm.js')
 ## 2. INTEREST RATE
 
 ### 2.1. SOUTH AFRICAN INTEREST RATE
