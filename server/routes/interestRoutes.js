@@ -14,6 +14,8 @@ options can be compared against the same quoted rate.
 /save deliberately RECALCULATES from the user's inputs instead of storing the
 figures the browser sends. A saved record is therefore always internally
 consistent, and a tampered request cannot write false totals to the database.
+The fullName it accepts is handled the same way: validated on the way in, but
+the name written to the record is the one on the user's own account.
 
 The history routes scope every query by the user id on the JWT, never by an id
 taken from the request, so a user can only ever read or delete their own
@@ -43,6 +45,11 @@ const INTEREST_TYPES = ['simple', 'compound'];
 history grows without limit, so the newest records are returned and the total
 is reported alongside them rather than the response growing unbounded. */
 const HISTORY_LIMIT = 100;
+/* Length limits for the two halves of fullName. Kept the same as the interest
+and user schemas, so a name is rejected with a readable message here instead of
+failing mongoose validation further down. */
+const NAME_MIN_LENGTH = 2;
+const NAME_MAX_LENGTH = 50;
 
 /*=====================================
 INTEREST INPUT PARSING AND VALIDATION
@@ -62,6 +69,49 @@ const parseInterestInput = (body = {}) => ({
         ? 0
         : parseFloat(body.monthlyContribution),
 });
+
+/*=====================================
+FULL NAME PARSING AND VALIDATION
+=======================================*/
+/* Reads the nested fullName object off a request body and trims both halves.
+The interest calculator sends it with a /save so the record can show who made
+the calculation.
+
+Returns null when neither half was supplied, which is not an error: the name is
+OPTIONAL on the request because /save reads the stored name off the user record
+anyway. It is only validated when the client does send one. */
+const parseFullName = (body = {}) => {
+    const { firstName, lastName } = body.fullName || {};
+    // Conditional check so a body with no fullName is reported as "not sent"
+    if (firstName === undefined && lastName === undefined) return null;
+
+    return {
+        firstName: typeof firstName === 'string' ? firstName.trim() : '',
+        lastName: typeof lastName === 'string' ? lastName.trim() : '',
+    };
+};
+
+/* Validates a parsed fullName. Returns a message describing the first problem
+found, or null when the name is usable or was not sent at all. */
+const validateFullName = (fullName) => {
+    // Conditional check: nothing to validate when no name was sent
+    if (!fullName) return null;
+
+    // Both halves are required by the schema, so a partial name is rejected
+    for (const [field, value] of Object.entries(fullName)) {
+        if (!value) {
+            return `fullName.${field} is required`;
+        }
+        if (value.length < NAME_MIN_LENGTH || value.length > NAME_MAX_LENGTH) {
+            return `fullName.${field} must be between ${NAME_MIN_LENGTH} and ${NAME_MAX_LENGTH} characters`;
+        }
+    }
+    return null;
+};
+
+// Conditional helper reporting whether a stored fullName has both halves
+const isCompleteFullName = (fullName) =>
+    Boolean(fullName && fullName.firstName && fullName.lastName);
 
 /* Validates a parsed interest request. Returns a message describing the first
 problem found, or null when the input is usable. */
@@ -176,12 +226,18 @@ a record against themselves.
 
 The result is RECALCULATED from the submitted inputs rather than read from the
 request, so a saved record is always internally consistent and a tampered
-request cannot write false totals to the database. */
+request cannot write false totals to the database.
+
+The fullName the client sends is treated the same way: it is validated, but the
+name STORED on the record is the one on the user's own account, so a request
+cannot file a calculation under somebody else's name. The submitted name is
+only used if the account itself has no usable one. */
 router.post('/save', checkJwtToken, async (req, res) => {
     const input = parseInterestInput(req.body);
+    const submittedFullName = parseFullName(req.body);
 
-    const validationMessage = validateInterestInput(input);
-    // Conditional rendering to check the submitted figures are usable
+    const validationMessage = validateInterestInput(input) || validateFullName(submittedFullName);
+    // Conditional rendering to check the submitted figures and name are usable
     if (validationMessage) {
         return res.status(400).json({ success: false, message: validationMessage });// Send a 400 (Bad Request) status code with a message
     }
@@ -195,11 +251,30 @@ router.post('/save', checkJwtToken, async (req, res) => {
             return res.status(401).json({ success: false, message: 'Invalid token. Please login again.' });
         }
 
+        /* The account's own name wins. The submitted name is the fallback for
+        the one case it cannot be wrong about - an account with no stored name
+        - so an otherwise valid save is not lost to incomplete profile data. */
+        const fullName = isCompleteFullName(user.fullName) ? user.fullName : submittedFullName;
+
+        /* Conditional rendering to check a name was resolved at all: the
+        schema requires one, so there is nothing to file the record under. */
+        if (!isCompleteFullName(fullName)) {
+            console.warn('[WARN: interestRoutes.js, /save] No usable fullName for user', user._id);
+            return res.status(400).json({ success: false, message: 'A first name and last name are required to save a calculation' });// Send a 400 (Bad Request) status code with a message
+        }
+
+        /* Logged rather than rejected: the stored name is used either way, and
+        a mismatch usually just means the profile was edited in another tab. */
+        if (submittedFullName && isCompleteFullName(user.fullName) &&
+            (submittedFullName.firstName !== user.fullName.firstName || submittedFullName.lastName !== user.fullName.lastName)) {
+            console.warn('[WARN: interestRoutes.js, /save] Submitted fullName does not match the stored name for user', user._id, '- saving under the stored name');
+        }
+
         const result = calculateInterest(input);
 
         const saved = await Interest.create({
             user: user._id,
-            fullName: user.fullName,
+            fullName,
             principal: result.principal,
             interestRate: result.rate,
             // The schema stores the duration and its unit separately

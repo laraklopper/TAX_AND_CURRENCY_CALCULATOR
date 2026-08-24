@@ -121,6 +121,9 @@ export default function TaxCalculations(
           </tbody>
         </table>
       )}
+      <div id='exportFormpanal'>
+        {/* EXPORT FORM */}
+      </div>
       {/* Say so when the list is only the newest slice of a longer history */}
       {isTruncated && (
         <p className='infoText' aria-live='polite'>

@@ -141,9 +141,28 @@ export const validateInterestForm = (form) => {
     return errs;
 }
 
-// Assemble the request body for POST /api/interest/calculate
-export const buildInterestPayload = (form) => {
-    return {
+/* Reads the logged in user's first and last name off the currentUser object
+the app fetched from GET /users/me, trimmed and never undefined. The interest
+calculator shows these in its read only FULL NAME fields and sends them with a
+save, so a saved record carries the name of the person who made it. */
+export const toInterestFullName = (currentUser) => ({
+    firstName: (currentUser?.fullName?.firstName ?? "").trim(),
+    lastName: (currentUser?.fullName?.lastName ?? "").trim(),
+});
+
+/* A calculation can only be saved against a complete name, because the
+interest schema requires both halves of fullName. */
+export const hasCompleteFullName = (fullName) =>
+    Boolean(fullName?.firstName && fullName?.lastName);
+
+/* Assemble the request body for POST /api/interest/calculate, and for
+POST /api/interest/save when a `fullName` is supplied.
+
+The name is only attached when it is complete: /calculate has no use for it,
+and the save route reads the stored name off the user record anyway, so a
+half filled name would be noise in the request rather than useful input. */
+export const buildInterestPayload = (form, fullName) => {
+    const payload = {
         type: form.type,
         principal: Number(form.principal),
         rate: Number(form.rate),
@@ -154,6 +173,16 @@ export const buildInterestPayload = (form) => {
             form.type === "compound" ? form.compoundingFrequency : null,
         monthlyContribution: Number(form.monthlyContribution) || 0,
     };
+
+    // Conditional check so only a complete name is sent to /save
+    if (hasCompleteFullName(fullName)) {
+        payload.fullName = {
+            firstName: fullName.firstName.trim(),
+            lastName: fullName.lastName.trim(),
+        };
+    }
+
+    return payload;
 }
 
 /* Local fallback calculation, used if no onCalculate prop is supplied

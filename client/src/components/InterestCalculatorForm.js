@@ -12,8 +12,10 @@ import {
   calculateInterestLocally,
   COMPOUND_FREQUENCIES,
   formatCurrency,
+  hasCompleteFullName,
   PERIOD_UNITS,
   periodConfig,
+  toInterestFullName,
   validateInterestForm
 } from '../utils/calculationFunc';
 
@@ -37,12 +39,16 @@ import {
 //   onSave(payload, result) - optional async fn, called when a logged-in
 //     user clicks "Save to history"
 //   isAuthenticated - boolean, controls whether "Save to history" is shown
+//   currentUser - the logged in user fetched from GET /users/me. Only their
+//     fullName is used: it fills the read only FULL NAME fields and is sent
+//     with a save, so a saved record carries the name of whoever made it.
 // ---------------------------------------------------------------------------
 
 export default function InterestCalculatorForm({
   onCalculate,
   onSave,
   isAuthenticated = false,
+  currentUser = null,
 }) {
   const [form, setForm] = useState(BLANK_INTEREST_FORM);
   const [errors, setErrors] = useState({});
@@ -50,13 +56,20 @@ export default function InterestCalculatorForm({
   const [status, setStatus] = useState(null); // null | "calculating" | "error"
   const [statusMessage, setStatusMessage] = useState("");
   const [saveStatus, setSaveStatus] = useState(null); // null | "saving" | "saved" | "error"
+  const [saveMessage, setSaveMessage] = useState("");
   // Config (label, noun, max) for the time period unit the user selected
   const period = periodConfig(form.periodUnit);
+  /* The logged in user's name, read from the user record rather than typed, so
+  the FULL NAME fields below are filled in and read only. */
+  const fullName = toInterestFullName(currentUser);
+  // The interest schema requires both names, so a save needs a complete one
+  const canSaveFullName = hasCompleteFullName(fullName);
 
   const updateField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     setResult(null);
     setSaveStatus(null);
+    setSaveMessage("");
   };
 
   /* Switching between annual and monthly changes what the time period means,
@@ -68,6 +81,7 @@ export default function InterestCalculatorForm({
     setErrors((prev) => ({ ...prev, time: undefined }));
     setResult(null);
     setSaveStatus(null);
+    setSaveMessage("");
   };
 
   const resetForm = () => {
@@ -76,6 +90,9 @@ export default function InterestCalculatorForm({
     setResult(null);
     setStatus(null);
     setSaveStatus(null);
+    setSaveMessage("");
+    /* The FULL NAME fields are not reset: they are read from the logged in
+    user rather than entered, so there is nothing of the user's to clear. */
   };
 
   /* Check the inputs and show any field errors. Returns true when the form is
@@ -89,6 +106,7 @@ export default function InterestCalculatorForm({
   async function handleSubmit(e) {
     e.preventDefault();
     setSaveStatus(null);
+    setSaveMessage("");
 
     if (!validate()) {
       setStatus("error");
@@ -119,12 +137,25 @@ export default function InterestCalculatorForm({
 
   async function handleSave() {
     if (!result || !onSave) return;
+
+    /* A saved record is filed under the user's name, and the interest schema
+    requires both halves of it. Stopping here means the user is told why
+    rather than the request being rejected by the database. */
+    if (!canSaveFullName) {
+      setSaveStatus("error");
+      setSaveMessage("Your name could not be read from your profile. Please reload and try again.");
+      return;
+    }
+
     setSaveStatus("saving");
+    setSaveMessage("");
     try {
-      await onSave(buildInterestPayload(form), result);
+      // The name is sent alongside the inputs, so the record shows who saved it
+      await onSave(buildInterestPayload(form, fullName), result);
       setSaveStatus("saved");
     } catch (err) {
       setSaveStatus("error");
+      setSaveMessage(err?.message || "Could not save. Try again.");
     }
   }
 
@@ -322,6 +353,9 @@ export default function InterestCalculatorForm({
       </div>
       {/* HIDDEN FULL NAME FIELDS */}
       {/* INPUT REQUIRED TO SAVE CALCULATION */}
+      {/* Filled from the logged in user and read only: the name is taken from
+      the user's profile, never typed, so it cannot be edited into someone
+      else's before a calculation is saved under it. */}
       <div className='p-2' id='user-fullname-input' hidden>
       <label className='field-label'>FULL NAME:</label>
         <div className='input-div'>
@@ -330,9 +364,9 @@ export default function InterestCalculatorForm({
             className='input'
             readOnly
             id='interest-firstName'
-              // placeholder={currentUser.fullName.firstName} //
-              // name=''
-              // value={}
+              name='fullName.firstName'
+              placeholder='FIRST NAME'
+              value={fullName.firstName}
               // ARIA ATTRIBUTES:
               aria-required='true'
               aria-readonly='true'
@@ -345,9 +379,9 @@ export default function InterestCalculatorForm({
             className='input'
               readOnly
               id='interest-lastName'
-              // placeholder={currentUser.fullName.lastName} //
-              // name=''
-              // value={}
+              name='fullName.lastName'
+              placeholder='LAST NAME'
+              value={fullName.lastName}
               // ARIA ATTRIBUTES:
               aria-required='true'
               aria-readonly='true'
@@ -450,9 +484,13 @@ export default function InterestCalculatorForm({
                 history, red when the save was rejected. */
                 variant={saveButtonVariant}
                 onClick={handleSave}
-                disabled={saveStatus === "saving" || saveStatus === "saved"}
+                /* Also disabled without a complete name: the record is filed
+                under it, so there is nothing to save it against. */
+                disabled={saveStatus === "saving" || saveStatus === "saved" || !canSaveFullName}
                 className="save-link"
                 id='save-int-calcBtn'
+                // ARIA ATTRIBUTES:
+                aria-disabled={saveStatus === "saving" || saveStatus === "saved" || !canSaveFullName}
               >
                 {saveStatus === "saving"
                   ? "Saving..."
@@ -461,7 +499,16 @@ export default function InterestCalculatorForm({
                   : "Save to history"}
               </Button>
               {saveStatus === "error" && (
-                <span className="save-error">Could not save. Try again.</span>
+                <span className="save-error" role='alert'>
+                  {saveMessage || "Could not save. Try again."}
+                </span>
+              )}
+              {/* Explains an unusable save button before it is pressed */}
+              {!canSaveFullName && saveStatus !== "error" && (
+                <span className="save-error">
+                  Your name could not be read from your profile, so this
+                  calculation cannot be saved.
+                </span>
               )}
             </div>
           )}

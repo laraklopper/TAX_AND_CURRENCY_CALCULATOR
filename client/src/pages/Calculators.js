@@ -386,6 +386,9 @@ export default function Calculators({currentUser, logout}) {
                           onCalculate={calculateInterest}
                           onSave={saveInterest}
                           isAuthenticated={!!currentUser}
+                          /* Supplies the fullName the form saves a
+                          calculation under */
+                          currentUser={currentUser}
                         />
                     </div>
                   </Col>
