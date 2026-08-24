@@ -4,6 +4,7 @@
 ---
 The application is a tax and currency converter calculator. The application is written using MERN stack which is a popular open source JavaScript-based developer friendly web stack. MERN stack uses MongoDB (a NoSQL database), to handle the database, React.js to create the front-end, Express.js to create the backend and uses Node.js as the runtime environment.
 
+All financial (tax and interest) calculations are calculated in terms of South African tax and interest rates
 **TARGET USERS**
 The target users are `individuals`, `Freelances`, `Small Business owners`, `Students in South Africa who want a quick, reliable all-in-one financial calculator`.
 
