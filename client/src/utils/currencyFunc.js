@@ -39,6 +39,13 @@ and left as a dash for any code that data does not cover. */
 export const countriesForCode = (code) =>
     COUNTRIES_BY_CODE[code] ? COUNTRIES_BY_CODE[code].join(', ') : '—'
 
+/* Name lookup by currency code, built once from the static data, and the
+fallback for a code the provider list does not carry a name for. */
+const NAMES_BY_CODE = currencyCountries.reduce((lookup, { code, name }) => {
+    lookup[code] = name;
+    return lookup;
+}, {});
+
 //===========================================================================
 // CONVERSION RESULT (CurrencyConvertForm.js)
 //===========================================================================
@@ -62,6 +69,22 @@ export const toRate = (rate, baseCurrency, targetCurrency) => {
     if (formatted === NOT_AVAILABLE || !baseCurrency || !targetCurrency) return formatted
     return `${formatted} ${targetCurrency} PER 1 ${baseCurrency}`
 }
+
+/* A currency's full name, e.g. 'ZAR' gives 'South African Rand'. A saved
+conversion stores only the two codes, so the name is looked for in the currency
+list the converter loaded from the provider, and in the local country data for
+any code that list reports without a name. */
+export const currencyNameOf = (code, currencies = []) => {
+    if (!code) return '';
+    const match = currencies.find((currency) => currency.code === code);
+    return match?.name || NAMES_BY_CODE[code] || '';
+}
+
+/* A saved conversion's currency written out in full, e.g. 'ZAR - South African
+Rand'. Falls back to the code alone for a currency nothing has a name for, and
+to a dash for a record missing the code itself. */
+export const currencyLabelOf = (code, currencies) =>
+    code ? currencyOptionLabel(code, currencyNameOf(code, currencies)) : NOT_AVAILABLE
 
 /* The converted amount as stored. The schema exposes it as a virtual, so it
 arrives on the record; it is recomputed from amount * rate only as a fallback. */

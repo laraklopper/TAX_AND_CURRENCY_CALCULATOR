@@ -7,6 +7,9 @@
 // `convertedAmount` is a virtual on the currency schema, recomputed here from
 // amount * rate only if a record arrives without it.
 //
+// A record stores only the two currency codes, so the panal names them from the
+// currency list the converter loaded, falling back to the local country data.
+//
 // The table/panal behaviour is shared with the tax and interest lists through
 // useCalculationsList; only the columns and the details below are its own.
 import React from 'react'
@@ -20,7 +23,7 @@ import Button from 'react-bootstrap/Button';
 import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toDecimal, toFullName, toLongDate, toLongDateTime, toMoney } from '../utils/formatCalculations';
-import { convertedAmountOf, toRate } from '../utils/currencyFunc';
+import { convertedAmountOf, currencyLabelOf, toRate } from '../utils/currencyFunc';
 import { X } from 'lucide-react';
 //CurrencyCalculations.js function component
 export default function CurrencyCalculations(
@@ -29,6 +32,11 @@ export default function CurrencyCalculations(
     loggedIn,
     conversions = [],
     conversionsTotal = 0,
+    /* The currencies the converter loaded from the provider, used to name the
+    codes a saved conversion stores. Defaults to an empty list, so the panal
+    falls back to the local country data rather than breaking if it arrives
+    without one. */
+    currencyOptions = [],
     deleteConversion,
     setError
   }) {
@@ -177,20 +185,14 @@ export default function CurrencyCalculations(
               <div className='details-group'>
                 <span><p className='nested-details-label'>CURRENCIES:</p></span>
                 <div className='nested-details-group'>
+                  {/* Each code with its full name, e.g. 'ZAR - South African Rand' */}
                   <span className='nested-details-span'>
                     <p className='details-label'>BASE CURRENCY:</p>
-                    <p className='details-value'>{selectedConversion.currency?.baseCurrency || NOT_AVAILABLE}</p>
-                    {/* SHOW FULL BASE CURRENCY */}
-                    <p className='details-value'>(e.g. Bangladeshi Taka)</p>
+                    <p className='details-value'>{currencyLabelOf(selectedConversion.currency?.baseCurrency, currencyOptions)}</p>
                   </span>
                   <span className='nested-details-span'>
                     <p className='details-label'>TARGET CURRENCY:</p>
-                    <span className='currency-span'>
- <p className='details-value'>{selectedConversion.currency?.targetCurrency || NOT_AVAILABLE}</p>
- {/* SHOW FULL TARGET CURRENCY */}
-                    <p className='details-value'>(e.g Bermudian Dollar)</p>
-                    </span>
-                   
+                    <p className='details-value'>{currencyLabelOf(selectedConversion.currency?.targetCurrency, currencyOptions)}</p>
                   </span>
                 </div>
               </div>

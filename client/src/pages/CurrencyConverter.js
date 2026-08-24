@@ -323,6 +323,7 @@ submitConvert={submitConvert}
                 fetchConversions={fetchConversions}
                 conversions={conversions}
                 conversionsTotal={conversionsTotal}
+                currencyOptions={currencyOptions}
                 deleteConversion={deleteConversion}
                 setError={setError}
                 />
