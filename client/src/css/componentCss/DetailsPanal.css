@@ -1,3 +1,10 @@
+/* DetailsPanal.css
+@InterestCalculations.js
+@UsersList.js
+@TaxCalculations.js
+@CurrencyCalculations.js
+*/
+/* DETAILS LAYOUT */
 .details-group{
     display: flex;
     align-items: baseline;
@@ -13,12 +20,14 @@
     margin: 0px;
     padding: 0px;
 }
+/* TEXT */
 .nested-details-span{
     display: flex;
     align-items: baseline;
     gap: 5px;
     margin: 0px;
 }
+
 .nested-details-label{
     font-family: "Fira Sans", sans-serif;
     font-size: 18px;
@@ -53,4 +62,23 @@
 /* Email addresses are stored lowercase, so show them exactly as they are stored */
 .details-value.email-value{
     text-transform: none;
+}
+/* BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons */
+#deleteCalculationBtn{
+     display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+    border: solid 2px #323A42;
+    width: 250px;
+}
+#deleteCalculationBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
 }

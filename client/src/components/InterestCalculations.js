@@ -256,7 +256,7 @@ export default function InterestCalculations(
           <div className="p-2">
             <Button
             variant='danger'
-            className='deleteCalculationBtn'
+            id='deleteCalculationBtn'
             type='button'
             onClick={removeSelected}
             disabled={deleteLoading}
