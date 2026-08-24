@@ -10,7 +10,22 @@ import LoginForm from '../components/LoginForm';
 
 export default function Login({userData, setUserData, setError, loggedIn, setLoggedIn, setCurrentUser}) {
 
+  /* Clear any half-finished session. Called whenever a login attempt does not
+  end in a usable token, so a stale token from an earlier session is never left
+  behind for the authenticated requests in App.js to pick up. */
+  const clearStoredSession = useCallback(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('loggedIn');
+    setLoggedIn(false);
+  }, [setLoggedIn])
+
   const submitLogin = useCallback(async () => {
+    /* The server looks the user up by the normalised email, so send and store
+    the same normalised value rather than whatever casing was typed. */
+    const email = String(userData.email || '').trim().toLowerCase();
+    const password = String(userData.password || '');
+
     try {
       setError(null);// Clear previous error before trying again
       //Send a POST request to the /auth/login endpoint
@@ -21,32 +36,49 @@ export default function Login({userData, setUserData, setError, loggedIn, setLog
           'Content-Type': 'application/json' //Specify the Content-Type in the payload as JSON
         },
         body: JSON.stringify({// Convert payload to JSON string
-          email: userData.email,
-          password: userData.password
+          email,
+          password
         })
       });
 
       const data = await response.json().catch(() => ({}));
 
-      if (response.ok) {
-        localStorage.setItem('email', userData.email)
-        localStorage.setItem('loggedIn', true)
-        localStorage.setItem('token', data.token);/* Store the authentication token received
-        from the server in the localStorage under the key 'token'*/
-        setLoggedIn(true);//Set the setLoggedIn State to true
-        setCurrentUser(data.user);// Server returns the full user object under `user`
-        setError(null);//Clear any previous error messages
-
-      } else {
+      // A failed login leaves nothing stored and reports the server's reason
+      if (!response.ok) {
+        clearStoredSession();
         setError(data.message || 'Login failed. Please try again.');
-
+        return;
       }
+
+      /* A 200 without a token is not a usable login: storing an absent token
+      writes the string "undefined", which passes the token checks in App.js and
+      is then sent as `Bearer undefined` on every authenticated request. */
+      if (typeof data.token !== 'string' || !data.token) {
+        clearStoredSession();
+        setError('Login failed: no authentication token was returned.');
+        console.error('[ERROR: Login.js]: Login response did not include a token');
+        return;
+      }
+
+      localStorage.setItem('email', email)
+      localStorage.setItem('loggedIn', 'true')// localStorage only holds strings
+      localStorage.setItem('token', data.token);/* Store the authentication token received
+      from the server in the localStorage under the key 'token'*/
+      /* Only trust a user object; App.js re-fetches the current user from
+      /users/me once loggedIn flips, so an absent one is not fatal. */
+      if (data.user && typeof data.user === 'object') {
+        setCurrentUser(data.user);// Server returns the full user object under `user`
+      }
+      setLoggedIn(true);//Set the setLoggedIn State to true
+      setError(null);//Clear any previous error messages
+      // Drop the password from state now it has been sent
+      setUserData((prev) => ({ ...prev, password: '' }))
     } catch (error) {
+      clearStoredSession();
       setError('An error occurred during login. Please try again.');
-      setLoggedIn(false)
       console.error('[ERROR: Login.js]: Login error:', error);
     }
-  },[setError, userData, setLoggedIn, setCurrentUser])
+  },[userData.email, userData.password, setUserData, setError, setLoggedIn, setCurrentUser, clearStoredSession])
   return (
     <div id='pageContainer' role='main'>
       <MainHeader mainHeading='LOGIN'/>
