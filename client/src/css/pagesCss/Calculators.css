@@ -67,6 +67,15 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
+#calculator-data-list{
+
+        display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    align-items: flex-start;
+}
 /* CALCULATOR LAYOUT */
 /* HTML <div/> */
 #calculators-div{
@@ -75,6 +84,55 @@ LAYOUT
     margin: 0px;
     padding: 5px;
     width: 100%;
+}
+/* CARD: https://react-bootstrap.netlify.app/docs/components/cards */
+#calculators-info-card{
+    display: flex;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#calculations-info{
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+.calculator-info-text{
+    margin: 5px 0px;
+    padding: 0px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+}
+#tax-card-link{
+    display: flex;
+    letter-spacing: 2px;
+    align-items: center;
+    text-decoration: underline #eee;
+    font-family: "Roboto Mono", monospace;
+    margin: 0px;
+    color:  #E8F0F6;
+    padding: 0px 5px;
+    text-decoration: none;
+    height: 40px;
+    font-weight: 700;
+    justify-content: center;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#tax-card-link:hover{
+    color: #C9D6E0;
+    background-color: #252e36;
 }
 /* Tax Calculator */
 #tax-calculator-panal{
@@ -182,16 +240,7 @@ LAYOUT
     margin: 0px;
 
 }
-.calculator-info-text{
-    margin: 5px 0px;
-    padding: 0px;
-    text-decoration: underline;
-    letter-spacing: 2px;
-    font-family: "Open Sans", sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    text-align: center;
-}
+
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/

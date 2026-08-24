@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 // IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -408,19 +409,31 @@ export default function Calculators({currentUser, logout}) {
             )}
           </div>
           {/* Row 2:Calculator Information/Messages */}
-            <Row id='info-msg-row'>
-                <Col xs={0} md id='info-msg-col1'/>
-                <Col xs={12} md={6} id='info-msg-col'>
-                    <div id='info-msg-div'>
-                        <span className='info-msg-span'>
-                            {/* Display default (SOUTH AFRICAN)15% tax rate */}
-                            <h6 className='calculator-info-text'>INTEREST PERIOD CAN BE CALCULATED IN YEARS (ANNUAL) OR MONTHS (MONTHLY)</h6>
-                            <h6 className='calculator-info-text'>DEFAULT TAX RATE IS SET TO SOUTH AFRICAN 15% TAX RATE</h6>
-                        </span>
-                    </div>
-                </Col>
-                <Col xs={0} md id='info-msg-col1'/>
-            </Row>
+          <Row id='info-msg-row'>
+            <Col id='info-msg-col1'/>
+            <Col md={8} xs={12} id='info-msg-col'>
+              <Card id='calculators-info-card'>
+      <Card.Body id='calculations-info-card-text'>
+       
+        <Card.Subtitle id='calculations-info'>
+         <p>All financial (tax and interest) calculations are calculated in terms of South African tax and interest rates</p> 
+        </Card.Subtitle>
+        <Card.Text id='info-msg-div'>
+            <ul id='calculator-data-list'>
+              <li><h6 className='calculator-info-text'>INTEREST PERIOD CAN BE CALCULATED IN YEARS (ANNUAL) OR MONTHS (MONTHLY)</h6></li>
+              <li> <h6 className='calculator-info-text'>DEFAULT TAX RATE IS SET TO SOUTH AFRICAN 15% TAX RATE</h6></li>
+            </ul>
+       
+        </Card.Text>
+        <Card.Link id='tax-card-link' target='blank'
+            href='https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/' 
+            >https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/</Card.Link>
+      </Card.Body>
+    </Card>
+            </Col>
+            <Col id='info-msg-col2'/>
+
+          </Row>
         </div>
         </section>
        <section id='calculator-section2'>
