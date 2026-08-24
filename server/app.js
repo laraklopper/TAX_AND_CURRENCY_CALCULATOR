@@ -16,6 +16,7 @@ const apiRoutes = require('./routes/apiRoutes')
 const taxRoutes = require('./routes/taxRoutes')
 const userRoutes = require('./routes/userRoutes')
 const interestRoutes = require('./routes/interestRoutes')
+const exportRoutes = require('./routes/exportRoutes')
 // Extract enviromental variables
 const port = process.env.PORT || 3001;
 
@@ -40,6 +41,7 @@ app.use('/api', apiRoutes)
 app.use('/api/tax', taxRoutes)// Income tax: /config, /calculate, /save and /history
 app.use('/users', userRoutes)
 app.use('/api/interest', interestRoutes)// Interest: /calculate, /save and /history
+app.use('/export', exportRoutes)//Routes to export calculations
 mongoose.set('strictPopulate', false)
 
 //=============START THE SERVER=============
