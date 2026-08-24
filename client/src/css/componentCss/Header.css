@@ -46,17 +46,24 @@
 /* BOOTSTRAP */
 #headerRow1{
     width: 100%;
-    height: 10px;
+   
     margin: 0px;
     padding: 0px;
     display: flex;
 }
 #headerRow2{
+    display: flex;
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
 #headerRow3{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#mainHeaderCol1{
+    display: flex;
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -105,4 +112,33 @@
     margin: 0px;
     padding: 0px;
     gap: 10px;
+}
+
+#header-time-stack{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#header-date-list{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}
+#dateItem,
+#timeItem{
+        display: flex;
+        background-color: transparent;
+        border: none;
+        margin: 0px;
+        padding: 0px;
+}
+.clockListText{
+        display: flex;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+    align-items: center;
 }
