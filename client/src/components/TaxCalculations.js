@@ -141,8 +141,8 @@ export default function TaxCalculations(
           <div className="p-2 ms-auto"></div>
           <div className="p-2">
             <Button
-            variant='light'
-            className='closeCalculationPanalBtn'
+            variant='warning'
+            id='closeCalculationPanalBtn'
             type='button'
             onClick={closePanal}
             // ARIA ATTRIBUTES:
@@ -271,7 +271,7 @@ export default function TaxCalculations(
           <div className="p-2">
             <Button
             variant='danger'
-            className='deleteCalculationBtn'
+            id='deleteCalculationBtn'
             type='button'
             onClick={removeSelected}
             disabled={deleteLoading}

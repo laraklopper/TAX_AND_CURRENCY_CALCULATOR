@@ -341,16 +341,33 @@ stands in for the .p-2 wrapper each of those buttons sits in */
     letter-spacing: 1px;
     margin: 8px 0px;
     padding: 0px;
-    width: 280px;
+    width: 300px;
     text-transform: uppercase;
     font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: solid 2px #323A42;
 }
+#saveCalculationBtn:hover,
 #showTax-calculationsBtn:hover,
 #showInterest-calculationsBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
+}
+#saveCalculationBtn{
+      display: flex;
+      color: #000;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    letter-spacing: 1px;
+    margin: 8px 0px;
+    padding: 0px;
+    width: 180px;
+    height: 40px;
+    text-transform: uppercase;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    border: solid 2px #323A42;
 }
 /* ===============
 

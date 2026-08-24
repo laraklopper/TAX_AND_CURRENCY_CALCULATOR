@@ -364,6 +364,8 @@ export default function TaxCalculatorForm({
             <div className="save-row">
               <Button
                 type="button"
+                variant="success"
+                id="saveCalculationBtn"
                 onClick={handleSave}
                 disabled={saveStatus === "saving" || saveStatus === "saved"}
                 className="save-link"
