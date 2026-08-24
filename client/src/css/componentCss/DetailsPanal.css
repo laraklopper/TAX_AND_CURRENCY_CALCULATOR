@@ -64,6 +64,18 @@
     text-transform: none;
 }
 /* BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons */
+#closeCalculationPanalBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Courier Prime", monospace;
+    border: solid 2px #323A42;
+    color: #000;
+    width: 180px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
 #deleteCalculationBtn{
      display: flex;
     align-items: center;
@@ -78,6 +90,7 @@
     border: solid 2px #323A42;
     width: 250px;
 }
+#closeCalculationPanalBtn:hover,
 #deleteCalculationBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;

@@ -128,7 +128,6 @@ export default function InterestCalculations(
         </p>
       )}
       </div>
-
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
       <div id='interest-calculation-details-panal' className='calculations-panal'>
@@ -142,8 +141,8 @@ export default function InterestCalculations(
           <div className="p-2 ms-auto"></div>
           <div className="p-2">
             <Button
-            variant='light'
-            className='closeCalculationPanalBtn'
+            variant='warning'
+            id='closeCalculationPanalBtn'
             type='button'
             onClick={closePanal}
             // ARIA ATTRIBUTES:
