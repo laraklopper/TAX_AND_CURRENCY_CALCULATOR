@@ -62,8 +62,8 @@ export default function InterestCalculations(
 
     const toggleExportForm = useCallback(() =>{
       setToggleExport(prev => !prev)
-      selectedCalculation(false)//Close calculation details panal
-    },[selectedCalculation])
+      closePanal()//Close calculation details panal
+    },[closePanal])
     //=============JSX RENDERING===============
   return (
     <div id='interest-calculations-list' className='calculations-list'>
@@ -148,7 +148,7 @@ export default function InterestCalculations(
       </div>
       {toggleExport && (
         <div id='export-calculations-panal'>
-          <ExportForm/>
+          <ExportForm type='interest'/>
         </div>
       )}
       </div>

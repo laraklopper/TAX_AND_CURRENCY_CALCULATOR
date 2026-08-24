@@ -16,8 +16,9 @@ HTTP defines a set of request methods to indicate the purpose of the request and
 3. [Tax Routes](#3-tax-routes-apitax)
 4. [Currency Routes](#4-currency-routes-api)
 5. [Interest Routes](#5-interest-routes-apiinterest)
-6. [Notes](#6-notes)
-7. [References](#7-references)
+6. [Export Routes](#6-export-routes-export)
+7. [Notes](#7-notes)
+8. [References](#8-references)
 
 ## 1. User Routes (`/users`)
 | Method | Endpoint | Description | Auth | Status |
@@ -67,7 +68,15 @@ HTTP defines a set of request methods to indicate the purpose of the request and
 | GET | /history | Get saved interest calculations, newest first (see history note) | Yes | Built |
 | DELETE | /history/:id | Delete saved calculation | Yes | Built |
 ---
-## 6. NOTES
+## 6. Export Routes (`/export`)
+| Method | Endpoint | Description | Auth | Status |
+|---|---|---|---|---|
+| GET | /taxHistory?format= | Download saved tax calculations as a file | Yes | Built |
+| GET | /interestHistory?format= | Download saved interest calculations as a file | Yes | Built |
+| GET | /currencyHistory?format= | Download saved conversions as a file | Yes | Built |
+
+---
+## 7. NOTES
 **Auth note:** 
  - `/calculate` was planned as a public endpoint, but every calculator page sits behind `ProtectedUserRoute` and the already-implemented
  - `/api/convert` requires a token, so the calculate endpoints follow that same convention and require a JWT.
@@ -90,9 +99,14 @@ Both currency routes go through [server/utils/currencyService.js](../server/util
 
 `GET /api/history` and `DELETE /api/history/:id` are now built, so the currency calculations panel on the converter page reads and removes saved conversions through them. The client had been calling `DELETE /api/delete/:id`, which never existed; the delete lives under `/history/:id` to match `/api/tax` and `/api/interest`.
 
+**Exports return a file, not JSON.**
+The three `/export` routes answer with the file itself — `text/csv` or the XLSX media type, both sent as a `Content-Disposition: attachment` download — so only a failure comes back as JSON. `?format=` takes `csv` or `xlsx` and defaults to `csv`; anything else is a 400. Like the histories, an export is scoped to the user id in the JWT, and the figures are read straight off the saved documents (including their virtuals) rather than being recalculated, so a file says exactly what the calculator said when the record was saved. Where a history is capped at the newest 100 for the list on screen, an export takes the user's whole history up to a 5000-record ceiling, which is logged when it is hit. A user with nothing saved gets a 404 with a message rather than a file containing only headers, so an empty download cannot be mistaken for a broken one.
+
+The client side of this is one shared component, [client/src/components/ExportForm.js](../client/src/components/ExportForm.js), rendered under each of the three saved-calculation lists with a `type` prop of `interest`, `tax` or `currency` that picks the endpoint and the filename. It reads the response as a blob and hands it to a temporary anchor to trigger the download. The filename is rebuilt client-side rather than read from `Content-Disposition`: the API is a different origin, so the browser will not expose that header to JavaScript unless the server lists it in `Access-Control-Expose-Headers`.
+
 ---
 
-## 7. REFERENCES
+## 8. REFERENCES
 
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
 - https://api.frankfurter.dev/v2/rates

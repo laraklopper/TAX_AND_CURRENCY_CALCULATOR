@@ -67,8 +67,8 @@ export default function CurrencyCalculations(
 
     const toggleExportForm = useCallback(() => {
       setToggleExport(prev => (!prev))
-      selectedConversion(false)//Close the conversion details panal
-    },[selectedConversion])
+      closePanal()//Close the conversion details panal
+    },[closePanal])
     //=============JSX RENDERING===============
   return (
     <div id='conversions-list' className='calculations-list'>
@@ -153,7 +153,7 @@ export default function CurrencyCalculations(
       </div>
       {toggleExport && (
         <div id='export-calculations-panal'>
-          <ExportForm/>
+          <ExportForm type='currency'/>
         </div>
       )}
       {/* DETAILS PANAL IF A CONVERSION IS SELECTED ON THE TABLE LIST */}

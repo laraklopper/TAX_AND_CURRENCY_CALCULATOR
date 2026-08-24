@@ -63,8 +63,8 @@ export default function TaxCalculations(
 
     const toggleExportForm = useCallback (() => {
       setToggleExport(prev => !prev)
-      selectedCalculation(false)//Close panal
-    },[selectedCalculation])
+      closePanal()//Close panal
+    },[closePanal])
     //=============JSX RENDERING===============
   return (
     <div id='tax-calculations-list' className='calculations-list'>
@@ -154,7 +154,7 @@ export default function TaxCalculations(
       </div>
        {toggleExport &&(
         <div id='export-form-panal'>
-        <ExportForm/>
+        <ExportForm type='tax'/>
       </div>
       )}
 

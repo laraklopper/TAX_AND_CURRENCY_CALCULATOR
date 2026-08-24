@@ -77,8 +77,9 @@ The application also integrates external APIs via server-side proxy routes:
 
 ### 3.3. Data Export
 
+Each saved-calculation list (tax, interest, currency conversions) can be downloaded as a **CSV** or an **EXCEL (.xlsx)** file through the `/export` routes. The file is generated on the server from the saved records, so the figures in it are the ones the calculator showed when the record was saved — nothing is recalculated on export. An export covers the user's whole history rather than the newest 100 the list shows on screen.
 
-### 3.3. SECURITY
+### 3.4. SECURITY
 - All api routes that require authentication expect a `Bearer <token>` value in the Authorization header except the  `/auth`
 
 ## REFERENCES
