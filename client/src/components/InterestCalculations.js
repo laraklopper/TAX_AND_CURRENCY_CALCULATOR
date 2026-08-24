@@ -10,7 +10,7 @@
 //
 // The table/panal behaviour is shared with the currency and tax lists through
 // useCalculationsList; only the columns and the details below are its own.
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculationsList.css'
 import '../css/componentCss/DetailsPanal.css'
@@ -23,6 +23,7 @@ import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
 import { durationInYearsOf, toCompounding, toTerm, totalCapitalOf } from '../utils/calculationFunc';
 import { X } from 'lucide-react';
+import ExportForm from './ExportForm';
 
 //InterestCalculations.js function component
 export default function InterestCalculations(
@@ -35,6 +36,7 @@ export default function InterestCalculations(
     loadError,
     setError
   }) {
+    const [toggleExport, setToggleExport] = useState(false)
     /* Loading, selection, delete and status handling, shared with the currency
     and tax calculation lists */
     const {
@@ -57,6 +59,11 @@ export default function InterestCalculations(
       setError,
       logLabel: 'InterestCalculations.js'
     })
+
+    const toggleExportForm = useCallback(() =>{
+      setToggleExport(prev => !prev)
+      selectedCalculation(false)//Close calculation details panal
+    },[selectedCalculation])
     //=============JSX RENDERING===============
   return (
     <div id='interest-calculations-list' className='calculations-list'>
@@ -127,6 +134,22 @@ export default function InterestCalculations(
         <p className='infoText' aria-live='polite'>
           {`SHOWING THE NEWEST ${interestCalculations.length} OF ${interestCalculationsTotal} SAVED INTEREST CALCULATIONS`}
         </p>
+      )}
+      <div>
+        <Button
+        variant='light'
+        onClick={toggleExportForm}
+        id='toggleExportBtn'
+        aria-label={toggleExport ? 'EXIT': 'EXPORT CURRENCY CALCULATIONS'}
+        aria-controls='export-calculations-panal'
+        >
+        {toggleExport ? 'EXIT': 'EXPORT CALCULATIONS'}
+        </Button>
+      </div>
+      {toggleExport && (
+        <div id='export-calculations-panal'>
+          <ExportForm/>
+        </div>
       )}
       </div>
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}

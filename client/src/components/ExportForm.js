@@ -18,9 +18,36 @@ export default function ExportForm() {
             {/* EXPORT TITLE: e.g Export Currency calculations */}
         </p>
         <Stack direction="horizontal" gap={3} id='export-form-stack'>
-      <div className="p-2">First item</div>
-      <div className="p-2 ms-auto">Second item</div>
-      <div className="p-2">Third item</div>
+      <div className="p-2">
+        {/* Select export format */}
+                    <label className='exportLabel' htmlFor='exportFormatSelect'>CHOOSE EXPORT FORMAT:</label>
+                        <select
+                        className='exportSelect'
+                        required
+                        id='exportFormatSelect'
+                        // name=''
+                        // value={}
+                        // onChange={(e) => { setFormat(e.target.value); setError('') }}//Update selected format
+                        // ARIA ATTRIBUTES:
+                        aria-label='Export format'
+                        aria-required='true'
+                    >
+                    {/* SET SELECT AS PLACEHOLDER */}
+                        <option value=''>SELECT</option>
+                        <option value='csv'>CSV (.csv)</option>
+                        <option value='xlsx'>EXCEL (.xlsx)</option>
+                    </select>
+      </div>
+      {/* ==========ERROR MESSAGE================ */}
+      {error && (
+        <div id='exportErrorBlock' role='alert' aria-live='polite' className="p-2 ms-auto">
+            <p className='export-error'>{error}</p>
+        </div>
+        )}
+      <div className="vr" />
+      <div className="p-2">
+        <Button variant='light'>EXPORT</Button>
+      </div>
     </Stack>
 
     </form>

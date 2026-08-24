@@ -12,7 +12,7 @@
 //
 // The table/panal behaviour is shared with the tax and interest lists through
 // useCalculationsList; only the columns and the details below are its own.
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculationsList.css'
 import '../css/componentCss/DetailsPanal.css'
@@ -25,6 +25,7 @@ import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toDecimal, toFullName, toLongDate, toLongDateTime, toMoney } from '../utils/formatCalculations';
 import { convertedAmountOf, currencyLabelOf, toRate } from '../utils/currencyFunc';
 import { X } from 'lucide-react';
+import ExportForm from './ExportForm';
 //CurrencyCalculations.js function component
 export default function CurrencyCalculations(
   {//PROPS PASSED FROM PARENT COMPONENT(CurrencyConverter.js)
@@ -40,6 +41,7 @@ export default function CurrencyCalculations(
     deleteConversion,
     setError
   }) {
+    const [toggleExport, setToggleExport] =useState(false)
     /* Loading, selection, delete and status handling, shared with the tax and
     interest calculation lists */
     const {
@@ -62,15 +64,18 @@ export default function CurrencyCalculations(
       setError,
       logLabel: 'CurrencyCalculations.js'
     })
+
+    const toggleExportForm = useCallback(() => {
+      setToggleExport(prev => (!prev))
+      selectedConversion(false)//Close the conversion details panal
+    },[selectedConversion])
     //=============JSX RENDERING===============
   return (
     <div id='conversions-list' className='calculations-list'>
       {/* Display conversion calculations list in table format
       with a details panal displayed after clicking on the conversion*/}
-
       {/* Inline request feedback, announced to screen readers */}
       <CalculationsStatus status={status}/>
-
       {/* ------CONVERSION CALCULATIONS TABLE------------- */}
       <div className='calculations-table-block'>
       {conversions.length === 0 ? (
@@ -134,7 +139,23 @@ export default function CurrencyCalculations(
         </p>
       )}
       </div>
-
+      <div id='toggleExportDiv'>
+        <Button
+        variant='light'
+        id='toggleExportBtn'
+        onClick={toggleExportForm}
+        // ARIA ATTRIBUTES
+        aria-label={toggleExport ? 'EXIT' : 'EXPORT CURRENCY CALCULATIONS'}
+        aria-controls='export-calculations-panal'
+        >
+          {toggleExport ? 'EXIT' : 'EXPORT CALCULATIONS'}
+        </Button>
+      </div>
+      {toggleExport && (
+        <div id='export-calculations-panal'>
+          <ExportForm/>
+        </div>
+      )}
       {/* DETAILS PANAL IF A CONVERSION IS SELECTED ON THE TABLE LIST */}
       {selectedConversion && (
       <div id='conversion-details-panal' className='calculations-panal'>

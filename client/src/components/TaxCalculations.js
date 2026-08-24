@@ -11,7 +11,7 @@
 //
 // The table/panal behaviour is shared with the currency and interest lists
 // through useCalculationsList; only the columns and the details below are its own.
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculationsList.css'
 import '../css/componentCss/DetailsPanal.css'
@@ -24,6 +24,7 @@ import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
 import { monthlyTaxOf, netIncomeOf, taxableIncomeOf, toAgeGroup } from '../utils/calculationFunc';
 import { X } from 'lucide-react';
+import ExportForm from './ExportForm';
 
 //TaxCalculations.js function component
 export default function TaxCalculations(
@@ -36,6 +37,7 @@ export default function TaxCalculations(
     loadError,
     setError
   }) {
+    const [toggleExport, setToggleExport] = useState(false)
     /* Loading, selection, delete and status handling, shared with the currency
     and interest calculation lists */
     const {
@@ -58,6 +60,11 @@ export default function TaxCalculations(
       setError,
       logLabel: 'TaxCalculations.js'
     })
+
+    const toggleExportForm = useCallback (() => {
+      setToggleExport(prev => !prev)
+      selectedCalculation(false)//Close panal
+    },[selectedCalculation])
     //=============JSX RENDERING===============
   return (
     <div id='tax-calculations-list' className='calculations-list'>
@@ -121,9 +128,8 @@ export default function TaxCalculations(
           </tbody>
         </table>
       )}
-      <div id='exportFormpanal'>
-        {/* EXPORT FORM */}
-      </div>
+
+     
       {/* Say so when the list is only the newest slice of a longer history */}
       {isTruncated && (
         <p className='infoText' aria-live='polite'>
@@ -131,6 +137,26 @@ export default function TaxCalculations(
         </p>
       )}
       </div>
+      <div>
+        <Button
+        variant='light'
+        id='toggleExportBtn'
+        onClick={toggleExportForm}
+        type='button'
+        // ARIA ATTRIBUTES:
+        aria-label={toggleExport ? 'Exit': 'Export tax calculations'}
+        aria-controls='export-form-panal'
+        aria-pressed={toggleExport}
+        aria-expanded={toggleExport}
+        >
+          {toggleExport ? 'Exit': 'Export calculations'}
+        </Button>
+      </div>
+       {toggleExport &&(
+        <div id='export-form-panal'>
+        <ExportForm/>
+      </div>
+      )}
 
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
