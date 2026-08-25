@@ -9,7 +9,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 // IMPORT ICONS FROM LUCIDE-REACT
-import { Plus, Trash2, Save, RotateCcw, CheckCircle2, AlertCircle } from "lucide-react";
+import { Plus, Trash2, Save, RotateCcw, CheckCircle2, AlertCircle, Asterisk } from "lucide-react";
 // IMPORT UTILITY FUNCTIONS
 import {
   buildTaxYearPayload,
@@ -149,7 +149,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
     }
   }
 
-  const errText = "mt-1 text-xs text-red-600";// shared styling for every field error message
+  const errText = "tax-field-error-text";// shared class for every field error message (TaxForm.css)
 
   // --- accessibility helpers ---------------------------------------------
 
@@ -182,24 +182,24 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
       {/* Success: role="status" + aria-live announces the save result to screen readers */}
       {status === "success" && (
         <div
-          className="mb-4 flex items-center gap-2 rounded-md bg-green-50 border border-green-200 px-3 py-2 text-sm text-green-800"
+          className="tax-form-status tax-form-status-success"
           // ARIA ATTRIBUTES:
           role="status"
           aria-live="polite"
         >
-          <CheckCircle2 size={16} className="shrink-0" aria-hidden='true' focusable='false' />
+          <CheckCircle2 size={16} className="tax-status-icon" aria-hidden='true' focusable='false' />
           {statusMessage}
         </div>
       )}
       {/* Error: role="alert" interrupts the screen reader so the failure is not missed */}
       {status === "error" && (
         <div
-          className="mb-4 flex items-center gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-800"
+          className="tax-form-status tax-form-status-error"
           // ARIA ATTRIBUTES:
           role="alert"
           aria-live="assertive"
         >
-          <AlertCircle size={16} className="shrink-0" aria-hidden='true' focusable='false' />
+          <AlertCircle size={16} className="tax-status-icon" aria-hidden='true' focusable='false' />
           {statusMessage}
         </div>
       )}
@@ -240,6 +240,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                   aria-invalid={Boolean(errors.taxYear)}
                   aria-describedby={describedBy("taxYear")}
                 />
+                <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                 {errors.taxYear && (
                   <p className={errText} id="taxYear-error">{errors.taxYear}</p>
                 )}
@@ -259,6 +260,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                   aria-invalid={Boolean(errors.startDate)}
                   aria-describedby={describedBy("startDate")}
                 />
+                <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                 {errors.startDate && (
                   <p className={errText} id="startDate-error">{errors.startDate}</p>
                 )}
@@ -280,6 +282,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                   aria-invalid={Boolean(errors.endDate)}
                   aria-describedby={describedBy("endDate")}
                 />
+                <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                 {errors.endDate && (
                   <p className={errText} id="endDate-error">{errors.endDate}</p>
                 )}
@@ -289,7 +292,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                 when the user does not pick a year explicitly. */}
                 <input
                   type="checkbox"
-                  className="rounded border-gray-300"
+                  className="tax-checkbox"
                   id="isActiveCheckbox"
                   name="isActive"
                   checked={form.isActive}
@@ -338,10 +341,24 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
             inputs themselves carry aria-labels because they have no visible <label>. */}
             <div id="bracket-data">
               <ListGroup variant="flush" id="brackets" aria-hidden='true'>
-                <ListGroup.Item id="bracketListItem1">Min (R)</ListGroup.Item>
-                <ListGroup.Item id="bracketListItem2">Max (R) — blank = no ceiling</ListGroup.Item>
-                <ListGroup.Item id="bracketListItem3">Base amount (R)</ListGroup.Item>
-                <ListGroup.Item id="bracketListItem4">Rate (%)</ListGroup.Item>
+                <ListGroup.Item id="bracketListItem1">
+                <strong><p className="bracketDataPara"> Min (R): </p></strong>
+                <p className="bracketDataPara">lowest taxable income this bracket applies to (in Rand) </p>
+               </ListGroup.Item>
+                <ListGroup.Item id="bracketListItem2">
+                <strong><p className="bracketDataPara">Max (R) — blank(no ceiling):</p></strong>
+                <p className="bracketDataPara">highest income in this bracket; left blank on thetop bracket </p>
+                 </ListGroup.Item>
+                <ListGroup.Item id="bracketListItem3">
+                <strong><p className="bracketDataPara">Base amount (R): </p></strong>
+                <p className="bracketDataPara">fixed tax already owed on all income below
+                        this bracket's min, before the rate is applied </p></ListGroup.Item>
+                <ListGroup.Item id="bracketListItem4">
+                <strong><p className="bracketDataPara">Rate (%):</p></strong>
+                <p className="bracketDataPara">percentage charged on income above the bracket  min
+                       
+
+                </p> </ListGroup.Item>
               </ListGroup>
               {/* BRACKET INPUT
               One row per bracket in state. `b` is the bracket being rendered and `i` is
@@ -375,6 +392,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                           aria-invalid={Boolean(errors[`bracket-${i}-min`])}
                           aria-describedby={describedBy(`bracket-${i}-min`)}
                         />
+                        <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                         {errors[`bracket-${i}-min`] && (
                           <p className={errText} id={`bracket-${i}-min-error`}>{errors[`bracket-${i}-min`]}</p>
                         )}
@@ -394,6 +412,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                           aria-invalid={Boolean(errors[`bracket-${i}-max`])}
                           aria-describedby={describedBy(`bracket-${i}-max`)}
                         />
+                        {/* <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small> */}
                         {errors[`bracket-${i}-max`] && (
                           <p className={errText} id={`bracket-${i}-max-error`}>{errors[`bracket-${i}-max`]}</p>
                         )}
@@ -414,6 +433,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                           aria-invalid={Boolean(errors[`bracket-${i}-baseAmount`])}
                           aria-describedby={describedBy(`bracket-${i}-baseAmount`)}
                         />
+                        <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                         {errors[`bracket-${i}-baseAmount`] && (
                           <p className={errText} id={`bracket-${i}-baseAmount-error`}>{errors[`bracket-${i}-baseAmount`]}</p>
                         )}
@@ -435,6 +455,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                           aria-invalid={Boolean(errors[`bracket-${i}-rate`])}
                           aria-describedby={describedBy(`bracket-${i}-rate`)}
                         />
+                        <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                         {errors[`bracket-${i}-rate`] && (
                           <p className={errText} id={`bracket-${i}-rate-error`}>{errors[`bracket-${i}-rate`]}</p>
                         )}
@@ -456,7 +477,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                       aria-label={`Delete tax bracket ${i + 1}`}
                       aria-disabled={form.brackets.length === 1}
                     >
-                      <Trash2 size={16} fontWeight={700} color="#000" aria-hidden='true' focusable='false'/>
+                      <Trash2 size={16} fontWeight={700} aria-hidden='true' focusable='false'/>
                     </Button>
                   </div>
                 </div>
@@ -477,7 +498,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                 ["secondary", "Secondary (age 65+)"],
                 ["tertiary", "Tertiary (age 75+)"],
               ].map(([key, text]) => (
-                <div key={key}>
+                <div key={key} className="rebates-input-div">
                   {/* INPUT: rebate amount in Rand for this age band. The id is built from
                   the key so each row gets a unique, label-linkable id. */}
                   <label className="tax-form-label" htmlFor={`rebate-${key}-input`}>{text}:</label>
@@ -493,6 +514,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                     aria-invalid={Boolean(errors[`rebate-${key}`])}
                     aria-describedby={describedBy(`rebate-${key}`)}
                   />
+                  <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                   {errors[`rebate-${key}`] && (
                     <p className={errText} id={`rebate-${key}-error`}>{errors[`rebate-${key}`]}</p>
                   )}
@@ -507,7 +529,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
             <h5 className="formSectionHead" id="taxThresholdsInput">Tax Thresholds (R)</h5>
             {/* TAX THRESHOLDS: value={form.thresholds[key]}
             Same [stateKey, visibleLabel] pattern as the rebates group above. */}
-            <div id="tax-threshold-div">
+            <div id="tax-threshold-input">
               {[
                 ["under65", "Under 65"],
                 ["age65to74", "65 to below 75"],
@@ -534,6 +556,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                     aria-invalid={Boolean(errors[`threshold-${key}`])}
                     aria-describedby={describedBy(`threshold-${key}`)}
                   />
+                  <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
                   {errors[`threshold-${key}`] && (
                     <p className={errText} id={`threshold-${key}-error`}>{errors[`threshold-${key}`]}</p>
                   )}
