@@ -44,7 +44,7 @@ app.use(express.urlencoded({extended:true}))// Parse URL-encoded form data (e.g.
 // Prefix all route modules with their base path.
 app.use('/auth', authRoutes)//Routes for auth: login, registration, forgotPassword, resetPassword
 app.use('/api', apiRoutes)//Api routes from third party API's
-app.use('/api/tax', taxRoutes)// Income tax: /config, /calculate, /save and /history
+app.use('/tax', taxRoutes)// Income tax: /config, /calculate, /save and /history
 app.use('/users', userRoutes)//User Routes: /me , fetchUsers, editUser, editPassword, deleteUser:id
 app.use('/interest', interestRoutes)// Interest: /calculate, /save and /history
 app.use('/export', exportRoutes)//Routes to export calculations
