@@ -199,6 +199,11 @@ LAYOUT
     gap: 10px;
     padding: 10px;
 }
+#rebates-input-block{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 /* Group 4: Tax Thresholds (R) */
 #taxform-group4{
     border: solid #323A42 2px;
@@ -208,7 +213,14 @@ LAYOUT
     margin: 0px;
     padding: 10px;
 }
-/* Group 5 */
+#tax-threshold-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+}
+/* Group 5: Actions*/
 #taxform-group5{
    display: flex;
    justify-content: center;

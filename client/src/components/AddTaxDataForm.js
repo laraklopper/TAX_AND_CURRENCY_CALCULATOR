@@ -104,9 +104,9 @@ export default function TaxYearConfigForm(
   }
 
   
-  const fieldCls = (key) =>
-    `tax-field ${errors[key] ? "tax-field-error" : "tax-field-ok"}`;
-  // const label = "block text-xs font-medium text-gray-600 mb-1";
+  // const fieldCls = (key) =>
+  //   `tax-field ${errors[key] ? "tax-field-error" : "tax-field-ok"}`;
+  // // const label = "block text-xs font-medium text-gray-600 mb-1";
   const errText = "mt-1 text-xs text-red-600";
 
   //=====================JSX RENDERING================================
@@ -139,7 +139,7 @@ export default function TaxYearConfigForm(
         {/* --- GROUP 1: TAX YEAR IDENTITY ------------------------------------- */}
       <div id="taxform-group1" aria-labelledby="taxYearHead">
         <h5 className="formSectionHead" id="taxYearHead">Tax Year</h5>
-        {/* STACK 1 */}
+        {/* STACK 1: TAX YEAR*/}
       <Stack  gap={3} id="tax-year-stack">
       <div className="p-2" id="tax-year-block1">
           <label className="tax-form-label">Tax year label</label>
@@ -193,7 +193,7 @@ export default function TaxYearConfigForm(
       </div>
         {/* ---   GROUP 2: BRACKETS ------------------------------------------------ */}
       <div id="taxform-group2" aria-labelledby="taxBracketsInput">
-      {/* INCOME TAX BRACKETS HEADING STACK */}
+      {/* STACK2: INCOME TAX BRACKETS HEADING STACK */}
     <Stack direction="horizontal" gap={3} id="income-tax-head-stack">
       <div className="p-2"><h5 className="formSectionHead" id="taxBracketsInput">Income Tax Brackets</h5></div>
       <div className="p-2 ms-auto"></div>
@@ -210,7 +210,9 @@ export default function TaxYearConfigForm(
         </Button>
       </div>
     </Stack>
+    {/* ---------ERROR MESSAGE---------- */}
           {errors.brackets && <p className={errText}>{errors.brackets}</p>}
+          {/* ===========BRACKET DATA===================== */}
           <div id="bracket-data">
             <ListGroup variant="flush" id="brackets">
               <ListGroup.Item id="bracketListItem1">Min (R)</ListGroup.Item>
@@ -224,8 +226,10 @@ export default function TaxYearConfigForm(
                 id="form-bracket-layout"
               >
               <div id="bracket-input">
+              {/* STACK 3: BRACKET INPUT */}
               <Stack gap={3} id="bracket-input-stack">
-      <div className="p-2">
+              {/* input for:  */}
+      <div className="p-2" id="bracket-item1-block">
           <input
                     type="number"
                     placeholder="Min"
@@ -237,7 +241,8 @@ export default function TaxYearConfigForm(
                     <p className={errText}>{errors[`bracket-${i}-min`]}</p>
                   )}
       </div>
-      <div className="p-2">
+      <div className="p-2" id="bracket-item2-block">
+      {/* Input for: (bracket item) */}
          <input
                     type="number"
                     placeholder="No ceiling"
@@ -249,7 +254,8 @@ export default function TaxYearConfigForm(
                     <p className={errText}>{errors[`bracket-${i}-max`]}</p>
                   )}
       </div>
-      <div className="p-2">
+      <div className="p-2" id="bracket-item3-block">
+      {/* Input for: (bracket item) */}
          <input
                     type="number"
                     placeholder="Base amount"
@@ -261,7 +267,8 @@ export default function TaxYearConfigForm(
                     <p className={errText}>{errors[`bracket-${i}-baseAmount`]}</p>
                   )}
       </div>
-      <div className="p-2">
+      <div className="p-2" id="bracket-item4-block">
+      {/* Input for: (bracket item)  */}
         <input
                     type="number"
                     step="0.01"
@@ -274,9 +281,7 @@ export default function TaxYearConfigForm(
                     <p className={errText}>{errors[`bracket-${i}-rate`]}</p>
                   )}
       </div>
-    </Stack>
-               
-               
+    </Stack>   
               </div> 
               <div id="delete-bracket-div">
                 <Button
@@ -287,28 +292,34 @@ export default function TaxYearConfigForm(
                   title="Remove bracket"
                   size="sm"
                   id="removeBracketBtn"
+                  // ARIA ATTRIBUTES:
+                  aria-label="Delete bracket"
+                  aria-disabled={form.brackets.length === 1}
                 >
-                  <Trash2 size={16} fontWeight={700} color="#000"/>
+                  <Trash2 size={16} fontWeight={700} color="#000" aria-hidden='true' focusable='false'/>
                 </Button>
                 </div>
               </div>
             ))}
           </div>
       </div>
-        {/* --- Rebates ------------------------------------------------- */}
+        {/* ---   GROUP 3:Rebates ---------------------- */}
         <div id="taxform-group3" aria-labelledby="annualRebates">
           <h5 className="formSectionHead" id="annualRebates">Rebates (annual, R)</h5>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* TAX REBATES value={form.rebates[key]}*/}
+          <div id="rebates-input-block">
             {[
               ["primary", "Primary (all taxpayers)"],
               ["secondary", "Secondary (age 65+)"],
               ["tertiary", "Tertiary (age 75+)"],
             ].map(([key, text]) => (
               <div key={key}>
-                <label className="tax-form-label">{text}</label>
+                <label className="tax-form-label" htmlFor="rebates-input-field">{text}:</label>
                 <input
                   type="number"
-                  className={fieldCls(`rebate-${key}`)}
+                  // placeholder=""
+                  id="rebates-input-field"
+                  className="tax-field"
                   value={form.rebates[key]}
                   onChange={(e) => updateNested("rebates", key, e.target.value)}
                 />
@@ -320,24 +331,30 @@ export default function TaxYearConfigForm(
           </div>
         </div>
         {/* --- GROUP 4:Thresholds ------------------------------------------------- */}
-        <div id="taxform-group4">
-          <h5 className="formSectionHead">Tax Thresholds (R)</h5>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div id="taxform-group4" aria-labelledby="taxThresholdsInput">
+          <h5 className="formSectionHead" id="taxThresholdsInput">Tax Thresholds (R)</h5>
+          {/* TAX THRESHOLDS: value={form.thresholds[key]} */}
+          <div id="tax-threshold-div">
             {[
               ["under65", "Under 65"],
               ["age65to74", "65 to below 75"],
               ["age75plus", "75 and older"],
             ].map(([key, text]) => (
-              <div key={key}>
+              <div key={key} className="tax-threshold-div">
                 <label 
-                className="tax-form-label"
-                >{text}</label>
+                  className="tax-form-label"
+                   htmlFor="tax-threshold-input"
+                   >
+                   {text}:
+                   </label>
                 <input
                   type="number"
                   className="tax-field"
-                  // className={fieldCls(`threshold-${key}`)}
+                  id="tax-threshold-input"
+                  // placeholder=""
                   value={form.thresholds[key]}
                   onChange={(e) => updateNested("thresholds", key, e.target.value)}
+                  // ARIA ATTRIBUTES
                 />
                 {errors[`threshold-${key}`] && (
                   <p className={errText}>{errors[`threshold-${key}`]}</p>
@@ -347,17 +364,22 @@ export default function TaxYearConfigForm(
           </div>
         </div>
 </div>
-        {/* --- Actions ------------------------------------------------- */}
+        {/* ---  GROUP 5: Actions ------------------------------------------------- */}
         <div id="taxform-group5">
+        {/* STACK 4: FORM ACTIONS (BUTTONS) */}
         <Stack direction="horizontal" gap={3} id="tax-actions-stack">
       <div className="p-2"></div>
       <div className="p-2 ms-auto">
+      {/* SUBMIT TAXCONFIG FORM BUTTON */}
            <Button
             variant="light"
             type="submit"
             disabled={status === "saving"}
            id="submitTaxDataBtn"
+          //  ARIA ATTRIBUTES
            role="button"
+          //  aria-label=""
+          aria-disabled={status === "saving"}
           >
             <Save size={16} fontWeight={700} aria-hidden='true' focusable='false'/>
             {status === "saving"
@@ -367,18 +389,20 @@ export default function TaxYearConfigForm(
               : "Create tax year"}
           </Button>
       </div>
-      <div className="p-2"><Button
+      <div className="p-2">
+      {/* RESET/CLEAR FORM BUTTON */}
+      <Button
           variant="danger"
           type="button"
             onClick={resetForm}
             id="clearFormBtn"
+            // ARIA ATTRIBUTES
+            aria-label="reset tax config form"
           >
-            <RotateCcw size={16} /> Reset
-          </Button></div>
+            <RotateCcw size={16} aria-hidden='true' focusable='false' /> Reset
+          </Button>
+        </div>
     </Stack>
-       
-       
-          
         </div>
       </form>
     </div>
