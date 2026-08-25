@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import MainHeader from '../components/MainHeader'
 import LoginForm from '../components/LoginForm';
+import { Link } from 'react-router-dom';
 
 export default function Login({userData, setUserData, setError, loggedIn, setLoggedIn, setCurrentUser}) {
 
@@ -92,6 +93,9 @@ export default function Login({userData, setUserData, setError, loggedIn, setLog
               setUserData={setUserData}
               submitLogin={submitLogin}
             />
+            <div id='login-link-block'>
+              <Link>FORGOT PASSWORD</Link>
+            </div>
           </div>
         </Col>
         <Col id='login-col2'/>

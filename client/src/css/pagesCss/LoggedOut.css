@@ -17,10 +17,14 @@ LAYOUT
 ===========*/
 #login-panal{
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 70%;
     margin: 0px;
     padding: 10px 0px;
+    background-color: #9E9E9E;
+    gap: 10px;
 }
 /* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #loginRow{
@@ -31,8 +35,9 @@ LAYOUT
 }
 #login-col{
     margin: 0px;
-    padding: 0px;
+    padding: 10px 0px;
     display: flex;
+    justify-content: center;
 
 }
 #login-col1,
