@@ -1,22 +1,35 @@
+//Registration.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/LoggedOut.css'
-import '../css/componentCss/Footer.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Stack from 'react-bootstrap/Stack';
-
+// IMPORT CUSTOM COMPONENTS
 import MainHeader from '../components/MainHeader'
 import RegistrationForm from '../components/RegistrationForm';
+import PageFooter from '../components/PageFooter';
+// IMPORT REACT-ROUTER COMPONENTS/HOOKS
 import { useNavigate } from 'react-router-dom';
 // IMPORT UTILITY FUNCTIONS
-import { emptyNewUserData } from '../utils/userFunc';
+import { emptyNewUserData } from '../utils/userFunc'
 
-export default function Registration({setError}) {
+//============MAIN REGISTRATION COMPONENT=============
+export default function Registration(//Export default Registration function component
+  {//PROPS PASSED FROM PARENT COMPONENT (App.js)
+    setError
+  }) {
+  // =========STATE VARIABLES=============
   const [newUserData, setNewUserData] = useState(emptyNewUserData)
 
-  const navigate = useNavigate();
+  //======================NAVIGATION HOOK========================
+  const navigate = useNavigate();// Hook to navigate between different Pages
 
+  //======================CALLBACKS/REQUEST FUNCTIONS========================
+  //Function to register a new user
+  //send registration request to 'http://localhost:3001/auth/register'
   const addUser = useCallback(async () => {
     try {
       setError?.(null);
@@ -70,27 +83,7 @@ export default function Registration({setError}) {
         </Col>
       </Row>
       </section>
-      <footer className='pageFooter'>
-        <Row id='footerRow1'>
-          <Col id='footer-col1'>
-            <Stack direction="horizontal" gap={3} id='page-footer-stack'>
-      <div className="p-2"></div>
-      <div className="p-2 ms-auto"></div>
-      <div className="p-2"></div>
-    </Stack>
-          </Col>
-        </Row>
-         {/* Row 3: CopyRight Information */}
-      <Row id='copyRightRow'>
-        <Col xs={0} md id='copyRightCol1'/>
-        <Col xs={12} md={4} id='copyRightCol'>
-          <div id='copyright-div' >
-            <p id='copyrightText' aria-label='copy right details' aria-live='polite' >© 2026 Tax Calculator App. All rights reserved.</p>
-          </div>
-        </Col>
-        <Col xs={0} md id='copyRightCol2'/>
-      </Row>
-      </footer>
+      <PageFooter/>
     </div>
   )
 }
