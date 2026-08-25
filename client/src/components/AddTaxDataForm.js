@@ -1,10 +1,14 @@
 // AddTaxDataForm.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useState } from "react";
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/TaxForm.css'
 import '../css/componentCss/FormSetup.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { Plus, Trash2, Save, RotateCcw, CheckCircle2, AlertCircle } from "lucide-react";
 // IMPORT UTILITY FUNCTIONS
 import {
@@ -17,11 +21,11 @@ import {
 // ---------------------------------------------------------------------------
 /*TaxYearConfigForm function component: Admin form to add or update a SARS tax year configuration:
 brackets, rebates, and thresholds — matching the TaxYearConfig schema.*/
-export default function TaxYearConfigForm(
+export default function TaxYearConfigForm(//Export default TaxYearConfigForm component
   {//PROPS PASSED FROM PARENT COMPONENT(TaxData.js)
-     initialData = null,//existing TaxYearConfig object to edit (omit to "add" new)
-      onSubmit//async fn called with the assembled payload on save
-     }) {
+    initialData = null,//existing TaxYearConfig object to edit (omit to "add" new)
+    onSubmit//async fn called with the assembled payload on save
+  }) {
   const isEditMode = Boolean(initialData);
   // ==========STATE VARIABLES======================
   const [form, setForm] = useState(() => toTaxYearFormShape(initialData));
@@ -103,16 +107,12 @@ export default function TaxYearConfigForm(
     }
   }
 
-  
-  // const fieldCls = (key) =>
-  //   `tax-field ${errors[key] ? "tax-field-error" : "tax-field-ok"}`;
-  // // const label = "block text-xs font-medium text-gray-600 mb-1";
   const errText = "mt-1 text-xs text-red-600";
 
   //=====================JSX RENDERING================================
   return (
     <div id="tax-form-block">
-    {/* FORM HEADING */}
+      {/* FORM HEADING */}
       <div id="formHeadingBlock">
         <h3 id="formHeading">
           {isEditMode ? "Update Tax Year Configuration" : "Add Tax Year Configuration"}
@@ -134,275 +134,280 @@ export default function TaxYearConfigForm(
         </div>
       )}
       {/* =======FORM============== */}
-      <form onSubmit={handleSubmit}  id="add-tax-data-form">
-      <div id="tax-form-details-input">
-        {/* --- GROUP 1: TAX YEAR IDENTITY ------------------------------------- */}
-      <div id="taxform-group1" aria-labelledby="taxYearHead">
-        <h5 className="formSectionHead" id="taxYearHead">Tax Year</h5>
-        {/* STACK 1: TAX YEAR*/}
-      <Stack  gap={3} id="tax-year-stack">
-      <div className="p-2" id="tax-year-block1">
-          <label className="tax-form-label">Tax year label</label>
-              <input
-                type="text"
-                placeholder="2025-2026"
-                className="tax-field"
-                value={form.taxYear}
-                disabled={isEditMode}
-                onChange={(e) => updateField("taxYear", e.target.value)}
-                // ARIA ATTRIBUTES: 
-                aria-disabled={isEditMode}
-              />
-              {errors.taxYear && <p className={errText}>{errors.taxYear}</p>}
-      </div>
-      <div className="p-2" id="tax-year-block2">
-            <label className='tax-form-label'>Start date:</label>
-              <input
-                type="date"
-                // className={fieldCls("startDate")}
-                className="tax-field"
-                value={form.startDate}
-                onChange={(e) => updateField("startDate", e.target.value)}
-              />
-              {errors.startDate && <p className={errText}>{errors.startDate}</p>}
-      </div>
-      <div className="p-2" id="tax-year-block3">
-           <label 
-              className="tax-form-label"
-              >End date</label>
-              <input
-                type="date"
-                className="tax-field"
-                // name=""
-                value={form.endDate}
-                onChange={(e) => updateField("endDate", e.target.value)}
-              />
-              {errors.endDate && <p className={errText}>{errors.endDate}</p>}
-      </div>
-       <div className="p-2" id="tax-year-block4">
-            <input
-              type="checkbox"
-              className="rounded border-gray-300"
-              checked={form.isActive}
-              onChange={(e) => updateField("isActive", e.target.checked)}
-            />
-             <label className="tax-checkbox-label"> Set as the active tax year (used by default in calculations)
-          </label>
-           </div>
-    </Stack>
-      </div>
-        {/* ---   GROUP 2: BRACKETS ------------------------------------------------ */}
-      <div id="taxform-group2" aria-labelledby="taxBracketsInput">
-      {/* STACK2: INCOME TAX BRACKETS HEADING STACK */}
-    <Stack direction="horizontal" gap={3} id="income-tax-head-stack">
-      <div className="p-2"><h5 className="formSectionHead" id="taxBracketsInput">Income Tax Brackets</h5></div>
-      <div className="p-2 ms-auto"></div>
-      <div className="p-2">
-        <Button
-              type="button"
-              onClick={addBracket}
-              variant="light"
-              id="addIncomeTaxBracket"
-              // ARIA ATTRIBUTES:
-              aria-label="addBracket"
-        >
-<Plus size={16} fontWeight={700} aria-hidden='true' focusable='false'/> Add bracket
-        </Button>
-      </div>
-    </Stack>
-    {/* ---------ERROR MESSAGE---------- */}
-          {errors.brackets && <p className={errText}>{errors.brackets}</p>}
-          {/* ===========BRACKET DATA===================== */}
-          <div id="bracket-data">
-            <ListGroup variant="flush" id="brackets">
-              <ListGroup.Item id="bracketListItem1">Min (R)</ListGroup.Item>
-              <ListGroup.Item id="bracketListItem2">Max (R) — blank = no ceiling</ListGroup.Item>
-              <ListGroup.Item id="bracketListItem3">Base amount (R)</ListGroup.Item>
-              <ListGroup.Item id="bracketListItem4">Rate (%)</ListGroup.Item>
-            </ListGroup>
-            {form.brackets.map((b, i) => (
-              <div
-                key={i}
-                id="form-bracket-layout"
-              >
-              <div id="bracket-input">
-              {/* STACK 3: BRACKET INPUT */}
-              <Stack gap={3} id="bracket-input-stack">
-              {/* input for:  */}
-      <div className="p-2" id="bracket-item1-block">
-          <input
-                    type="number"
-                    placeholder="Min"
-                    className="tax-field"
-                    value={b.min}
-                    onChange={(e) => updateBracket(i, "min", e.target.value)}
-                  />
-                  {errors[`bracket-${i}-min`] && (
-                    <p className={errText}>{errors[`bracket-${i}-min`]}</p>
-                  )}
-      </div>
-      <div className="p-2" id="bracket-item2-block">
-      {/* Input for: (bracket item) */}
-         <input
-                    type="number"
-                    placeholder="No ceiling"
-                    className="tax-field"
-                    value={b.max}
-                    onChange={(e) => updateBracket(i, "max", e.target.value)}
-                  />
-                  {errors[`bracket-${i}-max`] && (
-                    <p className={errText}>{errors[`bracket-${i}-max`]}</p>
-                  )}
-      </div>
-      <div className="p-2" id="bracket-item3-block">
-      {/* Input for: (bracket item) */}
-         <input
-                    type="number"
-                    placeholder="Base amount"
-                    className="tax-field"
-                    value={b.baseAmount}
-                    onChange={(e) => updateBracket(i, "baseAmount", e.target.value)}
-                  />
-                  {errors[`bracket-${i}-baseAmount`] && (
-                    <p className={errText}>{errors[`bracket-${i}-baseAmount`]}</p>
-                  )}
-      </div>
-      <div className="p-2" id="bracket-item4-block">
-      {/* Input for: (bracket item)  */}
-        <input
-                    type="number"
-                    step="0.01"
-                    placeholder="Rate %"
-                    className="tax-field"
-                    value={b.rate}
-                    onChange={(e) => updateBracket(i, "rate", e.target.value)}
-                  />
-                  {errors[`bracket-${i}-rate`] && (
-                    <p className={errText}>{errors[`bracket-${i}-rate`]}</p>
-                  )}
-      </div>
-    </Stack>   
-              </div> 
-              <div id="delete-bracket-div">
-                <Button
-                  variant="danger"
-                  type="button"
-                  onClick={() => removeBracket(i)}
-                  disabled={form.brackets.length === 1}
-                  title="Remove bracket"
-                  size="sm"
-                  id="removeBracketBtn"
+      <form onSubmit={handleSubmit} id="add-tax-data-form">
+        <div id="tax-form-details-input">
+          {/* --- GROUP 1: TAX YEAR IDENTITY ------------------------------------- */}
+          <div id="taxform-group1" aria-labelledby="taxYearHead">
+            <h5 className="formSectionHead" id="taxYearHead">Tax Year</h5>
+            {/* STACK 1: TAX YEAR*/}
+            <Stack gap={3} id="tax-year-stack">
+              <div className="p-2" id="tax-year-block1">
+                <label className="tax-form-label">Tax year label</label>
+                <input
+                  type="text"
+                  placeholder="2025-2026"
+                  className="tax-field"
+                  value={form.taxYear}
+                  disabled={isEditMode}
+                  onChange={(e) => updateField("taxYear", e.target.value)}
                   // ARIA ATTRIBUTES:
-                  aria-label="Delete bracket"
-                  aria-disabled={form.brackets.length === 1}
+                  aria-disabled={isEditMode}
+                />
+                {errors.taxYear && <p className={errText}>{errors.taxYear}</p>}
+              </div>
+              <div className="p-2" id="tax-year-block2">
+              {/* Tax Year Start Date */}
+                <label className='tax-form-label' htmlFor="">Start date:</label>
+                <input
+                  type="date"
+                  className="tax-field"
+                  // id=""
+                  // placeholder=""
+                  value={form.startDate}
+                  onChange={(e) => updateField("startDate", e.target.value)}
+                />
+                {errors.startDate && <p className={errText}>{errors.startDate}</p>}
+              </div>
+              <div className="p-2" id="tax-year-block3">
+                <label
+                  className="tax-form-label" htmlFor=""
+                >End date</label>
+                <input
+                  type="date"
+                  className="tax-field"
+                  // id=""
+                  // placeholder=""
+                  // name=""
+                  value={form.endDate}
+                  onChange={(e) => updateField("endDate", e.target.value)}
+                />
+                {errors.endDate && <p className={errText}>{errors.endDate}</p>}
+              </div>
+              <div className="p-2" id="tax-year-block4">
+                <input
+                  type="checkbox"
+                  className="rounded border-gray-300"
+                  checked={form.isActive}
+                  onChange={(e) => updateField("isActive", e.target.checked)}
+                />
+                <label className="tax-checkbox-label"> Set as the active tax year (used by default in calculations)
+                </label>
+              </div>
+            </Stack>
+          </div>
+          {/* ---   GROUP 2: BRACKETS ------------------------------------------------ */}
+          <div id="taxform-group2" aria-labelledby="taxBracketsInput">
+            {/* STACK2: INCOME TAX BRACKETS HEADING STACK */}
+            <Stack direction="horizontal" gap={3} id="income-tax-head-stack">
+              <div className="p-2"><h5 className="formSectionHead" id="taxBracketsInput">Income Tax Brackets</h5></div>
+              <div className="p-2 ms-auto"></div>
+              <div className="p-2">
+                <Button
+                  type="button"
+                  onClick={addBracket}
+                  variant="light"
+                  id="addIncomeTaxBracket"
+                  // ARIA ATTRIBUTES:
+                  aria-label="addBracket"
                 >
-                  <Trash2 size={16} fontWeight={700} color="#000" aria-hidden='true' focusable='false'/>
+                  <Plus size={16} fontWeight={700} aria-hidden='true' focusable='false'/> Add bracket
                 </Button>
+              </div>
+            </Stack>
+            {/* ---------ERROR MESSAGE---------- */}
+            {errors.brackets && <p className={errText}>{errors.brackets}</p>}
+            {/* ===========BRACKET DATA===================== */}
+            <div id="bracket-data">
+              <ListGroup variant="flush" id="brackets">
+                <ListGroup.Item id="bracketListItem1">Min (R)</ListGroup.Item>
+                <ListGroup.Item id="bracketListItem2">Max (R) — blank = no ceiling</ListGroup.Item>
+                <ListGroup.Item id="bracketListItem3">Base amount (R)</ListGroup.Item>
+                <ListGroup.Item id="bracketListItem4">Rate (%)</ListGroup.Item>
+              </ListGroup>
+              {/* BRACKET INPUT */}
+              {form.brackets.map((b, i) => (
+                <div
+                  key={i}
+                  id="form-bracket-layout"
+                >
+                  <div id="bracket-input">
+                    {/* STACK 3: BRACKET INPUT */}
+                    <Stack gap={3} id="bracket-input-stack">
+                      {/* input for:  */}
+                      <div className="p-2" id="bracket-item1-block">
+                        <input
+                          type="number"
+                          placeholder="Min"
+                          className="tax-field"
+                          value={b.min}
+                          onChange={(e) => updateBracket(i, "min", e.target.value)}
+                        />
+                        {errors[`bracket-${i}-min`] && (
+                          <p className={errText}>{errors[`bracket-${i}-min`]}</p>
+                        )}
+                      </div>
+                      <div className="p-2" id="bracket-item2-block">
+                        {/* Input for: (bracket item) */}
+                        <input
+                          type="number"
+                          placeholder="No ceiling"
+                          className="tax-field"
+                          value={b.max}
+                          onChange={(e) => updateBracket(i, "max", e.target.value)}
+                        />
+                        {errors[`bracket-${i}-max`] && (
+                          <p className={errText}>{errors[`bracket-${i}-max`]}</p>
+                        )}
+                      </div>
+                      <div className="p-2" id="bracket-item3-block">
+                        {/* Input for: (bracket item) */}
+                        <input
+                          type="number"
+                          placeholder="Base amount"
+                          className="tax-field"
+                          value={b.baseAmount}
+                          onChange={(e) => updateBracket(i, "baseAmount", e.target.value)}
+                        />
+                        {errors[`bracket-${i}-baseAmount`] && (
+                          <p className={errText}>{errors[`bracket-${i}-baseAmount`]}</p>
+                        )}
+                      </div>
+                      <div className="p-2" id="bracket-item4-block">
+                        {/* Input for: (bracket item)  */}
+                        <input
+                          type="number"
+                          step="0.01"
+                          placeholder="Rate %"
+                          className="tax-field"
+                          value={b.rate}
+                          onChange={(e) => updateBracket(i, "rate", e.target.value)}
+                        />
+                        {errors[`bracket-${i}-rate`] && (
+                          <p className={errText}>{errors[`bracket-${i}-rate`]}</p>
+                        )}
+                      </div>
+                    </Stack>
+                  </div>
+                  <div id="delete-bracket-div">
+                    <Button
+                      variant="danger"
+                      type="button"
+                      onClick={() => removeBracket(i)}
+                      disabled={form.brackets.length === 1}
+                      title="Remove bracket"
+                      size="sm"
+                      id="removeBracketBtn"
+                      // ARIA ATTRIBUTES:
+                      aria-label="Delete bracket"
+                      aria-disabled={form.brackets.length === 1}
+                    >
+                      <Trash2 size={16} fontWeight={700} color="#000" aria-hidden='true' focusable='false'/>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-      </div>
-        {/* ---   GROUP 3:Rebates ---------------------- */}
-        <div id="taxform-group3" aria-labelledby="annualRebates">
-          <h5 className="formSectionHead" id="annualRebates">Rebates (annual, R)</h5>
-          {/* TAX REBATES value={form.rebates[key]}*/}
-          <div id="rebates-input-block">
-            {[
-              ["primary", "Primary (all taxpayers)"],
-              ["secondary", "Secondary (age 65+)"],
-              ["tertiary", "Tertiary (age 75+)"],
-            ].map(([key, text]) => (
-              <div key={key}>
-                <label className="tax-form-label" htmlFor="rebates-input-field">{text}:</label>
-                <input
-                  type="number"
-                  // placeholder=""
-                  id="rebates-input-field"
-                  className="tax-field"
-                  value={form.rebates[key]}
-                  onChange={(e) => updateNested("rebates", key, e.target.value)}
-                />
-                {errors[`rebate-${key}`] && (
-                  <p className={errText}>{errors[`rebate-${key}`]}</p>
-                )}
-              </div>
-            ))}
+          {/* ---   GROUP 3:Rebates ---------------------- */}
+          <div id="taxform-group3" aria-labelledby="annualRebates">
+            <h5 className="formSectionHead" id="annualRebates">Rebates (annual, R)</h5>
+            {/* TAX REBATES value={form.rebates[key]}*/}
+            <div id="rebates-input-block">
+              {[
+                ["primary", "Primary (all taxpayers)"],
+                ["secondary", "Secondary (age 65+)"],
+                ["tertiary", "Tertiary (age 75+)"],
+              ].map(([key, text]) => (
+                <div key={key}>
+                  <label className="tax-form-label" htmlFor="rebates-input-field">{text}:</label>
+                  <input
+                    type="number"
+                    // placeholder=""
+                    id="rebates-input-field"
+                    className="tax-field"
+                    value={form.rebates[key]}
+                    onChange={(e) => updateNested("rebates", key, e.target.value)}
+                  />
+                  {errors[`rebate-${key}`] && (
+                    <p className={errText}>{errors[`rebate-${key}`]}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* --- GROUP 4:Thresholds ------------------------------------------------- */}
+          <div id="taxform-group4" aria-labelledby="taxThresholdsInput">
+            <h5 className="formSectionHead" id="taxThresholdsInput">Tax Thresholds (R)</h5>
+            {/* TAX THRESHOLDS: value={form.thresholds[key]} */}
+            <div id="tax-threshold-div">
+              {[
+                ["under65", "Under 65"],
+                ["age65to74", "65 to below 75"],
+                ["age75plus", "75 and older"],
+              ].map(([key, text]) => (
+                <div key={key} className="tax-threshold-div">
+                  <label
+                    className="tax-form-label"
+                    htmlFor="tax-threshold-input"
+                  >
+                    {text}:
+                  </label>
+                  <input
+                    type="number"
+                    className="tax-field"
+                    id="tax-threshold-input"
+                    // placeholder=""
+                    value={form.thresholds[key]}
+                    onChange={(e) => updateNested("thresholds", key, e.target.value)}
+                    // ARIA ATTRIBUTES
+                  />
+                  {errors[`threshold-${key}`] && (
+                    <p className={errText}>{errors[`threshold-${key}`]}</p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        {/* --- GROUP 4:Thresholds ------------------------------------------------- */}
-        <div id="taxform-group4" aria-labelledby="taxThresholdsInput">
-          <h5 className="formSectionHead" id="taxThresholdsInput">Tax Thresholds (R)</h5>
-          {/* TAX THRESHOLDS: value={form.thresholds[key]} */}
-          <div id="tax-threshold-div">
-            {[
-              ["under65", "Under 65"],
-              ["age65to74", "65 to below 75"],
-              ["age75plus", "75 and older"],
-            ].map(([key, text]) => (
-              <div key={key} className="tax-threshold-div">
-                <label 
-                  className="tax-form-label"
-                   htmlFor="tax-threshold-input"
-                   >
-                   {text}:
-                   </label>
-                <input
-                  type="number"
-                  className="tax-field"
-                  id="tax-threshold-input"
-                  // placeholder=""
-                  value={form.thresholds[key]}
-                  onChange={(e) => updateNested("thresholds", key, e.target.value)}
-                  // ARIA ATTRIBUTES
-                />
-                {errors[`threshold-${key}`] && (
-                  <p className={errText}>{errors[`threshold-${key}`]}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-</div>
         {/* ---  GROUP 5: Actions ------------------------------------------------- */}
         <div id="taxform-group5">
-        {/* STACK 4: FORM ACTIONS (BUTTONS) */}
-        <Stack direction="horizontal" gap={3} id="tax-actions-stack">
-      <div className="p-2"></div>
-      <div className="p-2 ms-auto">
-      {/* SUBMIT TAXCONFIG FORM BUTTON */}
-           <Button
-            variant="light"
-            type="submit"
-            disabled={status === "saving"}
-           id="submitTaxDataBtn"
-          //  ARIA ATTRIBUTES
-           role="button"
-          //  aria-label=""
-          aria-disabled={status === "saving"}
-          >
-            <Save size={16} fontWeight={700} aria-hidden='true' focusable='false'/>
-            {status === "saving"
-              ? "Saving..."
-              : isEditMode
-              ? "Update tax year"
-              : "Create tax year"}
-          </Button>
-      </div>
-      <div className="p-2">
-      {/* RESET/CLEAR FORM BUTTON */}
-      <Button
-          variant="danger"
-          type="button"
-            onClick={resetForm}
-            id="clearFormBtn"
-            // ARIA ATTRIBUTES
-            aria-label="reset tax config form"
-          >
-            <RotateCcw size={16} aria-hidden='true' focusable='false' /> Reset
-          </Button>
-        </div>
-    </Stack>
+          {/* STACK 4: FORM ACTIONS (BUTTONS) */}
+          <Stack direction="horizontal" gap={3} id="tax-actions-stack">
+            <div className="p-2"></div>
+            <div className="p-2 ms-auto">
+              {/* SUBMIT TAXCONFIG FORM BUTTON */}
+              <Button
+                variant="light"
+                type="submit"
+                disabled={status === "saving"}
+                id="submitTaxDataBtn"
+                //  ARIA ATTRIBUTES
+                role="button"
+                //  aria-label=""
+                aria-disabled={status === "saving"}
+              >
+                <Save size={16} fontWeight={700} aria-hidden='true' focusable='false'/>
+                {status === "saving"
+                  ? "Saving..."
+                  : isEditMode
+                  ? "Update tax year"
+                  : "Create tax year"}
+              </Button>
+            </div>
+            <div className="p-2">
+              {/* RESET/CLEAR FORM BUTTON */}
+              <Button
+                variant="danger"
+                type="button"
+                onClick={resetForm}
+                id="clearFormBtn"
+                // ARIA ATTRIBUTES
+                aria-label="reset tax config form"
+              >
+                <RotateCcw size={16} aria-hidden='true' focusable='false' /> Reset
+              </Button>
+            </div>
+          </Stack>
         </div>
       </form>
     </div>
