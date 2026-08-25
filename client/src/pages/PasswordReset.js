@@ -1,6 +1,7 @@
 // ResetPassword.js
 //IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/ForgotPassword.css'
 import '../css/pagesCss/PageSetup.css'
 import '../css/componentCss/FormSetup.css'
@@ -10,12 +11,15 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Stack from 'react-bootstrap/Stack'
 import Button from 'react-bootstrap/Button'
+//IMPORT COMPONENTS FROM REACT-ROUTER-DOM
 import { useParams, Link } from 'react-router-dom'
+//IMPORT CUSTOM COMPONENTS
 import PageFooter from '../components/PageFooter'
 
 //ResetPassword Function component
 export default function PasswordReset() {
     const {token} = useParams()
+    // ===========STATE VARIABLES===============
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [passwordMsg, setPasswordMsg] = useState(false)// Controls whether the password information message is shown
@@ -23,6 +27,8 @@ export default function PasswordReset() {
     const [successMsg, setSuccessMsg] = useState('')// Stores success message returned by the backend
     const [error, setError] = useState('')// Stores any error message
 
+    // =============REQUEST/CALLBACK FUNCTIONS==================
+    // Function to submit password reset
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault()
         setError('')
@@ -62,7 +68,7 @@ export default function PasswordReset() {
         }
     },[token, password, confirmPassword])
 
-    //==================================
+    //================JSX RENDERING==================
   return (
     <div aria-labelledby='pageTitle'>
         {/* -------Screen Reader heading------------ */}
