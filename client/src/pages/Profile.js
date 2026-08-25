@@ -1,27 +1,35 @@
 // Profile.js
-import React, { useState } from 'react'
+//IMPORT REQUIRED MODULES AND PACKAGES
+import React, { useState, useCallback } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Profile.css'
 import '../css/componentCss/DetailsPanal.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import EditPasswordForm from '../components/EditPasswordForm';
 import EditUserForm from '../components/EditUserForm';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { User } from 'lucide-react';
-import { useCallback } from 'react';
 // IMPORT UTILITY FUNCTIONS
-import {
-  buildEditUserPayload,
-  emptyEditUserData,
-  orPlaceholder,
-  toUserDate
-} from '../utils/userFunc';
+import { buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
 
-export default function Profile({currentUser, setCurrentUser, logout, setError}) {
+// ======MAIN PROFILE FUNCTION COMPONENT
+export default function Profile(
+  {//PROPS PASSED FROM PARENT COMPONENT (App.js)
+    currentUser, 
+    setCurrentUser, 
+    logout, 
+    setError
+  }
+  ) {
+    //=========STATE VARIABLES==================
   const [showEditUser, setShowEditUser] = useState(false)
   const [showEditPswd, setShowEditPswd] = useState(false)
   const [editUserData, setEditUserData] = useState(emptyEditUserData)
@@ -33,17 +41,19 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
   page still renders while the user details are being fetched*/
   const { fullName, email, dateOfBirth, address, admin } = currentUser || {}
 
-  const toggleEditUserForm = () => {
+  // ==========EVENT LISTENERS============
+  //Function to toggle edit user form
+  const toggleEditUserForm = useCallback(() => {
     setShowEditUser(prev => (!prev))
-    setShowEditPswd(false)
-  }
-  const toggleEditPswdForm = () => {
+    setShowEditPswd(false)//Hide edit password form
+  },[])
+  // Function to toggle Edit Password form
+  const toggleEditPswdForm = useCallback(() => {
     setShowEditPswd(prev => (!prev))
-    setShowEditUser(false)
-  }
+    setShowEditUser(false)//Hide edit user form
+  },[])
 
   // ======REQUESTS/CALLBACKS===========
-
   /* Report a validation/request failure in one place: inline message and
      parent error state stay in sync */
   const failWith = useCallback((msg) => {
@@ -75,8 +85,8 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
       }
 
       const response = await fetch('http://localhost:3001/users/editUser', {
-        method: 'PATCH',
-        mode: 'cors',
+        method: 'PATCH',//HTTP request method
+        mode: 'cors',//Enable CORS for Cross Origin Resource Sharing
         headers: {
           'Content-Type': 'application/json',// Specify the Content-Type in the request payload
           'Authorization': `Bearer ${token}`,// Attach JWT token for authorization
@@ -108,9 +118,12 @@ export default function Profile({currentUser, setCurrentUser, logout, setError})
       setEditUserLoading(false)//Set Loading state to false
     }
   },[editUserData, setCurrentUser, setError, failWith])
-  //=======================================
+
+  //=============JSX RENDERING==========================
   return (
-    <div id='pageContainer' role='main'>
+    <div id='pageContainer' role='main' aria-labelledby='pageTitle'>
+    {/* ---------Screen Reader Page Heading-------------- */}
+    <p className='visually-hidden' id='pageTitle'>PROFILE PAGE</p>
     {/* =========HEADER========= */}
     {/* Render the Header.js function component 
     with 'PROFILE' as the pageHeader */}
