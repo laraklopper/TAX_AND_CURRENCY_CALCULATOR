@@ -2,6 +2,7 @@
 /* Income tax endpoints, mounted at /api/tax by app.js.
 
   GET    /config      - tax years the calculator can work with
+  POST   /config      - create or update a tax year configuration (admin only)
   POST   /calculate   - work out the tax payable (returns a result, saves nothing)
   POST   /save        - save a calculation to the logged in user's history
   GET    /history     - the logged in user's saved calculations
@@ -22,10 +23,11 @@ require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
 // IMPORT CUSTOM MIDDLEWARE
-const { checkJwtToken } = require('./middleware');
+const { checkJwtToken, checkAdmin, generalRateLimiter } = require('./middleware');
 // Import schemas
 const User = require('../models/userSchema');
 const TaxCalc = require('../models/taxCalcSchema');
+const TaxYearConfig = require('../models/TaxYearSchema');
 // Import Utility functions
 const { calculateTax, getTaxYearConfig, listTaxYears } = require('../utils/taxCalculator');
 
@@ -40,6 +42,134 @@ const MAX_INCOME = 1_000_000_000;
 history grows without limit, so the newest records are returned and the total
 is reported alongside them rather than the response growing unbounded. */
 const HISTORY_LIMIT = 100;
+/* Most brackets a submitted tax year configuration may contain. SARS has never
+published more than seven, so this only guards against a runaway payload. */
+const MAX_BRACKETS = 12;
+// The tax year label the client sends, e.g. "2025-2026"
+const TAX_YEAR_PATTERN = /^\d{4}-\d{4}$/;
+
+/*=====================================
+TAX YEAR CONFIG VALIDATION
+=======================================*/
+// True for a real, finite number that is zero or more
+const isPositiveNumber = (value) => typeof value === 'number' && Number.isFinite(value) && value >= 0;
+
+/* Parses a YYYY-MM-DD date, which is the format an <input type="date"> submits.
+The parsed date is formatted back and compared to what came in, because
+`new Date` silently ROLLS OVER an impossible day - '2025-02-30' becomes 2 March
+rather than an invalid date - and a start date that quietly moved would put the
+year of assessment a day or two out. Returns null when the date is unusable. */
+const parseIsoDate = (value) => {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const parsed = new Date(value);
+    if (isNaN(parsed.getTime())) return null;
+    return parsed.toISOString().slice(0, 10) === value ? parsed : null;
+};
+
+/* Validates a whole tax year configuration submitted by the admin form:
+taxYear, the two dates, the brackets and the rebate and threshold sets.
+
+This repeats the checks AddTaxDataForm.js already runs in the browser, because
+the browser's copy can be bypassed - this is the one that decides what reaches
+the database, and a bad configuration here would silently mis-tax every
+calculation made against the year.
+
+Returns a message describing the first problem found, or null when the
+configuration is usable. */
+const validateTaxYearConfig = (body = {}) => {
+    const { taxYear, startDate, endDate, brackets, rebates, thresholds } = body;
+
+    // Conditional rendering to validate the tax year label
+    if (typeof taxYear !== 'string' || !TAX_YEAR_PATTERN.test(taxYear.trim())) {
+        return 'taxYear must use the format YYYY-YYYY, e.g. 2025-2026';
+    }
+
+    // Conditional rendering to validate the two dates bounding the tax year
+    const start = parseIsoDate(startDate);
+    const end = parseIsoDate(endDate);
+    if (!start) return 'startDate must be a real date in the format YYYY-MM-DD';
+    if (!end) return 'endDate must be a real date in the format YYYY-MM-DD';
+    if (start >= end) return 'endDate must be after startDate';
+
+    // Conditional rendering to validate the bracket list itself
+    if (!Array.isArray(brackets) || brackets.length === 0) {
+        return 'brackets must be a list containing at least one bracket';
+    }
+    if (brackets.length > MAX_BRACKETS) {
+        return `brackets must contain no more than ${MAX_BRACKETS} brackets`;
+    }
+
+    /* Each bracket is checked against the one before it as well as on its own:
+    the brackets have to run on from one another, because a gap or an overlap
+    would leave an income that either no bracket or two brackets can tax. */
+    for (let i = 0; i < brackets.length; i++) {
+        const { min, max, baseAmount, rate } = brackets[i] ?? {};
+        const label = `brackets[${i}]`;
+
+        if (!isPositiveNumber(min)) return `${label}.min must be a number of 0 or more`;
+        if (!isPositiveNumber(baseAmount)) return `${label}.baseAmount must be a number of 0 or more`;
+        /* Rates are stored as decimal fractions (0.18 for 18%), which is what
+        the form converts its percentages back to before sending. */
+        if (typeof rate !== 'number' || !Number.isFinite(rate) || rate <= 0 || rate > 1) {
+            return `${label}.rate must be a decimal fraction greater than 0 and no more than 1`;
+        }
+
+        /* A null ceiling marks the top bracket, which has no upper limit, so
+        only the last bracket is allowed one. */
+        const isLast = i === brackets.length - 1;
+        if (max === null || max === undefined) {
+            if (!isLast) return `${label}.max is required: only the last bracket may have no ceiling`;
+        } else {
+            if (!isPositiveNumber(max)) return `${label}.max must be a number of 0 or more, or null`;
+            if (max <= min) return `${label}.max must be greater than ${label}.min`;
+        }
+
+        // Conditional rendering to check this bracket carries on from the previous one
+        if (i > 0) {
+            const previousMax = brackets[i - 1]?.max;
+            if (min !== previousMax + 1) {
+                return `${label}.min must be ${previousMax + 1}, carrying on from the previous bracket`;
+            }
+        }
+    }
+
+    // Conditional rendering to validate the three rebates and three thresholds
+    for (const key of ['primary', 'secondary', 'tertiary']) {
+        if (!isPositiveNumber(rebates?.[key])) return `rebates.${key} must be a number of 0 or more`;
+    }
+    for (const key of ['under65', 'age65to74', 'age75plus']) {
+        if (!isPositiveNumber(thresholds?.[key])) return `thresholds.${key} must be a number of 0 or more`;
+    }
+
+    return null;
+};
+
+/* Rebuilds the configuration from the request body field by field, so only the
+fields below can ever reach the database: taking the body as it arrives would
+let a request set `_id` or `createdAt` as well. Runs after
+validateTaxYearConfig, so every figure read here is already known to be sound. */
+const parseTaxYearConfig = (body = {}) => ({
+    taxYear: body.taxYear.trim(),
+    startDate: parseIsoDate(body.startDate),
+    endDate: parseIsoDate(body.endDate),
+    brackets: body.brackets.map((bracket) => ({
+        min: bracket.min,
+        max: bracket.max === undefined ? null : bracket.max,
+        baseAmount: bracket.baseAmount,
+        rate: bracket.rate,
+    })),
+    rebates: {
+        primary: body.rebates.primary,
+        secondary: body.rebates.secondary,
+        tertiary: body.rebates.tertiary,
+    },
+    thresholds: {
+        under65: body.thresholds.under65,
+        age65to74: body.thresholds.age65to74,
+        age75plus: body.thresholds.age75plus,
+    },
+    isActive: Boolean(body.isActive),
+});
 
 /*=====================================
 SHARED INPUT VALIDATION
@@ -133,6 +263,87 @@ router.get('/history', checkJwtToken, async (req, res) => {
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
  ─────────────────────────────────────────────────────────────────────────*/
+/*=====================================
+TAX YEAR CONFIG
+=======================================*/
+/* Saves the tax year configuration captured by AddTaxDataForm.js: the
+brackets, rebates and thresholds every tax calculation for that year is worked
+out from.
+
+The tax year LABEL is the identity of a configuration, not an id from the
+request: a year that already exists is updated in place, a year that does not
+is created. The admin form therefore posts the same way whether it is adding a
+year or correcting one, and a correction can never quietly create a second,
+competing copy of a year that is already there.
+
+Admin only, because these figures decide what every user's calculations return.
+The admin flag is re-read from the database by checkAdmin rather than trusted
+from the token. */
+router.post('/config', checkJwtToken, checkAdmin, generalRateLimiter, async (req, res) => {
+    const validationMessage = validateTaxYearConfig(req.body);
+    // Conditional rendering to check the submitted configuration is usable
+    if (validationMessage) {
+        console.warn('[WARN: taxRoutes.js, POST /config] Rejected:', validationMessage);// Log a warning message in the console for debugging purposes
+        return res.status(400).json({ success: false, message: validationMessage });// Send a 400 (Bad Request) status code with a message
+    }
+
+    try {
+        const config = parseTaxYearConfig(req.body);
+
+        /* Looked up first so the response can say whether the year was created
+        or updated, which is what tells the form which message to show. */
+        const existing = await TaxYearConfig.findOne({ taxYear: config.taxYear }).select('_id').lean().exec();
+
+        const saved = existing
+            ? await TaxYearConfig.findOneAndUpdate(
+                { taxYear: config.taxYear },
+                config,
+                { new: true, runValidators: true }// Return the updated document, checked against the schema
+            ).exec()
+            : await TaxYearConfig.create(config);
+
+        /* Only ONE year can be the active one: GET /config and the calculator
+        both resolve the current year with `findOne({ isActive: true })`, so a
+        second active year would make which figures get used arbitrary. Standing
+        the new year up therefore stands the previous one down. */
+        if (saved.isActive) {
+            const standDown = await TaxYearConfig.updateMany(
+                { _id: { $ne: saved._id }, isActive: true },
+                { isActive: false }
+            ).exec();
+            if (standDown.modifiedCount > 0) {
+                console.log('[SUCCESS: taxRoutes.js, POST /config] Stood down', standDown.modifiedCount, 'previously active tax year(s)');
+            }
+        }
+
+        console.log('[SUCCESS: taxRoutes.js, POST /config]', existing ? 'Updated' : 'Created', 'tax year', saved.taxYear);
+        return res.status(existing ? 200 : 201).json({
+            success: true,
+            message: existing
+                ? `Tax year ${saved.taxYear} updated`
+                : `Tax year ${saved.taxYear} created`,
+            config: saved,// Returned so the form can carry on editing the saved year
+        });
+    } catch (error) {
+        // A schema validation failure is the admin's input, not a server fault
+        if (error.name === 'ValidationError') {
+            console.error('[ERROR: taxRoutes.js, POST /config] Validation failed:', error.message);
+            return res.status(400).json({ success: false, message: error.message });// Send a 400 (Bad Request) status code with a message
+        }
+        /* A duplicate key on the unique taxYear index: the year was created by
+        another request between the lookup above and the write. */
+        if (error.code === 11000) {
+            console.warn('[WARN: taxRoutes.js, POST /config] Tax year already exists:', req.body?.taxYear);
+            return res.status(409).json({
+                success: false,
+                message: 'That tax year has just been saved by someone else. Reload the page and try again.'
+            });// Send a 409 (Conflict) status code with a message
+        }
+        console.error('[ERROR: taxRoutes.js, POST /config]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
+
 /*=====================================
 TAX CALCULATION
 =======================================*/
