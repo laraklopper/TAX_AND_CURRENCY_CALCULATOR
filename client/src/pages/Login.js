@@ -1,15 +1,29 @@
+// Login.js : pageHeading: LOGIN
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/LoggedOut.css'
-import '../css/componentCss/Footer.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import MainHeader from '../components/MainHeader'
 import LoginForm from '../components/LoginForm';
+//IMPORT COMPONENTS FROM REACT-ROUTER-DOM
 import { Link } from 'react-router-dom';
+//IMPORT CUSTOM COMPONENTS
 import PageFooter from '../components/PageFooter';
 
-export default function Login({userData, setUserData, setError, loggedIn, setLoggedIn, setCurrentUser}) {
+//=======MAIN LOGIN FUNCTION COMPONENT=========
+export default function Login(//Export the default Login function component
+  {//PROPS PASSED FROM PARENT COMPONENT (App.js)
+    userData, 
+    setUserData, 
+    setError, 
+    loggedIn, 
+    setLoggedIn, 
+    setCurrentUser
+  }) {
 
   /* Clear any half-finished session. Called whenever a login attempt does not
   end in a usable token, so a stale token from an earlier session is never left
@@ -80,27 +94,40 @@ export default function Login({userData, setUserData, setError, loggedIn, setLog
       console.error('[ERROR: Login.js]: Login error:', error);
     }
   },[userData.email, userData.password, setUserData, setError, setLoggedIn, setCurrentUser, clearStoredSession])
+  
+  //==================JSX RENDERING====================
   return (
-    <div id='pageContainer' role='main'>
+    <div id='pageContainer' role='main' aria-labelledby='pageTitle'>
+     {/* ---------Screen Reader Page Heading-------------- */}
+      <p className='visually-hidden' id='pageTitle'>LOGIN PAGE</p>
+    {/* Render the MainHeader.js component with 'LOGIN' Page Heading */}
       <MainHeader mainHeading='LOGIN'/>
+      {/* ===================
+      SECTION 1: Login Form + Link to Forgot Password page
+      =============== */}
       <section id='login-section1'>
+      {/* Row 1: Login Row */}
         <Row id='loginRow'>
         <Col id='login-col1'/>
         <Col xs={6} id='login-col'>
           <div id='login-panal'>
+          {/* RENDER THE LoginForm.js function component */}
             <LoginForm
               userData={userData}
               setUserData={setUserData}
               submitLogin={submitLogin}
             />
             <div id='login-link-block'>
-              <Link>FORGOT PASSWORD</Link>
+              <Link id='loginLink' to='/forgotPassword'>FORGOT PASSWORD</Link>
             </div>
           </div>
         </Col>
         <Col id='login-col2'/>
       </Row>
       </section>
+      {/* ==================
+      FOOTER: Render the PageFooter.js function component
+      ============== */}
         <PageFooter/>
     </div>
   )
