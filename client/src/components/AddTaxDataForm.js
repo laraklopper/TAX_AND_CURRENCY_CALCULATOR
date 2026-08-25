@@ -20,30 +20,61 @@ import {
 
 // ---------------------------------------------------------------------------
 /*TaxYearConfigForm function component: Admin form to add or update a SARS tax year configuration:
-brackets, rebates, and thresholds — matching the TaxYearConfig schema.*/
+brackets, rebates, and thresholds — matching the TaxYearConfig schema.
+
+FORM BREAKDOWN — the five groups rendered below, in order:
+  GROUP 1 (Tax Year)    : which year this config is for — label, start/end date, active flag
+  GROUP 2 (Brackets)    : the repeating sliding-scale rows (min, max, base amount, rate)
+  GROUP 3 (Rebates)     : flat annual amounts subtracted from the tax owed, by age band
+  GROUP 4 (Thresholds)  : income levels below which no tax is payable, by age band
+  GROUP 5 (Actions)     : submit and reset buttons
+
+DATA FLOW — one round trip through this component:
+  1. initialData (or null) -> toTaxYearFormShape() -> `form` state, where EVERY value is
+     a string, because that is what controlled <input> elements need.
+  2. Typing calls one of the update* helpers, which replace `form` immutably.
+  3. Submitting runs validateTaxYearForm() -> `errors`, which drives the red messages
+     and the aria-invalid flags on each field.
+  4. If clean, buildTaxYearPayload() converts the strings back to numbers/dates and the
+     result is handed to the onSubmit prop — this component never talks to the API itself.*/
 export default function TaxYearConfigForm(//Export default TaxYearConfigForm component
   {//PROPS PASSED FROM PARENT COMPONENT(TaxData.js)
     initialData = null,//existing TaxYearConfig object to edit (omit to "add" new)
     onSubmit//async fn called with the assembled payload on save
   }) {
+  /* One flag decides all the add-vs-update differences: the heading text, whether the
+  tax year label is locked, and the wording of the success message. */
   const isEditMode = Boolean(initialData);
   // ==========STATE VARIABLES======================
+  /* form: every field the admin can type into, held as strings and seeded from
+  initialData (or blank defaults when adding). Passed to useState as a function so the
+  shape is only built on the first render, not on every re-render. */
   const [form, setForm] = useState(() => toTaxYearFormShape(initialData));
+  /* errors: field-name -> message map produced by validateTaxYearForm. Empty = valid.
+  Keys match the field names ("taxYear", "bracket-0-min", "rebate-primary", ...) so each
+  input can look up its own message. */
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null); // null | "saving" | "success" | "error"
-  const [statusMessage, setStatusMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");// text shown in the status banner
 
   // --- field helpers ---------------------------------------------------
+  /* All four helpers below rebuild `form` instead of mutating it — React only re-renders
+  when it sees a new object reference, so spreading (...) is what makes the typing show up. */
 
+  /* updateField: sets one top-level field (taxYear, startDate, endDate, isActive). */
   const updateField = (field, value) =>
     setForm((prev) => ({ ...prev, [field]: value }));
 
+  /* updateNested: sets one field inside a nested object — used for the rebates and
+  thresholds groups, e.g. updateNested("rebates", "primary", "17235"). */
   const updateNested = (group, field, value) =>
     setForm((prev) => ({
       ...prev,
       [group]: { ...prev[group], [field]: value },
     }));
 
+  /* updateBracket: sets one field on one bracket row. Maps over the array and only
+  replaces the row at `index`, leaving the other rows as the same objects. */
   const updateBracket = (index, field, value) =>
     setForm((prev) => ({
       ...prev,
@@ -52,15 +83,20 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
       ),
     }));
 
+  /* addBracket: appends a blank row so the admin can enter another bracket. */
   const addBracket = () =>
     setForm((prev) => ({ ...prev, brackets: [...prev.brackets, emptyBracket()] }));
 
+  /* removeBracket: drops the row at `index`. The delete button is disabled at one row,
+  so the form can never end up with an empty bracket list. */
   const removeBracket = (index) =>
     setForm((prev) => ({
       ...prev,
       brackets: prev.brackets.filter((_, i) => i !== index),
     }));
 
+  /* resetForm: discards edits and goes back to the starting values — the saved record
+  when editing, or blank fields when adding. Also clears errors and the status banner. */
   const resetForm = () => {
     setForm(toTaxYearFormShape(initialData));
     setErrors({});
@@ -79,19 +115,24 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
 
   // --- submit --------------------------------------------------------
 
+  /* handleSubmit: runs on form submit — validate, build the payload, hand it to the
+  parent, then report the outcome through the status banner. */
   async function handleSubmit(e) {
-    e.preventDefault();
-    setStatus(null);
+    e.preventDefault();// stop the browser doing a full page reload
+    setStatus(null);// clear any banner left over from the previous attempt
 
+    // BLOCK 1: refuse to submit while any field is invalid
     if (!validate()) {
       setStatus("error");
       setStatusMessage("Please fix the highlighted fields.");
       return;
     }
 
+    // BLOCK 2: convert the string form values into the schema's numbers and dates
     const payload = buildTaxYearPayload(form);
-    setStatus("saving");
+    setStatus("saving");// disables the submit button while the request is in flight
     try {
+      // BLOCK 3: the parent owns the actual create/update request
       if (onSubmit) {
         await onSubmit(payload);
       }
@@ -102,12 +143,13 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
           : `Tax year ${payload.taxYear} created.`
       );
     } catch (err) {
+      // BLOCK 4: surface the server's message, or a generic one if it sent none
       setStatus("error");
       setStatusMessage(err?.message || "Something went wrong while saving.");
     }
   }
 
-  const errText = "mt-1 text-xs text-red-600";
+  const errText = "mt-1 text-xs text-red-600";// shared styling for every field error message
 
   // --- accessibility helpers ---------------------------------------------
 
@@ -116,6 +158,18 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
   const describedBy = (key) => (errors[key] ? `${key}-error` : undefined);
 
   //=====================JSX RENDERING================================
+  /* MARKUP BREAKDOWN — the nesting the styles depend on:
+    #tax-form-block                     outer wrapper for the whole panel
+      #formHeadingBlock                 heading, switches wording on isEditMode
+      status banner                     rendered only when status is success/error
+      #add-tax-data-form                the <form>; onSubmit -> handleSubmit
+        #tax-form-details-input         holds the four input groups
+          #taxform-group1  + Stack 1    tax year identity
+          #taxform-group2  + Stack 3    brackets: heading row, legend, repeating rows
+          #taxform-group3               rebates, built from a [key, label] array
+          #taxform-group4               thresholds, built from a [key, label] array
+        #taxform-group5    + Stack 4    action buttons, outside the details wrapper
+  Bootstrap <Stack> only handles spacing/direction here — the ids carry the CSS. */
   return (
     <div id="tax-form-block">
       {/* FORM HEADING */}
@@ -157,13 +211,15 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
         aria-labelledby="formHeading"
         aria-busy={status === "saving"}
       >
+        {/* Wrapper for groups 1-4 (the data entry). The action buttons sit outside it so
+        they can be laid out separately from the fields. */}
         <div id="tax-form-details-input">
           {/* --- GROUP 1: TAX YEAR IDENTITY -------------------------------------
           Identifies WHICH tax year this configuration belongs to: its label, the
           period it covers, and whether calculations should default to it. */}
           <div id="taxform-group1" role="group" aria-labelledby="taxYearHead">
             <h5 className="formSectionHead" id="taxYearHead">Tax Year</h5>
-            {/* STACK 1: TAX YEAR*/}
+            {/* STACK 1: TAX YEAR — vertical stack, one .p-2 block per field */}
             <Stack gap={3} id="tax-year-stack">
               <div className="p-2" id="tax-year-block1">
                 {/* INPUT: Tax year label — the "2025-2026" style key used to look this
@@ -250,9 +306,11 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
           The sliding-scale rows SARS publishes for the year. Each row says: for income
           between min and max, charge baseAmount plus rate% of the amount above min. */}
           <div id="taxform-group2" role="group" aria-labelledby="taxBracketsInput">
-            {/* STACK2: INCOME TAX BRACKETS HEADING STACK */}
+            {/* STACK2: INCOME TAX BRACKETS HEADING STACK — horizontal row holding the
+            section title on the left and the "Add bracket" button on the right */}
             <Stack direction="horizontal" gap={3} id="income-tax-head-stack">
               <div className="p-2"><h5 className="formSectionHead" id="taxBracketsInput">Income Tax Brackets</h5></div>
+              {/* ms-auto: empty spacer that eats the free space and pushes the button right */}
               <div className="p-2 ms-auto"></div>
               <div className="p-2">
                 {/* BUTTON: appends one more empty bracket row to the list */}
@@ -269,7 +327,9 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                 </Button>
               </div>
             </Stack>
-            {/* ---------ERROR MESSAGE---------- */}
+            {/* ---------ERROR MESSAGE----------
+            Group-level error (e.g. brackets that overlap or are out of order), as opposed
+            to the per-field errors rendered next to each input below. */}
             {errors.brackets && (
               <p className={errText} id="brackets-error" role="alert">{errors.brackets}</p>
             )}
@@ -283,7 +343,10 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                 <ListGroup.Item id="bracketListItem3">Base amount (R)</ListGroup.Item>
                 <ListGroup.Item id="bracketListItem4">Rate (%)</ListGroup.Item>
               </ListGroup>
-              {/* BRACKET INPUT */}
+              {/* BRACKET INPUT
+              One row per bracket in state. `b` is the bracket being rendered and `i` is
+              its position, which is used to build the aria-labels, error keys and the
+              update/remove callbacks so each row only touches its own data. */}
               {form.brackets.map((b, i) => (
                 <div
                   key={i}
@@ -292,8 +355,10 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                   role="group"
                   aria-label={`Tax bracket ${i + 1}`}
                 >
+                  {/* Left side: the four values that make up one bracket */}
                   <div id="bracket-input">
-                    {/* STACK 3: BRACKET INPUT */}
+                    {/* STACK 3: BRACKET INPUT — the four fields, in the same order as the
+                    legend above (Min, Max, Base amount, Rate) */}
                     <Stack gap={3} id="bracket-input-stack">
                       {/* INPUT: Min — lowest taxable income this bracket applies to (in Rand) */}
                       <div className="p-2" id="bracket-item1-block">
@@ -376,6 +441,7 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
                       </div>
                     </Stack>
                   </div>
+                  {/* Right side: the row's delete control */}
                   <div id="delete-bracket-div">
                     {/* BUTTON: removes this bracket row; disabled when only one row is left */}
                     <Button
@@ -402,7 +468,9 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
           by age: 65+ gets primary + secondary, 75+ gets primary + secondary + tertiary. */}
           <div id="taxform-group3" role="group" aria-labelledby="annualRebates">
             <h5 className="formSectionHead" id="annualRebates">Rebates (annual, R)</h5>
-            {/* TAX REBATES value={form.rebates[key]}*/}
+            {/* TAX REBATES value={form.rebates[key]}
+            The three rows are generated from a [stateKey, visibleLabel] array rather than
+            written out by hand, so the markup stays identical across all three. */}
             <div id="rebates-input-block">
               {[
                 ["primary", "Primary (all taxpayers)"],
@@ -437,7 +505,8 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
           They follow from the rebates but are stored explicitly for display. */}
           <div id="taxform-group4" role="group" aria-labelledby="taxThresholdsInput">
             <h5 className="formSectionHead" id="taxThresholdsInput">Tax Thresholds (R)</h5>
-            {/* TAX THRESHOLDS: value={form.thresholds[key]} */}
+            {/* TAX THRESHOLDS: value={form.thresholds[key]}
+            Same [stateKey, visibleLabel] pattern as the rebates group above. */}
             <div id="tax-threshold-div">
               {[
                 ["under65", "Under 65"],
@@ -473,11 +542,14 @@ export default function TaxYearConfigForm(//Export default TaxYearConfigForm com
             </div>
           </div>
         </div>
-        {/* ---  GROUP 5: Actions ------------------------------------------------- */}
+        {/* ---  GROUP 5: Actions -------------------------------------------------
+        Sits outside #tax-form-details-input so the buttons run along the bottom of the
+        whole form rather than inside the field layout. */}
         <div id="taxform-group5">
-          {/* STACK 4: FORM ACTIONS (BUTTONS) */}
+          {/* STACK 4: FORM ACTIONS (BUTTONS) — horizontal row, buttons pushed right */}
           <Stack direction="horizontal" gap={3} id="tax-actions-stack">
             <div className="p-2"></div>
+            {/* ms-auto on this block pushes it and everything after it to the right */}
             <div className="p-2 ms-auto">
               {/* SUBMIT TAXCONFIG FORM BUTTON: validates, then hands the payload to onSubmit */}
               <Button
