@@ -1,14 +1,19 @@
 // ForgotPassword.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/ForgotPassword.css'
 import '../css/pagesCss/PageSetup.css'
+import '../css/componentCss/Header.css'
 import '../css/componentCss/FormSetup.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 //IMPORT COMPONENTS FROM REACT-ROUTER-DOM
 import { Link } from 'react-router-dom'
+// IMPORT CUSTOM COMPONENTS
 import PageFooter from '../components/PageFooter';
 
 // ============MAIN FORGOT PASSWORD COMPONENT============
@@ -73,8 +78,8 @@ export default function ForgotPassword() {//Export default ForgotPassword.js com
         {/* =====================
         SECTION 1
         =============== */}
-        <section>
-        <Row>
+        <section id='forgot-password-section'>
+        <Row id='forgot-password-row'>
             <Col xs={0} md id='forgot-password-col1' />
                     <Col xs={12} md={6} id='forgot-password-col'>
 <div id='reset-password-panal'>
@@ -88,11 +93,13 @@ export default function ForgotPassword() {//Export default ForgotPassword.js com
                                     you a link to reset your password.
                                 </h6>
                             </div>
+                            {/* -----SUCCESS MESSAGE------- */}
                             {successMsg && (
                                 <div className="p-2">
                                     <p id='resetSuccessMsg'>{successMsg}</p>
                                 </div>
                             )}
+                            {/* ----ERROR MESSAGE----- */}
                             {error &&(
                                 <div className="p-2">
                                     <p id='resetErrorMsg'>{error}</p>
@@ -161,6 +168,7 @@ export default function ForgotPassword() {//Export default ForgotPassword.js com
             <Col xs={0} md id='forgot-password-col2' />
         </Row>
         </section>
+        {/* ----FOOTER----------- */}
         <PageFooter/>
     </div>
   )
