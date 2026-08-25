@@ -316,5 +316,5 @@ router.delete('/history/:id', checkJwtToken, async (req, res) => {
     }
 })
 
-//Export the router
-module.exports= router
+//==========EXPORT THE ROUTER===================
+module.exports= router// Export the router to be used in other parts of the application

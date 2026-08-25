@@ -340,4 +340,6 @@ router.get('/currencyHistory', checkJwtToken, async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })
-module.exports = router;
+
+//======EXPORT THE ROUTER===================
+module.exports = router;// Export the router to be used in other parts of the application

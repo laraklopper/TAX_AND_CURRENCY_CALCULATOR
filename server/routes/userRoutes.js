@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const router = express.Router()
 
 const User = require('../models/userSchema');
-const { checkJwtToken, checkAdmin, checkPassword } = require('./middleware');
+const { checkJwtToken, checkAdmin, checkPassword, generalRateLimiter, passwordUpdateRateLimiter } = require('./middleware');
 
 // ======ROUTES=====================
 /*──────────────────────────── GET ROUTES ─────────────────────────────────────
@@ -61,7 +61,7 @@ router.get('/me', checkJwtToken, async (req, res) => {
 // edit their own profile (the id is never taken from the request body).
 // Only the details supplied in the body are updated: any field left out or
 // sent blank keeps the value already stored on the user.
-router.patch('/editUser', checkJwtToken, async (req, res) => {
+router.patch('/editUser', checkJwtToken, generalRateLimiter, async (req, res) => {
     try {
         const userId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
         const { fullName, email, address } = req.body || {};
@@ -164,7 +164,7 @@ router.patch('/editUser', checkJwtToken, async (req, res) => {
 // checkJwtToken identifies the user from the token; checkPassword enforces
 // strength rules on req.body.newPassword before the handler runs.
 // Use Plaintext passwords for development
-router.patch('/editPassword', checkJwtToken, checkPassword, async (req, res) => {
+router.patch('/editPassword', checkJwtToken, checkPassword, passwordUpdateRateLimiter, async (req, res) => {
     try {
         const userId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
         const { currentPassword, newPassword } = req.body || {};
@@ -311,5 +311,6 @@ router.patch('/editPassword', checkJwtToken, checkPassword, async (req, res) => 
         return res.status(500).json({ success: false, message: 'Failed to delete User' });
     }
  })
-// =====================
-module.exports = router
+ 
+// =======EXPORT THE ROUTER==============
+module.exports = router;// Export the router to be used in other parts of the application

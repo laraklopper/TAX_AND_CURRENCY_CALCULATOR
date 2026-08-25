@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const rateLimit = require('express-rate-limit');
 const User = require('../models/userSchema')
-const { checkPassword, checkAge } = require('./middleware')
+const { checkPassword, checkAge, loginRateLimiter, registrationRateLimiter, forgotPasswordRateLimiter, resetPasswordLimiter } = require('./middleware')
 const { sendPasswordResetEmail } = require('../utils/mailer')
 const router = express.Router()
 
@@ -51,33 +51,12 @@ bcrypt) is enough here because the token is 256 bits of random data, not a
 guessable, human-chosen secret. */
 const hashResetToken = (token) => crypto.createHash('sha256').update(token).digest('hex');
 
-/*──────────────────────────── RATE LIMITERS ──────────────────────────────
-Both password reset endpoints are unauthenticated and act on an account the
-caller does not have to prove they own, so they are capped per IP: this stops
-the forgot form being used to mail-bomb an address and stops reset tokens
-being brute forced.
- ─────────────────────────────────────────────────────────────────────────*/
-const forgotPasswordLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,// 15 minute window
-    limit: 5,// Allow 5 reset requests per window per IP
-    standardHeaders: 'draft-7',// Send the standard RateLimit-* response headers
-    legacyHeaders: false,// Omit the deprecated X-RateLimit-* headers
-    message: { message: 'Too many password reset requests. Please try again later.' },
-});
-
-const resetPasswordLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,// 15 minute window
-    limit: 10,// Allow 10 reset attempts per window per IP
-    standardHeaders: 'draft-7',// Send the standard RateLimit-* response headers
-    legacyHeaders: false,// Omit the deprecated X-RateLimit-* headers
-    message: { message: 'Too many password reset attempts. Please try again later.' },
-});
 
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
  ─────────────────────────────────────────────────────────────────────────*/
 // Send a POST request to the /auth/login route
-router.post('/login', async (req, res) => {
+router.post('/login', loginRateLimiter, async (req, res) => {
     try {
         const {email, password} = req.body || {};//Extract the usersername and password from the request body
 
@@ -118,7 +97,7 @@ router.post('/login', async (req, res) => {
 //Route to register a new user
 //Send a POST request to the auth/register endpoint
 // Use Plaintext passwords for development
-router.post('/register', checkAge, checkPassword, async (req, res) => {
+router.post('/register', checkAge, checkPassword, registrationRateLimiter, async (req, res) => {
     try {
         const { fullName, email, password, dateOfBirth, address, admin } = req.body || {};
 
@@ -176,7 +155,7 @@ router.post('/register', checkAge, checkPassword, async (req, res) => {
 /* The response is deliberately identical whether or not the email is
 registered. Confirming that an address exists would turn this endpoint into a
 way of harvesting valid account emails. */
-router.post('/forgotPassword', forgotPasswordLimiter, async (req, res) => {
+router.post('/forgotPassword', forgotPasswordRateLimiter, async (req, res) => {
     // Generic reply used for every outcome that is not a malformed request
     const genericResponse = { message: 'If that email is registered, a reset link has been sent.' };
     try {
@@ -333,4 +312,5 @@ router.post('/resetPassword/:token', resetPasswordLimiter, checkPassword, async 
     }
 })
 
+// ========EXPORT ROUTER============
 module.exports = router;
