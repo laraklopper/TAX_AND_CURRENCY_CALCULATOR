@@ -15,12 +15,12 @@ import {
 } from '../utils/calculationFunc';
 // ---------------------------------------------------------------------------
 // TaxCalculatorForm
-// SARS income tax calculator. Posts to /api/tax/calculate and renders the
+// SARS income tax calculator. Posts to /tax/calculate and renders the
 // result plus a bracket-by-bracket breakdown.
 //
 // Props:
 //   taxYears - array of available tax years, e.g. ["2025-2026", "2024-2025"]
-//     (fetch from GET /api/tax/config and pass in; defaults to a single entry)
+//     (fetch from GET /tax/config and pass in; defaults to a single entry)
 //   onCalculate(payload) - async fn, returns the API result shape:
 //     { grossTax, rebate, netTax, effectiveRate, marginalRate,
 //       bracketBreakdown: [{ min, max, rate, amountInBracket, taxForBracket }] }

@@ -66,7 +66,7 @@ export const validateTaxForm = (form) => {
     return errs;
 }
 
-/* Assemble the request body for POST /api/tax/calculate. A monthly income is
+/* Assemble the request body for POST /tax/calculate. A monthly income is
 sent as its annual equivalent, because the brackets are annual figures. */
 export const buildTaxPayload = (form) => {
     const annualIncome =
@@ -155,8 +155,8 @@ interest schema requires both halves of fullName. */
 export const hasCompleteFullName = (fullName) =>
     Boolean(fullName?.firstName && fullName?.lastName);
 
-/* Assemble the request body for POST /api/interest/calculate, and for
-POST /api/interest/save when a `fullName` is supplied.
+/* Assemble the request body for POST /interest/calculate, and for
+POST /interest/save when a `fullName` is supplied.
 
 The name is only attached when it is complete: /calculate has no use for it,
 and the save route reads the stored name off the user record anyway, so a

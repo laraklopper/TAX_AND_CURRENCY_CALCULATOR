@@ -23,7 +23,7 @@ import {
 // ---------------------------------------------------------------------------
 // InterestCalculatorForm
 // Simple & compound interest calculator, with optional recurring monthly
-// contributions. Posts to /api/interest/calculate and renders the result
+// contributions. Posts to /interest/calculate and renders the result
 // plus a period-by-period breakdown table.
 //
 // The TIME PERIOD toggle lets the user work in either ANNUAL periods (time

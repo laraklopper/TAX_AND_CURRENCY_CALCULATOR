@@ -34,7 +34,7 @@ export default function Calculators({currentUser, logout}) {
   const [showTaxCalculations, setShowTaxCalculations] = useState(false)
   const [showInterestCalculations, setShowInterestCalculations] = useState(false)
   /* Tax years offered by the tax calculator's dropdown. Starts as the seeded
-  year and is replaced by whatever GET /api/tax/config returns. */
+  year and is replaced by whatever GET /tax/config returns. */
   const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
   /* The logged in user's saved calculations, shown by the two calculations
   lists. `total` is reported separately by each history endpoint, which returns
@@ -161,10 +161,10 @@ export default function Calculators({currentUser, logout}) {
   },[])
 
   /* Loads the logged in user's saved tax calculations for the tax calculations
-  list. GET /api/tax/history returns the newest 100 with the total alongside. */
+  list. GET /tax/history returns the newest 100 with the total alongside. */
   const fetchTaxCalculations = useCallback(async () => {
     try {
-      const data = await getFromApi('/api/tax/history', 'Could not load your saved tax calculations.');
+      const data = await getFromApi('/tax/history', 'Could not load your saved tax calculations.');
       const calculations = Array.isArray(data.calculations) ? data.calculations : [];
       setTaxCalculations(calculations)
       setTaxCalculationsTotal(typeof data.total === 'number' ? data.total : calculations.length)
@@ -178,7 +178,7 @@ export default function Calculators({currentUser, logout}) {
 
   // Removes one of the user's saved tax calculations and drops it from the list
   const deleteTaxCalculation = useCallback(async (calculationId) => {
-    const data = await deleteFromApi(`/api/tax/history/${calculationId}`, 'Failed to remove the tax calculation.');
+    const data = await deleteFromApi(`/tax/history/${calculationId}`, 'Failed to remove the tax calculation.');
 
     // Drop the deleted calculation from the list on screen
     setTaxCalculations((prev) => prev.filter((calculation) => String(calculation._id) !== String(calculationId)))
@@ -192,7 +192,7 @@ export default function Calculators({currentUser, logout}) {
   calculations list, as above. */
   const fetchInterestCalculations = useCallback(async () => {
     try {
-      const data = await getFromApi('/api/interest/history', 'Could not load your saved interest calculations.');
+      const data = await getFromApi('/interest/history', 'Could not load your saved interest calculations.');
       const calculations = Array.isArray(data.calculations) ? data.calculations : [];
       setInterestCalculations(calculations)
       setInterestCalculationsTotal(typeof data.total === 'number' ? data.total : calculations.length)
@@ -206,7 +206,7 @@ export default function Calculators({currentUser, logout}) {
 
   // Removes one of the user's saved interest calculations, as above
   const deleteInterestCalculation = useCallback(async (calculationId) => {
-    const data = await deleteFromApi(`/api/interest/history/${calculationId}`, 'Failed to remove the interest calculation.');
+    const data = await deleteFromApi(`/interest/history/${calculationId}`, 'Failed to remove the interest calculation.');
 
     // Drop the deleted calculation from the list on screen
     setInterestCalculations((prev) => prev.filter((calculation) => String(calculation._id) !== String(calculationId)))
@@ -220,7 +220,7 @@ export default function Calculators({currentUser, logout}) {
   of truth for the maths. The payload carries `periodUnit` ('years' or 'months')
   so the same annual rate can be worked out over annual or monthly periods. */
   const calculateInterest = useCallback(async (payload) => {
-    const data = await postToApi('/api/interest/calculate', payload, 'Could not calculate interest. Please try again.');
+    const data = await postToApi('/interest/calculate', payload, 'Could not calculate interest. Please try again.');
     return data.result;// The form renders the summary and breakdown from this
   },[postToApi])
 
@@ -228,7 +228,7 @@ export default function Calculators({currentUser, logout}) {
   inputs are sent: the backend recalculates the totals before storing them, so
   a saved record can never disagree with the maths. */
   const saveInterest = useCallback(async (payload) => {
-    await postToApi('/api/interest/save', payload, 'Could not save the calculation. Please try again.');
+    await postToApi('/interest/save', payload, 'Could not save the calculation. Please try again.');
     /* Refresh the calculations list so a save is visible straight away. The
     list fetches when it is shown, so this only matters while it is already
     open - but without it the panel would sit there missing the calculation
@@ -239,13 +239,13 @@ export default function Calculators({currentUser, logout}) {
   /* Sends the tax calculator's inputs to the backend, which resolves the tax
   year's brackets, rebates and thresholds and works out the tax payable. */
   const calculateTax = useCallback(async (payload) => {
-    const data = await postToApi('/api/tax/calculate', payload, 'Could not calculate tax. Please try again.');
+    const data = await postToApi('/tax/calculate', payload, 'Could not calculate tax. Please try again.');
     return data.result;// The form renders the summary and bracket breakdown from this
   },[postToApi])
 
   // Saves a tax calculation to the logged in user's history
   const saveTax = useCallback(async (payload) => {
-    await postToApi('/api/tax/save', payload, 'Could not save the calculation. Please try again.');
+    await postToApi('/tax/save', payload, 'Could not save the calculation. Please try again.');
     // Refresh the calculations list so a save is visible straight away
     fetchTaxCalculations();
   },[postToApi, fetchTaxCalculations])
@@ -260,7 +260,7 @@ export default function Calculators({currentUser, logout}) {
     const loadTaxYears = async () => {
       const token = localStorage.getItem('token');//Retrieve Jwt Token From LocalStorage
       try {
-        const response = await fetch(`${API_BASE_URL}/api/tax/config`, {
+        const response = await fetch(`${API_BASE_URL}/tax/config`, {
           method: 'GET',//HTTP request method
           mode: 'cors',//Enable cors 
           headers: { 'Authorization': `Bearer ${token}` }// Attach the token in the Authorization header
