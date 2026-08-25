@@ -15,16 +15,15 @@ import {
 } from '../utils/calculationFunc';
 
 // ---------------------------------------------------------------------------
-// TaxYearConfigForm
-// Admin form to add or update a SARS tax year configuration:
-// brackets, rebates, and thresholds — matching the TaxYearConfig schema.
-//
-// Props:
-//   initialData   - existing TaxYearConfig object to edit (omit to "add" new)
-//   onSubmit(data)- async fn called with the assembled payload on save
+/*TaxYearConfigForm.js: Admin form to add or update a SARS tax year configuration:
+brackets, rebates, and thresholds — matching the TaxYearConfig schema.*/
 // ---------------------------------------------------------------------------
 
-export default function TaxYearConfigForm({ initialData = null, onSubmit }) {
+export default function TaxYearConfigForm(
+  {//PROPS PASSED FROM PARENT COMPONENT(TaxData.js)
+     initialData = null,//existing TaxYearConfig object to edit (omit to "add" new)
+      onSubmit//async fn called with the assembled payload on save
+     }) {
   const isEditMode = Boolean(initialData);
   const [form, setForm] = useState(() => toTaxYearFormShape(initialData));
   const [errors, setErrors] = useState({});
