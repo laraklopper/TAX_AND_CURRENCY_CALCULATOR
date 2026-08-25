@@ -1,6 +1,11 @@
-// app.js
+// app.js (server-side)
+/* Load environment variables from a .env 
+file using the dotenv package*/
 require('dotenv').config()
-//  Custom security utility
+/** Custom security utility: Guarantees JWT_SECRET_KEY enviromental 
+ variable exists. 
+ Generates one automatically if missing (dev) and Prevents app 
+ from running insecurely */
 const ensureJwtSecret = require('./config/ensureJwtSecret')
 ensureJwtSecret()// Ensures JWT secret key before anything else loads
 // IMPORT REQUIRED MODULES AND PACKAGES
@@ -29,19 +34,23 @@ if (!port) {
     process.exit(1);
 }
 
-app.use(express.json())
-app.use(cors())
-app.use(helmet())
-app.use(express.urlencoded({extended:true}))
+// =======GLOBAL MIDDLEWARE==============
+app.use(express.json())// Enable parsing of JSON bodies in incoming requests
+app.use(cors())// Enable CORS for cross-origin requests (frontend <-> backend).
+app.use(helmet())// Use Helmet for setting secure HTTP headers  for security (XSS, clickjacking, etc.)
+app.use(express.urlencoded({extended:true}))// Parse URL-encoded form data (e.g. HTML forms)
 
 // =======ROUTES===========
 // Prefix all route modules with their base path.
-app.use('/auth', authRoutes)
-app.use('/api', apiRoutes)
+app.use('/auth', authRoutes)//Routes for auth: login, registration, forgotPassword, resetPassword
+app.use('/api', apiRoutes)//Api routes from third party API's
 app.use('/api/tax', taxRoutes)// Income tax: /config, /calculate, /save and /history
-app.use('/users', userRoutes)
-app.use('/api/interest', interestRoutes)// Interest: /calculate, /save and /history
+app.use('/users', userRoutes)//User Routes: /me , fetchUsers, editUser, editPassword, deleteUser:id
+app.use('/interest', interestRoutes)// Interest: /calculate, /save and /history
 app.use('/export', exportRoutes)//Routes to export calculations
+//-------MONGOOSE CONFIG
+/*/ Disable strict populate to prevent errors when 
+populating paths that are conditionally defined*/
 mongoose.set('strictPopulate', false)
 
 //=============START THE SERVER=============
