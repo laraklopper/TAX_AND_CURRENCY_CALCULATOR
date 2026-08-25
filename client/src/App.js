@@ -15,6 +15,8 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 // LOGGED OUT PAGES
 import Login from './pages/Login';
 import Registration from './pages/Registration'
+import ForgotPassword from './pages/ForgotPassword'
+import PasswordReset from './pages/PasswordReset'
 // LOGGED IN PAGES
 import Dashboard from './pages/Dashboard'
 import Calculators from './pages/Calculators';
@@ -232,6 +234,15 @@ export default function App() {//Export default App function component
               }/>
               <Route path='/reg' element={
                 <Registration setError={setError}/>
+              }/>
+              {/* Route to request a password reset link by email */}
+              <Route path='/forgotPassword' element={
+                <ForgotPassword/>
+              }/>
+              {/* Route the emailed reset link points at: :token is read with
+              useParams in PasswordReset.js and posted back to the server */}
+              <Route path='/resetPassword/:token' element={
+                <PasswordReset/>
               }/>
             </>
           )}

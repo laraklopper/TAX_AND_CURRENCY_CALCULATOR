@@ -162,7 +162,7 @@ export default function PasswordReset() {
                                                 disabled={loading}
                                                 onFocus={() => setPasswordMsg(true)}
                                                 onBlur={() => setPasswordMsg(false)}
-                                                onChange={(e) => confirmPassword(e.target.value)}
+                                                onChange={(e) => setConfirmPassword(e.target.value)}
                                                 // ARIA ATTRIBUTES:
                                                 aria-label='Confirm New Password'
                                                 aria-required='true'
