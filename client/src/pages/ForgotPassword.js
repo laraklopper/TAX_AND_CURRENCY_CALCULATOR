@@ -58,13 +58,13 @@ export default function ForgotPassword() {//Export default ForgotPassword.js com
     <div id='pageContainer'>
     {/* HEADER */}
         <header id='forgotPswdHeader' role='banner'>
-            <Row id='mainHeaderCol1' md={12}>
+            <Row id='forgot-pswd-headerRow1' md={12}>
                     <Col id='forgotPswdHeadCol1'/>
             </Row>
              <Row id='headerRow2'>
         <Col/>
         <Col xs={5} id='app-heading-col'>
-            <span className='headerSpan'>
+            <span className='forgot-password-head-span'>
                 <h1 id='appHeading'>TAX, CURRENCY & INTEREST CALCULATOR</h1>
                 <h2 id='page-heading'>FORGOT PASSWORD</h2>
             </span>
@@ -89,7 +89,7 @@ export default function ForgotPassword() {//Export default ForgotPassword.js com
                          <Stack gap={3} id='forgot-pswd-stack1'>
                             <div className="p-2">
                                  <h6 id='forgotPswdHeading' aria-live='polite'>
-                                    Enter your email address and will send
+                                    Enter your email address and will send<br/>
                                     you a link to reset your password.
                                 </h6>
                             </div>
@@ -135,7 +135,7 @@ export default function ForgotPassword() {//Export default ForgotPassword.js com
                         </Stack>
                         <Stack gap={3} id='forgot-pswd-stack2'>
                             {!successMsg && (
-                                <div className="p-2">
+                                <div className="p-2" id='send-linkbtn-block'>
                                     <Button
                                         type='submit'
                                         variant='warning'
