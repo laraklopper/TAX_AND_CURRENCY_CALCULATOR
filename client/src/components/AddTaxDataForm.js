@@ -15,16 +15,15 @@ import {
 } from '../utils/calculationFunc';
 
 // ---------------------------------------------------------------------------
-/*TaxYearConfigForm.js: Admin form to add or update a SARS tax year configuration:
+/*TaxYearConfigForm function component: Admin form to add or update a SARS tax year configuration:
 brackets, rebates, and thresholds — matching the TaxYearConfig schema.*/
-// ---------------------------------------------------------------------------
-
 export default function TaxYearConfigForm(
   {//PROPS PASSED FROM PARENT COMPONENT(TaxData.js)
      initialData = null,//existing TaxYearConfig object to edit (omit to "add" new)
       onSubmit//async fn called with the assembled payload on save
      }) {
   const isEditMode = Boolean(initialData);
+  // ==========STATE VARIABLES======================
   const [form, setForm] = useState(() => toTaxYearFormShape(initialData));
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null); // null | "saving" | "success" | "error"
@@ -110,19 +109,24 @@ export default function TaxYearConfigForm(
   // const label = "block text-xs font-medium text-gray-600 mb-1";
   const errText = "mt-1 text-xs text-red-600";
 
+  //=====================JSX RENDERING================================
   return (
     <div id="tax-form-block">
+    {/* FORM HEADING */}
       <div id="formHeadingBlock">
         <h3 id="formHeading">
           {isEditMode ? "Update Tax Year Configuration" : "Add Tax Year Configuration"}
         </h3>
       </div>
+      {/* ======FORM STATUS============== */}
+      {/* Success */}
       {status === "success" && (
         <div className="mb-4 flex items-center gap-2 rounded-md bg-green-50 border border-green-200 px-3 py-2 text-sm text-green-800">
           <CheckCircle2 size={16} className="shrink-0" />
           {statusMessage}
         </div>
       )}
+      {/* Error */}
       {status === "error" && (
         <div className="mb-4 flex items-center gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-800">
           <AlertCircle size={16} className="shrink-0" />
@@ -188,10 +192,10 @@ export default function TaxYearConfigForm(
     </Stack>
       </div>
         {/* ---   GROUP 2: BRACKETS ------------------------------------------------ */}
-      <div id="taxform-group2">
+      <div id="taxform-group2" aria-labelledby="taxBracketsInput">
       {/* INCOME TAX BRACKETS HEADING STACK */}
     <Stack direction="horizontal" gap={3} id="income-tax-head-stack">
-      <div className="p-2"><h5 className="formSectionHead">Income Tax Brackets</h5></div>
+      <div className="p-2"><h5 className="formSectionHead" id="taxBracketsInput">Income Tax Brackets</h5></div>
       <div className="p-2 ms-auto"></div>
       <div className="p-2">
         <Button
