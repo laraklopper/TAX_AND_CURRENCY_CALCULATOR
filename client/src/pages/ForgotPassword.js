@@ -15,6 +15,7 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom'
 // IMPORT CUSTOM COMPONENTS
 import PageFooter from '../components/PageFooter';
+import ResetPswdHeader from '../components/ResetPswdHeader'
 
 // ============MAIN FORGOT PASSWORD COMPONENT============
 export default function ForgotPassword() {//Export default ForgotPassword.js component
@@ -53,30 +54,16 @@ export default function ForgotPassword() {//Export default ForgotPassword.js com
         }
         
     },[email])
-    //======================
+    //============JSX RENDERING==========
   return (
-    <div id='pageContainer'>
-    {/* HEADER */}
-        <header id='forgotPswdHeader' role='banner'>
-            <Row id='forgot-pswd-headerRow1' md={12}>
-                    <Col id='forgotPswdHeadCol1'/>
-            </Row>
-             <Row id='headerRow2'>
-        <Col/>
-        <Col xs={5} id='app-heading-col'>
-            <span className='forgot-password-head-span'>
-                <h1 id='appHeading'>TAX, CURRENCY & INTEREST CALCULATOR</h1>
-                <h2 id='page-heading'>FORGOT PASSWORD</h2>
-            </span>
-        </Col>
-        <Col/>
-      </Row>
-      <Row id='forgotPswdHeadRow3'>
-            <Col id='forgotPswdHeadCol3'/>
-        </Row>
-        </header>
+    <div id='pageContainer' role='main' aria-labelledby='pageTitle'>
+    <p id='pageTitle' className='visually-hidden'>FORGOT PASSWORD PAGE</p>
+    {/* =========HEADER========= */}
+    {/* Render the ResetPswdHeader.js function component 
+    with 'FORGOT PASSWORD' as the resetPswdHeading */}
+        <ResetPswdHeader resetPswdHeading='FORGOT PASSWORD'/>
         {/* =====================
-        SECTION 1
+        SECTION 1: FORGOT PASSWORD FORM + LINK TO LOGIN PAGE
         =============== */}
         <section id='forgot-password-section'>
         <Row id='forgot-password-row'>

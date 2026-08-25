@@ -8,14 +8,15 @@
     letter-spacing: 2px;
     font-weight: 900;
     text-align: center;
+    color: #591616;
 }
 #page-heading{
-
     text-decoration: underline;
     font-size: 24px;
     letter-spacing: 2px;
     font-family: "Fira Sans", sans-serif;
     letter-spacing: 2px;
+    color: #470D09;
 }
 .headerSpan{
     display: flex;
@@ -94,6 +95,31 @@
     padding: 0px;
     gap: 10px;
 }
+/* ResetPswdHeader.js */
+/*===============
+ loggedIn = true 
+ ====================*/
+#forgotPswdHeader{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    background-color: #B6C6D4;
+}
+#forgot-pswd-headerRow1{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+.forgot-password-head-span{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;   
+}
+/* Header.js */
 /*===============
  loggedIn = true 
  ====================*/
@@ -113,32 +139,54 @@
     padding: 0px;
     gap: 10px;
 }
-
+/* =======================
+HEADER CLOCK
+============*/
+/* ============
+LAYOUT
+===========*/
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
 #header-time-stack{
     display: flex;
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
-#header-date-list{
+#resetPswdClock-stack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+#reset-pswd-clock-block{
+    margin: 0px;
+    padding: 0px;
+}
+/* ================
+LIST: https://react-bootstrap.netlify.app/docs/components/list-group
+===========*/
+#header-date-list,
+#reset-pswd-date-list{
     display: flex;
     margin: 0px;
     padding: 0px;
     background-color: transparent;
     border: none;
+    gap: 10px;
 }
 #dateItem,
 #timeItem{
-        display: flex;
-        background-color: transparent;
-        border: none;
-        margin: 0px;
-        padding: 0px;
+    display: flex;
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+    padding: 0px;
 }
 .clockListText{
-        display: flex;
+    display: flex;
     margin: 0px;
     padding: 0px;
     gap: 10px;
     align-items: center;
 }
+
