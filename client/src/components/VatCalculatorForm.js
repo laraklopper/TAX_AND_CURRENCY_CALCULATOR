@@ -130,17 +130,22 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
 
   return (
    
-<form id='vat-calculator-form'>
+<form 
+  id='vat-calculator-form' 
+  method='' 
+  // onSubmit={}
+  aria-labelledby='formHeading'
+  >
       <div id='vatCalcHeadingBlock'>
       <h3 id='formHeading'>VAT CALCULATOR</h3>
-        <p className="vat-calculator__subtitle">
+        <p className="form-text">
         South African standard rate: {SARS_VAT_RATE * 100}% (SARS)
       </p>
       </div>
       <div id='vat-calculator-input'>
         <div id='vat-form-group1'>
-            <Stack gap={3}>
-            <div className="p-2">
+            <Stack gap={3} id='vat-calculator-stack1'>
+            <div className="p-2" id='vat-calculator-block1'>
               <label className="vat-calculator-label" htmlFor="vat-amount">
           Amount (ZAR)
         </label>
@@ -155,13 +160,13 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
           placeholder="0.00"
         />
             </div>
-            <div className="p-2">
-              <label>Calculation type</label>
-              <div>
+            <div className="p-2" id='vat-calculator-block2'>
+              <label className="vat-calculator-label">Calculation type</label>
+              <div id='vat-calc-btn-div'>
                 <Button
                 variant='light'
                 type="button"
-                id='vatCalculatorToggleBtn'
+                id='vat-calc-typebtn1'
             className={`vat-calculator__toggle-btn ${
               mode === 'exclusive' ? 'vat-calculator__toggle-btn--active' : ''
             }`}
@@ -172,6 +177,7 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
                  <Button
                  variant='light'
             type="button"
+            id='vat-calc-typebtn2'
             className={`vat-calculator__toggle-btn ${
               mode === 'inclusive' ? 'vat-calculator__toggle-btn--active' : ''
             }`}
@@ -181,7 +187,7 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
           </Button>
               </div>
             </div>
-            <div className="p-2">
+            <div className="p-2" id='vat-calculator-block3'>
                <input
           id="vat-zero-rated"
           type="checkbox"
@@ -189,16 +195,15 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
           checked={isZeroRated}
           onChange={handleZeroRatedToggle}
         />
-        <label htmlFor="vat-zero-rated" className="vat-calculator__checkbox-label">
+        <label htmlFor="vat-zero-rated" className="vat-calculator-label">
           This item is zero-rated (0%)
         </label>
             </div>
            </Stack>
 
         </div>
-        
       </div>
-      <div>
+      <div id='vat-form-group2'>
           {isZeroRated && (
         <p className="vat-calculator__hint">
           Common zero-rated items: {ZERO_RATED_CATEGORIES.slice(0, 6).join(', ')}, and more.
@@ -228,7 +233,7 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
         <Button
         variant='light'
           type="button"
-          className="vat-calculator__save-btn"
+          id="save-to-history-btn"
           onClick={handleSave}
           disabled={!result}
         >

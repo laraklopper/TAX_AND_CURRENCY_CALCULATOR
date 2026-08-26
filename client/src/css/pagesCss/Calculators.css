@@ -295,7 +295,11 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-
+#vat-calculator-col1,
+#vat-calculator-col2{
+    margin: 0px;
+    padding: 0px;
+}
 #calculations-tab-panal{
     display: flex;
     flex-direction: column;
@@ -305,17 +309,16 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-/* Mirrors #toggleCalculatorRow */
-#toggle-calculation-list-row{
+
+/* #toggle-calculation-list-row{
     display: flex;
     justify-content: center;
     width: 100%;
     margin: 0px;
     padding: 0px;
-}
-/* Stands in for the Stack on the CALCULATORS tab: same 5/12 column width,
-panel colour and rounded corners as #toggleCalcCol + #toggleCalculatorStack */
-#toggle-calculations-col{
+} */
+
+/* #toggle-calculations-col{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -332,10 +335,10 @@ panel colour and rounded corners as #toggleCalcCol + #toggleCalculatorStack */
     width: 100%;
     margin: 0px;
     padding: 0px;
-}
+} */
 /* BOOTSTRAP LAYOUT */
 /* Grid */
-#tax-calculations-row,
+/* #tax-calculations-row,
 #int-calculations-row{
     display: flex;
     margin: 0px;
@@ -349,11 +352,11 @@ panel colour and rounded corners as #toggleCalcCol + #toggleCalculatorStack */
     margin: 0px;
     width: 100%;
     padding: 0px;
-}
+} */
 /* BUTTONS */
 /* Sized and spaced like the CALCULATORS tab's toggle buttons: the 8px margin
 stands in for the .p-2 wrapper each of those buttons sits in */
-#showTax-calculationsBtn,
+/* #showTax-calculationsBtn,
 #showInterest-calculationsBtn{
     display: flex;
     justify-content: center;
@@ -367,7 +370,7 @@ stands in for the .p-2 wrapper each of those buttons sits in */
     font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: solid 2px #323A42;
-}
+} */
 #saveCalculationBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
@@ -387,4 +390,4 @@ stands in for the .p-2 wrapper each of those buttons sits in */
     font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: solid 2px #323A42;
-}
+} 
