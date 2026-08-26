@@ -8,6 +8,9 @@
     gap: 5px;
     background-color: #4da6ff;
 }
+/* ====================
+LAYOUT
+=================*/
 #calculations-tab-panal{
     display: flex;
     flex-direction: column;
@@ -17,7 +20,15 @@
     padding: 0px;
     width: 100%;
 }
-/* Mirrors #toggleCalculatorRow */
+#tax-calculations-panal,
+#interest-calculations-panal,
+#prov-tax-calculations-panal,
+#vat-calculations-panal{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+/* BOOTSTRAP LAYOUT */
 #toggle-calculation-list-row{
     display: flex;
     justify-content: center;
@@ -47,12 +58,43 @@ display: flex;
     margin: 0px;
     padding: 0px;
 }
-#tax-calculations-panal,
-#interest-calculations-panal{
-    width: 100%;
+
+/* BOOTSTRAP LAYOUT */
+/* Grid */
+#tax-calculations-row,
+#int-calculations-row{
+    display: flex;
     margin: 0px;
+    width: 100%;
     padding: 0px;
 }
+#tax-calculations-col,
+#int-calculations-col{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    width: 100%;
+    padding: 0px;
+}
+/* BUTTONS */
+/* Sized and spaced like the CALCULATORS tab's toggle buttons: the 8px margin
+stands in for the .p-2 wrapper each of those buttons sits in */
+#showTax-calculationsBtn,
+#showInterest-calculationsBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    letter-spacing: 1px;
+    margin: 8px 0px;
+    padding: 0px;
+    width: 300px;
+    text-transform: uppercase;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    border: solid 2px #323A42;
+}
+
 /* BUTTONS */
 #showTax-calculationsBtn,
 #showInterest-calculationsBtn,

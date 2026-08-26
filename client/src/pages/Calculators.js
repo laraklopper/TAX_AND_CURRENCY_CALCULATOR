@@ -22,6 +22,7 @@ import { Calculator } from 'lucide-react';
 // IMPORT DATA
 import { taxSeedData } from '../dataArrays/taxSeedData';
 import VatCalculator from '../components/VatCalculatorForm';
+import ProvisionalTaxCalculator from '../components/ProvisionalTaxCalculatorForm';
 
 // Base URL of the API the calculators post to
 const API_BASE_URL = 'http://localhost:3001';
@@ -33,6 +34,7 @@ export default function Calculators({currentUser, logout}) {
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
   const [showVatCalc, setShowVatCalc] = useState(false)
+  const [showProvTaxCalc, setShowProvTaxCalc] = useState(false)
   const [showTaxCalculations, setShowTaxCalculations] = useState(false)
   const [showInterestCalculations, setShowInterestCalculations] = useState(false)
   /* Tax years offered by the tax calculator's dropdown. Starts as the seeded
@@ -61,6 +63,7 @@ export default function Calculators({currentUser, logout}) {
     setShowCalc(false)
     setShowIntCalc(false)
     setShowVatCalc(false)
+    setShowProvTaxCalc(false)
   },[])
   // Function to toggle interest calculator
    const toggleInterestCalculator = useCallback(() => {
@@ -68,21 +71,34 @@ export default function Calculators({currentUser, logout}) {
     setShowCalc(false)
     setShowVatCalc(false)
     setShowTaxCalc(false)
+    setShowProvTaxCalc(false)
    },[])
+   //  Function to toggle Vat calculator
+   const toggleVatCalculator = useCallback(() => {
+    setShowVatCalc(prev => !prev)
+    setShowIntCalc(false)
+    setShowCalc(false)
+    setShowTaxCalc(false)
+    setShowProvTaxCalc(false)
+   },[])
+
+  //  Function to toggle Provisional tax calculator
+  const toggleProvTaxCalculator = useCallback(() => {
+    setShowProvTaxCalc(prev => !prev)
+    setShowCalc(false)
+    setShowVatCalc(false)
+    setShowTaxCalc(false)
+  },[])
   //  Function to toggle general/number calculator
    const toggleCalculator = useCallback(() => {
     setShowCalc(prev => !prev)
     setShowIntCalc(false)
     setShowVatCalc(false)
     setShowTaxCalc(false)
+    setShowProvTaxCalc(false)
    },[])
 
-   const toggleVatCalculator = useCallback(() => {
-    setShowVatCalc(prev => !prev)
-    setShowIntCalc(false)
-    setShowCalc(false)
-    setShowTaxCalc(false)
-   },[])
+  //  MOVE TO CALCULATIONS PAGE
   // Function to toggle taxCalculations List
    const toggleTaxCalculations = useCallback(() => {
     setShowTaxCalculations(prev => !prev)
@@ -362,17 +378,37 @@ export default function Calculators({currentUser, logout}) {
                 >{showIntCalc ? 'HIDE CALCULATOR':'SHOW INTEREST CALCULATOR'}</Button>
               </div>
               <div className="p-2" id='toggle-calc3-block'>
+              {/* Toggle Vat Calculator Button */}
                 <Button
                 variant='light'
                 onClick={toggleVatCalculator}
                 id='toggleVatCalcBtn'
+                type='button'
+                aria-label={showVatCalc ? 'HIDE CALCULATOR': 'SHOW VAT CALCULATOR'}
+                aria-controls='vat-calculator-panal'
+                aria-pressed={showVatCalc}
+                aria-expanded={showVatCalc}
                 >
                 {showVatCalc ? 'HIDE CALCULATOR': 'SHOW VAT CALCULATOR'}
-
                 </Button>
-
               </div>
               <div className="p-2" id='toggle-calc4-block'>
+              {/* Toggle provisional tax Calculator btn */}
+              <Button
+              id='toggleProvTaxCalcBtn'
+              variant='light'
+              type='button'
+              onClick={toggleProvTaxCalculator}
+              aria-label=''
+              aria-controls=''
+              aria-pressed={showProvTaxCalc}
+              aria-expanded={showProvTaxCalc}
+              >
+                {setShowProvTaxCalc ? 'HIDE CALCULATOR':'SHOW PROVISIONAL TAX CALCULATOR'}
+              </Button>
+
+              </div>
+              <div className="p-2" id='toggle-calc5-block'>
               {/* Toggle Calculator Btn */}
                 <Button 
                     variant='light' 
@@ -413,6 +449,7 @@ export default function Calculators({currentUser, logout}) {
               </Row>
               </div>
             )}
+            {/* TOGGLE VAT CALCULATOR */}
             {showVatCalc && (
               <div id='vat-calculator-panal'>
                 <Row id='vatCalculator-row'>
@@ -427,6 +464,20 @@ export default function Calculators({currentUser, logout}) {
                     </div>
                   </Col>
                    <Col id='vat-calculator-col1'/>
+                </Row>
+              </div>
+            )}
+            {/* TOGGLE PROVISIONAL TAX CALCULATOR */}
+            {showProvTaxCalc && (
+              <div id='prov-tax-calculator-panal'>
+                <Row id='prov-tax-calc-row'>
+                  <Col id='provtax-calc-col1'/>
+                  <Col xs={12} md={8} id='provtax-calc-col'>
+                    <div id='prov-tax-calculator-block'>
+                      <ProvisionalTaxCalculator/>
+                    </div>
+                  </Col>
+                  <Col id='provtax-calc-col2'/>
                 </Row>
               </div>
             )}
@@ -494,6 +545,7 @@ export default function Calculators({currentUser, logout}) {
           </Row>
         </div>
         </section>
+        {/* MOVE TO Calculations.js */}
        <section id='calculator-section2'>
         <div id='calculations-tab-panal'>
           <Row id='toggle-calculation-list-row'>

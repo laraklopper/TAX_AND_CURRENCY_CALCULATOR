@@ -32,6 +32,7 @@ export default function Calculations({currentUser, logout}) {
     const toggleVatCalculations = useCallback(() => {
     setShowVatCalculations(prev => !prev)
     setShowTaxCalculations(false)
+    setShowInterestCalculations(false)
     },[])
 
     //===============JSX RENDERING================

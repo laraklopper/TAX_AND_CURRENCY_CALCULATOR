@@ -7,7 +7,6 @@
     padding: 10px 0px;
     gap: 5px;
     background-color: #4da6ff;
-    ;
 }
 /* ============
 LAYOUT
@@ -33,9 +32,16 @@ LAYOUT
 #calculator1-Row,
 #calculator2-Row,
 #calculator3-Row,
-#vatCalculator-row{
+#vatCalculator-row,
+#prov-tax-calc-row{
     display: flex;
     width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#provtax-calc-col{
+    display: flex;
+    justify-content: center;
     margin: 0px;
     padding: 0px;
 }
@@ -45,6 +51,8 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
+#provtax-calc-col1,
+#provtax-calc-col2,
 #calculatorCol1,
 #calculatorCol2{
     margin: 0px;
@@ -63,21 +71,14 @@ LAYOUT
 #toggle-calc1-block,
 #toggle-calc2-block,
 #toggle-calc3-block,
-#toggle-calc4-block{
+#toggle-calc4-block,
+#toggle-calc5-block{
     display: flex;
     justify-content: center;
     margin: 0px;
     padding: 0px;
 }
-#calculator-data-list{
 
-        display: flex;
-    flex-direction: column;
-    margin: 0px;
-    padding: 0px;
-    list-style-type: none;
-    align-items: flex-start;
-}
 /* CALCULATOR LAYOUT */
 /* HTML <div/> */
 #calculators-div{
@@ -90,11 +91,20 @@ LAYOUT
 /* CARD: https://react-bootstrap.netlify.app/docs/components/cards */
 #calculators-info-card{
     display: flex;
-    border: none;
+    border: solid 1px #000;
+    border-radius: 5px;
     background-color: transparent;
     width: 100%;
     margin: 0px;
     padding: 0px;
+}
+#calculator-data-list{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    align-items: center;
 }
 #calculations-info{
     display: flex;
@@ -266,6 +276,7 @@ LAYOUT
  #toggleVatCalcBtn,
 #toggleTaxCalcBtn,
 #toggleIntCalcBtn,
+#toggleProvTaxCalcBtn,
 #toggleCalcBtn{
     display: flex;
     justify-content: center;
@@ -274,7 +285,7 @@ LAYOUT
     letter-spacing: 1px;
     margin: 0px;
     padding: 0px;
-    width: 280px;
+    width: 340px;
     font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: solid 2px #323A42;
@@ -300,77 +311,6 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
-#calculations-tab-panal{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
-
-/* #toggle-calculation-list-row{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-} */
-
-/* #toggle-calculations-col{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 41.666667%;
-    max-width: 41.666667%;
-    background-color: #B6C6D4;
-    border-radius: 8px;
-    margin: 0px;
-    padding: 0px;
-}
-#tax-calculations-panal,
-#interest-calculations-panal{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-} */
-/* BOOTSTRAP LAYOUT */
-/* Grid */
-/* #tax-calculations-row,
-#int-calculations-row{
-    display: flex;
-    margin: 0px;
-    width: 100%;
-    padding: 0px;
-}
-#tax-calculations-col,
-#int-calculations-col{
-    display: flex;
-    justify-content: center;
-    margin: 0px;
-    width: 100%;
-    padding: 0px;
-} */
-/* BUTTONS */
-/* Sized and spaced like the CALCULATORS tab's toggle buttons: the 8px margin
-stands in for the .p-2 wrapper each of those buttons sits in */
-/* #showTax-calculationsBtn,
-#showInterest-calculationsBtn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    letter-spacing: 1px;
-    margin: 8px 0px;
-    padding: 0px;
-    width: 300px;
-    text-transform: uppercase;
-    font-family: "Courier Prime", monospace;
-    font-weight: 700;
-    border: solid 2px #323A42;
-} */
 #saveCalculationBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
