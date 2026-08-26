@@ -1,6 +1,11 @@
 # TAX CONCEPTS: BRACKETS, REBATES AND THRESHOLDS
 
-Explains the three sets of figures shown by [TaxDataDisplay.js](client/src/components/TaxDataDisplay.js) and stored on the `TaxYearConfig` model in [TaxYearSchema.js](server/models/TaxYearSchema.js).
+# TABLE OF CONTENTS
+
+## 1. Income Tax Brackets
+ 
+South Africa uses a **progressive (sliding-scale)** system: income is taxed in layers, not as a whole at one rate. Everyone pays 18% on their first slice of income, then higher rates only apply to the portion of income that falls above each threshold — never to the whole amount.
+
 
 All examples use the SARS **2025-2026** year of assessment (1 March 2025 – 28 February 2026) held in [taxSeedData.js](client/src/dataArrays/taxSeedData.js).
 [p']
@@ -37,6 +42,7 @@ grossTax = baseAmount + rate × (taxableIncome − bracketFloor)
 Where `bracketFloor` is the **top of the previous bracket**, i.e. `min − 1` in the stored data.
 
 > **Implementation note:** the brackets in `taxSeedData` store `min` as `237101`, `370501`, and so on, but the marginal rate is charged on income above `237100` / `370500`. A calculator that subtracts `min` instead of `min - 1` will under-charge by one rand's worth of the marginal rate on every calculation. Use `bracket.min - 1`, or compare against the previous bracket's `max`.
+
 
 ### MARGINAL VS EFFECTIVE RATE
 
