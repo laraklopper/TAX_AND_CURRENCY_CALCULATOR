@@ -1,13 +1,7 @@
-# TAX CONCEPTS: BRACKETS, REBATES AND THRESHOLDS
+# TAX CONCEPTS: BRACKETS, REBATES, THRESHOLDS, VAT AND PROVISIONAL TAX
 
 All examples use the SARS **2025-2026** year of assessment (1 March 2025 – 28 February 2026) held in [taxSeedData.js](client/src/dataArrays/taxSeedData.js).
 [p']
-
-# TABLE OF CONTENTS
-
-
-
-
 
 ### 2027 TAX YEAR (1 March 2026 – 28 February 2027)
 
@@ -130,6 +124,106 @@ It is **not** a tax-free allowance carved off the top of a higher earner's incom
 
 ---
 
+## 4. VAT (VALUE-ADDED TAX)
+
+VAT is a different animal from income tax: it's an **indirect, consumption-based tax** charged on transactions, not a tax on a person's annual earnings. It has no brackets, no rebates, and no age dependency — it's a flat percentage applied at the point of sale, collected by the vendor on SARS's behalf, and remitted via a VAT201 return.
+
+### 2026-2027 VAT RATE
+
+| **RATE** | **VALUE** | **IN EFFECT SINCE** |
+|---|---|---|
+| Standard rate | 15% | 1 April 2018 |
+
+A proposed increase to 15.5% (2025) and then 16% (2026) was announced and then reversed before taking effect — the rate has held at 15% throughout. Because this figure has been politically contested twice in recent years, it should be treated as **configurable data, not a hardcoded constant**, the same way `TaxYearConfig` treats brackets and rebates.
+
+### THE FORMULAS
+
+```
+Adding VAT (exclusive → inclusive):
+  vatAmount       = exclusiveAmount × 0.15
+  inclusiveAmount = exclusiveAmount × 1.15
+
+Removing VAT (inclusive → exclusive):
+  exclusiveAmount = inclusiveAmount ÷ 1.15
+  vatAmount       = inclusiveAmount − exclusiveAmount
+```
+
+### RATE CATEGORIES
+
+Not everything is taxed at the standard rate. A VAT calculator that only handles the 15% case will misrepresent real invoices:
+
+| **CATEGORY** | **RATE** | **EXAMPLE** | **INPUT VAT CLAIMABLE?** |
+|---|---|---|---|
+| Standard-rated | 15% | Most goods and services | Yes |
+| Zero-rated | 0% | Certain basic foodstuffs, exports | Yes |
+| Exempt | No VAT charged | Residential rental, certain financial services | No |
+
+Zero-rated and exempt look identical on a receipt (both show R0 VAT), but they behave differently for a VAT-registered vendor: zero-rated supplies still let the vendor claim back input VAT on their own purchases; exempt supplies don't. This distinction matters if the project ever adds vendor-side (not just consumer-side) VAT reporting.
+
+### REGISTRATION THRESHOLDS (CONTEXT, NOT CALCULATED BY THIS APP)
+
+| **THRESHOLD** | **AMOUNT** | **EFFECT** |
+|---|---|---|
+| Compulsory registration | R2.3 million taxable supplies (rolling 12 months) | Must register as a VAT vendor |
+| Voluntary registration | R120 000 taxable supplies | May register as a VAT vendor |
+
+These figures increased from R1 million and R50 000 respectively, effective 1 April 2026. They don't feed into a simple add/remove VAT calculation, but they're useful context if the app ever gains a "should I register for VAT?" helper.
+
+---
+
+## 5. PROVISIONAL TAX
+
+Provisional tax is **not a separate tax** — it's a prepayment mechanism for income tax, for anyone whose income isn't already taxed at source through PAYE. It reuses the exact same bracket/rebate/threshold logic from Sections 1–3; the only thing that differs is *when* the tax gets paid.
+
+### WHO IT APPLIES TO
+
+Provisional taxpayers are typically:
+
+- Sole proprietors and freelancers
+- Company directors receiving non-PAYE income
+- Landlords and investors with material rental, interest, or investment income
+- Anyone earning income SARS classifies as "other than remuneration"
+
+Salaried employees under standard PAYE deduction are generally **not** provisional taxpayers — their income tax is already being paid in instalments by their employer.
+
+### THE PAYMENT SCHEDULE (IRP6)
+
+Provisional tax is declared and paid via the **IRP6** form, in up to three instalments per year of assessment:
+
+| **PERIOD** | **DUE DATE** | **WHAT'S PAID** |
+|---|---|---|
+| First period | 31 August (mid-year) | 50% of the estimated total tax liability for the full year |
+| Second period | End of February (year-end) | Remaining balance, based on a recalculated, more accurate estimate |
+| Third period (voluntary top-up) | ~September (after year-end) | Optional top-up to avoid interest if the first two estimates fell short |
+
+### THE FORMULA
+
+```
+firstPayment  = estimatedAnnualTax × 0.50
+secondPayment = estimatedAnnualTax − firstPayment
+                (recalculated against actual/updated taxable income)
+```
+
+`estimatedAnnualTax` here is just the **normal income tax calculation from Sections 1–3** — bracket lookup, minus rebates, floored at zero — run against an *estimated* taxable income rather than a final, confirmed one.
+
+### WORKED EXAMPLE — ESTIMATED TAX OF R131 272
+
+| **STEP** | **WORKING** | **RESULT (R)** |
+|---|---|---|
+| Estimated annual tax liability | (from bracket/rebate calculation) | 131 272 |
+| First payment (due 31 Aug) | 131 272 × 0.50 | 65 636 |
+| Second payment (due end Feb) | Recalculated once actual income is known, less first payment already made | *depends on final figure* |
+
+If the taxpayer's actual taxable income for the year turns out higher or lower than estimated, the second payment is trued up against the *new* figure — it is not simply "the other half" of the original estimate.
+
+### WHY IT MATTERS FOR A CALCULATOR
+
+- A provisional tax feature doesn't need new tax logic — it needs to **run the existing bracket/rebate calculation twice** (once per estimate) and split the result 50/50 for the first payment.
+- Under- or over-estimating income triggers SARS penalties and interest, so an honest provisional tax tool should flag that the first payment is based on an *estimate*, not a guarantee.
+- VAT and provisional tax are **independent of each other** — a VAT-registered sole trader files VAT201 returns bi-monthly *and* pays provisional tax twice a year on the same business's profit. They shouldn't be conflated in the UI even though the same user often deals with both.
+
+---
+
 ## WORKED EXAMPLES
 
 ### EXAMPLE 1 — R450 000, UNDER 65
@@ -174,6 +268,30 @@ const taxPayable = Math.max(0, grossTax - totalRebates)
 
 Without that clamp, a below-threshold pensioner shows a negative tax payable.
 
+### EXAMPLE 4 — VAT ON A R1 000 EXCLUSIVE AMOUNT
+
+| **STEP** | **WORKING** | **RESULT (R)** |
+|---|---|---|
+| Amount excluding VAT | — | 1 000.00 |
+| VAT | 1 000 × 0.15 | 150.00 |
+| Amount including VAT | 1 000 × 1.15 | **1 150.00** |
+
+### EXAMPLE 5 — REMOVING VAT FROM A R1 150 INCLUSIVE AMOUNT
+
+| **STEP** | **WORKING** | **RESULT (R)** |
+|---|---|---|
+| Amount including VAT | — | 1 150.00 |
+| Amount excluding VAT | 1 150 ÷ 1.15 | 1 000.00 |
+| VAT portion | 1 150 − 1 000 | **150.00** |
+
+### EXAMPLE 6 — PROVISIONAL TAX, ESTIMATED ANNUAL TAX OF R131 272
+
+| **STEP** | **WORKING** | **RESULT (R)** |
+|---|---|---|
+| Estimated annual tax (from bracket/rebate calc) | — | 131 272 |
+| First payment, due 31 August | 131 272 × 0.50 | **65 636** |
+| Second payment, due end February | Recalculated against actual/updated income for the year, less R65 636 already paid | *trued up at year-end* |
+
 ---
 
 ## HOW THIS MAPS TO THE CODEBASE
@@ -186,8 +304,16 @@ Without that clamp, a below-threshold pensioner shows a negative tax payable.
 | Capturing a new tax year | [AddTaxDataForm.js](client/src/components/AddTaxDataForm.js) |
 | User input for a calculation | [TaxCalculatorForm.js](client/src/components/TaxCalculatorForm.js) |
 | Saved calculation record | [taxCalcSchema.js](server/models/taxCalcSchema.js) |
+| VAT rate + add/remove logic | [vatController.js](server/controllers/vatController.js) — `calculateVat` |
+| VAT user input | [VatCalculatorForm.jsx](client/src/components/VatCalculatorForm.jsx) |
+| Saved VAT calculation record | `saveVat` handler, wired into [Calculators.js](client/src/components/Calculators.js) |
+| Provisional tax | *Not yet built* — would reuse the bracket/rebate logic above against an estimated income, split 50/50 for the first IRP6 payment |
 
 > **Open discrepancy:** `taxCalcSchema` stores a single flat `taxRate` percentage and derives `taxAmount` as `taxableIncome × (taxRate / 100)`. That is a flat-rate model, not the bracket model described here, and it has no rebate field — so a saved calculation cannot currently reproduce the figures in the worked examples above. Bringing it in line means storing the resolved `taxYear` config reference plus the taxpayer's age group, and persisting `grossTax`, `rebatesApplied` and `taxPayable` rather than a single rate.
+>
+> **VAT history gap:** unlike the tax and interest calculators, the VAT calculator doesn't yet have a matching history panel (see `TaxDataDisplay`-style components for the pattern to follow).
+>
+> **Provisional tax gap:** there is no `provisionalTaxController` or form yet. Since the calculation is just the existing bracket/rebate logic run against an estimate, the most consistent approach is a thin wrapper around the same function `TaxCalculatorForm.js` already calls, rather than a parallel implementation.
 
 ---
 
@@ -195,3 +321,6 @@ Without that clamp, a below-threshold pensioner shows a negative tax payable.
 
 - SARS — Rates of tax for individuals: https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/
 - SARS — Tax rebates and thresholds are published annually with the Budget; figures change each 1 March.
+- SARS — Value-Added Tax: https://www.sars.gov.za/types-of-tax/value-added-tax/
+- SARS — VAT registration thresholds (R2.3m compulsory / R120k voluntary) effective 1 April 2026, per the 2026 Budget.
+- SARS — Provisional tax and the IRP6 form: instalments due 31 August (period 1) and end of February (period 2), with an optional voluntary top-up (period 3) around September.
