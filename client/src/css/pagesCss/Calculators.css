@@ -32,7 +32,8 @@ LAYOUT
 }
 #calculator1-Row,
 #calculator2-Row,
-#calculator3-Row{
+#calculator3-Row,
+#vatCalculator-row{
     display: flex;
     width: 100%;
     margin: 0px;
@@ -178,6 +179,23 @@ LAYOUT
 #interest-calculator-col2{
     margin: 0px;
     padding: 0px;
+}
+/* ===========
+Vat Calculator
+===========*/
+#vat-calculator-panal{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#vat-calculator-block{
+    background-color: #9E9E9E;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 /* ======================
 CALCULATOR

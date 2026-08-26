@@ -129,9 +129,9 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
   };
 
   return (
-    <div>
+   
 <form id='vat-calculator-form'>
-      <div id='formHeadingBlock'>
+      <div id='vatCalcHeadingBlock'>
       <h3 id='formHeading'>VAT CALCULATOR</h3>
         <p className="vat-calculator__subtitle">
         South African standard rate: {SARS_VAT_RATE * 100}% (SARS)
@@ -244,7 +244,7 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
     </div>
     </form>
     
-    </div>
+  
     
   )
 }
