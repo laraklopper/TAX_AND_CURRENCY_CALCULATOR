@@ -49,7 +49,7 @@
 |`URI`| **UNIFORM RESOURCE IDENTIFIER** | A string that uniquely identifies a resource. A URL is a specific type of URI that includes a network location. |
 |`URL`| **UNIFORM RESOURCE LOCATOR** | The full web address used to locate a specific resource, e.g. `http://localhost:5000/api/stocks`. |
 |`UX`| **USER EXPERIENCE** | The overall quality of a user's interaction with an application, encompassing usability, accessibility, and satisfaction. |
-|`VAT`|**VALUE ADDED TAX**| |
+|`VAT`|**VALUE ADDED TAX**|   The indirect tax on the consumption of goods and services in the economy. Taxable supplies are supplies for which VAT is charged at either the standard rate (currently 15% or zero rate (0%)). |
 |`W3C`| **WORLD WIDE WEB CONSORTIUM** | The international standards body that develops and maintains core web technology specifications, including HTML, CSS, ARIA, and WCAG. |
 |`WAI`| **WEB ACCESSIBILITY INITIATIVE** | A W3C programme that develops standards and guidelines (including WCAG and ARIA) to make the web accessible to people with disabilities. |
 |`WCAG`| **WEB CONTENT ACCESSIBILITY GUIDELINES** | A set of W3C guidelines that define how to make web content accessible to people with disabilities. WCAG 2.1 (AA) is the widely adopted standard. |
