@@ -1,21 +1,34 @@
+//EditPasswordForm.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/EditUserForms.css'
-import '../css/componentCss/FormSetup.css'
+import '../css/componentCss/FormSetup.css';
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { Asterisk , Eye, EyeOff} from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
 import { isStrongPassword } from '../utils/userFunc';
 
-export default function EditPasswordForm({setError}) {
+//EditPasswordForm function component
+export default function EditPasswordForm(
+    {//PROPS PASSED FROM PARENT COMPONENT(Profile.js)
+        setError
+    }
+    ) {
+    //===========STATE VARIABLES=============
+    
+    const [currentPassword, setCurrentPassword] = useState('')// Stores the user's current password entered into the form
+    const [newPassword, setNewPassword] = useState('')// Stores the new password that the user wants to change to
     const [showPswdMsg, setShowPswdMsg] = useState(false)
     const [showCurrentPswd, setShowCurrentPswd] = useState(false)
     const [showNewPswd, setShowNewPswd] = useState(false)
-    const [currentPassword, setCurrentPassword] = useState('')
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
-    const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [loading, setLoading] = useState(false)
+    // Tracks whether the password update request is in progress.
+    const [loading, setLoading] = useState(false)// Used to disable buttons and display a loading message while saving.
     // Inline feedback shown inside the form: {type: 'error' | 'success', text: string}
     const [status, setStatus] = useState(null)
 
@@ -27,6 +40,8 @@ export default function EditPasswordForm({setError}) {
         alert(msg);// Alert user of error
     },[setError])
 
+    //==========EVENT LISTENERS================
+    //Function to reset editPassword form
     const resetForm = useCallback(() => {
         const confirmReset = window.confirm(
             "Are you sure you want to clear the form?"
@@ -38,12 +53,14 @@ export default function EditPasswordForm({setError}) {
         setStatus(null)// Clear any inline feedback
         setError?.(null)// Clear any existing error messages
     },[setError])
-    //==================================
+    //===============REQUESTS/CALLBACK===================
+    // Function to editPassword
     const editPassword = useCallback(async (e) => {
         e.preventDefault()
         setLoading(true)
         setStatus(null)// Clear feedback from the previous attempt
         try {
+            // Conditional rendering to check if new password is different from current password
             if (!currentPassword || !newPassword || !confirmPassword) {
                 failWith('Current password, new password and confirmation are required.');
                 return
@@ -64,7 +81,7 @@ export default function EditPasswordForm({setError}) {
                 return;// Exit the function early
             }
 
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token');// Retrieve JWT token from local storage
 
             //Conditional rendering to check if token exists
             if (!token) {
@@ -73,9 +90,10 @@ export default function EditPasswordForm({setError}) {
                 return;// Exit the function early
             }
 
+            //Send a PATCH request to '/users/editPassword' endpoint
             const response = await fetch('http://localhost:3001/users/editPassword', {
-                method: 'PATCH',
-                mode: 'cors',
+                method: 'PATCH',//HTTP request method
+                mode: 'cors',// Enable CORS for Cross-Origin Resource Sharing
                 headers: {
                     'Content-Type': 'application/json',// Specify the Content-Type in the request payload
                     'Authorization': `Bearer ${token}`,// Attach JWT token for authorization
@@ -112,11 +130,17 @@ export default function EditPasswordForm({setError}) {
         }finally{
             setLoading(false)//Set Loading state to false
         }
-
     },[currentPassword, newPassword, confirmPassword, setError, failWith])
-    //===========================================
+    
+    //==================JSX RENDERING=========================
   return (
-    <form id='edit-password-form' aria-labelledby='formHeading' aria-busy={loading} onSubmit={editPassword}>
+    <form 
+        id='edit-password-form' 
+        onSubmit={editPassword}
+        method='PATCH'
+        // ARIA ATTRIBUTES
+        aria-labelledby='formHeading' 
+        aria-busy={loading} >
     {/* -------FORM HEADING--------------- */}
         <div id='formHeadingBlock'>
             <h3 id='formHeading'>EDIT PASSWORD</h3>
@@ -164,12 +188,24 @@ export default function EditPasswordForm({setError}) {
             {showCurrentPswd ? (
                 <>
                     Hide Password
-                    <EyeOff fontWeight={700} fontSize={16} aria-hidden='true' style={{marginLeft: 6}} focusable='false'/>
+                    <EyeOff 
+                        fontWeight={700} 
+                        fontSize={16} 
+                        // ARIA ATTRIBUTES
+                        aria-hidden='true' 
+                        focusable='false'
+                        />
                 </>
             ):(
                 <>
                     Show Password
-                    <Eye fontWeight={700} fontSize={16} aria-hidden='true' style={{marginLeft: 6}} focusable='false'/>
+                    <Eye 
+                        fontWeight={700} 
+                        fontSize={16} 
+                        // ARIA ATTRIBUTES
+                        aria-hidden='true' 
+                        focusable='false'
+                    />
                 </>
             )}
         </Button>
@@ -182,7 +218,7 @@ export default function EditPasswordForm({setError}) {
         <label className='edit-pswd-label' htmlFor='newPasswordInput'>NEW PASSWORD:</label>
         <div className='input-div'>
             <input
-            type={showNewPswd ? 'text' : 'password'}
+                type={showNewPswd ? 'text' : 'password'}
                 className='input'
                 required
                 placeholder='NEW PASSWORD'
@@ -220,22 +256,34 @@ export default function EditPasswordForm({setError}) {
         {showNewPswd ? (
             <>
                 Hide Password
-                <EyeOff aria-hidden='true' focusable='false' style={{marginLeft: 6}} fontWeight={700}/>
+                <EyeOff 
+                    size={16} 
+                    fontWeight={700}
+                    // ARIA ATTRIBUTES:
+                    aria-hidden='true' 
+                    focusable='false'
+                 />
             </>
          ):(
             <>
                 Show Password
-                <Eye aria-hidden="true" focusable='false' style={{ marginLeft: 6 }} fontWeight={700} />
+                <Eye 
+                    size={16} 
+                    fontWeight={700} 
+                    // ARIA ATTRIBUTES:
+                    aria-hidden="true" 
+                    focusable='false'
+                    />
             </>
         )}
         </Button>
       </div>
-      {showPswdMsg &&(
-        <div className="p-2">
+      {/* Message */}
+      {showPswdMsg && (
+        <div className="p-2" aria-live='polite'>
             <p className='msgText'>WE WILL NEVER SHARE YOUR PASSWORD</p>
-
-      </div>)}
-
+      </div>
+      )}
     </Stack>
         </div>
         {/* STACK 3 : CONFIRM PASSWORD, EDIT PASSWORD BUTTON, CLEARFORM BUTTON */}
@@ -258,7 +306,7 @@ export default function EditPasswordForm({setError}) {
                 aria-required='true'
                 aria-invalid={Boolean(confirmPassword) && confirmPassword !== newPassword}
             />
-            <small><Asterisk color='#C22419' fontWeight={700} size={16} aria-hidden='true' focusable='false' /></small>
+            <small><Asterisk color='#C22419' fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
              <Button
         variant='warning'
         id='showConfirmPswdBtn'
@@ -272,11 +320,23 @@ export default function EditPasswordForm({setError}) {
         >
         {showPasswordConfirm ? (
             <>
-                <EyeOff aria-hidden='true' focusable='false'  fontWeight={700}/>
+                <EyeOff 
+                    fontWeight={700}
+                    size={16}
+                    // ARIA ATTRIBUTES
+                    aria-hidden='true' 
+                    focusable='false'  
+                    />
             </>
          ):(
             <>
-                <Eye aria-hidden="true" focusable='false'  fontWeight={700} />
+                <Eye 
+                    fontWeight={700} 
+                    size={16}
+                    // ARIA ATTRIBUTES:
+                    aria-hidden="true" 
+                    focusable='false'   
+                    />
             </>
         )}
         </Button>
