@@ -31,6 +31,7 @@ export default function Calculators({currentUser, logout}) {
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
   const [showCalc, setShowCalc] = useState(false)
+  const [showVatCalc, setShowVatCalc] = useState(false)
   const [showTaxCalculations, setShowTaxCalculations] = useState(false)
   const [showInterestCalculations, setShowInterestCalculations] = useState(false)
   /* Tax years offered by the tax calculator's dropdown. Starts as the seeded
@@ -58,20 +59,29 @@ export default function Calculators({currentUser, logout}) {
     setShowTaxCalc(prev => !prev)
     setShowCalc(false)
     setShowIntCalc(false)
+    setShowVatCalc(false)
   },[])
   // Function to toggle interest calculator
    const toggleInterestCalculator = useCallback(() => {
     setShowIntCalc(prev => !prev)
     setShowCalc(false)
+    setShowVatCalc(false)
     setShowTaxCalc(false)
    },[])
   //  Function to toggle general/number calculator
    const toggleCalculator = useCallback(() => {
     setShowCalc(prev => !prev)
     setShowIntCalc(false)
+    setShowVatCalc(false)
     setShowTaxCalc(false)
    },[])
 
+   const toggleVatCalculator = useCallback(() => {
+    setShowVatCalc(prev => !prev)
+    setShowIntCalc(false)
+    setShowCalc(false)
+    setShowTaxCalc(false)
+   })
   // Function to toggle taxCalculations List
    const toggleTaxCalculations = useCallback(() => {
     setShowTaxCalculations(prev => !prev)
@@ -83,6 +93,7 @@ export default function Calculators({currentUser, logout}) {
     setShowInterestCalculations(prev => !prev)
     setShowTaxCalculations(false)
    },[])
+
   /* Shared POST helper for the calculator endpoints. Attaches the JWT, sends
   the payload as JSON and throws the API's own message on failure, so each form
   can show the real reason a request was rejected. */
@@ -373,6 +384,11 @@ export default function Calculators({currentUser, logout}) {
                 </Col>
                 <Col id='tax-calculator-col2'/>
               </Row>
+              </div>
+            )}
+            {showVatCalc && (
+              <div>
+                <Row></Row>
               </div>
             )}
             {/* TOGGLE INTEREST CALCULATOR */}
