@@ -57,6 +57,7 @@ display: flex;
     border-radius: 8px;
     margin: 0px;
     padding: 0px;
+    align-items: center;
 }
 
 /* BOOTSTRAP LAYOUT */
@@ -98,7 +99,7 @@ own would be a different width from the rest. */
     letter-spacing: 1px;
     margin: 8px 0px;
     padding: 0px;
-    width: 300px;
+        width: 380px;
     text-transform: uppercase;
     font-family: "Courier Prime", monospace;
     font-weight: 700;
