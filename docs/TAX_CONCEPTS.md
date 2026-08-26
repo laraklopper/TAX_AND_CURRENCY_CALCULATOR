@@ -1,14 +1,13 @@
 # TAX CONCEPTS: BRACKETS, REBATES AND THRESHOLDS
 
-# TABLE OF CONTENTS
-
-## 1. Income Tax Brackets
- 
-South Africa uses a **progressive (sliding-scale)** system: income is taxed in layers, not as a whole at one rate. Everyone pays 18% on their first slice of income, then higher rates only apply to the portion of income that falls above each threshold — never to the whole amount.
-
-
 All examples use the SARS **2025-2026** year of assessment (1 March 2025 – 28 February 2026) held in [taxSeedData.js](client/src/dataArrays/taxSeedData.js).
 [p']
+
+# TABLE OF CONTENTS
+
+
+
+
 
 ### 2027 TAX YEAR (1 March 2026 – 28 February 2027)
 
