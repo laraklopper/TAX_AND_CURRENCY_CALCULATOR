@@ -15,7 +15,6 @@
 |`CSV`| **COMMA-SEPARATED VALUES** | A plain-text format for representing tabular data where values are separated by commas. Used in this application for exporting holdings, transactions, accounts, and watchlist data. |
 |`DNS`| **DOMAIN NAME SYSTEM** | The internet's naming system that translates human-readable domain names into IP addresses. MongoDB Atlas connection strings use DNS SRV records via the `mongodb+srv://` scheme to automatically discover replica set members. |
 |`DOM`| **DOCUMENT OBJECT MODEL** | The browser's in-memory tree representation of an HTML page. React manages the DOM efficiently through a virtual DOM. |
-|`ETF`| **EXCHANGE-TRADED FUND** | A type of investment fund that holds a collection of assets (stocks, bonds, etc.) and is traded on a stock exchange like a regular share. Supported as a security type in the watchlist. |
 |`HTML`| **HYPERTEXT MARKUP LANGUAGE** | The standard markup language for structuring content on the web. |
 |`HTTP`| **HYPERTEXT TRANSFER PROTOCOL** | The protocol used to transfer data between a client and a server over the web. |
 |`HTTPS`| **HYPERTEXT TRANSFER PROTOCOL SECURE** | The encrypted version of HTTP, using TLS to protect data in transit. Required for production deployments. |
