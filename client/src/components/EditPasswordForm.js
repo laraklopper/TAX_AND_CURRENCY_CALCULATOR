@@ -13,7 +13,7 @@ import { Asterisk , Eye, EyeOff} from 'lucide-react';
 import { isStrongPassword } from '../utils/userFunc';
 
 //EditPasswordForm function component
-export default function EditPasswordForm(
+export default function EditPasswordForm(//Export default EditPasswordForm.js function component
     {//PROPS PASSED FROM PARENT COMPONENT(Profile.js)
         setError
     }
