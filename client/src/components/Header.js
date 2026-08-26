@@ -31,16 +31,19 @@ export default function Header({currentUser, pageHeader}) {
                     <ul id='navbar' gap={2} >
                     <Stack gap={3} className="col-md-5 mx-auto">
       <div className="p-2" id='navbar-block1'>
+      {/* Link to dashBoard */}
         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/' className='refLink'>DASHBOARD</NavLink>
                             </li> 
                         )}
+                        {/* Link TO calculators */}
                         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/calculators' className='refLink'>CALCULATORS</NavLink>
                             </li>
                         )}
+
                         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/currencyConverter' className='refLink'>CURRENCY CONVERTER</NavLink>
@@ -48,11 +51,20 @@ export default function Header({currentUser, pageHeader}) {
                         )}
       </div>
       <div className="p-2" id='navbar-block2'>
-         {currentUser && (
+      {currentUser && (
+        <li>
+            <NavLink className='refLink' to='/calculations'>CALCULATIONS</NavLink>
+        </li>
+      )}
+  {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/profile' className='refLink'>PROFILE</NavLink>
                             </li>
                         )}
+      </div>
+      {/* ADMIN ONLY ROUTES */}
+      <div className="p-2" id='navbar-block3'>
+       
                         {currentUser.admin && (
                             <li>
                                 <NavLink to='/taxes' className='refLink'>TAX DATA</NavLink>

@@ -77,7 +77,7 @@
 #navCol{
     display: flex;
     justify-content: center;
-        width: 100%;
+    width: 100%;
     margin: 0px;
     padding: 0px;
 }
@@ -89,8 +89,10 @@
     padding: 0px;
 }
 #navbar-block1,
-#navbar-block2{
+#navbar-block2,
+#navbar-block3{
     display: flex;
+    justify-content: center;
     margin: 0px;
     padding: 0px;
     gap: 10px;

@@ -29,6 +29,7 @@ import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { Bug, GlobeOff } from 'lucide-react';
+import Calculations from './pages/Calculations';
 
 // MAIN APP FUNCTION COMPONENT
 export default function App() {//Export default App function component
@@ -188,6 +189,14 @@ export default function App() {//Export default App function component
                     loggedIn={loggedIn}
         
                     />
+                </ProtectedUserRoute>
+              }/>
+              <Route path='/calculations' element={
+                <ProtectedUserRoute currentUser={currentUser}>
+                  <Calculations
+                    currentUser={currentUser}
+                    logout={logout}
+                  />
                 </ProtectedUserRoute>
               }/>
               <Route path='/profile' element={
