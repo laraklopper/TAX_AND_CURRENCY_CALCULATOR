@@ -6,10 +6,11 @@ objects are listed with dot notation (e.g. `fullName.firstName`).
 ## TABLE OF CONTENTS
 1. [USER](#1-user)
 2. [TAX CALCULATION](#2-tax-calculation)
-3. [INTEREST CALCULATION](#3-interest-calculation)
-4. [CURRENCY CONVERSION](#4-currency-conversion)
-5. [TAX YEAR CONFIG](#5-tax-year-config)
-6. [SHARED SCHEMA OPTIONS](#6-shared-schema-options)
+3. [PROVISIONAL TAX CALCULATION](#3-provisional-tax-calculation)
+4. [INTEREST CALCULATION](#4-interest-calculation)
+5. [CURRENCY CONVERSION](#5-currency-conversion)
+6. [TAX YEAR CONFIG](#6-tax-year-config)
+7. [SHARED SCHEMA OPTIONS](#7-shared-schema-options)
 
 ## 1. USER
 
@@ -81,7 +82,59 @@ reproduces exactly what the user saw.
 | `netIncome` | Number | `income.grossIncome - netTax` |
 | `monthlyTax` | Number | `netTax / 12` — monthly PAYE equivalent |
 
-## 3. INTEREST CALCULATION
+## 3. PROVISIONAL TAX CALCULATION
+
+Model `provisionalTax` — [server/models/provTaxCalcSchema.js](../server/models/provTaxCalcSchema.js)
+
+A saved provisional tax calculation — one IRP6 as the calculator worked it out.
+Provisional tax is the same normal tax as section 2, paid in advance, so the
+tax-on-the-estimate figures mirror the tax calculation schema. What this model
+adds is everything that makes an instalment an instalment: which of the three
+payments it is, the portion of the year it covers, when it fell due, and what
+was already withheld or paid.
+
+### FIELDS
+
+| Field | Type | Required | Default | Constraints | Notes |
+|---|---|---|---|---|---|
+| `user` | ObjectId | Yes | — | `ref: 'user'`, indexed | Reference, not `fullName`, as in section 2 |
+| `fullName.firstName` | String | Yes | — | trim, 2–50 chars | Logged in user |
+| `fullName.lastName` | String | Yes | — | trim, 2–50 chars | Logged in user |
+| `taxYear` | String | Yes | — | trim, match `^\d{4}-\d{4}$` | e.g. `"2025-2026"` |
+| `period` | String | Yes | — | enum: `first`, `second`, `third` | Which IRP6 payment this is |
+| `periodPortion` | Number | Yes | — | 0–1 | `0.5` for the first payment, `1` for the second and third. Stored rather than derived, so the record explains its own arithmetic |
+| `dueDate` | Date | No | `null` | — | Worked out from the tax year's start and end dates; `null` where the year carries no usable dates |
+| `estimatedTaxableIncome` | Number | Yes | — | min 0 | The estimate for the WHOLE year of assessment |
+| `age` | Number | Yes | — | 16–120 | Decides how many rebates apply |
+| `ageGroup` | String | Yes | — | enum: `under65`, `age65to74`, `age75plus` | As in section 2 |
+| `basicAmount` | Number | No | `null` | min 0 | Taxable income per the most recent assessment. `null` where none was supplied — not the same as nil |
+| `taxOnEstimate` | Number | Yes | — | min 0 | Tax the brackets produced on the estimate, before rebate |
+| `rebate` | Number | Yes | — | min 0 | Cumulative age-based rebate |
+| `medicalCredits` | Number | No | `0` | min 0 | Supplied by the taxpayer: `TaxYearConfig` holds no per-year credit figures |
+| `annualTaxLiability` | Number | Yes | — | min 0 | Tax for the full year after rebate and credits; floored at zero |
+| `taxForPeriod` | Number | Yes | — | min 0 | `annualTaxLiability × periodPortion` |
+| `employeesTax` | Number | No | `0` | min 0 | PAYE already withheld for the period |
+| `foreignTaxCredits` | Number | No | `0` | min 0 | Tax already paid abroad on the same income |
+| `priorPayments` | Number | No | `0` | min 0 | Provisional tax already paid; always `0` on a first payment |
+| `amountPayable` | Number | Yes | — | min 0 | Floored at zero: an IRP6 cannot ask for a negative payment |
+| `effectiveRate` | Number | Yes | — | 0–100 | Tax for the year as a percentage of the estimate |
+| `marginalRate` | Number | Yes | — | 0–100 | Rate charged on the next rand of taxable income |
+
+Every calculated figure is worked out by
+[server/utils/provisionalTaxCalculator.js](../server/utils/provisionalTaxCalculator.js),
+which resolves the brackets and rebates through
+[taxCalculator.js](../server/utils/taxCalculator.js) so the two calculators can
+never disagree about the tax on an income.
+
+### VIRTUALS
+
+| Virtual | Type | Returns |
+|---|---|---|
+| `totalCredits` | Number | `employeesTax + foreignTaxCredits + priorPayments` — everything already paid towards the year |
+| `overpaid` | Number | The surplus where the credits exceeded `taxForPeriod`, which `amountPayable` floors away |
+| `remainingForYear` | Number | `annualTaxLiability - taxForPeriod` — the liability left for later payments |
+
+## 4. INTEREST CALCULATION
 
 Model `interest` — [server/models/interestSchema.js](../server/models/interestSchema.js)
 
@@ -120,7 +173,7 @@ the user was shown.
 result from the closed-form formulas. They were replaced by the stored
 `totalInterest` and `finalAmount` fields for the reason given above.
 
-## 4. CURRENCY CONVERSION
+## 5. CURRENCY CONVERSION
 
 Model `currency` — [server/models/curConvertSchema.js](../server/models/curConvertSchema.js)
 
@@ -163,7 +216,7 @@ share a name. `fullName` is kept as a snapshot of the name at the time of the
 save, and is read from the database by the route rather than trusted from the
 request body.
 
-## 5. TAX YEAR CONFIG
+## 6. TAX YEAR CONFIG
 
 Model `TaxYearConfig` — [server/models/TaxYearSchema.js](../server/models/TaxYearSchema.js)
 
@@ -208,12 +261,13 @@ level schema and three subdocument schemas.
 | `age65to74` | Number | Yes | |
 | `age75plus` | Number | Yes | |
 
-## 6. SHARED SCHEMA OPTIONS
+## 7. SHARED SCHEMA OPTIONS
 
 | Schema | `timestamps` | `toJSON: { virtuals: true }` | `toObject: { virtuals: true }` |
 |---|---|---|---|
 | `userSchema` | Yes | Yes | Yes |
 | `taxCalcSchema` | Yes | Yes | Yes |
+| `provTaxCalcSchema` | Yes | Yes | Yes |
 | `interestSchema` | Yes | Yes | Yes |
 | `currencyConvertSchema` | Yes | Yes | Yes |
 | `TaxYearConfigSchema` | No | No | No |

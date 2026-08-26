@@ -19,6 +19,7 @@ const connectDB = require('./config/connect')
 const authRoutes = require('./routes/authRoutes')
 const apiRoutes = require('./routes/apiRoutes')
 const taxRoutes = require('./routes/taxRoutes')
+const provisionalTaxRoutes = require('./routes/provisionalTaxRoutes')
 const userRoutes = require('./routes/userRoutes')
 const interestRoutes = require('./routes/interestRoutes')
 const exportRoutes = require('./routes/exportRoutes')
@@ -45,6 +46,10 @@ app.use(express.urlencoded({extended:true}))// Parse URL-encoded form data (e.g.
 app.use('/auth', authRoutes)//Routes for auth: login, registration, forgotPassword, resetPassword
 app.use('/api', apiRoutes)//Api routes from third party API's
 app.use('/tax', taxRoutes)// Income tax: /config, /calculate, /save and /history
+/* Provisional tax (IRP6): /calculate, /save and /history. The tax years come
+from GET /tax/config, because provisional tax is worked out from the same
+brackets and rebates as income tax. */
+app.use('/provisional', provisionalTaxRoutes)
 app.use('/users', userRoutes)//User Routes: /me , fetchUsers, editUser, editPassword, deleteUser:id
 app.use('/interest', interestRoutes)// Interest: /calculate, /save and /history
 app.use('/export', exportRoutes)//Routes to export calculations

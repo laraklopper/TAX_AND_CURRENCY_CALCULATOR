@@ -149,6 +149,21 @@ export default function Calculators({currentUser, logout}) {
     // Read back on the CALCULATIONS page, as above
   },[postToApi])
 
+  /* Sends the provisional tax calculator's inputs to the backend, which works
+  the tax on the estimate out from the SAME tax year brackets and rebates as the
+  income tax calculator, applies the portion for the selected IRP6 period and
+  deducts what has already been withheld or paid. */
+  const calculateProvisionalTax = useCallback(async (payload) => {
+    const data = await postToApi('/provisional/calculate', payload, 'Could not calculate provisional tax. Please try again.');
+    return data.result;// The form renders the IRP6 working from this
+  },[postToApi])
+
+  // Saves a provisional tax calculation to the logged in user's history
+  const saveProvisionalTax = useCallback(async (payload) => {
+    await postToApi('/provisional/save', payload, 'Could not save the calculation. Please try again.');
+    // Read back on the CALCULATIONS page, as above
+  },[postToApi])
+
   /* Loads the tax years the calculator can work with. Runs once on mount so
   the tax year dropdown is populated before the user opens the form. The
   seeded year is used as a fallback if the request fails, so the calculator
@@ -255,12 +270,13 @@ export default function Calculators({currentUser, logout}) {
               variant='light'
               type='button'
               onClick={toggleProvTaxCalculator}
-              aria-label=''
-              aria-controls=''
+              // ARIA ATTRIBUTES:
+              aria-label={showProvTaxCalc ? 'HIDE CALCULATOR':'SHOW PROVISIONAL TAX CALCULATOR'}
+              aria-controls='prov-tax-calculator-panal'
               aria-pressed={showProvTaxCalc}
               aria-expanded={showProvTaxCalc}
               >
-                {setShowProvTaxCalc ? 'HIDE CALCULATOR':'SHOW PROVISIONAL TAX CALCULATOR'}
+                {showProvTaxCalc ? 'HIDE CALCULATOR':'SHOW PROVISIONAL TAX CALCULATOR'}
               </Button>
 
               </div>
@@ -330,7 +346,14 @@ export default function Calculators({currentUser, logout}) {
                   <Col id='provtax-calc-col1'/>
                   <Col xs={12} md={8} id='provtax-calc-col'>
                     <div id='prov-tax-calculator-block'>
-                      <ProvisionalTaxCalculator/>
+                      <ProvisionalTaxCalculator
+                        /* The same tax years as the income tax calculator:
+                        provisional tax is worked out from the same brackets */
+                        taxYears={taxYears}
+                        onCalculate={calculateProvisionalTax}
+                        onSave={saveProvisionalTax}
+                        isAuthenticated={!!currentUser}
+                      />
                     </div>
                   </Col>
                   <Col id='provtax-calc-col2'/>

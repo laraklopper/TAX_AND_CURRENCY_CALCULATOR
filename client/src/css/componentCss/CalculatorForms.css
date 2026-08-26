@@ -129,5 +129,182 @@ LAYOUT
     color: #000;
 }
 /* ===============
-PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculator.js
+PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
+
+   The form reuses the income tax calculator's shell (.tax-calculator) and the
+   shared .input, .results, .breakdown-table and .save-row rules, so only what
+   is specific to an IRP6 is styled here: the three period buttons, the three
+   field groups, the due date, the overpayment note and the warning list.
 ===============*/
+#prov-tax-calculator-form{
+    display: flex;
+    flex-direction: column;
+    background-color: #A8AEB3;
+    margin: 0px;
+    padding: 10px;
+}
+#prov-tax-formHeading{
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+/* ==============
+LAYOUT
+==============*/
+#prov-tax-input-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #BFBFBF;
+    margin: 0px;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 5px;
+}
+/* The three field groups: which payment, the estimate, and what comes off it */
+#prov-tax-field-group1,
+#prov-tax-field-group2,
+#prov-tax-field-group3{
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    width: 80%;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#prov-tax-period-block1{
+    display: flex;
+    justify-content: center;
+}
+#prov-tax-period-label,
+#prov-tax-credits-label{
+    display: flex;
+    text-align: center;
+    text-decoration: underline;
+    margin: 0px;
+    padding: 0px;
+    letter-spacing: 2px;
+}
+#prov-tax-credits-heading{
+    display: flex;
+    justify-content: center;
+}
+/* ===============
+ BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons
+ =================*/
+.prov-tax-period-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 220px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    height: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: solid 2px #323A42;
+    font-weight: 700;
+    font-family: "Courier Prime", monospace;
+}
+.prov-tax-period-btn:hover{
+    background-color: #f9fafb;
+}
+/* SELECTED PAYMENT
+   Qualified with the button class so it outranks the color: #000 set above
+   and Bootstrap's own .btn-light rules. */
+.prov-tax-period-btn.toggle-button--active,
+.prov-tax-period-btn.toggle-button--active:hover,
+.prov-tax-period-btn.toggle-button--active:focus,
+.prov-tax-period-btn.toggle-button--active:active{
+    background-color: #323A42;
+    color: #E8F0F6;
+    border-color: #323A42;
+    box-shadow: inset 0 0 0 2px #E8F0F6;
+    text-decoration: underline;
+}
+#calculateProvTaxBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    margin: 0px;
+    padding: 0px;
+    color: #000;
+    height: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: solid 2px #323A42;
+    font-weight: 700;
+    gap: 2px;
+    font-family: "Courier Prime", monospace;
+}
+#prov-tax-btn-stack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 10px 0px;
+}
+/* ==================
+RESULTS
+===================== */
+/* The due date the IRP6 has to be paid by */
+.prov-tax-due-date{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 0px;
+    padding: 5px 10px;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #1f2937;
+}
+/* Nothing to pay: the credits came to more than the tax for the period */
+.prov-tax-overpaid{
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    background-color: #E8F0F6;
+    border-left: #506B1B solid 4px;
+    font-family: "Fira Sans", sans-serif;
+    color: #1f2937;
+}
+/* The totals in the IRP6 working, so the signed lines stand out from the rows
+   that make them up */
+.prov-tax-total-row td{
+    font-weight: 700;
+    background-color: #d1d5db;
+}
+/* ==================
+UNDERESTIMATION AND PENALTY NOTES
+===================== */
+.prov-tax-warnings{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 10px 10px 10px 20px;
+    gap: 8px;
+    list-style: none;
+}
+.prov-tax-warning{
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    font-family: "Fira Sans", sans-serif;
+    font-size: 14px;
+    color: #591616;
+}

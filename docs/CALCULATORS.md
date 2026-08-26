@@ -26,14 +26,21 @@
     - [5.5. SAVING A CONVERSION](#55-saving-a-conversion)
 6. [SAVED CALCULATIONS](#6-saved-calculations)
 7. [EXPORT FORM](#7-export-form)
-8. [REFERENCES](#8-references)
+8. [PROVISIONAL TAX CALCULATOR FORM](#8-provisional-tax-calculator-form-provisionaltaxcalculatorformjs)
+    - [8.1. INPUT FIELDS](#81-input-fields)
+    - [8.2. VALIDATION](#82-validation)
+    - [8.3. HOW THE PROVISIONAL TAX IS CALCULATED](#83-how-the-provisional-tax-is-calculated)
+    - [8.4. RESULTS DISPLAYED](#84-results-displayed)
+    - [8.5. SAVING A PROVISIONAL TAX CALCULATION](#85-saving-a-provisional-tax-calculation)
+9. [REFERENCES](#9-references)
 
 ---
 
 ## 1. APPLICATION CALCULATORS
 
-The application provides users with four calculators:
+The application provides users with these calculators:
 - TaxCalculator
+- ProvisionalTaxCalculator
 - InterestCalculator
 - General/basic calculator
 - CurrencyConverter
@@ -43,13 +50,14 @@ All Tax and Interest calculations are calculated in terms of South African Tax a
 | Calculator | Component | Page | API endpoint | Saves to history |
 |----|----|----|----|----|
 | Income tax | [TaxCalculatorForm.js](../client/src/components/TaxCalculatorForm.js) | [Calculators.js](../client/src/pages/Calculators.js) | `POST /api/tax/calculate` | Yes |
+| Provisional tax (IRP6) | [ProvisionalTaxCalculatorForm.js](../client/src/components/ProvisionalTaxCalculatorForm.js) | [Calculators.js](../client/src/pages/Calculators.js) | `POST /provisional/calculate` | Yes (no list yet — see section 8) |
 | Interest | [InterestCalculatorForm.js](../client/src/components/InterestCalculatorForm.js) | [Calculators.js](../client/src/pages/Calculators.js) | `POST /api/interest/calculate` | Yes |
 | General/basic | [NumberCalculator.js](../client/src/components/NumberCalculator.js) | [Calculators.js](../client/src/pages/Calculators.js) | None (worked out in the browser) | No |
 | Currency converter | [CurrencyConvertForm.js](../client/src/components/CurrencyConvertForm.js) | [CurrencyConverter.js](../client/src/pages/CurrencyConverter.js) | `GET /api/convert` | Yes |
 
-The three financial calculators are opened one at a time from the toggle
-buttons on the calculators page, so only one form is ever on screen; the
-currency converter has a page of its own.
+The financial calculators are opened one at a time from the toggle buttons on
+the calculators page, so only one form is ever on screen; the currency converter
+has a page of its own.
 
 **Where the shared logic lives**
 
@@ -557,8 +565,165 @@ work; a completed download is a polite status naming the file that was saved.
 
 ---
 
-## 8. REFERENCES
+## 8. PROVISIONAL TAX CALCULATOR FORM [ProvisionalTaxCalculatorForm.js](../client/src/components/ProvisionalTaxCalculatorForm.js)
+
+Works out what is payable on one IRP6 and renders the working the way the return
+itself is laid out.
+
+Provisional tax is **not a separate tax**: it is the same normal tax section 2
+works out, paid in advance in instalments. So this form takes its tax years from
+the same `GET /api/tax/config` list the page already loads, and server-side the
+maths goes through [taxCalculator.js](../server/utils/taxCalculator.js) — the two
+calculators cannot disagree about the tax on an income, and an admin-captured tax
+year drives both.
+
+There are three payments in a year of assessment. The FIRST covers half the
+year's liability and is due at the end of the sixth month. The SECOND squares up
+the whole year and is due on the last day of the year. The THIRD is a voluntary
+top-up made seven months after the year ends; it too works off the whole year —
+what makes it smaller is the two payments already deducted from it, not a smaller
+portion of the year.
+
+### 8.1. INPUT FIELDS
+
+|Field| Data Type| Input Type| Required |
+|----|----|----|-----------|
+|Which payment (first/second/third)| Text | Button | Yes |
+|Estimated taxable income for the year (R)| Number | Input | Yes |
+|Age| Number | Input | Yes |
+|Tax Year| Text | Select | Yes |
+|Employees' tax (PAYE) for this period (R)| Number | Input | No |
+|Foreign tax credits (R)| Number | Input | No |
+|Medical scheme fees tax credits (R)| Number | Input | No |
+|Provisional tax already paid (R)| Number | Input | No (hidden on a first payment) |
+|Basic amount (R)| Number | Input | No (hidden on a third payment) |
+
+The income figure is **always the estimate for the full year of assessment**,
+never the income for the six months a first payment covers: the brackets are
+annual and progressive, so halving the income would tax it at a lower rate than
+the year will actually attract. The portion is applied to the TAX, after the
+brackets have been worked out.
+
+Unlike the income tax calculator, medical scheme fees tax credits are **applied**
+here — but as a figure the taxpayer supplies rather than one the calculator
+knows, because `TaxYearConfig` holds no per-year credit figures. They come off
+after the rebates, and are floored at zero along with them.
+
+Two fields follow the selected period, because they cannot apply to every one of
+them: PROVISIONAL TAX ALREADY PAID is hidden on a first payment (nothing can have
+been paid towards the year yet, and the route rejects a request that says
+otherwise), and the BASIC AMOUNT is hidden on a third payment (it is made after
+the year has ended, so there is no estimate left for SARS to revise).
+
+### 8.2. VALIDATION
+
+Checked by `validateProvTaxForm` before anything is sent, and each message is
+shown under the field it belongs to. The alert above the form reads "Please fix
+the highlighted fields."
+
+| Field | Rule | Message |
+|----|----|----|
+| Estimated taxable income | Greater than 0 | Enter an estimated taxable income greater than 0 |
+| Age | Between 16 and 120 | Enter a valid age |
+| Tax year | Must be selected | Select a tax year |
+| Which payment | Must be one of the three | Select which payment this is |
+| The five optional amounts | Not negative | Cannot be negative |
+
+[provisionalTaxRoutes.js](../server/routes/provisionalTaxRoutes.js) validates the
+same figures again, caps every rand amount at R1 000 000 000 as the income tax
+route does, and rejects a first payment that claims prior provisional payments.
+
+An estimate **below** the basic amount is deliberately not an error: paragraph
+19(3) leaves that to SARS to revise, so the result warns about it rather than the
+form refusing to work the figures out.
+
+### 8.3. HOW THE PROVISIONAL TAX IS CALCULATED
+
+`buildProvTaxPayload` assembles the request body for
+`POST /provisional/calculate`:
+
+```js
+{
+  period,                  // 'first' | 'second' | 'third'
+  taxYear,
+  estimatedTaxableIncome,  // the estimate for the WHOLE year
+  age,
+  employeesTax,
+  foreignTaxCredits,
+  medicalCredits,
+  priorPayments,           // always 0 on a first payment
+  basicAmount              // null when the taxpayer has no assessment to take one from
+}
+```
+
+The maths lives in
+[provisionalTaxCalculator.js](../server/utils/provisionalTaxCalculator.js) and
+follows the Fourth Schedule to the Income Tax Act:
+
+1. **NORMAL TAX** on the estimated taxable income for the whole year, from the
+   tax year's brackets.
+2. **LESS** the cumulative age-based rebates and the medical scheme fees credits.
+3. **× THE PORTION** the payment covers — 50% for a first payment, 100% for a
+   second or third.
+4. **LESS** employees' tax, foreign tax credits and provisional tax already paid.
+
+The amount payable is floored at zero, because an IRP6 cannot ask for a negative
+payment. A taxpayer whose PAYE already covers the liability is reported as having
+nothing to pay, with the surplus shown separately as `overpaid` rather than
+disappearing into the floored total.
+
+**Due dates** are worked out from the tax year's own `startDate` and `endDate`,
+falling back to the tax year label (a SARS year of assessment for an individual
+runs 1 March to the last day of February). The month is stepped rather than the
+day, so a payment lands on the last day of its month — 31 August, then 28 or 29
+February, then 30 September — rather than on whatever day the arithmetic produced.
+A tax year with no usable dates leaves the due date `null`, which the form simply
+does not render, rather than a guessed date.
+
+### 8.4. RESULTS DISPLAYED
+
+| Shown as | Field | Note |
+|----|----|----|
+| Tax liability for the year | `annualTaxLiability` | After rebates and credits |
+| Tax for this period | `taxForPeriod` | The liability × the portion |
+| Already withheld or paid | `totalCredits` | PAYE + foreign credits + earlier payments |
+| Amount payable | `amountPayable` | Highlighted card, floored at zero |
+| Effective rate | `effectiveRate` | The year's tax as a percentage of the estimate |
+| Marginal rate | `marginalRate` | The rate charged on the next rand |
+
+The due date is shown above the summary. Beneath it, `breakdown` is rendered as
+the IRP6's own working — one row per line, deductions written as negatives, and
+the totals (`type: 'total'`) shaded — so the amount payable can be read as the
+sum it is rather than as a figure that appeared on its own.
+
+`warnings` closes the panel: what the figures cannot show on their own. Which
+underestimation test paragraph 20 applies (80% of actual taxable income above
+R1 000 000, otherwise the lesser of 90% and the basic amount), whether the
+estimate fell below the basic amount supplied, that a third payment is what stops
+section 89quat interest running on tax owing of more than R50 000, and that a
+late payment attracts a 10% penalty under paragraph 27. The same disclaimer as
+the income tax calculator follows.
+
+### 8.5. SAVING A PROVISIONAL TAX CALCULATION
+
+"Save to history" is only rendered for a logged-in user, and posts the same
+payload to `POST /provisional/save`. The route recalculates from the inputs and
+reads the `fullName` off the user record rather than the request body, exactly as
+the income tax route does, and the button reports its own outcome in the same way.
+
+The record is stored by
+[provTaxCalcSchema.js](../server/models/provTaxCalcSchema.js) and can be read
+back through `GET /provisional/history`, but there is **no saved-calculations
+list for it yet**: [ProvTaxCalculations.js](../client/src/components/ProvTaxCalculations.js)
+is still a stub and is not rendered by the CALCULATIONS page, and the export form
+has no `provisional` type. Saved provisional tax calculations are therefore only
+reachable through the API for now.
+
+---
+
+## 9. REFERENCES
 - https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/
+- https://www.sars.gov.za/types-of-tax/provisional-tax/
 - https://www.jse.co.za/learn-how-to-invest/what-interest
 - https://frankfurter.dev/
 - https://mathjs.org/docs/expressions/parsing.html
