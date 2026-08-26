@@ -6,8 +6,7 @@ import Accordion from 'react-bootstrap/Accordion'
 export default function TaxConcepts() {
   return (
     <div id='tax-concept-info'>
-  
-         <Accordion >
+         <Accordion  id='tax-concepts'>
       <Accordion.Item eventKey="0">
         <Accordion.Header>INCOME TAX BRACKETS</Accordion.Header>
         <Accordion.Body>
@@ -84,6 +83,24 @@ export default function TaxConcepts() {
               is a different and much smaller benefit.
             </p>
         </div>
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey='4'>
+        <Accordion.Header>PROVISIONAL TAX</Accordion.Header>
+        <Accordion.Body>
+        {/* EXPLAIN PROVISIONAL TAX */}
+          <div className='tax-concept-div'>
+
+          </div>
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey='5'>
+        <Accordion.Header>VALUE ADDED TAX (VAT)</Accordion.Header>
+        <Accordion.Body>
+        {/* Explain VALUE ADDED TAX */}
+          <div className='tax-concept-div'>
+
+          </div>
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
