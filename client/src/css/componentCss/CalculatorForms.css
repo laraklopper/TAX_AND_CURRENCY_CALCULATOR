@@ -142,6 +142,7 @@ PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
     background-color: #A8AEB3;
     margin: 0px;
     padding: 10px;
+    align-items: center;
 }
 #prov-tax-formHeading{
     font-family: "Roboto", sans-serif;
@@ -169,18 +170,32 @@ LAYOUT
     padding: 10px;
     gap: 10px;
     border-radius: 5px;
+    width: 90%;
 }
 /* The three field groups: which payment, the estimate, and what comes off it */
+/* GROUP 1 */
 #prov-tax-field-group1,
 #prov-tax-field-group2,
 #prov-tax-field-group3{
     display: flex;
     margin: 0px;
     padding: 10px;
-    width: 80%;
+    width: 100%;
     border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
+}
+#prov-tax-period-stack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#prov-tax-btn-div{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
 }
 #prov-tax-period-block1{
     display: flex;

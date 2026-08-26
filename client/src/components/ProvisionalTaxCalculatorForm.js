@@ -421,7 +421,6 @@ export default function ProvisionalTaxCalculator({
             </Stack>
           </div>
         </div>
-
         <div className="form-actions">
           <Stack gap={2} className="col-md-5 mx-auto" id="prov-tax-btn-stack">
             <Button
@@ -429,17 +428,21 @@ export default function ProvisionalTaxCalculator({
               id="calculateProvTaxBtn"
               disabled={status === "calculating"}
               variant="light"
+              // ARIA ATTRIBUTES:
+              role='button'
+              aria-label={status === "calculating" ? "Calculating..." : "Calculate"}
+              aria-disabled={status === "calculating"}
             >
-              <Calculator size={16} />
+              <Calculator size={16} aria-hidden='true' focusable='false' />
               {status === "calculating" ? "Calculating..." : "Calculate"}
             </Button>
             <Button
               variant="danger"
               type="button"
               onClick={resetForm}
-              id="clearProvTaxFormBtn"
+              id="clearFormBtn"
             >
-              <RotateCcw size={16} /> Reset
+              <RotateCcw size={16} aria-hidden='true' focusable='false'/> Reset
             </Button>
           </Stack>
         </div>
@@ -463,7 +466,6 @@ export default function ProvisionalTaxCalculator({
               {' '}Due by {toLongDate(`${result.dueDate}T00:00:00`)}
             </p>
           )}
-
           <div className="results-summary">
             <div className="results-card">
               <p className="results-card__label">Tax liability for the year</p>
@@ -559,6 +561,9 @@ export default function ProvisionalTaxCalculator({
                 onClick={handleSave}
                 disabled={saveStatus === "saving" || saveStatus === "saved"}
                 className="save-link"
+                // ARIA ATTRIBUTES
+                aria-disabled={saveStatus === "saving" || saveStatus === "saved"}
+                aria-label='save calculation'
               >
                 {saveStatus === "saving"
                   ? "Saving..."

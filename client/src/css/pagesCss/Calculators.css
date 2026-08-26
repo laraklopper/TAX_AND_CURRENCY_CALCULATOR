@@ -85,7 +85,7 @@ LAYOUT
     display: flex;
     justify-content: center;
     margin: 0px;
-    padding: 5px;
+        padding: 5px 0px;
     width: 100%;
 }
 /* CARD: https://react-bootstrap.netlify.app/docs/components/cards */
@@ -206,6 +206,13 @@ Vat Calculator
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+/* PROVISIONAL TAX CALCULATOR */
+#prov-tax-calculator-panal{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 /* ======================
 CALCULATOR
