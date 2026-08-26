@@ -280,6 +280,7 @@ LAYOUT
     border: solid 2px #323A42;
 }
 #toggleTaxCalcBtn:hover,
+#toggleVatCalcBtn:hover,
 #toggleIntCalcBtn:hover,
 #toggleCalcBtn:hover{
     color: #E8F0F6;
