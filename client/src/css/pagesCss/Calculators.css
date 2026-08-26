@@ -367,9 +367,7 @@ stands in for the .p-2 wrapper each of those buttons sits in */
     font-weight: 700;
     border: solid 2px #323A42;
 }
-#saveCalculationBtn:hover,
-#showTax-calculationsBtn:hover,
-#showInterest-calculationsBtn:hover{
+#saveCalculationBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
 }
@@ -388,34 +386,4 @@ stands in for the .p-2 wrapper each of those buttons sits in */
     font-family: "Courier Prime", monospace;
     font-weight: 700;
     border: solid 2px #323A42;
-}
-/* ===============
-
-=================*/
-#calculator-section2{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0px;
-    padding: 10px 0px;
-    gap: 5px;
-    background-color: #8dbdca;
-}
-#toggle-calculation-list-row{
-        display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-
-}
-#toggle-calculationst-col{
-      display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
 }
