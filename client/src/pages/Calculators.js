@@ -21,6 +21,7 @@ import TaxCalculations from '../components/TaxCalculations';
 import { Calculator } from 'lucide-react';
 // IMPORT DATA
 import { taxSeedData } from '../dataArrays/taxSeedData';
+import VatCalculator from '../components/VatCalculatorForm';
 
 // Base URL of the API the calculators post to
 const API_BASE_URL = 'http://localhost:3001';
@@ -81,7 +82,7 @@ export default function Calculators({currentUser, logout}) {
     setShowIntCalc(false)
     setShowCalc(false)
     setShowTaxCalc(false)
-   })
+   },[])
   // Function to toggle taxCalculations List
    const toggleTaxCalculations = useCallback(() => {
     setShowTaxCalculations(prev => !prev)
@@ -261,6 +262,21 @@ export default function Calculators({currentUser, logout}) {
     fetchTaxCalculations();
   },[postToApi, fetchTaxCalculations])
 
+  /* Sends the VAT calculator's inputs to the backend, which applies the
+  SARS standard rate (or 0% for zero-rated items) and works out the VAT
+  portion, net and gross amounts. */
+  const calculateVat = useCallback(async (payload) => {
+    const data = await postToApi('/vat/calculate', payload, 'Could not calculate VAT. Please try again.');
+    return data.result;// The form renders the VAT breakdown from this
+  },[postToApi])
+
+  // Saves a VAT calculation to the logged in user's history
+  const saveVat = useCallback(async (payload) => {
+    await postToApi('/vat/save', payload, 'Could not save the calculation. Please try again.');
+    // Uncomment once a VAT calculations list is added, to refresh it on save
+    // fetchVatCalculations();
+  },[postToApi])
+
   /* Loads the tax years the calculator can work with. Runs once on mount so
   the tax year dropdown is populated before the user opens the form. The
   seeded year is used as a fallback if the request fails, so the calculator
@@ -346,6 +362,17 @@ export default function Calculators({currentUser, logout}) {
                 >{showIntCalc ? 'HIDE CALCULATOR':'SHOW INTEREST CALCULATOR'}</Button>
               </div>
               <div className="p-2" id='toggle-calc3-block'>
+                <Button
+                variant='light'
+                onClick={toggleVatCalculator}
+                id='toggleVatCalcBtn'
+                >
+                {showVatCalc ? 'HIDE CALCULATOR': 'SHOW VAT CALCULATOR'}
+
+                </Button>
+
+              </div>
+              <div className="p-2" id='toggle-calc4-block'>
               {/* Toggle Calculator Btn */}
                 <Button 
                     variant='light' 
@@ -387,8 +414,20 @@ export default function Calculators({currentUser, logout}) {
               </div>
             )}
             {showVatCalc && (
-              <div>
-                <Row></Row>
+              <div id='vat-calculator-panal'>
+                <Row id='vatCalculator-row'>
+                  <Col id='vat-calculator-col1'/>
+                  <Col xs={12} md={8} id='vat-calculator-col'>
+                    <div id='vat-calculator-block'>
+                      <VatCalculator
+                        onCalculate={calculateVat}
+                        onSave={saveVat}
+                        isAuthenticated={!!currentUser}
+                      />
+                    </div>
+                  </Col>
+                   <Col id='vat-calculator-col1'/>
+                </Row>
               </div>
             )}
             {/* TOGGLE INTEREST CALCULATOR */}

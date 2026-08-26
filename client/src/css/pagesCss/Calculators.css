@@ -61,7 +61,8 @@ LAYOUT
 }
 #toggle-calc1-block,
 #toggle-calc2-block,
-#toggle-calc3-block{
+#toggle-calc3-block,
+#toggle-calc4-block{
     display: flex;
     justify-content: center;
     margin: 0px;
@@ -244,6 +245,7 @@ LAYOUT
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/
+ #toggleVatCalcBtn,
 #toggleTaxCalcBtn,
 #toggleIntCalcBtn,
 #toggleCalcBtn{
