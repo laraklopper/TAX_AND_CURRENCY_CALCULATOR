@@ -636,6 +636,106 @@ export const totalCapitalOf = (calculation) => {
 }
 
 //===========================================================================
+// SAVED PROVISIONAL TAX CALCULATIONS (ProvisionalTaxCalculations.js)
+//===========================================================================
+/* Label a stored IRP6 period. The headings come from PROVISIONAL_PERIODS above,
+so the saved calculations list names a payment exactly as the calculator form
+did. Looked up WITHOUT provisionalPeriodConfig's fallback: that fallback exists
+so a form always has a period selected, but on a stored record an unrecognised
+period is a record that cannot be described, not a first payment. */
+export const toProvisionalPeriod = (period) =>
+    PROVISIONAL_PERIODS.find((p) => p.value === period)?.heading?.toUpperCase()
+    || (period ? String(period).toUpperCase() : NOT_AVAILABLE)
+
+/* The short label for the same period, e.g. FIRST. Used in the table, where the
+full heading is more than the column needs. */
+export const toProvisionalPeriodLabel = (period) =>
+    PROVISIONAL_PERIODS.find((p) => p.value === period)?.label
+    || (period ? String(period).toUpperCase() : NOT_AVAILABLE)
+
+/* The share of the year's liability a payment covers, stored as a decimal
+(0.5 or 1) and shown as a percentage. A whole number is shown without decimals,
+because the portions are published as "50%" and "100%". */
+export const toPeriodPortion = (portion) => {
+    if (typeof portion !== 'number' || isNaN(portion)) return NOT_AVAILABLE
+    return toRatePercent(portion)
+}
+
+/* Everything already paid towards the year: withheld by an employer, credited
+for tax paid abroad, or paid on an earlier IRP6. Exposed as a virtual by the
+schema, so it arrives on the record; it is recomputed only as a fallback. */
+export const totalCreditsOf = (calculation) => {
+    if (typeof calculation?.totalCredits === 'number') return calculation.totalCredits
+    if (typeof calculation?.taxForPeriod !== 'number') return null
+    return (calculation.employeesTax || 0)
+        + (calculation.foreignTaxCredits || 0)
+        + (calculation.priorPayments || 0)
+}
+
+/* The surplus where the credits came to more than the period's tax. The amount
+payable is floored at zero, so without this the overpayment would not appear on
+the record at all. Exposed as a virtual by the schema, as above. */
+export const overpaidOf = (calculation) => {
+    if (typeof calculation?.overpaid === 'number') return calculation.overpaid
+    const credits = totalCreditsOf(calculation)
+    if (typeof calculation?.taxForPeriod !== 'number' || typeof credits !== 'number') return null
+    const balance = calculation.taxForPeriod - credits
+    return balance < 0 ? -balance : 0
+}
+
+/* The liability for the year still to be settled by later payments: nil on a
+second or third payment, which square up the whole year, and half the year's
+liability on a first. Exposed as a virtual by the schema, as above. */
+export const remainingForYearOf = (calculation) => {
+    if (typeof calculation?.remainingForYear === 'number') return calculation.remainingForYear
+    if (typeof calculation?.annualTaxLiability !== 'number' || typeof calculation?.taxForPeriod !== 'number') return null
+    return calculation.annualTaxLiability - calculation.taxForPeriod
+}
+
+//===========================================================================
+// SAVED VAT CALCULATIONS (VatCalculations.js)
+//===========================================================================
+/* Which direction a stored VAT calculation ran in. The schema stores the mode
+the maths works in ('exclusive' or 'inclusive'), which says nothing on its own
+about what was done, so these describe it as the calculator form offered it. */
+const VAT_MODE_LABELS = {
+    exclusive: 'VAT ADDED (EXCL. TO INCL.)',
+    inclusive: 'VAT REMOVED (INCL. TO EXCL.)'
+}
+
+// Label a stored VAT mode, falling back to the raw value for an unknown one
+export const toVatMode = (mode) =>
+    VAT_MODE_LABELS[mode] || (mode ? String(mode).toUpperCase() : NOT_AVAILABLE)
+
+/* The short label for the same mode, e.g. VAT ADDED. Used in the table, where
+the full description is more than the column needs. */
+export const toVatModeLabel = (mode) => {
+    if (mode === 'exclusive') return 'VAT ADDED'
+    if (mode === 'inclusive') return 'VAT REMOVED'
+    return mode ? String(mode).toUpperCase() : NOT_AVAILABLE
+}
+
+/* The amount the user actually typed: the net amount where VAT was added on top
+and the gross where it was stripped back out. Exposed as a virtual by the VAT
+schema, so it arrives on the record; it is recomputed here only as a fallback. */
+export const enteredAmountOf = (calculation) => {
+    if (typeof calculation?.enteredAmount === 'number') return calculation.enteredAmount
+    if (calculation?.mode === 'inclusive') {
+        return typeof calculation.grossAmount === 'number' ? calculation.grossAmount : null
+    }
+    return typeof calculation?.netAmount === 'number' ? calculation.netAmount : null
+}
+
+/* How a stored calculation's rate is described. A zero-rated item is called out
+by name rather than shown as a bare 0%, because a nil rate and an item that was
+never rated look the same as a figure. */
+export const toVatRate = (calculation) => {
+    if (typeof calculation?.ratePercent !== 'number' || isNaN(calculation.ratePercent)) return NOT_AVAILABLE
+    if (calculation.isZeroRated) return '0% (ZERO-RATED)'
+    return `${calculation.ratePercent.toLocaleString('en-ZA', { maximumFractionDigits: 2 })}%`
+}
+
+//===========================================================================
 // BASIC CALCULATOR (NumberCalculator.js)
 //===========================================================================
 /* True for the keys the basic calculator accepts from the keyboard: the digits,

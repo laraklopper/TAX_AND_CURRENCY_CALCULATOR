@@ -4,6 +4,10 @@
 GET calculations and allow user to export calculation to .csv and .xlsx
 - export/taxHistory.(csv)
 - export/taxHistory.(xlsx)
+- export/provisionalHistory.(csv)
+- export/provisionalHistory.(xlsx)
+- export/vatHistory.(csv)
+- export/vatHistory.(xlsx)
 - export/interestHistory.(csv)
 - export/interestHistor.(xlsx)
 - export/currencyHistory.(csv)
@@ -28,6 +32,8 @@ const { checkJwtToken } = require('./middleware');// Middleware to check JWT tok
 // IMPORT SCHEMAS/MODELS
 const Interest = require('../models/interestSchema')
 const Tax = require('../models/taxCalcSchema')
+const ProvTax = require('../models/provTaxCalcSchema')
+const Vat = require('../models/vatCalcSchema')
 const Currency = require('../models/curConvertSchema')
 const router = express.Router()
 
@@ -53,6 +59,18 @@ function toDateTime(value) {
 
     const pad = (number) => String(number).padStart(2, '0');// 1 -> '01'
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/* Formats a date-only value as YYYY-MM-DD, read in UTC. Used for an IRP6 due
+date, which is stored as a UTC midnight: read in the server's local time zone
+that midnight can fall on the previous day, so a payment due on the 31st would
+be exported as the 30th. */
+function toDate(value) {
+    const date = value instanceof Date ? value : new Date(value);
+    // Conditional rendering to check the date is usable
+    if (!value || Number.isNaN(date.getTime())) return '';// Blank cell rather than 'Invalid Date'
+
+    return date.toISOString().slice(0, 10);
 }
 
 /* Rounds a number to `decimals` places, leaving the cell blank when the value
@@ -273,6 +291,189 @@ router.get('/taxHistory',checkJwtToken, async (req, res) => {
         return sendExport(res, format, rows, columns, toFilename('tax-calculations'))
     } catch (error) {
         console.error('[ERROR: exportRoutes.js, GET /taxHistory]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
+// Provisional tax (IRP6) calculations
+router.get('/provisionalHistory', checkJwtToken, async (req, res) => {
+    const format = parseFormat(req, res)// Allowed formats: csv or xlsx.
+    // Stop if parseFormat already sent an error response.
+    if(!format) return
+    /* Defines the exact column order in the exported file. Laid out the way an
+    IRP6 works: the estimate, the tax on it for the year, the portion this
+    payment covers, then what came off it and what is left to pay. */
+    const columns = [
+        'DATE SAVED',
+        'SAVED BY',
+        'TAX YEAR',
+        'PAYMENT',
+        'PORTION OF YEAR (%)',
+        'DUE DATE',
+        'AGE',
+        'AGE GROUP',
+        'ESTIMATED TAXABLE INCOME',
+        'BASIC AMOUNT',
+        'TAX ON ESTIMATE',
+        'REBATE',
+        'MEDICAL CREDITS',
+        'ANNUAL TAX LIABILITY',
+        'TAX FOR PERIOD',
+        "EMPLOYEES' TAX",
+        'FOREIGN TAX CREDITS',
+        'PRIOR PAYMENTS',
+        'TOTAL CREDITS',
+        'AMOUNT PAYABLE',
+        'OVERPAID',
+        'REMAINING FOR YEAR',
+        'EFFECTIVE RATE (%)',
+        'MARGINAL RATE (%)',
+    ]
+    try {
+        const userId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
+
+        const provs = await ProvTax.find({
+            user: userId
+        })
+        .sort({createdAt: -1})//Newest calculation first
+        .limit(EXPORT_LIMIT)
+        .exec()
+
+        /* Conditional rendering to check there is anything to export: an empty
+        file gives the user no way of telling a working export from a broken one */
+        if (provs.length === 0) {
+            console.warn('[WARN: exportRoutes.js, GET /provisionalHistory] No saved provisional tax calculations for user', userId);// Log a warning message in the console for debugging purposes
+            return res.status(404).json({// Return a 404 (Not Found) status code with a message
+                success: false,//Success status
+                message: 'You have no saved provisional tax calculations to export.'//JSON message
+            });
+        }
+
+        //Convert Provisional tax Calculation documents to rows
+        // Keys match `columns` above: the object keys ARE the header row.
+        const rows = provs.map(p => ({
+            'DATE SAVED': toDateTime(p.createdAt),
+            'SAVED BY': toFullName(p.fullName),
+            'TAX YEAR': p.taxYear || NOT_AVAILABLE,
+            'PAYMENT': (p.period || '').toUpperCase(),
+            // Stored as a share of the year (0.5 or 1), reported as a percentage
+            'PORTION OF YEAR (%)': toNumber(p.periodPortion * 100, 0),
+            /* Blank where the tax year carried no usable dates: the due date is
+            worked out from them rather than guessed at */
+            'DUE DATE': toDate(p.dueDate),
+            'AGE': toNumber(p.age, 0),
+            'AGE GROUP': p.ageGroup || NOT_AVAILABLE,
+            'ESTIMATED TAXABLE INCOME': toNumber(p.estimatedTaxableIncome),
+            /* Left blank rather than written as 0 when none was supplied: a
+            taxpayer filing their first IRP6 has no assessment to take one from,
+            which is not the same as a basic amount of nil */
+            'BASIC AMOUNT': p.basicAmount === null || p.basicAmount === undefined ? '' : toNumber(p.basicAmount),
+            'TAX ON ESTIMATE': toNumber(p.taxOnEstimate),
+            'REBATE': toNumber(p.rebate),
+            'MEDICAL CREDITS': toNumber(p.medicalCredits || 0),
+            'ANNUAL TAX LIABILITY': toNumber(p.annualTaxLiability),
+            'TAX FOR PERIOD': toNumber(p.taxForPeriod),
+            "EMPLOYEES' TAX": toNumber(p.employeesTax || 0),
+            'FOREIGN TAX CREDITS': toNumber(p.foreignTaxCredits || 0),
+            'PRIOR PAYMENTS': toNumber(p.priorPayments || 0),
+            // totalCredits, overpaid and remainingForYear are virtuals on the provisional tax schema
+            'TOTAL CREDITS': toNumber(p.totalCredits),
+            'AMOUNT PAYABLE': toNumber(p.amountPayable),
+            /* The surplus where the credits came to more than the period's tax.
+            The amount payable is floored at zero, so without this column an
+            overpayment would not appear in the export at all. */
+            'OVERPAID': toNumber(p.overpaid),
+            'REMAINING FOR YEAR': toNumber(p.remainingForYear),
+            'EFFECTIVE RATE (%)': toNumber(p.effectiveRate),
+            'MARGINAL RATE (%)': toNumber(p.marginalRate),
+        }))
+
+        // Say so when the export is only the newest slice of a longer history
+        if (rows.length === EXPORT_LIMIT) {
+            console.warn('[WARN: exportRoutes.js, GET /provisionalHistory] Export truncated to the newest', EXPORT_LIMIT, 'calculation(s) for user', userId);// Log a warning message in the console for debugging purposes
+        }
+
+        console.log('[SUCCESS: exportRoutes.js, GET /provisionalHistory] Exported', rows.length, 'calculation(s) as', format, 'for user', userId);//Log a success message in the console for debugging purposes
+        // Generate and send the export file.
+        // sendExport handles both CSV and XLSX output.
+        return sendExport(res, format, rows, columns, toFilename('provisional-tax-calculations'))
+    } catch (error) {
+        console.error('[ERROR: exportRoutes.js, GET /provisionalHistory]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
+// VAT calculations
+router.get('/vatHistory', checkJwtToken, async (req, res) => {
+    const format = parseFormat(req, res)// Allowed formats: csv or xlsx.
+    // Stop if parseFormat already sent an error response.
+    if(!format) return
+    /* Defines the exact column order in the exported file. The net, VAT and
+    gross amounts are the three figures that reconcile, so they sit together
+    after the columns that say how they were arrived at. */
+    const columns = [
+        'DATE SAVED',
+        'SAVED BY',
+        'CALCULATION',
+        'ZERO-RATED',
+        'VAT RATE (%)',
+        'AMOUNT ENTERED',
+        'AMOUNT EXCL. VAT',
+        'VAT',
+        'AMOUNT INCL. VAT',
+    ]
+    // How each stored `mode` is described in the file
+    const MODE_LABELS = {
+        exclusive: 'VAT ADDED (EXCL. TO INCL.)',
+        inclusive: 'VAT REMOVED (INCL. TO EXCL.)',
+    }
+    try {
+        const userId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
+
+        const vats = await Vat.find({
+            user: userId
+        })
+        .sort({createdAt: -1})//Newest calculation first
+        .limit(EXPORT_LIMIT)
+        .exec()
+
+        /* Conditional rendering to check there is anything to export: an empty
+        file gives the user no way of telling a working export from a broken one */
+        if (vats.length === 0) {
+            console.warn('[WARN: exportRoutes.js, GET /vatHistory] No saved VAT calculations for user', userId);// Log a warning message in the console for debugging purposes
+            return res.status(404).json({// Return a 404 (Not Found) status code with a message
+                success: false,//Success status
+                message: 'You have no saved VAT calculations to export.'//JSON message
+            });
+        }
+
+        //Convert VAT Calculation documents to rows
+        // Keys match `columns` above: the object keys ARE the header row.
+        const rows = vats.map(v => ({
+            'DATE SAVED': toDateTime(v.createdAt),
+            'SAVED BY': toFullName(v.fullName),
+            'CALCULATION': MODE_LABELS[v.mode] || (v.mode || '').toUpperCase() || NOT_AVAILABLE,
+            'ZERO-RATED': v.isZeroRated ? 'YES' : 'NO',
+            /* The rate the record was SAVED at, not the current SARS rate: the
+            rate has changed before and an old record has to keep reproducing
+            the figures it was worked out with */
+            'VAT RATE (%)': toNumber(v.ratePercent),
+            // enteredAmount is a virtual on the VAT schema
+            'AMOUNT ENTERED': toNumber(v.enteredAmount),
+            'AMOUNT EXCL. VAT': toNumber(v.netAmount),
+            'VAT': toNumber(v.vatAmount),
+            'AMOUNT INCL. VAT': toNumber(v.grossAmount),
+        }))
+
+        // Say so when the export is only the newest slice of a longer history
+        if (rows.length === EXPORT_LIMIT) {
+            console.warn('[WARN: exportRoutes.js, GET /vatHistory] Export truncated to the newest', EXPORT_LIMIT, 'calculation(s) for user', userId);// Log a warning message in the console for debugging purposes
+        }
+
+        console.log('[SUCCESS: exportRoutes.js, GET /vatHistory] Exported', rows.length, 'calculation(s) as', format, 'for user', userId);//Log a success message in the console for debugging purposes
+        // Generate and send the export file.
+        // sendExport handles both CSV and XLSX output.
+        return sendExport(res, format, rows, columns, toFilename('vat-calculations'))
+    } catch (error) {
+        console.error('[ERROR: exportRoutes.js, GET /vatHistory]', error.message);// Log an error message in the console for debugging purposes
         return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })

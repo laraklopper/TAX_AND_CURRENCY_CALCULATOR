@@ -1,10 +1,11 @@
 // ExportForm.js
 /* The export form shown under each saved-calculation list
-(CurrencyCalculations.js, TaxCalculations.js, InterestCalculations.js).
+(CurrencyCalculations.js, TaxCalculations.js, ProvisionalTaxCalculations.js,
+VatCalculations.js, InterestCalculations.js).
 
-One form serves all three: the `type` prop decides which export endpoint the
-request goes to and what the file is called, so the three lists cannot drift
-apart on how a download is asked for or reported.
+One form serves them all: the `type` prop decides which export endpoint the
+request goes to and what the file is called, so the lists cannot drift apart on
+how a download is asked for or reported.
 
 The response is a FILE, not JSON, so it is read as a blob and handed to a
 temporary anchor to trigger the browser's download. Only a failure comes back as
@@ -35,6 +36,16 @@ const EXPORTS = {
     endpoint: '/export/taxHistory',
     filename: 'tax-calculations',
     label: 'TAX CALCULATIONS'
+  },
+  provisional: {
+    endpoint: '/export/provisionalHistory',
+    filename: 'provisional-tax-calculations',
+    label: 'PROVISIONAL TAX CALCULATIONS'
+  },
+  vat: {
+    endpoint: '/export/vatHistory',
+    filename: 'vat-calculations',
+    label: 'VAT CALCULATIONS'
   },
   currency: {
     endpoint: '/export/currencyHistory',

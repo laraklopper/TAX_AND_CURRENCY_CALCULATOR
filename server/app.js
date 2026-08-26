@@ -20,6 +20,7 @@ const authRoutes = require('./routes/authRoutes')
 const apiRoutes = require('./routes/apiRoutes')
 const taxRoutes = require('./routes/taxRoutes')
 const provisionalTaxRoutes = require('./routes/provisionalTaxRoutes')
+const vatRoutes = require('./routes/vatRoutes')
 const userRoutes = require('./routes/userRoutes')
 const interestRoutes = require('./routes/interestRoutes')
 const exportRoutes = require('./routes/exportRoutes')
@@ -50,6 +51,10 @@ app.use('/tax', taxRoutes)// Income tax: /config, /calculate, /save and /history
 from GET /tax/config, because provisional tax is worked out from the same
 brackets and rebates as income tax. */
 app.use('/provisional', provisionalTaxRoutes)
+/* VAT: /calculate, /save and /history. Mounted separately from /tax because it
+resolves nothing: SARS publishes VAT as a flat rate rather than as a bracket
+table, so it shares no configuration with income tax. */
+app.use('/vat', vatRoutes)
 app.use('/users', userRoutes)//User Routes: /me , fetchUsers, editUser, editPassword, deleteUser:id
 app.use('/interest', interestRoutes)// Interest: /calculate, /save and /history
 app.use('/export', exportRoutes)//Routes to export calculations

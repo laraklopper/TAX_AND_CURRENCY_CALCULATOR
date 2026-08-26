@@ -13,17 +13,55 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import TaxCalculations from '../components/TaxCalculations';
+import ProvisionalTaxCalculations from '../components/ProvisionalTaxCalculations';
+import VatCalculations from '../components/VatCalculations';
 import InterestCalculations from '../components/InterestCalculations';
 
 // Base URL of the API the calculations lists read from
 const API_BASE_URL = 'http://localhost:3001';
 
+/* The four lists this page can show, in the order their buttons appear. Each
+entry is what the toggle button needs to describe itself, so a fifth calculator
+is a row here rather than another piece of state and another button block.
+
+`key` is what `visibleList` holds; `controls` is the id of the panal the button
+opens, which is also what its aria-controls points at. */
+const CALCULATION_LISTS = [
+    {
+        key: 'tax',
+        buttonId: 'showTax-calculationsBtn',
+        controls: 'tax-calculations-panal',
+        label: 'SHOW TAX CALCULATIONS',
+    },
+    {
+        key: 'provisional',
+        buttonId: 'showProvTax-calculationsBtn',
+        controls: 'prov-tax-calculations-panal',
+        label: 'SHOW PROVISIONAL TAX CALCULATIONS',
+    },
+    {
+        key: 'vat',
+        buttonId: 'showVatCalculationsBtn',
+        controls: 'vat-calculations-panal',
+        label: 'SHOW VAT CALCULATIONS',
+    },
+    {
+        key: 'interest',
+        buttonId: 'showInterest-calculationsBtn',
+        controls: 'interest-calculations-panal',
+        label: 'SHOW INTEREST CALCULATIONS',
+    },
+]
+
 export default function Calculations({currentUser, logout}) {
     // ==========STATE VARIABLES================
-    const [showTaxCalculations, setShowTaxCalculations] =useState(false)
-    const [showVatCalculations, setShowVatCalculations] = useState(false)
-     const [showInterestCalculations, setShowInterestCalculations] = useState(false)
-    /* The logged in user's saved calculations, shown by the two calculations
+    /* Which list is open, or null when none is. Held as ONE value rather than as
+    a boolean per list: the lists are mutually exclusive, and a boolean each
+    means every toggle has to remember to switch all the others off - a fifth
+    calculator would be a fifth flag in four different functions, and the one
+    that gets forgotten leaves two lists on screen at once. */
+    const [visibleList, setVisibleList] = useState(null)
+    /* The logged in user's saved calculations, shown by the four calculations
     lists. `total` is reported separately by each history endpoint, which returns
     only the newest 100 records, so it is what tells a list it is showing a
     truncated view. A list that will not load reports its own reason, because this
@@ -31,6 +69,12 @@ export default function Calculations({currentUser, logout}) {
     const [taxCalculations, setTaxCalculations] = useState([])
     const [taxCalculationsTotal, setTaxCalculationsTotal] = useState(0)
     const [taxCalculationsError, setTaxCalculationsError] = useState('')
+    const [provTaxCalculations, setProvTaxCalculations] = useState([])
+    const [provTaxCalculationsTotal, setProvTaxCalculationsTotal] = useState(0)
+    const [provTaxCalculationsError, setProvTaxCalculationsError] = useState('')
+    const [vatCalculations, setVatCalculations] = useState([])
+    const [vatCalculationsTotal, setVatCalculationsTotal] = useState(0)
+    const [vatCalculationsError, setVatCalculationsError] = useState('')
     const [interestCalculations, setInterestCalculations] = useState([])
     const [interestCalculationsTotal, setInterestCalculationsTotal] = useState(0)
     const [interestCalculationsError, setInterestCalculationsError] = useState('')
@@ -40,28 +84,14 @@ export default function Calculations({currentUser, logout}) {
     const loggedIn = Boolean(currentUser)
 
      //================EVENT LISTENERS========================
-     // Function to toggle taxCalculations List
-     const toggleTaxCalculations = useCallback(() => {
-        setShowTaxCalculations(prev => !prev)
-        setShowInterestCalculations(false)
-        setShowVatCalculations(false)
+     /* Opens the list that was asked for, or closes it if it is already open.
+     One function for all four, so a list cannot be opened without the others
+     being closed. */
+     const toggleList = useCallback((key) => {
+        setVisibleList(prev => (prev === key ? null : key))
      },[])
 
-     //Function to toggle Interest calculations list
-    const toggleInterestCalculations = useCallback(() => {
-        setShowInterestCalculations(prev => !prev)
-        setShowTaxCalculations(false)
-        setShowVatCalculations(false)
-    },[])
-
-    //Function to toggle Interest calculations list
-    const toggleVatCalculations = useCallback(() => {
-    setShowVatCalculations(prev => !prev)
-    setShowTaxCalculations(false)
-    setShowInterestCalculations(false)
-    },[])
-
-    /* Shared GET helper for the two history endpoints. Both answer
+    /* Shared GET helper for the four history endpoints. All four answer
     `{ success, total, limit, calculations }`, so this returns that whole body and
     throws the API's own message on failure, letting the caller report why a list
     could not be loaded. */
@@ -87,7 +117,7 @@ export default function Calculations({currentUser, logout}) {
       return data;
     },[])
 
-    /* Shared DELETE helper for the two history endpoints. Throws the API's own
+    /* Shared DELETE helper for the four history endpoints. Throws the API's own
     message on failure, so the calculations list can report the real reason beside
     the delete button the user pressed. */
     const deleteFromApi = useCallback(async (endpoint, fallbackMessage) => {
@@ -140,6 +170,62 @@ export default function Calculations({currentUser, logout}) {
       return data;
     },[deleteFromApi])
 
+    /* Loads the logged in user's saved provisional tax (IRP6) calculations for
+    the provisional tax calculations list, as above. */
+    const fetchProvTaxCalculations = useCallback(async () => {
+      try {
+        const data = await getFromApi('/provisional/history', 'Could not load your saved provisional tax calculations.');
+        const calculations = Array.isArray(data.calculations) ? data.calculations : [];
+        setProvTaxCalculations(calculations)
+        setProvTaxCalculationsTotal(typeof data.total === 'number' ? data.total : calculations.length)
+        setProvTaxCalculationsError('')//Clear any previous error messages
+        console.log(`[SUCCESS: Calculations.js, fetchProvTaxCalculations] Fetched ${calculations.length} of ${data.total ?? calculations.length} provisional tax calculations`);
+      } catch (error) {
+        // Reported by the list itself: this page has no error banner of its own
+        setProvTaxCalculationsError(error?.message || 'Could not load your saved provisional tax calculations.')
+      }
+    },[getFromApi])
+
+    // Removes one of the user's saved provisional tax calculations, as above
+    const deleteProvTaxCalculation = useCallback(async (calculationId) => {
+      const data = await deleteFromApi(`/provisional/history/${calculationId}`, 'Failed to remove the provisional tax calculation.');
+
+      // Drop the deleted calculation from the list on screen
+      setProvTaxCalculations((prev) => prev.filter((calculation) => String(calculation._id) !== String(calculationId)))
+      setProvTaxCalculationsTotal((prev) => Math.max(0, prev - 1))
+
+      console.log('[SUCCESS: Calculations.js, deleteProvTaxCalculation] Removed provisional tax calculation', calculationId);//Log a success message in the console for debugging purposes
+      return data;
+    },[deleteFromApi])
+
+    /* Loads the logged in user's saved VAT calculations for the VAT calculations
+    list, as above. */
+    const fetchVatCalculations = useCallback(async () => {
+      try {
+        const data = await getFromApi('/vat/history', 'Could not load your saved VAT calculations.');
+        const calculations = Array.isArray(data.calculations) ? data.calculations : [];
+        setVatCalculations(calculations)
+        setVatCalculationsTotal(typeof data.total === 'number' ? data.total : calculations.length)
+        setVatCalculationsError('')//Clear any previous error messages
+        console.log(`[SUCCESS: Calculations.js, fetchVatCalculations] Fetched ${calculations.length} of ${data.total ?? calculations.length} VAT calculations`);
+      } catch (error) {
+        // Reported by the list itself: this page has no error banner of its own
+        setVatCalculationsError(error?.message || 'Could not load your saved VAT calculations.')
+      }
+    },[getFromApi])
+
+    // Removes one of the user's saved VAT calculations, as above
+    const deleteVatCalculation = useCallback(async (calculationId) => {
+      const data = await deleteFromApi(`/vat/history/${calculationId}`, 'Failed to remove the VAT calculation.');
+
+      // Drop the deleted calculation from the list on screen
+      setVatCalculations((prev) => prev.filter((calculation) => String(calculation._id) !== String(calculationId)))
+      setVatCalculationsTotal((prev) => Math.max(0, prev - 1))
+
+      console.log('[SUCCESS: Calculations.js, deleteVatCalculation] Removed VAT calculation', calculationId);//Log a success message in the console for debugging purposes
+      return data;
+    },[deleteFromApi])
+
     /* Loads the logged in user's saved interest calculations for the interest
     calculations list, as above. */
     const fetchInterestCalculations = useCallback(async () => {
@@ -178,53 +264,34 @@ export default function Calculations({currentUser, logout}) {
         <Col id='toggle-calculations-col1'/>
         <Col xs={6} id='toggle-calculations-col'>
             <Stack gap={3} id='toggleCalculations-stack'>
-      <div className="p-2" id='show-calculations-block1'>
-        <Button
-        variant='light'
-        id='showTax-calculationsBtn'
-        type='button'
-        onClick={toggleTaxCalculations}
-        // ARIA ATTRIBUTES:
-        aria-label={showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
-        aria-controls='tax-calculations-panal'
-        aria-pressed={showTaxCalculations}
-        aria-expanded={showTaxCalculations}
-        >
-           {showTaxCalculations ? 'Hide Calculations': 'SHOW TAX CALCULATIONS'}
-        </Button>
-      </div>
-      <div className="p-2" id='show-calculations-block2'>
-        <Button
-        variant='light'
-        type='button'
-        id='showInterest-calculationsBtn'
-        onClick={toggleInterestCalculations}
-        // ARIA ATTRIBUTES:
-        aria-label={showInterestCalculations ? 'Hide Calculations': 'SHOW INTEREST CALCULATIONS'}
-        aria-controls='interest-calculations-panal'
-        aria-pressed={showInterestCalculations}
-        aria-expanded={showInterestCalculations}
-        >
-            {showInterestCalculations ? 'Hide Calculations': 'SHOW INTEREST CALCULATIONS'}
-        </Button>
-
-      </div>
-      <div className="p-2" id='show-calculations-block3'>
-          <Button
+      {/* ONE TOGGLE BUTTON PER LIST: only one list is open at a time, so a
+      button that is already showing its list closes it again */}
+      {CALCULATION_LISTS.map((list) => {
+        const isOpen = visibleList === list.key
+        return (
+          <div className="p-2" key={list.key}>
+            <Button
             variant='light'
-            id='showVatCalculationsBtn'
+            id={list.buttonId}
             type='button'
-            onClick={toggleVatCalculations}
-          >
-            {showVatCalculations ? 'Hide Calculations' : 'Show Vat Calculations'}
-        </Button>
-      </div>
+            onClick={() => toggleList(list.key)}
+            // ARIA ATTRIBUTES:
+            aria-label={isOpen ? 'Hide Calculations' : list.label}
+            aria-controls={list.controls}
+            aria-pressed={isOpen}
+            aria-expanded={isOpen}
+            >
+              {isOpen ? 'Hide Calculations' : list.label}
+            </Button>
+          </div>
+        )
+      })}
     </Stack>
         </Col>
         <Col id='toggle-calculations-col2'/>
       </Row>
       {/* Tax Calculations */}
-      {showTaxCalculations && (
+      {visibleList === 'tax' && (
         <div id='tax-calculations-panal'>
           <Row id='tax-calculations-row'>
             <Col id='tax-calculations-col'>
@@ -241,8 +308,44 @@ export default function Calculations({currentUser, logout}) {
           </Row>
         </div>
       )}
+      {/* Provisional Tax (IRP6) Calculations */}
+      {visibleList === 'provisional' && (
+        <div id='prov-tax-calculations-panal'>
+          <Row id='prov-tax-calculations-row'>
+            <Col id='prov-tax-calculations-col'>
+              {/* SAVED PROVISIONAL TAX CALCULATIONS COMPONENT */}
+              <ProvisionalTaxCalculations
+                loggedIn={loggedIn}
+                fetchProvTaxCalculations={fetchProvTaxCalculations}
+                provTaxCalculations={provTaxCalculations}
+                provTaxCalculationsTotal={provTaxCalculationsTotal}
+                deleteProvTaxCalculation={deleteProvTaxCalculation}
+                loadError={provTaxCalculationsError}
+              />
+            </Col>
+          </Row>
+        </div>
+      )}
+      {/* VAT Calculations */}
+      {visibleList === 'vat' && (
+        <div id='vat-calculations-panal'>
+          <Row id='vat-calculations-row'>
+            <Col id='vat-calculations-col'>
+              {/* SAVED VAT CALCULATIONS COMPONENT */}
+              <VatCalculations
+                loggedIn={loggedIn}
+                fetchVatCalculations={fetchVatCalculations}
+                vatCalculations={vatCalculations}
+                vatCalculationsTotal={vatCalculationsTotal}
+                deleteVatCalculation={deleteVatCalculation}
+                loadError={vatCalculationsError}
+              />
+            </Col>
+          </Row>
+        </div>
+      )}
       {/* Interest Calculations */}
-      {showInterestCalculations && (
+      {visibleList === 'interest' && (
         <div id='interest-calculations-panal'>
           <Row id='int-calculations-row'>
             <Col id='int-calculations-col'>
@@ -259,8 +362,6 @@ export default function Calculations({currentUser, logout}) {
           </Row>
         </div>
       )}
-      {/* VAT Calculations */}
-
             </div>
 
 
