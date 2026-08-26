@@ -497,6 +497,67 @@ router.delete('/history/:id', checkJwtToken, async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })
+// controllers/vatController.js
+//
+// VAT calculation is stateless and public — no DB lookup needed, unlike
+// TaxYearConfig or ExchangeRateSnapshot, since SARS publishes the VAT
+// rate as a flat percentage rather than a bracket table. Keep SARS_VAT_RATE
+// as the single source of truth; bump it here (and add an effective-date
+// history array) if SARS changes the rate again.
+
+const SARS_VAT_RATE = 0.15;
+
+const calculateVat = (req, res) => {
+  try {
+    const { amount, mode = 'exclusive', isZeroRated = false } = req.body;
+
+    const parsedAmount = Number(amount);
+
+    if (amount === undefined || amount === null || Number.isNaN(parsedAmount)) {
+      return res.status(400).json({ message: 'A valid numeric amount is required.' });
+    }
+
+    if (parsedAmount < 0) {
+      return res.status(400).json({ message: 'Amount cannot be negative.' });
+    }
+
+    if (!['exclusive', 'inclusive'].includes(mode)) {
+      return res
+        .status(400)
+        .json({ message: "mode must be either 'exclusive' or 'inclusive'." });
+    }
+
+    const rate = isZeroRated ? 0 : SARS_VAT_RATE;
+
+    let netAmount;
+    let vatAmount;
+    let grossAmount;
+
+    if (mode === 'exclusive') {
+      netAmount = parsedAmount;
+      vatAmount = netAmount * rate;
+      grossAmount = netAmount + vatAmount;
+    } else {
+      grossAmount = parsedAmount;
+      netAmount = rate === 0 ? grossAmount : grossAmount / (1 + rate);
+      vatAmount = grossAmount - netAmount;
+    }
+
+    const result = {
+      mode,
+      isZeroRated: Boolean(isZeroRated),
+      ratePercent: rate * 100,
+      netAmount: Number(netAmount.toFixed(2)),
+      vatAmount: Number(vatAmount.toFixed(2)),
+      grossAmount: Number(grossAmount.toFixed(2)),
+      calculatedAt: new Date().toISOString(),
+    };
+
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ message: 'VAT calculation failed.', error: err.message });
+  }
+};
 
 //========EXPORT THE ROUTER============
 module.exports = router;// Export the router to be used in other parts of the application
