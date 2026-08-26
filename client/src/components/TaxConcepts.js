@@ -59,7 +59,7 @@ export default function TaxConcepts() {
         </div>
         </Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item eventKey="3">
+      <Accordion.Item eventKey="2">
         <Accordion.Header>TAX THRESHOLDS</Accordion.Header>
         <Accordion.Body>
            <div className='tax-concept-div'>
@@ -85,21 +85,71 @@ export default function TaxConcepts() {
         </div>
         </Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item eventKey='4'>
+      <Accordion.Item eventKey='3'>
         <Accordion.Header>PROVISIONAL TAX</Accordion.Header>
         <Accordion.Body>
         {/* EXPLAIN PROVISIONAL TAX */}
           <div className='tax-concept-div'>
-
+            <p className='concept-para'>
+              Provisional tax is not a separate tax. It is a prepayment mechanism for
+              income tax, aimed at anyone whose income is not already taxed at source
+              through PAYE &mdash; sole proprietors and freelancers, directors receiving
+              non-PAYE income, landlords and investors with material rental, interest or
+              investment income, and anyone earning what SARS classifies as income other
+              than remuneration. A salaried employee under standard PAYE deduction is
+              generally not a provisional taxpayer, because the employer is already paying
+              that income tax over in instalments. The brackets, rebates and thresholds
+              above are reused exactly as they are; the only thing that changes is when
+              the tax is paid.
+            </p>
+            <p className='concept-para'>
+              It is declared on the IRP6 form in up to three instalments per year of
+              assessment. The first, due 31 August, is 50% of the estimated total tax
+              liability for the full year. The second, due at the end of February, is the
+              remaining balance recalculated against a more accurate estimate &mdash; so
+              it is trued up against the new figure rather than simply being the other
+              half of the original estimate. A third, voluntary top-up around September
+              exists to limit interest if the first two estimates fell short. On an
+              estimated annual liability of R131 272, the first payment is R131 272
+              &times; 0.50 = R65 636. Because under- or over-estimating income attracts
+              SARS penalties and interest, that first figure should always be read as an
+              estimate, not a guarantee.
+            </p>
           </div>
         </Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item eventKey='5'>
+      <Accordion.Item eventKey='4'>
         <Accordion.Header>VALUE ADDED TAX (VAT)</Accordion.Header>
         <Accordion.Body>
         {/* Explain VALUE ADDED TAX */}
           <div className='tax-concept-div'>
-
+            <p className='concept-para'>
+              VAT is  different income tax: an indirect, consumption-based tax
+              charged on transactions rather than on a person's annual earnings. It has no
+              brackets, no rebates and no age dependency &mdash; it is a flat percentage
+              applied at the point of sale, collected by the vendor on SARS's behalf and
+              remitted on a VAT201 return. The standard rate has been 15% since 1 April
+              2018. Adding VAT to an exclusive amount means multiplying by 1.15, so R1 000
+              becomes R150 of VAT and R1 150 including; removing it from an inclusive
+              amount means dividing by 1.15, so R1 150 resolves back to R1 000 excluding
+              and R150 of VAT. Proposed increases to 15.5% and then 16% were announced and
+              reversed before taking effect, which is why the rate belongs in configurable
+              data rather than in a hardcoded constant.
+            </p>
+            <p className='concept-para'>
+              Not every supply is standard-rated. Zero-rated supplies, such as certain
+              basic foodstuffs and exports, are charged at 0%, while exempt supplies, such
+              as residential rental and certain financial services, carry no VAT at all.
+              The two look identical on a receipt because both show R0 of VAT, but they
+              behave differently for a registered vendor: zero-rated supplies still allow
+              input VAT on the vendor's own purchases to be claimed back, and exempt
+              supplies do not. Registration itself turns on turnover rather than rate:
+              R2.3 million of taxable supplies over a rolling twelve months makes
+              registration compulsory, and R120 000 makes it voluntary. VAT and
+              provisional tax also run independently of one another &mdash; a
+              VAT-registered sole trader files VAT201 returns every second month and still
+              pays provisional tax twice a year on the same profit.
+            </p>
           </div>
         </Accordion.Body>
       </Accordion.Item>
