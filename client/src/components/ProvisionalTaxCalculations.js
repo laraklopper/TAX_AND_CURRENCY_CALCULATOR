@@ -1,25 +1,25 @@
 //ProvisionalTaxCalculations.js
-// The logged in user's saved provisional tax (IRP6) calculations, listed newest
-// first, and a details panal showing the full record of the calculation selected
-// on the table.
-//
-// Provisional tax is the same normal tax the income tax calculator produces,
-// paid in advance, so the tax-on-the-estimate figures read like the ones on the
-// tax calculations list. What this list has to show on top of them is everything
-// that makes an instalment an instalment: WHICH of the three payments it is, the
-// portion of the year's liability that payment covers, the date it fell due, and
-// the employees' tax, foreign tax credits and earlier provisional payments
-// deducted from it.
-//
-// The figures are shown exactly as they were stored. A saved record therefore
-// still reproduces what the calculator showed after the tax year's brackets or
-// the taxpayer's own estimate change - which is the point of keeping an IRP6:
-// the second payment is worked out with the first one deducted from it.
-// `totalCredits`, `overpaid` and `remainingForYear` are virtuals on the
-// provisional tax schema, recomputed here only if a record arrives without them.
-//
-// The table/panal behaviour is shared with the other saved-calculation lists
-// through useCalculationsList; only the columns and the details below are its own.
+/* The logged in user's saved provisional tax (IRP6) calculations, listed newest
+first, and a details panal showing the full record of the calculation selected
+on the table.
+
+Provisional tax is the same normal tax the income tax calculator produces,
+paid in advance, so the tax-on-the-estimate figures read like the ones on the
+tax calculations list. What this list has to show on top of them is everything
+that makes an instalment an instalment: WHICH of the three payments it is, the
+portion of the year's liability that payment covers, the date it fell due, and
+the employees' tax, foreign tax credits and earlier provisional payments
+deducted from it.
+
+The figures are shown exactly as they were stored. A saved record therefore
+still reproduces what the calculator showed after the tax year's brackets or
+the taxpayer's own estimate change - which is the point of keeping an IRP6:
+the second payment is worked out with the first one deducted from it.
+`totalCredits`, `overpaid` and `remainingForYear` are virtuals on the
+provisional tax schema, recomputed here only if a record arrives without them.
+
+The table/panal behaviour is shared with the other saved-calculation lists
+through useCalculationsList; only the columns and the details below are its own.*/
 import React, { useCallback, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculationsList.css'
