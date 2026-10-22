@@ -187,10 +187,90 @@ gap: 10px;
     margin: 0px;
     padding: 5px;
 }
+/* ADMIN REGISTRATION FORM */
+#adminFormPanal{
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 10px 0px;
+}
+#registerAdminForm{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px ;
+    background-color: #A8AEB3;
+    border: #323A42 solid 2px;
+    border-radius: 8px;
+    gap: 10px;
+}
+#adminRegisBlock{
+    display: flex;
+    gap: 5px;
+    margin: 0px;
+    align-items: baseline;
+}
+#adminInput{
+    border: #323A42 solid 2px;
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#adminLabel{
+    font-weight:700;
+    margin:0px;
+    padding:0px;
+    font-family: "Fira Mono", monospace;
+    color: #000000;
+    font-size: 18px;
+    text-decoration: underline;
+}
+#regisAdmin{
+    display: flex;
+    justify-content: center;
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0px;
+    letter-spacing: 2px;
+    padding: 4px;
+    text-align: center;
+    font-family: "Fira Mono", monospace;
+    border: solid #323A42 2px;
+    box-shadow: #33383e;
+    font-weight: 800;
+}
+#regisAdmin option {
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+#adminMsgStack{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 70%;
+}
+#adminMsg{
+    font-weight: 800;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-decoration: underline;
+}
 /* ===============
 BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
 ====================== */
-#regis-btn{
+#regis-btn,
+#regisAsAdminBtn,
+#exitAdminFormBtn{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -204,7 +284,15 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     padding: 0px;
     border: solid 2px #323A42;
 }
-#regis-btn:hover{
+#regisAsAdminBtn{
+    width: 240px;
+}
+#exitAdminFormBtn{
+    width: 100px;
+}
+#regisAsAdminBtn:hover,
+#regisBtn:hover,
+#exitAdminFormBtn:hover{
     color: #E8F0F6;
-    background-color: #323A42;
+    background-color: #323A42;   
 }

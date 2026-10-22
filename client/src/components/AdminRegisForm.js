@@ -1,13 +1,16 @@
+// AdminRegisForm.js
 import React, { useCallback, useState } from 'react'
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/RegisForm.css'
 import Stack from 'react-bootstrap/Stack';
+import Button from 'react-bootstrap/Button';
 // IMPORT ICONS FROM LUCIDE REACT
 import { ShieldUser, X } from 'lucide-react';
-import { ADMIN_STATUS } from '../utils/userFunc';
+import { ADMIN_STATUS, } from '../utils/userFunc';
+
+// AdminRegisForm Function component
 export default function AdminRegisForm(
     {
-        currentUser,
         setCurrentUser,
         exitAdminForm,
         setError
@@ -43,8 +46,21 @@ export default function AdminRegisForm(
       console.error('[ERROR: Home.js] Error setting user as admin:', error.message);
       setError(`Error setting user as admin: ${error.message}`)
     }
-    },[])
+    },[setError, setCurrentUser ])
 
+       // Function to submit registerAdminForm
+    /* call the setAdmin request if YES is selected, exit the form if NO is selected */
+    const handleAdminSubmit = async (e) => {
+        e.preventDefault()
+        if (adminStatus === 'NO') return exitForm()
+        if (adminStatus !== 'YES') return
+        setSubmitting(true)
+        try {
+            await setAdmin?.()
+        } finally {
+            setSubmitting(false)
+        }
+    }
     // Function to exit register as admin
     /* if the user confirms, do not display the form again */
     const exitForm = () => {
@@ -56,12 +72,23 @@ export default function AdminRegisForm(
     }
     //==============================
   return (
-    <form id='registerAdminForm'>
+    <form id='registerAdminForm' aria-describedby='adminFormTitle' onSubmit={handleAdminSubmit} aria-busy={submitting}>
+    {/* --------Screen Reader Heading---------- */}
     <p id='adminFormTitle' className='visually-hidden'>FORM TO REGISTER AS ADMIN</p>
-        <Stack direction="horizontal" gap={3}>
+        <Stack direction="horizontal" gap={3} id='adminInput'>
       <div className="p-2" id='adminRegisBlock'>
         <label id='adminLabel' className='regis-label' htmlFor='regisAdmin'>REGISTER AS ADMIN</label> 
-        <select>
+        <select
+        id='regisAdmin'
+        name='adminStatus'
+        className='input'
+        value={adminStatus}
+        onChange={(e) => setAdminStatus(e.target.value)}
+        disabled={submitting}
+        // ARIA ATTRIBUTES
+        aria-label='Select Admin Status'
+        aria-required='false'
+        >
             <option value={''}>SELECT</option>
             {ADMIN_STATUS.map((status) =>(
                 <option key={status} value={status}>
@@ -70,15 +97,41 @@ export default function AdminRegisForm(
             ))}
         </select>
       </div>
-      <div className="p-2 ms-auto">Second item</div>
+      <div className="p-2 ms-auto">
+            <Button
+            variant='light'
+            type='submit'
+            id='regisAsAdminBtn'
+            disabled={!adminStatus || submitting}
+            // ARIA ATTRIBUTES:
+            role='button'
+            aria-busy={submitting}
+            aria-disabled={!adminStatus || submitting}
+            >
+                 {submitting ? 'REGISTERING...' : 'REGISTER AS ADMIN'}<ShieldUser aria-hidden='true' focusable='false'/>
+            </Button>
+      
+      </div>
+      {/* EXIT FORM BUTTON: if user clicks exit do not display form again */}
       <div className="p-2">
-
+  <Button
+  type='button'
+  variant='danger'
+  id='exitAdminFormBtn'
+        onClick={exitForm}
+        disabled={submitting}
+        //ARIA ATTRIBUTES:
+        aria-label='Exit admin registration form'
+        aria-disabled={submitting}
+        >
+            EXIT<X aria-hidden='true' focusable='false'/>
+        </Button>
       </div>
     </Stack>
     <div id='adminMessageDiv'>
             <Stack gap={2} className="col-md-5 mx-auto" id='adminMsgStack'>
                 <p className='infoText' id='adminMsg'>THIS OPTION IS ONLY AVAILABLE ONCE</p>
-                <p className='reqText'>Admin users must be 21 years or older</p>
+                <p className='infoText'>Admin users must be 21 years or older</p>
             </Stack>
           </div>
 
