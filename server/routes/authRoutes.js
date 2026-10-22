@@ -109,6 +109,7 @@ router.post('/login', loginRateLimiter, async (req, res) => {
     }
 })
 
+
 //Route to register a new user
 //Send a POST request to the auth/register endpoint
 // Use Plaintext passwords for development
@@ -164,6 +165,92 @@ router.post('/register', checkAge, checkPassword, registrationRateLimiter, async
     }
 })
 
+/*──────────────────────────── PATCH ROUTES ──────────────────────────────
+    PATCH: Used to partially update an existing resource
+ ─────────────────────────────────────────────────────────────────────────*/
+// Admin requirements (AdminRegisForm.js)
+const ADMIN_MIN_AGE = 21;// Admin users must be 21 or older
+const ADMIN_MIN_ACCOUNT_AGE_MS = 24 * 60 * 60 * 1000;// User for 1 day during development (3 months in production)
+
+// Calculate a user's age in years from their date of birth
+const calculateAge = (dateOfBirth) => {
+    const dob = new Date(dateOfBirth);
+    const now = new Date();
+    return now.getFullYear() - dob.getFullYear() - (
+        now < new Date(now.getFullYear(), dob.getMonth(), dob.getDate()) ? 1 : 0
+    );
+}
+//Route to upgrade the logged in user to admin
+//Send a PATCH request to the /auth/setAdmin endpoint
+router.patch('/setAdmin', checkJwtToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user?.userId).exec();
+        if (!user) {
+            console.error('[ERROR: authRoutes.js, /setAdmin] User not found');
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user.admin === true) {
+            console.error('[ERROR: authRoutes.js, /setAdmin] User is already an admin:', user.username);
+            return res.status(409).json({ message: 'User is already an admin' });
+        }
+        // Age restriction: admins must be 21 or older
+        if (calculateAge(user.dateOfBirth) < ADMIN_MIN_AGE) {
+            console.error('[ERROR: authRoutes.js, /setAdmin] User is under the admin age requirement:', user.username);
+            return res.status(403).json({ message: `You must be at least ${ADMIN_MIN_AGE} years old to register as an admin.` });
+        }
+        // Users can only register as admin after a specific time as a user
+        if (Date.now() - new Date(user.createdAt).getTime() < ADMIN_MIN_ACCOUNT_AGE_MS) {
+            console.error('[ERROR: authRoutes.js, /setAdmin] Account is too new:', user.username);
+            return res.status(403).json({ message: 'Your account is too new to register as an admin.' });
+        }
+
+        user.admin = true;
+        await user.save();
+
+        // Sign a new token so the admin claim is up to date
+        const token = signToken(user);
+        const userObj = user.toObject();
+        delete userObj.password;// Never send the password back to the client
+
+        console.log('[SUCCESS: authRoutes.js, /setAdmin] User registered as admin:', user.username);
+        return res.status(200).json({ message: 'Admin registration successful', token, user: userObj });
+
+    } catch (error) {
+        console.error('[ERROR: authRoutes.js, /setAdmin]', error.message);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+})
+
+//Route to remove admin status from the logged in user
+//Send a PATCH request to the /auth/clearAdmin endpoint
+router.patch('/clearAdmin', checkJwtToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user?.userId).exec();
+        if (!user) {
+            console.error('[ERROR: authRoutes.js, /clearAdmin] User not found');
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user.admin !== true) {
+            console.error('[ERROR: authRoutes.js, /clearAdmin] User is not an admin:', user.username);
+            return res.status(409).json({ message: 'User is not an admin' });
+        }
+
+        user.admin = false;
+        await user.save();
+
+        // Sign a new token so the admin claim is up to date
+        const token = signToken(user);
+        const userObj = user.toObject();
+        delete userObj.password;// Never send the password back to the client
+
+        console.log('[SUCCESS: authRoutes.js, /clearAdmin] Admin status removed:', user.username);
+        return res.status(200).json({ message: 'Admin status removed', token, user: userObj });
+
+    } catch (error) {
+        console.error('[ERROR: authRoutes.js, /clearAdmin]', error.message);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+})
 /*────────────────────── PASSWORD RESET ──────────────────────────────*/
 // Route to request a password reset link
 // Send a POST request to the /auth/forgotPassword endpoint
