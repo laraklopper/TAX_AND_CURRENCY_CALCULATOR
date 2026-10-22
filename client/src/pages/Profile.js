@@ -18,8 +18,9 @@ import EditUserForm from '../components/EditUserForm';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { User } from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
-import { buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
+import { ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
 import AdminRegisForm from '../components/AdminRegisForm';
+import { calculateAge } from '../utils/timeFunctions';
 
 // ======MAIN PROFILE FUNCTION COMPONENT
 export default function Profile(
@@ -31,13 +32,20 @@ export default function Profile(
   }
   ) {
     //=========STATE VARIABLES==================
+    
   const [showEditUser, setShowEditUser] = useState(false)
   const [showEditPswd, setShowEditPswd] = useState(false)
   const [editUserData, setEditUserData] = useState(emptyEditUserData)
   // Inline feedback shown inside the edit user form: {type: 'error' | 'success', text: string}
   const [editUserStatus, setEditUserStatus] = useState(null)
   const [editUserLoading, setEditUserLoading] = useState(false)
-
+// localStorage key so the form is not displayed again once the user exits it
+  const dismissKey = `adminFormDismissed_${currentUser?._id}`
+  const [adminFormDismissed, setAdminFormDismissed] = useState(
+    () => localStorage.getItem(dismissKey) === 'true'
+  )
+  // State to disable the delete admin button while the request is in progress
+  const [clearingAdmin, setClearingAdmin] = useState(false)
   /*Destructure the current user's details, defaulting to an empty object so the
   page still renders while the user details are being fetched*/
   const { fullName, email, dateOfBirth, address, admin } = currentUser || {}
@@ -54,6 +62,18 @@ export default function Profile(
     setShowEditUser(false)//Hide edit user form
   },[])
 
+  /* Function to display/render AdminRegisForm.js if user is not an admin user
+  and matches the age requirement of 21 years and has been a user for 3 months 
+  (1 day during development) */
+  /*const showAccountForm = Boolean(
+    currentUser &&
+    !currentUser.admin &&
+    !adminFormDismissed &&
+    currentUser.dateOfBirth &&
+    calculateAge(currentUser.dateOfBirth) >= ADMIN_MIN_AGE &&
+    currentUser.createdAt && 
+    Date.now() - new Date(currentUser.createdAt).getTime() >= ADMIN_MIN_ACCOUNT_AGE_MS
+  )*/
   // ======REQUESTS/CALLBACKS===========
   /* Report a validation/request failure in one place: inline message and
      parent error state stay in sync */
@@ -120,6 +140,51 @@ export default function Profile(
     }
   },[editUserData, setCurrentUser, setError, failWith])
 
+    const changeStatus = useCallback(async () => {
+    setClearingAdmin(true)
+    try {
+      // Send request to /auth/clearAdmin endpoint
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:3001/auth/clearAdmin', {
+        method: 'PATCH',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      })
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) throw new Error(data?.message || 'Failed to remove admin status');
+      // Save the new token (contains the updated admin claim) and update the current user
+      localStorage.setItem('token', data.token)
+      // Do not display AdminRegisForm.js (Home.js) again
+      localStorage.setItem(`adminFormDismissed_${data.user?._id}`, 'true')
+      setCurrentUser?.(data.user)
+      setError?.(null)
+      console.log('[SUCCESS: Profile.js] Admin status removed');
+    } catch (error) {
+      console.error('[ERROR: Profile.js] Error removing admin status:', error.message);
+      setError?.(`Error removing admin status: ${error.message}`)
+    } finally {
+      setClearingAdmin(false)
+    }
+  },[setCurrentUser, setError])
+
+  // Function to confirm admin status removal
+    const confirmAdminExit = () => {
+        const confirmExit = window.confirm(
+            'Are you sure you want to permanently exit admin status'
+        )
+        if (!confirmExit) return;
+        changeStatus()
+    }
+  const exitAdminForm = useCallback(() => {
+    localStorage.setItem(dismissKey, 'true')
+    setAdminFormDismissed(true)
+  },[dismissKey])
+
+
   //=============JSX RENDERING==========================
   return (
     <div id='pageContainer' role='main' aria-labelledby='pageTitle'>
@@ -178,11 +243,23 @@ export default function Profile(
               </div>
             </div>
             {/* IS ADMIN: state whether or not the user is an Admin user */}
-            <div className="p-2">
+            <div className="p-2" id='adminStatusBlock'>
               <div className='details-group'>
                 <span className='userDataSpan'><p className='details-label'>IS ADMIN:</p>
                 <p className='details-value'>{admin ? 'YES' : 'NO'}</p></span>
               </div>
+              <Button
+              variant='danger'
+              type='button'
+              id='deleteAdminBtn'
+              onClick={confirmAdminExit}
+              disabled={clearingAdmin}
+              // ARIA ATTRIBUTES:
+              aria-busy={clearingAdmin}
+              aria-disabled={clearingAdmin}
+              >
+                {clearingAdmin ? 'REMOVING...' : 'DELETE ADMIN STATUS'}
+              </Button>
             </div>
           </Stack>
         </Col>
@@ -300,18 +377,24 @@ export default function Profile(
           </div>
         )}     
       </section>
-      <section>
-        <Row>
+      {/* SECTION 2: ADMIN REGISTRATION FORM
+      Only display form (and section) if user is not an admin user 
+      and matches the age requirement of 21 years and has been a user 
+      for 3 months (1 day during development) */}
+      <section id='profileSection2'>
+        <Row id='adminFormRow'>
           <Col id='adminFormCol1'/>
           <Col xs={12} md={10} id='adminFormCol'>
             <div id='adminFormPanal'>
-              <AdminRegisForm/>
+              <AdminRegisForm
+                setCurrentUser={setCurrentUser}
+                setError={setError}
+                exitAdminForm={exitAdminForm}
+              />
             </div>
-
           </Col>
           <Col id='adminFormCol2'/>
         </Row>
-
       </section>
       {/* ======FOOTER=========== */}
       {/* Render the Footer.js component */}

@@ -1,5 +1,8 @@
 /* Profile.css
 Profile.js*/
+/* ==============
+SECTION 1: USER PROFILE
+=========*/
 #profile-section1{
     width: 100%;
     display: flex;
@@ -10,6 +13,15 @@ Profile.js*/
     gap: 5px;
     background-color: #4da6ff;
 }
+#adminStatusBlock{
+    margin: 0px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+/* =============
+SECTION 2
+===================*/
 #profileSection2{
     width: 100%;
     display: flex;
@@ -45,7 +57,12 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-
+#adminFormRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
 /* User Profile */
 /* BOOTSTRAP LAYOUT */
 /* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
@@ -160,7 +177,8 @@ LAYOUT
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/
 #toggleEditUserBtn,
-#toggleEditPswdBtn{
+#toggleEditPswdBtn,
+#deleteAdminBtn{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -172,9 +190,19 @@ LAYOUT
     border: #323A42 solid;
     text-transform: uppercase;
 }
+#deleteAdminBtn{
+     width: 250px;
+    letter-spacing: 0.7px;
+}
 #toggleEditUserBtn:hover,
-#toggleEditPswdBtn:hover{
+#toggleEditPswdBtn:hover,
+#deleteAdminBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;
 }
-
+#toggleEditUserBtn:active,
+#toggleEditPswdBtn:active{
+    background-color: #323A42;
+    color: #E8F0F6;
+    text-decoration: underline;
+}
