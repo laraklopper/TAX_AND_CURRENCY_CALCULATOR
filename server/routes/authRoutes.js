@@ -21,6 +21,7 @@ const User = require('../models/userSchema')
 const {checkJwtToken, checkPassword, checkAge, loginRateLimiter, registrationRateLimiter, forgotPasswordRateLimiter, resetPasswordLimiter } = require('./middleware')
 // IMPORT CUSTOM MIDDLEWARE
 const { sendPasswordResetEmail } = require('../utils/mailer')
+const {ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, calculateAge, signToken} = require('../utils/userUtilFunc')
 const router = express.Router()
 
 // Extract environmental variables (with safe fallbacks for local dev)
@@ -168,18 +169,7 @@ router.post('/register', checkAge, checkPassword, registrationRateLimiter, async
 /*──────────────────────────── PATCH ROUTES ──────────────────────────────
     PATCH: Used to partially update an existing resource
  ─────────────────────────────────────────────────────────────────────────*/
-// Admin requirements (AdminRegisForm.js)
-const ADMIN_MIN_AGE = 21;// Admin users must be 21 or older
-const ADMIN_MIN_ACCOUNT_AGE_MS = 24 * 60 * 60 * 1000;// User for 1 day during development (3 months in production)
 
-// Calculate a user's age in years from their date of birth
-const calculateAge = (dateOfBirth) => {
-    const dob = new Date(dateOfBirth);
-    const now = new Date();
-    return now.getFullYear() - dob.getFullYear() - (
-        now < new Date(now.getFullYear(), dob.getMonth(), dob.getDate()) ? 1 : 0
-    );
-}
 //Route to upgrade the logged in user to admin
 //Send a PATCH request to the /auth/setAdmin endpoint
 router.patch('/setAdmin', checkJwtToken, async (req, res) => {
