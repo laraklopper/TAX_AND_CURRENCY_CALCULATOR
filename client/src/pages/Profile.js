@@ -19,6 +19,7 @@ import EditUserForm from '../components/EditUserForm';
 import { User } from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
 import { buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
+import AdminRegisForm from '../components/AdminRegisForm';
 
 // ======MAIN PROFILE FUNCTION COMPONENT
 export default function Profile(
@@ -179,8 +180,8 @@ export default function Profile(
             {/* IS ADMIN: state whether or not the user is an Admin user */}
             <div className="p-2">
               <div className='details-group'>
-                <span><p className='details-label'>IS ADMIN:</p></span>
-                <p className='details-value'>{admin ? 'YES' : 'NO'}</p>
+                <span className='userDataSpan'><p className='details-label'>IS ADMIN:</p>
+                <p className='details-value'>{admin ? 'YES' : 'NO'}</p></span>
               </div>
             </div>
           </Stack>
@@ -298,6 +299,19 @@ export default function Profile(
       </Row>
           </div>
         )}     
+      </section>
+      <section>
+        <Row>
+          <Col id='adminFormCol1'/>
+          <Col xs={12} md={10} id='adminFormCol'>
+            <div id='adminFormPanal'>
+              <AdminRegisForm/>
+            </div>
+
+          </Col>
+          <Col id='adminFormCol2'/>
+        </Row>
+
       </section>
       {/* ======FOOTER=========== */}
       {/* Render the Footer.js component */}

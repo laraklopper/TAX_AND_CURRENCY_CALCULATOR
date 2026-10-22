@@ -72,12 +72,11 @@ export const touchedFieldKey = (name) =>
   name.includes('.') ? name.split('.')[1] : name
 
 //===========================================================================
-// AGE RULES (RegistrationForm.js)
+// AGE RULES (RegistrationForm.js, AdminRegisForm)
 //===========================================================================
 // Admin users take on other people's records, so they are held to a higher age
 export const ADMIN_MIN_AGE = 21
 export const USER_MIN_AGE = 18
-
 // The minimum age to register, which depends on the account being asked for
 export const minAgeToRegister = (isAdmin) => (isAdmin === true ? ADMIN_MIN_AGE : USER_MIN_AGE)
 
@@ -91,6 +90,13 @@ export const isUnderMinAge = (dateOfBirth, minAge) => {
   return age < minAge;
 }
 
+/*===============================
+ADMIN RULES
+============================*/
+export const ADMIN_STATUS = ['YES', 'NO']
+/* The time the required before the user can 
+register as admin */
+export const ADMIN_MIN_ACCOUNT_AGE_MS = 24 * 60 * 60 * 1000;// User for 1 day during development (3 months in production)
 //===========================================================================
 // PASSWORDS (EditPasswordForm.js)
 //===========================================================================
