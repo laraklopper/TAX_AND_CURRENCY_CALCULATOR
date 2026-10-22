@@ -451,38 +451,12 @@ export default function RegistrationForm(
                 </div>
                 {/* GROUP 4: admin + Password */}
                 <div id='regis-group4'>
-                    {/* STACK 4 */}
-                    <Stack direction="horizontal" gap={3} id='regis-stack4'>
-                        <div className="p-2" id='admin-reg-block'>
-                            {/* ADMIN CHECKBOX: OPTIONAL (based on age restriction)*/}
-                            {/* ADMIN: checked={newUserData.admin} */}
-                            <div id='checkbox-div'>
-                                <label className='regis-label' htmlFor='adminRegisBox'>REGISTER AS ADMIN:</label>
-                                <input
-                                    type='checkbox'
-                                    id='adminRegisBox'
-                                    name='admin'
-                                    checked={newUserData.admin}
-                                    onChange={(e) => setNewUserData(prev => (
-                                        { ...prev, admin: e.target.checked }
-                                    ))}
-                                    // ARIA ATTRIBUTES:
-                                    aria-label='Register as admin'
-                                    aria-required='false'
-                                />
-                            </div>
-                        </div>
-                        <div className="p-2"></div>
-                        <div className="p-2 ms-auto">
-                            <p className='infoText'>ADMIN USERS MUST BE AT LEAST {ADMIN_MIN_AGE} YEARS OLD</p>
-                        </div>
-                    </Stack>
                     {/* STACK 5 */}
                     <Stack direction="horizontal" gap={3} id='regis-stack5'>
                         <div className="p-2" id='reg-pswd-block'>
                             {/* PASSWORD : value={newUserData.password}*/}
-                            <div className='input-div'>
-                                <label className='regis-label' htmlFor='regisPswdInput'>PASSWORD:</label>
+                            <label className='regis-label' htmlFor='regisPswdInput'>PASSWORD:</label>
+                            <div id='regPswdinptDiv'>
                                 <input
                                     className='input'
                                     placeholder='PASSWORD'
@@ -502,19 +476,10 @@ export default function RegistrationForm(
                                     aria-invalid={passwordEmpty ? 'true' : 'false'}
                                     aria-describedby={showPasswordError ? passwordErrorId : passwordHelpId}
                                 />
-                                <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
-                            </div>
-                            {/* ERROR MESSAGE */}
-                            {showPasswordError && (
-                                <p id={passwordErrorId} className="visually-hidden" role="alert">Password is required.</p>
-                            )}
-                            <div>
-                            </div>
-                        </div>
-                        <div className="p-2">
-                            <Button
+                                <Button
                                 variant='warning'
                                 id='showPasswrdBtn'
+                                size='sm'
                                 onClick={() => setShowPassword(!showPassword)}
                                 type='button'
                                 // ARIA ATTRIBUTES:
@@ -526,16 +491,25 @@ export default function RegistrationForm(
                                 {/* BUTTON TEXT */}
                                 {showPassword ? (
                                     <>
-                                        Hide Password
-                                        <EyeOff fontWeight={700} style={{ marginLeft: 6 }} aria-hidden='true' focusable='false' />
+                                        <EyeOff fontWeight={700}  aria-hidden='true' focusable='false' />
                                     </>
                                 ) : (
                                     <>
-                                        Show Password
-                                        <Eye fontWeight={700} style={{ marginLeft: 6 }} aria-hidden='true' focusable='false' />
+                                        <Eye fontWeight={700}  aria-hidden='true' focusable='false' />
                                     </>
                                 )}
                             </Button>
+                                <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+                            </div>
+                            {/* ERROR MESSAGE */}
+                            {showPasswordError && (
+                                <p id={passwordErrorId} className="visually-hidden" role="alert">Password is required.</p>
+                            )}
+                            <div>
+                            </div>
+                        </div>
+                        <div className="p-2">
+                            
                         </div>
                         {/* Pase */}
                         {passwordMsg && (

@@ -138,6 +138,13 @@ gap: 10px;
     background: #D6D6D6;
     border-radius: 8px;
 }
+#regPswdinptDiv{
+        margin: 0px;
+    padding: 0px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
 /* STACK https://react-bootstrap.netlify.app/docs/layout/stack */
 #regis-stack4,
 #regis-stack5{
