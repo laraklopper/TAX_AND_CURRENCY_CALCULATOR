@@ -389,7 +389,7 @@ export default function Profile(
           </div>
         )}     
       </section>
-      {/* SECTION 2: ADMIN REGISTRATION FORM
+      {/* SECTION 2: TOGGLE ADMIN REGISTRATION FORM
       Only display form (and section) if user is not an admin user 
       and matches the age requirement of 21 years and has been a user 
       for 3 months (1 day during development) */}
