@@ -18,7 +18,7 @@ const rateLimit = require('express-rate-limit');
 // IMPORT SCHEMAS
 const User = require('../models/userSchema')
 // IMPORT CUSTOM MIDDLEWARE
-const { checkPassword, checkAge, loginRateLimiter, registrationRateLimiter, forgotPasswordRateLimiter, resetPasswordLimiter } = require('./middleware')
+const {checkJwtToken, checkPassword, checkAge, loginRateLimiter, registrationRateLimiter, forgotPasswordRateLimiter, resetPasswordLimiter } = require('./middleware')
 // IMPORT CUSTOM MIDDLEWARE
 const { sendPasswordResetEmail } = require('../utils/mailer')
 const router = express.Router()
