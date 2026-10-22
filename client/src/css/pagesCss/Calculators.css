@@ -88,6 +88,11 @@ LAYOUT
         padding: 5px 0px;
     width: 100%;
 }
+#prov-tax-calculator-block{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 /* CARD: https://react-bootstrap.netlify.app/docs/components/cards */
 #calculators-info-card{
     display: flex;

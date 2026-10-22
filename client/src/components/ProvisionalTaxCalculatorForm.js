@@ -148,7 +148,7 @@ export default function ProvisionalTaxCalculator({
   }
 
   return (
-    <div className="tax-calculator" id="prov-tax-calculator">
+    <div className="tax-calculator" id="provTaxcalc">
       {status === "error" && (
         <div className="alert alert--error" role="alert">
           <AlertCircle size={16} className="alert__icon" />
@@ -156,15 +156,15 @@ export default function ProvisionalTaxCalculator({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} id="prov-tax-calculator-form" aria-labelledby="prov-tax-formHeading">
-        <div id="prov-tax-calculator-header">
+      <form onSubmit={handleSubmit} id="provTaxCalculator" aria-labelledby="prov-tax-formHeading">
+        <div id="provTaxcalcHeader">
           <Stack gap={3} id="prov-tax-heading-stack">
             <div className="p-2" id="prov-tax-formHeadingBlock">
-              <h1 id="prov-tax-formHeading">Provisional Tax Calculator</h1>
+              <h1 id="provTaxFormHeading">Provisional Tax Calculator</h1>
             </div>
-            <div className="p-2">
-              <p className="form-text">
-                Work out what is payable on an IRP6 from your estimated taxable
+            <div className="p-2" id='provCalcTextBlock1'>
+              <p className="calcText">
+                Work out what is payable on an <strong>IRP6</strong> from your estimated taxable
                 income for the whole year of assessment. Provisional tax is not a
                 separate tax: it is the same SARS income tax, paid in advance.
               </p>
@@ -203,9 +203,13 @@ export default function ProvisionalTaxCalculator({
               </div>
               {/* What the selected payment covers and when it falls due */}
               <div className="p-2" id="prov-tax-period-block3">
-                <p className="form-text" aria-live="polite">
-                  <strong>{period.heading}:</strong> {period.portionLabel}. {period.dueLabel}.
+              <span className='provPeriodSpan'>
+              <p className="calcText" aria-live="polite">
+                  <strong>{period.heading}:</strong> 
                 </p>
+                <p className="calcText">{period.portionLabel}.</p>
+              </span>
+                <p className="calcText" id='provPeriodDueText'> {period.dueLabel}.</p>
               </div>
             </Stack>
           </div>

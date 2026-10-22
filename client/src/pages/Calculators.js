@@ -359,7 +359,7 @@ export default function Calculators({currentUser, logout}) {
               <div id='prov-tax-calculator-panal'>
                 <Row id='prov-tax-calc-row'>
                   <Col id='provtax-calc-col1'/>
-                  <Col xs={12} md={8} id='provtax-calc-col'>
+                  <Col xs={12} md={10} id='provtax-calc-col'>
                     <div id='prov-tax-calculator-block'>
                       <ProvisionalTaxCalculator
                         /* The same tax years as the income tax calculator:

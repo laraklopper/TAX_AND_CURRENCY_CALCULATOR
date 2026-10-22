@@ -136,7 +136,7 @@ PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
    is specific to an IRP6 is styled here: the three period buttons, the three
    field groups, the due date, the overpayment note and the warning list.
 ===============*/
-#prov-tax-calculator-form{
+#provTaxCalculator{
     display: flex;
     flex-direction: column;
     background-color: #A8AEB3;
@@ -144,7 +144,39 @@ PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
     padding: 10px;
     align-items: center;
 }
-#prov-tax-formHeading{
+#provTaxcalcHeader{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 5px 0px;
+}
+.calcText{
+    color: #404040;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+    letter-spacing: 2px;
+    font-size: 14px;
+}
+#provPeriodDueText{
+    text-align: center;
+}
+#provCalcTextBlock1{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+}
+.provPeriodSpan{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    gap: 5px;
+    
+}
+#provTaxFormHeading{
     font-family: "Roboto", sans-serif;
     font-weight: 700;
     font-size: 24px;
