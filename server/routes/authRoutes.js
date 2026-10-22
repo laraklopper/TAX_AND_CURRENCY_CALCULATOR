@@ -21,7 +21,7 @@ const User = require('../models/userSchema')
 const {checkJwtToken, checkPassword, checkAge, loginRateLimiter, registrationRateLimiter, forgotPasswordRateLimiter, resetPasswordLimiter } = require('./middleware')
 // IMPORT CUSTOM MIDDLEWARE
 const { sendPasswordResetEmail } = require('../utils/mailer')
-const {ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, calculateAge, signToken} = require('../utils/userUtilFunc')
+const {ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, calculateAge, hashResetToken} = require('../utils/userUtilFunc')
 const router = express.Router()
 
 // Extract environmental variables (with safe fallbacks for local dev)
@@ -59,14 +59,6 @@ const signToken = (user) => {
         { expiresIn: expirationTime, algorithm: jwtAlgorithm }
     );
 }
-
-/* Hash a reset token with SHA-256. Only the hash is stored on the user
-document, so a leaked database cannot be used to reset anyone's password:
-the raw token exists only in the email that was sent. SHA-256 (rather than
-bcrypt) is enough here because the token is 256 bits of random data, not a
-guessable, human-chosen secret. */
-const hashResetToken = (token) => crypto.createHash('sha256').update(token).digest('hex');
-
 
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
