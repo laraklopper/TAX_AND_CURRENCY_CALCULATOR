@@ -1,10 +1,25 @@
+//authRoutes.js
+/*auth endpoints : mounted at /users by app.js
+POST: /login - submit user login
+POST: /register - submit registration to add a new user
+PATCH: /setAdmin - upgrade user to admin (21+ and user for 1 day during development)
+PATCH: /clearAdmin - remove admin status from the user
+All passwords are saved in Plaintext for development,
+auth/login auth/register routes do not require a <Bearer> header for user authorization/
+*/
+/* Load environment variables from a .env
+file using the dotenv package*/
 require('dotenv').config()
+// IMPORT REQUIRED MODULES AND PACKAGES
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const rateLimit = require('express-rate-limit');
+// IMPORT SCHEMAS
 const User = require('../models/userSchema')
+// IMPORT CUSTOM MIDDLEWARE
 const { checkPassword, checkAge, loginRateLimiter, registrationRateLimiter, forgotPasswordRateLimiter, resetPasswordLimiter } = require('./middleware')
+// IMPORT CUSTOM MIDDLEWARE
 const { sendPasswordResetEmail } = require('../utils/mailer')
 const router = express.Router()
 
