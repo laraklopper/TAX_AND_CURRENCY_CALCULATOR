@@ -218,6 +218,22 @@ export default function Calculators({currentUser, logout}) {
         <Col id='toggleCalcCol1'/>
         <Col xs={5} id='toggleCalcCol'>
              <Stack id='toggleCalculatorStack'>
+              <div className="p-2" id='toggle-calc5-block'>
+              {/* Toggle Calculator Btn */}
+                <Button 
+                    variant='light' 
+                    onClick={toggleCalculator} 
+                    id='toggleCalcBtn'
+                    type='button'
+                    // ARIA ATTRIBUTES:
+                    aria-label={showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
+                    aria-pressed={showCalc}
+                    aria-expanded={showCalc}
+                    aria-controls='calculator-panal'
+                  >
+                    {showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
+                  </Button>
+              </div>
               <div className="p-2" id='toggle-calc1-block'>
               {/* Toggle Tax Calculator Btn */}
                 <Button 
@@ -280,28 +296,27 @@ export default function Calculators({currentUser, logout}) {
               </Button>
 
               </div>
-              <div className="p-2" id='toggle-calc5-block'>
-              {/* Toggle Calculator Btn */}
-                <Button 
-                    variant='light' 
-                    onClick={toggleCalculator} 
-                    id='toggleCalcBtn'
-                    type='button'
-                    // ARIA ATTRIBUTES:
-                    aria-label={showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
-                    aria-pressed={showCalc}
-                    aria-expanded={showCalc}
-                    aria-controls='calculator-panal'
-                  >
-                    {showCalc ? 'HIDE CALCULATOR': 'SHOW CALCULATOR'}
-                  </Button>
-              </div>
+             
             </Stack>
         </Col>
         <Col id='toggleCalcCol2'/>
       </Row>
        {/* CALCULATORS */}
           <div id='calculators-div'>
+          {/* TOGGLE GENERAL/BASIC CALCULATOR */}
+            {showCalc && (
+              <div id='calculator-panal'>
+                  <Row id='calculator3-Row'>
+                    <Col id='calculator-col1'/>
+                    <Col xs={5} id='calculator-col'>
+                      <div id='basic-calculator-block'>
+                        <NumberCalculator/>
+                      </div>
+                    </Col>
+                    <Col id='calculator-col2'/>
+                  </Row>
+              </div>
+            )}
             {/*TOGGLE TAX CALCULATOR */}
             {showTaxCalc && (
               <div id='tax-calculator-panal'>
@@ -381,20 +396,7 @@ export default function Calculators({currentUser, logout}) {
                 </Row>
               </div>
             )}
-            {/* TOGGLE GENERAL/BASIC CALCULATOR */}
-            {showCalc && (
-              <div id='calculator-panal'>
-                  <Row id='calculator3-Row'>
-                    <Col id='calculator-col1'/>
-                    <Col xs={5} id='calculator-col'>
-                      <div id='basic-calculator-block'>
-                        <NumberCalculator/>
-                      </div>
-                    </Col>
-                    <Col id='calculator-col2'/>
-                  </Row>
-              </div>
-            )}
+            
           </div>
           {/* Row 2:Calculator Information/Messages */}
           <Row id='info-msg-row'>

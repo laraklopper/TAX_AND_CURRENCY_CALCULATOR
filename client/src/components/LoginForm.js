@@ -92,7 +92,7 @@ export default function LoginForm({ userData, setUserData, submitLogin }) {
                             // ARIA ATTRIBUTES:
                             aria-required="true" // Mark the field as required for assistive technologies
                             aria-label='Login Email input' // Provide a label for screen readers (also have a visible label for sighted users)
-                            aria-invalid={emailEmpty ? 'true' : 'false'} // Mark invalid if empty (simple validation)
+                            aria-invalid={showEmailError ? 'true' : 'false'} // Mark invalid only once the visible error is shown
                             aria-describedby={[ // Conditionally include help and error message IDs based on state
                                 showEmailMsg ? emailHelpId : null,
                                 showEmailError ? emailErrorId : null,
@@ -106,7 +106,7 @@ export default function LoginForm({ userData, setUserData, submitLogin }) {
                     {/* Email error message */}
                     {showEmailError && (
                         <div className="p-2" id={emailErrorId} aria-live='assertive'>
-                            <p className='loginErrorMessage'><Bug size={20} fontWeight={900} aria-hidden='true' focusable='false' />Username is required</p>
+                            <p className='loginErrorMessage'><Bug size={20} fontWeight={900} aria-hidden='true' focusable='false' />Email is required</p>
                         </div>
                     )}
                     {/* Email help message */}
@@ -139,10 +139,10 @@ export default function LoginForm({ userData, setUserData, submitLogin }) {
                             // ARIA ATTRIBUTES:
                             aria-label='password' // Provide a label for screen readers (also have a visible label for sighted users)
                             aria-required="true"
-                            aria-invalid={passwordEmpty ? 'true' : 'false'}
+                            aria-invalid={showPasswordError ? 'true' : 'false'}
                             aria-describedby={[ // Conditionally include help and error message IDs based on state
                                 passwordMsg ? passwordHelpId : null, // Include help ID if help message is shown
-                                passwordEmpty ? passwordErrorId : null, // Include error ID if password is empty (invalid)
+                                showPasswordError ? passwordErrorId : null, // Include error ID only when the error element is rendered
                             ]
                                 .filter(Boolean) // Filter out null values
                                 .join(' ')}

@@ -75,8 +75,8 @@ router.post('/login', loginRateLimiter, async (req, res) => {
         }
 
         if (typeof email !== 'string' || typeof password !== 'string') {
-            console.error('[ERROR: authRoutes.js, /login] username and password must be strings');
-            return res.status(400).json({ message: 'username and password are required' });
+            console.error('[ERROR: authRoutes.js, /login] email and password must be strings');
+            return res.status(400).json({ message: 'email and password must be strings' });
         }
 
         // Password field is select:false on the schema, so it must be explicitly requested
