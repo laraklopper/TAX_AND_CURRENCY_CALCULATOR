@@ -200,7 +200,7 @@ export default function Calculators({currentUser, logout}) {
   return (
     <div id='pageContainer' role='main'>
     {/* HEADER */}
-      <Header currentUser={currentUser} pageHeader={'CALCULATORS'}/>
+      <Header currentUser={currentUser} pageHeader={'TAX CALCULATORS'}/>
       {/* =======EVENT/ANIMATION============ */}
       <Row id='event-row'>
         <Col id='event-col'>
