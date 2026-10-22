@@ -83,6 +83,11 @@ list would be a second place for it to go stale.
 ```
 
 ## 5. Currency Routes (`/api`)
+
+The application also integrates external APIs via server-side proxy routes:
+- *Frankfurter* — live currency conversion rates. Free and keyless, aggregating published rates from 84 central banks. 
+
+
 | Method | Endpoint | Description | Auth | Status |
 |---|---|---|---|---|
 | GET | /currencies | Every currency the converter can offer, as `{ code, name, symbol }` | Yes | Built |
