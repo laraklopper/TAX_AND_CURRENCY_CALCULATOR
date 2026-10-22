@@ -12,7 +12,6 @@ import { Eye, EyeOff, MapPin  } from 'lucide-react';
 import {provinces} from '../dataArrays/locations'
 // IMPORT UTILITY FUNCTIONS
 import {
-    ADMIN_MIN_AGE,
     applyFieldChange,
     emptyNewUserData,
     emptyTouchedFields,
