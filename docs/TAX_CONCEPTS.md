@@ -186,7 +186,7 @@ Removing VAT (inclusive → exclusive):
 
 ### 4.3. RATE CATEGORIES
 
-Not everything is taxed at the standard rate. A VAT calculator that only handles the 15% case will misrepresent real invoices:
+Not everything is taxed at the standard rate. A VAT calculator that only handles the **15%** case will misrepresent real invoices:
 
 | **CATEGORY** | **RATE** | **EXAMPLE** | **INPUT VAT CLAIMABLE?** |
 |---|---|---|---|
