@@ -217,12 +217,13 @@ export default function ProvisionalTaxCalculator({
           {/* GROUP 2: THE ESTIMATE */}
           <div id="prov-tax-field-group2">
             <Stack gap={3} id="prov-tax-estimate-stack">
-              <div className="p-2">
+              <div className="p-2" id='provEstBlock1'>
                 {/* ESTIMATED TAXABLE INCOME FOR THE FULL YEAR */}
-                <div className="input-div">
-                  <label className="tax-field-label" htmlFor="provEstimatedIncome">
-                    Estimated taxable income for the year (R):
+                 <label className="tax-field-label" htmlFor="provEstimatedIncome">
+                    Estimated taxable income for the year:
                   </label>
+                <div className="input-div">
+                 <p className='calcText'>(R)</p>
                   <input
                     id="provEstimatedIncome"
                     type="number"
@@ -242,16 +243,17 @@ export default function ProvisionalTaxCalculator({
               </div>
               <div className="p-2">
                 {/* The whole year, not the six months the first payment covers */}
-                <p className="form-text">
+                <p className="calcText">
                   Always the estimate for the FULL year of assessment. The
                   brackets are annual and progressive, so the portion for this
                   payment is taken off the tax, not off the income.
                 </p>
               </div>
-              <div className="p-2">
+              <div className="p-2" id='provEstBlock2'>
                 {/* AGE */}
+                <label className="tax-field-label" htmlFor="provTaxAgeInput">Age:</label>
                 <div className="input-div">
-                  <label className="tax-field-label" htmlFor="provTaxAgeInput">Age:</label>
+                  
                   <input
                     id="provTaxAgeInput"
                     type="number"
@@ -269,10 +271,11 @@ export default function ProvisionalTaxCalculator({
                   {errors.age && <p className="field-error">{errors.age}</p>}
                 </div>
               </div>
-              <div className="p-2">
+              <div className="p-2" id='provEstBlock3'>
                 {/* TAX YEAR */}
+                <label className="tax-field-label" htmlFor="provTaxYear">Tax year:</label>
                 <div className="input-div">
-                  <label className="tax-field-label" htmlFor="provTaxYear">Tax year:</label>
+                  
                   <select
                     id="provTaxYear"
                     className="input"
@@ -300,12 +303,13 @@ export default function ProvisionalTaxCalculator({
                   Already withheld or paid:
                 </label>
               </div>
-              <div className="p-2">
+              <div className="p-2" id='creditsBlock1'>
                 {/* EMPLOYEES' TAX (PAYE) */}
-                <div className="input-div">
-                  <label className="field-label" htmlFor="provEmployeesTax">
+                <label className="field-label" htmlFor="provEmployeesTax">
                     Employees’ tax (PAYE) for this period (R):
                   </label>
+                <div className="input-div">
+                  
                   <input
                     id="provEmployeesTax"
                     type="number"
@@ -319,12 +323,12 @@ export default function ProvisionalTaxCalculator({
                   {errors.employeesTax && <p className="field-error">{errors.employeesTax}</p>}
                 </div>
               </div>
-              <div className="p-2">
+              <div className="p-2" id='creditsBlock2'>
                 {/* FOREIGN TAX CREDITS */}
-                <div className="input-div">
-                  <label className="field-label" htmlFor="provForeignTaxCredits">
+                <label className="field-label" htmlFor="provForeignTaxCredits">
                     Foreign tax credits (R):
                   </label>
+                <div className="input-div">
                   <input
                     id="provForeignTaxCredits"
                     type="number"
@@ -338,12 +342,12 @@ export default function ProvisionalTaxCalculator({
                   {errors.foreignTaxCredits && <p className="field-error">{errors.foreignTaxCredits}</p>}
                 </div>
               </div>
-              <div className="p-2">
+              <div className="p-2" id='creditsBlock3'>
                 {/* MEDICAL SCHEME FEES TAX CREDITS */}
-                <div className="input-div">
-                  <label className="field-label" htmlFor="provMedicalCredits">
+                 <label className="field-label" htmlFor="provMedicalCredits">
                     Medical scheme fees tax credits (R):
                   </label>
+                <div className="input-div">
                   <input
                     id="provMedicalCredits"
                     type="number"
@@ -357,9 +361,9 @@ export default function ProvisionalTaxCalculator({
                   {errors.medicalCredits && <p className="field-error">{errors.medicalCredits}</p>}
                 </div>
               </div>
-              <div className="p-2">
+              <div className="p-2" id='creditsTextBlock'>
                 {/* The credit is an input, not something the calculator knows */}
-                <p className="form-text">
+                <p className="calcText">
                   Enter the credits for the full year as published by SARS
                   (a monthly amount per member and per dependant). They are
                   deducted as entered, then the portion for this payment is
@@ -368,11 +372,12 @@ export default function ProvisionalTaxCalculator({
               </div>
               {/* PROVISIONAL TAX ALREADY PAID - only where there can be any */}
               {period.acceptsPriorPayments && (
-                <div className="p-2">
-                  <div className="input-div">
-                    <label className="field-label" htmlFor="provPriorPayments">
-                      Provisional tax already paid for this year (R):
+                <div className="p-2" id='creditsBlock4'>
+                <label className="field-label" htmlFor="provPriorPayments">
+                      Provisional tax already paid for this year:
                     </label>
+                  <div className="input-div">
+                    <p className='calcText'>(R)</p>
                     <input
                       id="provPriorPayments"
                       type="number"

@@ -150,6 +150,26 @@ PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
     margin: 0px;
     padding: 5px 0px;
 }
+#provEstBlock1,
+#provEstBlock2,
+#provEstBlock3,
+#creditsBlock1,
+#creditsBlock2,
+#creditsBlock3,
+#creditsBlock4{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+     margin: 0px;
+    padding: 0px;
+}
+#creditsTextBlock{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
 .calcText{
     color: #404040;
     margin: 0px;
