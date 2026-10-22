@@ -65,7 +65,7 @@ The MongoDB connection URI is constructed using the database name and MongoDB cl
 
 
 The application also integrates external APIs via server-side proxy routes:
-
+- *Frankfurter* — live currency conversion rates. Free and keyless, aggregating published rates from 84 central banks.
 
 ### 3.1. REST API'S
 ### 3.1.1. Auth Routes (`/auth`)
