@@ -52,9 +52,8 @@ The application is connected to the MongoDB database using mongoose third party 
 The MongoDB connection URI is constructed using the database name and MongoDB cluster URL. These are stored in the `.env` file which stores sensitive information.
 
 
-## 3. APPLICTION FEATURES
+## 3. API's
 
-### 3.1. 
 
  **HTTP Verb** | **CRUD Operation** | **Description** |
 |--------|-------|------|
@@ -64,7 +63,29 @@ The MongoDB connection URI is constructed using the database name and MongoDB cl
 | PATCH | UPDATE | Partial update of a resource on the database |
 | DELETE | DELETE | Deletes a specific resource |
 
+
 The application also integrates external APIs via server-side proxy routes:
+
+
+### 3.1. REST API'S
+### 3.1.1. Auth Routes (`/auth`)
+| Method | Endpoint | Description | Auth | 
+|---|---|---|---|
+| POST | /register | Create new user | No | Built |
+| POST | /login | Authenticate, return JWT | No | Built |
+| PATCH | /setAdmin | Upgrade a logged In user to admin status |
+| PATCH | /clearAdmin | Remove user admin status | Yes |
+| POST | /refresh | Refresh access token | No (refresh token) | 
+| POST | /logout | Invalidate refresh token | Yes | 
+### 3.1.2. User Routes (`/users`)
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | /me | Get current user profile | Yes | 
+| GET |/fetchUsers| Fetch all users | Yes | 
+| PATCH | /editUser | update user details | Yes |
+| PATCH |/editPassword | Edit user password |Yes|
+| DELETE | /deleteUser/:id | Delete a user (admin only) | Yes (admin) |
+### 3.2. EXTERNAL API'S
 
 - *Frankfurter* — live currency conversion rates. Free and keyless, aggregating published rates from 84 central banks.
 
