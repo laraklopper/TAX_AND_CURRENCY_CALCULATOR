@@ -184,11 +184,12 @@ const checkPassword = (req, res, next) => {
 AGE VALIDATION MIDDLEWARE
 ========================*/
 /*Middleware function to check that user age
-All users must be 18 or older; admin users must be 21 or older*/
+All users must be 18 or older. Registration only creates regular users, so the
+admin age rule (21+) is checked by PATCH /auth/setAdmin instead*/
 const checkAge = (req, res, next) => {
     console.log('[DEBUG: middleware.js checkAge] Middleware triggered');// Log message in the console for debugging purposes
     try {
-        const { dateOfBirth, admin } = req.body || {};// Extract the date of birth and admin flag from the request body
+        const { dateOfBirth } = req.body || {};// Extract the date of birth from the request body
         console.log('[DEBUG: middleware.js checkAge] Received date of birth:', dateOfBirth);// Log message in the console for debugging purposes
 
         // Conditional rendering to check if the date of birth is provided in the request body
@@ -225,14 +226,14 @@ const checkAge = (req, res, next) => {
             );
 
         // Determine the minimum required age
-        const MIN_AGE = admin === true ? 18 : 16; // Admins must be 18+, regular users must be 16+
+        const MIN_AGE = 18; // Regular users must be 18+
         // Block registration if user is below the minimum age
         if (years < MIN_AGE) {
             console.error(// Log a error message in the console for debugging purposes
-                `[ERROR: middleware.js, checkAge]: You must be at least ${MIN_AGE} years old to register as ${admin === true ? 'an admin' : 'a user'}.`
+                `[ERROR: middleware.js, checkAge]: You must be at least ${MIN_AGE} years old to register.`
             );
             return res.status(400).json({ // Respond with a 400 (Bad Request) status
-                message: `You must be at least ${MIN_AGE} years old to register as ${admin === true ? 'an admin' : 'a user'}.` //Error Message
+                message: `You must be at least ${MIN_AGE} years old to register.` //Error Message
             });
         }
 

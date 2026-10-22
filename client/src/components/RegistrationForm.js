@@ -17,7 +17,7 @@ import {
     emptyTouchedFields,
     isBlank,
     isUnderMinAge,
-    minAgeToRegister,
+    USER_MIN_AGE,
     touchedFieldKey
 } from '../utils/userFunc'
 import { maxDateOfBirth } from '../utils/timeFunctions'
@@ -36,9 +36,9 @@ export default function RegistrationForm(
     // This prevents validation errors from showing before the user interacts with a field
     const [touched, setTouched] = useState(emptyTouchedFields)
 
-    // Minimum age: depends on whether the user registers as admin.
-    //  21 for admin, 18 for regular user
-    const minAge = minAgeToRegister(newUserData.admin);
+    // Minimum age: registration only creates regular users (18+).
+    // Admin status is requested later from the profile (AdminRegisForm)
+    const minAge = USER_MIN_AGE;
 
     // Latest acceptable date of birth for the minimum age requirement
     const maxDob = maxDateOfBirth(minAge);
@@ -332,7 +332,7 @@ export default function RegistrationForm(
                             {showDateOfBirthAgeError && (
                                 <div className="p-2 ms-auto">
                                     <p id={dateOfBirthAgeErrorId} className="visually-hidden" role="alert">
-                                        You must be at least {minAge} years old to register{newUserData.admin === true ? ' as an admin' : ''}.
+                                        You must be at least {minAge} years old to register.
                                     </p>
                                 </div>
                             )}

@@ -63,8 +63,9 @@ Returns `400` if validation fails.
 
 #### `checkAge`
 Parses `dateOfBirth` from `req.body`, calculates the user's age, and enforces:
-- Regular users: must be **18 or older**
-- Admin users (`admin: true`): must be **16 or older**
+- All new users: must be **18 or older**
+
+Registration never creates an admin: any `admin` field in the request body is ignored and the account is saved with `admin: false`. Admin status is requested afterwards through `PATCH /auth/setAdmin`, which enforces the 21+ age rule and the minimum account age.
 
 Returns `400` if the user is underage or if the date is invalid or in the future.
 

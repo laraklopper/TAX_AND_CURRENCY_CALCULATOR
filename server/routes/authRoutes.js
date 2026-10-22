@@ -106,9 +106,12 @@ router.post('/login', loginRateLimiter, async (req, res) => {
 //Route to register a new user
 //Send a POST request to the auth/register endpoint
 // Use Plaintext passwords for development
+/* Admin status cannot be requested here: every new account starts as a regular
+user, and any `admin` field in the request body is ignored. Admin is granted
+later through PATCH /setAdmin, which enforces the age and account age rules. */
 router.post('/register', checkAge, checkPassword, registrationRateLimiter, async (req, res) => {
     try {
-        const { fullName, email, password, dateOfBirth, address, admin } = req.body || {};
+        const { fullName, email, password, dateOfBirth, address } = req.body || {};
 
         if (!fullName || !fullName.firstName || !fullName.lastName || !email || !password || !dateOfBirth) {
             console.error('[ERROR: authRoutes.js, /register] Missing required registration fields');
@@ -133,7 +136,7 @@ router.post('/register', checkAge, checkPassword, registrationRateLimiter, async
             password,
             dateOfBirth,
             address,
-            admin: admin === true,
+            admin: false,// New users are never admins at registration
         });
 
         const token = signToken(newUser);

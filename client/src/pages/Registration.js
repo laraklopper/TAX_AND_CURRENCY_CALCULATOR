@@ -44,7 +44,6 @@ export default function Registration(//Export default Registration function comp
           email: newUserData.email,
           dateOfBirth: newUserData.dateOfBirth,
           address: newUserData.address,
-          admin: newUserData.admin,
           password: newUserData.password
         })
       })

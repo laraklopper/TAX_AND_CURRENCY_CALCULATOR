@@ -121,7 +121,6 @@ export const emptyNewUserData = () => ({
   email: '',
   dateOfBirth: '',
   address: { line1: '', line2: '', city: '', province: '' },
-  admin: false,
   password: '',
 })
 
