@@ -15,15 +15,24 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import EditPasswordForm from '../components/EditPasswordForm';
 import EditUserForm from '../components/EditUserForm';
+import AdminRegisForm from '../components/AdminRegisForm';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { User } from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
-import { 
-  // ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, 
-  buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
-import AdminRegisForm from '../components/AdminRegisForm';
+import { ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
 
 
+// Calculate a user's age in years from their date of birth
+const calculateAge = (dateOfBirth) => {
+  const dob = new Date(dateOfBirth);
+  const now = new Date();
+  let age = now.getFullYear() - dob.getFullYear();
+  const m = now.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
+    age--;// Birthday has not happened yet this year
+  }
+  return age;
+}
 // ======MAIN PROFILE FUNCTION COMPONENT
 export default function Profile(
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
@@ -67,7 +76,7 @@ export default function Profile(
   /* Function to display/render AdminRegisForm.js if user is not an admin user
   and matches the age requirement of 21 years and has been a user for 3 months 
   (1 day during development) */
-  /*const showAccountForm = Boolean(
+  const showAdminForm = Boolean(
     currentUser &&
     !currentUser.admin &&
     !adminFormDismissed &&
@@ -75,7 +84,8 @@ export default function Profile(
     calculateAge(currentUser.dateOfBirth) >= ADMIN_MIN_AGE &&
     currentUser.createdAt && 
     Date.now() - new Date(currentUser.createdAt).getTime() >= ADMIN_MIN_ACCOUNT_AGE_MS
-  )*/
+  )
+
   // ======REQUESTS/CALLBACKS===========
   /* Report a validation/request failure in one place: inline message and
      parent error state stay in sync */
@@ -383,7 +393,8 @@ export default function Profile(
       Only display form (and section) if user is not an admin user 
       and matches the age requirement of 21 years and has been a user 
       for 3 months (1 day during development) */}
-      <section id='profileSection2'>
+      {showAdminForm && (
+        <section id='profileSection2'>
         <Row id='adminFormRow'>
           <Col id='adminFormCol1'/>
           <Col xs={12} md={10} id='adminFormCol'>
@@ -398,6 +409,7 @@ export default function Profile(
           <Col id='adminFormCol2'/>
         </Row>
       </section>
+      ) }
       {/* ======FOOTER=========== */}
       {/* Render the Footer.js component */}
       <Footer logout={logout}/>
