@@ -8,6 +8,20 @@
     justify-content: center;
     margin: 0px;
 }
+#calcTextDiv{
+  display: flex;
+  flex-direction: column
+}
+.intCalcText{
+      color: #404040;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    
+    letter-spacing: 2px;
+    font-size: 14px;
+}
 .interest-calculator {
     display: flex;
     flex-direction: column;
@@ -41,7 +55,7 @@ LAYOUT
   gap: 10px;
 }
 /* GROUP 1 */
-#field-group1{
+#intCalcGroup1{
     display: flex;
     margin: 0px;
     padding: 10px;
@@ -50,25 +64,24 @@ LAYOUT
     border-radius: 8px;
 }
 /* STACK 1: https://react-bootstrap.netlify.app/docs/layout/stack */
-#interestForm-Stack1{
+#interestFormStack1{
     display: flex;
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
-
 /* --- Interest type toggle --- */
-
-#toggle-group-block1 {
-  display: flex;
-  
-  gap: 10px;
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  overflow: hidden;
+#toggleGroupBlock1 {
+    display: flex;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
 }
-#interest-type-selectbtn{
+#interestTypeSelectBtn{
     width: 180px;
     font-family: "Courier Prime", monospace;
     color: #000;
@@ -162,6 +175,16 @@ LAYOUT
     margin: 0px;
     padding: 0px;
     width: 100%;
+}
+#principalAmountBlock,
+#interestTimeBlock,
+#annualInterestBlock,
+#timePeriodBlock{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
 }
 /* GROUP 3 */
 #field-group3{

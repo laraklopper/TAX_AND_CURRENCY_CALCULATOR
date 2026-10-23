@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import '../css/componentCss/FormSetup.css'
+import '../css/componentCss/CalculatorForms.css'
 import '../css/componentCss/InterestCalculator.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
@@ -167,8 +168,8 @@ export default function InterestCalculatorForm({
     <div className="interest-calculator">
 
       <form id='interest-calculator-form' onSubmit={handleSubmit} noValidate>
-         <div id="interest-formHeadingBlock">
-        <h1 id="formHeading">Interest Calculator</h1>
+         <div id="taxFormHeadingBlock">
+        <h1 id="taxFormHeading">Interest Calculator</h1>
         <span className='form-text-span'>
           <p className="form-text">
             Calculate how much interest you'll earn or owe over time, using
@@ -184,12 +185,13 @@ export default function InterestCalculatorForm({
       )}
         <div id='interest-calculator-details-input'>
         {/* --- GROUP 1 Interest type toggle --- */}
-        <div id="field-group1">
+        <div id="intCalcGroup1">
         {/* STACK 1 */}
-          <Stack gap={3} id='interestForm-Stack1'>
-          <div className="p-2" id='toggle-group-block1'>
-            <label className="field-label">Interest type:</label><small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
-            {/* Interest Type Buttons */}
+          <Stack gap={3} id='interestFormStack1'>
+          <div className="p-2" id='toggleGroupBlock1'>
+            <label className="taxCalcLabel">Interest type:</label>
+            <div className='calcInputDiv'>
+             {/* Interest Type Buttons */}
             <div className='button-div'>
                   {["simple", "compound"].map((t) => (
                     <Button
@@ -197,7 +199,7 @@ export default function InterestCalculatorForm({
                       key={t}
                       type="button"
                       onClick={() => updateField("type", t)}
-                      id='interest-type-selectbtn'
+                      id='interestTypeSelectBtn'
                       className={`toggle-button${
                         form.type === t ? " toggle-button--active" : ""
                       }`}
@@ -208,11 +210,12 @@ export default function InterestCalculatorForm({
                     </Button>
                   ))}
             </div>
-            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+            <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+            </div> 
           </div>
-          <div className="p-2" id='form-text-div'>
-            <p className='form-text'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
-            <p className='form-text'>Compound interest is calculated on the principal (original) amount and also on the added interest of previous periods.</p>
+          <div className="p-2" id='calcTextDiv'>
+            <p className='intCalcText'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
+            <p className='intCalcText'>Compound interest is calculated on the principal (original) amount and also on the added interest of previous periods.</p>
           </div>
         </Stack>
         </div>
@@ -220,10 +223,11 @@ export default function InterestCalculatorForm({
         <div id="field-group2">
         {/* STACK 2 */}
         <Stack gap={3} id='interestForm-Stack2'>
-       <div className="p-2" id='principal-amount-block'>
+       <div className="p-2" id='principalAmountBlock'>
        {/* PRINCIPAL TAX AMOUNT */}
+        <label className="taxCalcLabel" htmlFor='principal-tax-amount'>Principal amount:</label>
           <div className="input-div">
-            <label className="field-label" htmlFor='principal-tax-amount'>Principal amount: (R)</label>
+           <p className='calcText'>(R)</p>
             <input
               type="number"
               id='principal-tax-amount'
@@ -239,10 +243,9 @@ export default function InterestCalculatorForm({
           </div>
       </div>
       {/* TIME PERIOD TOGGLE: calculate over annual or monthly periods */}
-      <div className="p-2" id='interest-time-block'>
-        
-        <div id='buttons-div' role='group' aria-label='Time period'>
+      <div className="p-2" id='interestTimeBlock'>
         <label className='field-label' id='time-period-label'>TIME PERIOD:</label>
+        <div id='buttons-div' role='group' aria-label='Time period'>
           {PERIOD_UNITS.map((p) => (
             <Button
               variant='light'
@@ -260,16 +263,16 @@ export default function InterestCalculatorForm({
           ))}
           <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
         </div>
-        <p className='form-text'>
+        <p className='calcText'>
           {form.periodUnit === "months"
             ? "Monthly: enter the time period in months and get a month-by-month breakdown."
             : "Annual: enter the time period in years and get a year-by-year breakdown."}
         </p>
       </div>
       {/* ANNUAL INTEREST RATE */}
-      <div className="p-2" id='annual-interest-block'>
+      <div className="p-2" id='annualInterestBlock'>
+      <label className="field-label">Annual interest rate (%)</label>
         <div className="input-div">
-            <label className="field-label">Annual interest rate (%)</label>
             <input
               type="number"
               min="0"
@@ -283,15 +286,17 @@ export default function InterestCalculatorForm({
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.rate && <p className="field-error">{errors.rate}</p>}
           </div>
-          <p className='form-text'>
+          <p className='calcText'>
             Always enter the yearly quoted rate - it is converted to the period
             you selected above.
           </p>
       </div>
       {/* TIME PERIOD (YEARS OR MONTHS, PER THE TOGGLE ABOVE) */}
-      <div className="p-2" id='time-period-block'>
+      <div className="p-2" id='timePeriodBlock'>
+      <label className="taxCalcLabel">Time period:</label>
 <div className='input-div'>
-<label className="field-label">Time period ({period.noun})</label>
+
+<p className='calcText' style={{textTransform: 'uppercase'}}>({period.noun})</p>
      <input
               type="number"
               min="1"
