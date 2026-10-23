@@ -96,15 +96,15 @@ export default function Dashboard({currentUser, setCurrentUser, setError, logout
       <div className="p-2" id='pageLinksBlock'>
       <div className='pageLinkDiv'>
           {/* Link to Tax Data '/taxData' page */}
-          <Link></Link>
+          <Link className='pageLink' to='/taxData'>TAX DATA</Link>
         </div>
-        <div className='pageLinkDiv'> 
+        <div className='pageLinkDiv'>
         {/* Link to TaxCalculators '/taxCalculators' Page */}
-        <Link></Link>
+        <Link className='pageLink' to='/taxCalculators'>TAX CALCULATOR</Link>
         </div>
         <div className='pageLinkDiv'>
           {/* Link to Currency converter '/currencyConverter' page */}
-          <Link></Link>
+          <Link className='pageLink' to='/currencyConverter'>CURRENCY CONVERTER</Link>
         </div>
       </div>
       <div className="p-2">
