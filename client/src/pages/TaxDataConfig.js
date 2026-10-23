@@ -6,6 +6,7 @@ import '../css/pagesCss/TaxData.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 // IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
@@ -14,6 +15,7 @@ import AddTaxDataForm from '../components/AddTaxDataForm';
 import TaxDataDisplay from '../components/TaxDataDisplay';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { HandCoins } from 'lucide-react';
+import ChangeTaxYearForm from '../components/ChangeTaxYearForm';
 
 // Base URL of the API this page saves the tax year configuration to
 const API_BASE_URL = 'http://localhost:3001';
@@ -32,14 +34,23 @@ export default function TaxDataConfig(//Export default TaxDataConfig.js componen
    TaxYearConfig object puts it in "update" mode, where the year is locked and
    only its brackets, rebates and thresholds can be changed. */
    const [taxConfigToEdit, setTaxConfigToEdit] = useState(null)
+   const [showChangeTaxYear, setShowChangeTaxYear] =useState(false)
    /* The active tax year as the API has it, shown by the read-only display
    below the form. Left null until GET /tax/config answers, which lets
    TaxDataDisplay fall back to its own seeded figures in the meantime. */
    const [activeConfig, setActiveConfig] = useState(null)
 
   // =========EVENT LISTENERS===================
-   const toggleTaxDataForm = () => setShowTaxForm((prev) => !prev)
+   const toggleTaxDataForm = useCallback(() => {
+    setShowTaxForm((prev) => !prev)
+    setShowChangeTaxYear(false)
 
+
+   },[]) 
+const toggleChangeTaxYear =  useCallback(() => {
+setShowChangeTaxYear((prev) => !prev)
+setShowTaxForm(false)
+},[])
   /* Loads the active tax year configuration so the display shows what is
   actually stored rather than the seeded figures. A failure is logged and left
   at that: the display has its own fallback, so a page that cannot reach the
@@ -134,7 +145,12 @@ export default function TaxDataConfig(//Export default TaxDataConfig.js componen
         <Col/>
         <Col xs={6} id='toggle-tax-formCol'>
           <div className='toggle-div'>
-            <Button 
+           <Stack gap={3}>
+           <div className="p-2">
+            <h5>UPDATE TAX DATA</h5>
+           </div>
+      <div className="p-2">
+         <Button 
               variant='warning' 
               onClick={toggleTaxDataForm} 
               id='toggleTaxChangeBtn'
@@ -147,7 +163,27 @@ export default function TaxDataConfig(//Export default TaxDataConfig.js componen
               >
               {showTaxForm ? 'HIDE TAX FORM': 'ADD/UPDATE TAX DATA'}
             </Button>
+      </div>
+      <div className="p-2">
+         <Button 
+              variant='warning' 
+              id='toggle-tax-year-btn' 
+              onClick={toggleChangeTaxYear}
+              type='button'
+              // ARIA ATTRIBUTES:
+              aria-label={showChangeTaxYear ? 'Hide': 'Change Tax Year'}
+              aria-controls='changeTaxYearPanal'
+              aria-pressed={showChangeTaxYear}
+              aria-expanded={showChangeTaxYear}
+              >
+                {showChangeTaxYear ? 'Hide': 'Change Tax Year'}
+              </Button>
+      </div>
+      
+    </Stack>
+
           </div>
+       
         </Col>
         <Col/>
       </Row>
@@ -167,6 +203,22 @@ export default function TaxDataConfig(//Export default TaxDataConfig.js componen
             </Row>
           </div>
         )}
+        {/* CHANGE TAX YEAR */}
+        {showChangeTaxYear && (
+          <div id='changeTaxYearPanal'>
+               <Row>
+        <Col/>
+        <Col xs={6}>
+          <div id='changeTaxYearBlock' >
+            <ChangeTaxYearForm/>
+          </div>
+        </Col>
+        <Col/>
+      </Row>
+          </div>
+        )
+
+        }
         {/* CURRENT TAX YEAR DATA */}
         <Row id='tax-data-display-row'>
           <Col id='tax-data-display-col'>

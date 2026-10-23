@@ -3,6 +3,7 @@ import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Dashboard.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -12,6 +13,8 @@ import { Percent } from 'lucide-react';
 
 export default function Dashboard({currentUser, logout}) {
   const [showChangeTaxYear, setShowChangeTaxYear] =useState(false)
+  const { fullName} = currentUser || {}
+
 
   const toggleChangeTaxYear = () => setShowChangeTaxYear((prev) => !prev)
   return (
@@ -28,6 +31,41 @@ export default function Dashboard({currentUser, logout}) {
       </Row>
       <section id='dashBoardSec1'>
           <div id='dashboard-panal'>
+            <Row id='dashboardRow1'>
+              <Col id='dashBoardCol1'>
+               
+              <Stack direction="horizontal" gap={3}>
+      <div className='p-2'></div>
+      <div className="p-2 ms-auto"></div>
+      <div className="vr" />
+      <div className="p-2">
+      <span>
+      <h6>SIGNED IN AS:</h6>
+        <h4>{(fullName?.firstName) (fullName?.lastName)}</h4>
+         
+      </span></div>
+    </Stack>
+   <Stack direction="horizontal" gap={3}>
+      <div className="p-2">
+        <p> Calculate South African personal income tax (SARS rates) Convert between currencies using live exchange rates
+Calculate simple/compound interest on savings or loans</p>
+      </div>
+      <div className="p-2">
+        <div className='pageLinkBlock'> 
+
+{/* Link to TaxCalculators Page */}
+        </div>
+        <div className='pageLinkBlock'>
+
+        </div>
+        
+      </div>
+      <div className="p-2">Third item</div>
+    </Stack>
+
+              </Col>
+              
+            </Row>
    
       <Row id='tax-year-data-row'>
         <Col id='tax-year-data-col'>
@@ -37,7 +75,10 @@ export default function Dashboard({currentUser, logout}) {
       </Row>
             </div>
       </section>
-     {/* ONLY MAKE THE SECTION AVAILABLE TO ADMIN USERS */}
+     {/* SECTION 2: TOGGLE ADMIN REGISTRATION FORM
+      Only display form (and section) if user is not an admin user 
+      and matches the age requirement of 21 years and has been a user 
+      for 3 months (1 day during development) */}
       {currentUser.admin &&(
         <section id='dashBoardSec2'>
       <Row id='change-tax-year-row'>
