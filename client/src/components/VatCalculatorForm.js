@@ -8,6 +8,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { ZERO_RATED_CATEGORIES, SARS_VAT_RATE } from '../utils/calculationFunc';
 import { Link } from 'react-router-dom'
+import { RotateCcwIcon } from 'lucide-react'
 
 /**
  * VatCalculatorForm
@@ -21,7 +22,12 @@ import { Link } from 'react-router-dom'
  *  - onSave(result): called when the authenticated user saves the result to history
  *  - isAuthenticated: bool, gates the Save button
  */
-export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) {
+export default function VatCalculator(
+  { //PROPS PASSED FROM PARENT COMPONENT(TaxCalculators.js)
+    onCalculate, //called with the calculation result whenever it changes
+    onSave, //called when the authenticated user saves the result to history
+    isAuthenticated 
+  }) {
   const [amount, setAmount] = useState('')
   const [mode, setMode] = useState('exclusive')// 'exclusive' (add VAT) | 'inclusive' (remove VAT)
   const [isZeroRated, setIsZeroRated] = useState(false);
@@ -34,6 +40,7 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
       currency: 'ZAR',
     }).format(value);
 
+    const toggleZeroRated = () =>setIsZeroRated(prev => (!prev))
   const calculateVat = (rawAmount, calcMode, zeroRated) => {
     const rate = zeroRated ? 0 : SARS_VAT_RATE;
 
@@ -111,8 +118,10 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
     }
   };
 
+  //===============JSX RENDERING=============
   return (
    <div id='vatCalculatorDiv'>
+   {/* VAT CALCULATOR */}
 <form 
   id='vatCalculatorForm' 
   method='' 
@@ -125,11 +134,13 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
         South African standard rate: {SARS_VAT_RATE * 100}% (SARS)
       </p>
       </div>
+      {/* ====CALCULATOR INPUT */}
       <div id='vatCalculatorInput'>
-        <div id='vat-form-group1'>
-            <Stack gap={3} id='vat-calculator-stack1'>
-            <div className="p-2" id='vat-calculator-block1'>
-              <label className="vatCalcLabel" htmlFor="vat-amount">
+      {/* GROUP 1: INPUT: Amount + Calculation Type + Zero Rated Check Box*/}
+        <div id='vatFormGroup1'>
+            <Stack gap={3} id='vatCalculatorStack1'>
+            <div className="p-2" id='vatCalculatorBlock1'>
+              <label className="taxCalcLabel" htmlFor="vat-amount">
           Amount (ZAR)
         </label>
         <input
@@ -143,9 +154,9 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
           placeholder="0.00"
         />
             </div>
-            <div className="p-2" id='vat-calculator-block2'>
-              <label className="vatCalcLabel">Calculation type</label>
-              <div id='vat-calc-btn-div'>
+            <div className="p-2" id='vatCalculatorBlock2'>
+              <label className="taxCalcLabel">Calculation type</label>
+              <div id='vatCalcBtnDiv'>
                 <Button
                 variant='light'
                 type="button"
@@ -170,8 +181,9 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
           </Button>
               </div>
             </div>
-            <div className="p-2" id='vat-calculator-block3'>
-             
+           </Stack>
+           <Stack gap={3} id='vatCalculatorStack2'>
+      <div className="p-2" id='vatCalculatorBlock3'>
         <div className='calcInputDiv'>
           <input
           id="vat-zero-rated"
@@ -180,48 +192,83 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
           checked={isZeroRated}
           onChange={handleZeroRatedToggle}
         />
-<label htmlFor="vat-zero-rated" className="vatCalcLabel">
+<label htmlFor="vat-zero-rated" className="taxCalcLabel">
           This item is zero-rated (0%)
         </label>
         </div>
-        
-            <div id='zeroRatedList'>
-          {isZeroRated && (
-        <p className="vat-calculator__hint">
-          Common zero-rated items: {ZERO_RATED_CATEGORIES.slice(0, 6).join(', ')}, and more.
-        </p>
-      )} 
       </div>
-      {error && <p className="vat-calculator__error">{error}</p>}
-   
-            </div>
-           </Stack>
-
+      <div className="p-2" id='vatCalculatorBlock4'>
+        <Button
+        variant='info'
+        id='toggleZeroRatedBtn'
+        onClick={toggleZeroRated}
+        type='button'
+        >ZERO RATED ITEMS</Button>
+      </div>
+      {/* TOGGLE LIST OF ZERO RATED ITEMS */}
+      {isZeroRated && (
+        <div className="p-2" id='zeroRatedListBlock'>
+          <ul id='zeroRatedList'>
+          {/* MAP ZERO RATED ITEMS AS A LIST */}
+            {ZERO_RATED_CATEGORIES.map((zero) => (
+              <li>{zero}</li>
+          ))}
+          </ul>
+        </div> 
+      )}
+    </Stack>
+      {error && <p className="vat-calculator__error">{error}</p>}     
         </div>
-      
       </div>
-    <div>
-      <Button
+      <Stack gap={3}>
+      <div className="p-2" id='submitCalcDiv'>
+         <Button
       type='submit'
       id='calculateVatBtn'
       variant='light'
+      // ARIA ATTRIBUTES:
+      role='button'
+      aria-label='calculateVatBtn'
       >CALCULATE VAT</Button>
+      </div>
+      <div className="p-2" id='resetCalcDiv'>
+        <Button
+        variant='danger'
+        type='button'
+        id='resetCalcBtn'
+        // onClick={}
+        >
+        <RotateCcwIcon aria-hidden='true' focusable='false'/>RESET
+        </Button>
+      </div>
+      <div className="p-2">Third item</div>
+    </Stack>
+    <div >
+     
     </div>
     </form>
     <div id='vatCalcResultsDiv'>
   {result && (
         <div className="vat-calculator__result">
           <div className="vat-calculator__result-row">
-            <span>Amount excl. VAT:</span>
-            <span>{formatCurrency(result.netAmount)}</span>
+            <span className='vatResultSpan'>
+            <label className='taxResultLabel'>Amount excl. VAT:</label>
+            <p className='taxResult'>{formatCurrency(result.netAmount)}</p>
+            </span>
           </div>
           <div className="vat-calculator__result-row">
-            <span>VAT ({result.ratePercent}%):</span>
+            <span className='vatResultSpan'>
+            <label className='taxResultLabel'></label>
+            VAT ({result.ratePercent}%):
+            
+            </span>
             <span>{formatCurrency(result.vatAmount)}</span>
           </div>
           <div className="vat-calculator__result-row vat-calculator__result-row--total">
-            <span>Amount incl. VAT</span>
-            <span>{formatCurrency(result.grossAmount)}</span>
+            <span>
+            <label className='taxResultLabel'>Amount incl. VAT</label>
+            <p className='taxResult'>{formatCurrency(result.grossAmount)}</p>
+            </span>
           </div>
         </div>
       )}
@@ -230,9 +277,12 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
         <Button
         variant='light'
           type="button"
-          id="save-to-history-btn"
+          id="saveCalcBtn"
           onClick={handleSave}
           disabled={!result}
+          // ARIA ATTRIBUTES:
+          aria-label='Save Vat Calculation Button'
+          aria-disabled={!result}
         >
           Save to history
         </Button>
@@ -245,7 +295,7 @@ export default function VatCalculator({ onCalculate, onSave, isAuthenticated }) 
         )
       )}
 </div>
-<div>
+  <div id='sarsWebLinkBlock'>
   <Link id='webLink' target='blank' href='https://www.sars.gov.za/types-of-tax/value-added-tax/'>https://www.sars.gov.za/types-of-tax/value-added-tax/</Link>
 </div>
    </div> 

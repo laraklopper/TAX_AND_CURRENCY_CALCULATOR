@@ -1,56 +1,75 @@
-/* ===================
-VAT CALCULATOR: VatCalculatorForm.js
-===========*/
-#vat-calculator-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: solid;
-    padding: 10px;
-    margin: 0px;
-    border-radius: 8px;
-    background-color: #A8AEB3;
-    gap: 10px;
-    width: 500px;
-}
-.vat-calculator-label{
-    display: flex;
-    margin: 0px;
-    padding: 0px;
-    font-family: "Courier Prime", monospace;
-    font-weight: 700;
+.taxCalcLabel{
+  font-family: "Roboto Mono", monospace;
+  margin: 0px;
+  letter-spacing: 2px;
+  padding: 0px;
+  text-decoration: underline 2px;
+  font-weight: 700;
     color: #000;
     text-transform: uppercase;
 }
-/* LAYOUT */
-#vatCalcHeadingBlock{
+#submitCalcDiv,
+#resetCalcDiv{
     display: flex;
-    flex-direction: column;
-    align-items: baseline;
+    justify-content: center;
     margin: 0px;
     padding: 0px;
 }
+#resetCalcBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 40px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
+    gap: 5px;
+    letter-spacing: 2px;
+    padding: 0px;
+    border: solid 2px #323A42;
+
+}
+#saveCalcBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    width: 230px;
+     height: 40px;
+     font-family: "Courier Prime", monospace;
+     font-weight: 700;
+     letter-spacing: 1px;
+     border: #323A42 solid 2px;
+    color: #000;
+}
+/* ===================
+VAT CALCULATOR: VatCalculatorForm.js
+===========*/
+
 /* ====INPUT====== */
 /* ==============
 LAYOUT
 ==============*/
-#vat-calculator-input{
+/* #vat-calculator-input{
     display: flex;
     flex-direction: column;
     margin: 0px;
     padding: 0px;
     width: 100%;
-}
-#vat-form-group1{
+} */
+/* #vat-form-group1{
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     margin: 0px;
     padding: 0px;
-}
+} */
 /* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
-#vat-calculator-stack1{
+/* #vat-calculator-stack1{
     display: flex;
     width: 100%;
     margin: 0px;
@@ -91,11 +110,11 @@ LAYOUT
     display: flex;
     margin: 0px;
     padding: 0px;
-}
+} */
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/
-#vat-calc-typebtn1,
+/* #vat-calc-typebtn1,
 #vat-calc-typebtn2{
     display: flex;
     justify-content: center;
@@ -127,7 +146,7 @@ LAYOUT
      letter-spacing: 1px;
      border: #323A42 solid 2px;
     color: #000;
-}
+} */
 /* ===============
 PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
 
