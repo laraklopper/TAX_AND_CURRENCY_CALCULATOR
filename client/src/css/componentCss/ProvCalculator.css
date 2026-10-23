@@ -1,0 +1,139 @@
+/* ===============
+PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
+===============*/
+#provTaxcalc{
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #8797A8;
+    width: 100%;
+    gap: 10px;
+}
+#provTaxCalculator{
+    display: flex;
+    flex-direction: column;
+    background-color: #A8AEB3;
+    margin: 0px;
+    padding: 10px;
+    align-items: center;
+}
+/* CALCULATOR HEADING */
+/* STACK */
+#provTaxHeadStack{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#provTaxHeadingBlock{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+}
+#provCalcTextBlock1{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+}
+/* LAYOUT */
+#provTaxCalcinput{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #BFBFBF;
+    margin: 0px;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 5px;
+    width: 90%;
+}
+/* GROUP 1: */
+#provTaxCalcGroup1{
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    width: 100%;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#provTaxPeriodStack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+/* GROUP 2 */
+#provTaxCalcgroup2{
+        display: flex;
+    margin: 0px;
+    padding: 10px;
+    width: 100%;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+
+}
+#provTaxEstStack{
+      width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#provEstBlock1,
+#provEstBlock2,
+#provEstBlock3,
+#creditsBlock4{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+     margin: 0px;
+    padding: 0px;
+}
+/* GROUP 3 */
+#provTaxCalcGroup3{
+      display: flex;
+    margin: 0px;
+    padding: 10px;
+    width: 100%;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+#provTaxCreditStack{
+     width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#creditsBlock1,
+#creditsBlock2,
+#creditsBlock3,
+#creditsBlock4{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+     margin: 0px;
+    padding: 0px;
+}
+#creditsTextBlock,
+#creditsTextBlock2{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
+
+#provPeriodDueText{
+    text-align: center;
+}
+/* GROUP 4 */
+#provTaxCalcGroup4{
+    display: flex;
+    
+}
+#provTaxBtnStack{
+    display: flex;
+    width: 100%;
+}

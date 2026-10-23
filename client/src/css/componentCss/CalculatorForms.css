@@ -1,3 +1,17 @@
+#taxFormHeading{
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    margin: 0px;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 0px;
+    text-transform: uppercase;
+}
 .taxCalcLabel{
   font-family: "Roboto Mono", monospace;
   margin: 0px;
@@ -8,6 +22,19 @@
     color: #000;
     text-transform: uppercase;
 }
+.calcText{
+    color: #404040;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+    letter-spacing: 2px;
+    font-size: 14px;
+}
+/* =======================
+LAYOUT
+==============*/
 #submitCalcDiv,
 #resetCalcDiv{
     display: flex;
@@ -15,11 +42,13 @@
     margin: 0px;
     padding: 0px;
 }
+/* BUTTONS */
+#calculateTaxBtn,
 #resetCalcBtn{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 180px;
+    width: 200px;
     height: 40px;
     font-family: "Courier Prime", monospace;
     font-weight: 700;
@@ -58,22 +87,14 @@ VAT CALCULATOR: VatCalculatorForm.js
 }
 .taxResult{
      font-family: "Roboto Mono", monospace;
-    font-weight: 700;
-    
+    font-weight: 700;   
     letter-spacing: 2px;
     margin: 0px;
     padding: 0px;
 }
 
-/* ===============
-PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
 
-   The form reuses the income tax calculator's shell (.tax-calculator) and the
-   shared .input, .results, .breakdown-table and .save-row rules, so only what
-   is specific to an IRP6 is styled here: the three period buttons, the three
-   field groups, the due date, the overpayment note and the warning list.
-===============*/
-#provTaxCalculator{
+/* #provTaxCalculator{
     display: flex;
     flex-direction: column;
     background-color: #A8AEB3;
@@ -86,46 +107,9 @@ PROVISIONAL TAX CALCULATOR: ProvisionalTaxCalculatorForm.js
     width: 100%;
     margin: 0px;
     padding: 5px 0px;
-}
-#provEstBlock1,
-#provEstBlock2,
-#provEstBlock3,
-#creditsBlock1,
-#creditsBlock2,
-#creditsBlock3,
-#creditsBlock4{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-     margin: 0px;
-    padding: 0px;
-}
-#creditsTextBlock{
-    display: flex;
-    margin: 0px;
-    padding: 0px;
-    justify-content: center;
-}
-.calcText{
-    color: #404040;
-    margin: 0px;
-    padding: 0px;
-    font-weight: 600;
-    font-family: "Open Sans", sans-serif;
-    text-align: center;
-    letter-spacing: 2px;
-    font-size: 14px;
-}
-#provPeriodDueText{
-    text-align: center;
-}
-#provCalcTextBlock1{
-    display: flex;
-    flex-direction: column;
-    margin: 0px;
-    padding: 0px;
-}
+} */
+
+
 .provPeriodSpan{
     display: flex;
     margin: 0px;

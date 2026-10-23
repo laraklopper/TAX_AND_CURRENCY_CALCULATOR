@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import '../css/componentCss/CalculatorForms.css'
 import '../css/componentCss/CalculatorDisplay.css'
 import '../css/componentCss/FormSetup.css'
-import '../css/componentCss/TaxCalculatorForm.css'
+import '../css/componentCss/ProvCalculator.css'
 /* The .results, .alert, .field-label, .field-error, .form-actions,
 .table-wrapper, .breakdown-table, .save-row and .save-link rules are shared with
 the interest and income tax calculators and live in InterestCalculator.css. Only
@@ -148,19 +148,18 @@ export default function ProvisionalTaxCalculator({
   }
 
   return (
-    <div className="tax-calculator" id="provTaxcalc">
+    <div id="provTaxcalc">
       {status === "error" && (
         <div className="alert alert--error" role="alert">
           <AlertCircle size={16} className="alert__icon" />
           {statusMessage}
         </div>
       )}
-
-      <form onSubmit={handleSubmit} id="provTaxCalculator" aria-labelledby="prov-tax-formHeading">
+      <form onSubmit={handleSubmit} id="provTaxCalculator" aria-labelledby="taxFormHeading">
         <div id="provTaxcalcHeader">
-          <Stack gap={3} id="prov-tax-heading-stack">
-            <div className="p-2" id="prov-tax-formHeadingBlock">
-              <h1 id="provTaxFormHeading">Provisional Tax Calculator</h1>
+          <Stack gap={3} id="provTaxHeadStack">
+            <div className="p-2" id="provTaxHeadingBlock">
+              <h3 id="taxFormHeading">Provisional Tax Calculator</h3>
             </div>
             <div className="p-2" id='provCalcTextBlock1'>
               <p className="calcText">
@@ -171,11 +170,12 @@ export default function ProvisionalTaxCalculator({
             </div>
           </Stack>
         </div>
-
-        <div id="prov-tax-input-div">
+        {/* CALCULATOR INPUT */}
+        <div id="provTaxCalcinput">
           {/* GROUP 1: WHICH PAYMENT */}
-          <div id="prov-tax-field-group1">
-            <Stack gap={3} id="prov-tax-period-stack">
+          <div id="provTaxCalcGroup1">
+          {/* INPUT STACK 1:  */}
+            <Stack gap={3} id="provTaxPeriodStack">
               <div className="p-2" id="prov-tax-period-block1">
                 <label id="prov-tax-period-label" className="tax-field-label">Which payment:</label>
                 <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
@@ -213,9 +213,8 @@ export default function ProvisionalTaxCalculator({
               </div>
             </Stack>
           </div>
-
           {/* GROUP 2: THE ESTIMATE */}
-          <div id="prov-tax-field-group2">
+          <div id="provTaxCalcgroup2">
             <Stack gap={3} id="prov-tax-estimate-stack">
               <div className="p-2" id='provEstBlock1'>
                 {/* ESTIMATED TAXABLE INCOME FOR THE FULL YEAR */}
@@ -294,10 +293,9 @@ export default function ProvisionalTaxCalculator({
               </div>
             </Stack>
           </div>
-
           {/* GROUP 3: WHAT COMES OFF THE PAYMENT */}
-          <div id="prov-tax-field-group3">
-            <Stack gap={3} id="prov-tax-credits-stack">
+          <div id="provTaxCalcGroup3">
+            <Stack gap={3} id="provTaxCreditStack">
               <div className="p-2" id="prov-tax-credits-heading">
                 <label className="tax-field-label" id="prov-tax-credits-label">
                   Already withheld or paid:
@@ -394,11 +392,12 @@ export default function ProvisionalTaxCalculator({
               )}
               {/* BASIC AMOUNT - only the estimated periods are judged against it */}
               {form.period !== 'third' && (
-                <div className="p-2">
-                  <div className="input-div">
-                    <label className="field-label" htmlFor="provBasicAmount">
-                      Basic amount (last assessed taxable income) (R):
+                <div className="p-2" id='creditsBlock4'>
+                <label className="field-label" htmlFor="provBasicAmount">
+                      Basic amount (last assessed taxable income):
                     </label>
+                  <div className="input-div">
+                    <p className='calcText'>(R)</p>
                     <input
                       id="provBasicAmount"
                       type="number"
@@ -414,8 +413,8 @@ export default function ProvisionalTaxCalculator({
                 </div>
               )}
               {form.period !== 'third' && (
-                <div className="p-2">
-                  <p className="form-text">
+                <div className="p-2" id='creditsTextBlock2'>
+                  <p className="calcText">
                     Optional. Supply it and the estimate is checked against it,
                     because an estimate below the basic amount may be increased
                     by SARS.
@@ -430,11 +429,12 @@ export default function ProvisionalTaxCalculator({
             </Stack>
           </div>
         </div>
-        <div className="form-actions">
-          <Stack gap={2} className="col-md-5 mx-auto" id="prov-tax-btn-stack">
+        {/* GROUP 4: */}
+        <div className="provTaxCalcGroup4">
+          <Stack gap={2} id="provTaxBtnStack">
             <Button
               type="submit"
-              id="calculateProvTaxBtn"
+              id="calculateTaxBtn"
               disabled={status === "calculating"}
               variant="light"
               // ARIA ATTRIBUTES:
@@ -449,7 +449,8 @@ export default function ProvisionalTaxCalculator({
               variant="danger"
               type="button"
               onClick={resetForm}
-              id="clearFormBtn"
+              id="resetCalcBtn"
+              // ARIA ATTRIBUTES
             >
               <RotateCcw size={16} aria-hidden='true' focusable='false'/> Reset
             </Button>

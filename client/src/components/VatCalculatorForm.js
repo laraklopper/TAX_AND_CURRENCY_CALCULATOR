@@ -250,7 +250,7 @@ export default function VatCalculator(
       <div className="p-2" id='submitCalcDiv'>
          <Button
       type='submit'
-      id='calculateVatBtn'
+      id='calculateTaxBtn'
       variant='light'
       disabled={isCalculating}
       // ARIA ATTRIBUTES:
