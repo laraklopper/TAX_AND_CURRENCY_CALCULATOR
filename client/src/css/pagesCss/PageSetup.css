@@ -36,6 +36,9 @@ LAYOUT
   margin: 0px;
   padding: 10px 0px;
 }
+/* ========================
+DISCLAIMER
+============*/
 #disclaimerSection{
     width: 100%;
     margin: 0px;
@@ -48,13 +51,32 @@ LAYOUT
     align-items: baseline;
     width: 100%;
     margin: 0px;
-    padding: 10px 5px 5px;
+    padding: 0px;
+}
+#disclaimerTextBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    margin: 5px 0px 0px 5px;
+    padding: 5px;
 }
 #disclaimerHeadBlock{
     display: flex;
     justify-content: flex-start;
     margin: 0px;
     padding: 0px 5px;
+}
+#sarsWebLinkBlock{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+.webLinkLabel{
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    font-size: 18px;
 }
 /* ========================= 
 Accessibility helpers 
@@ -78,6 +100,14 @@ Accessibility helpers
     justify-content: center;
     margin: 0px;
     padding: 0px;
+}
+#disclaimerSpan{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    gap: 3px;
+    
+    padding: 5px;
 }
 #loginLink,
 #webLink,
@@ -109,7 +139,11 @@ Accessibility helpers
         border: solid 2px #323A42;
     color: #252e36;
     background-color: #E8F0F6;
+    width: 230px;
+}
+#webLink{
     width: fit-content;
+        padding: 0px 5px;
 }
 .textPara{
     font-family: "Open Sans", sans-serif;
