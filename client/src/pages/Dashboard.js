@@ -15,7 +15,7 @@ import { Percent } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Disclaimer from '../components/Disclaimer';
 
-export default function Dashboard({currentUser, setCurrentUser, setError, logout}) {
+export default function Dashboard({currentUser, loggedIn,setCurrentUser, setError, logout}) {
     const userId = currentUser?._id
     const dismissKey = `adminFormDismissed_${userId}`
     // Id of the user who closed the form during this visit (re-renders the page)
@@ -151,7 +151,7 @@ export default function Dashboard({currentUser, setCurrentUser, setError, logout
       <section id='disclaimerSection'>
         <Row id='disclaimerRow'>
         <Col md={12} id='disclaimerCol'>
-          <Disclaimer/>
+          <Disclaimer loggedIn={loggedIn}/>
         </Col>
         
       </Row>

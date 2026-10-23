@@ -27,7 +27,7 @@ import Disclaimer from '../components/Disclaimer';
 const API_BASE_URL = 'http://localhost:3001';
 
 // ======MAIN CALCULATORS COMPONENT====================
-export default function TaxCalculators({currentUser, logout}) {
+export default function TaxCalculators({ loggedIn, currentUser, logout}) {
   // ==========STATE VARIABLES================
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
@@ -431,7 +431,7 @@ export default function TaxCalculators({currentUser, logout}) {
         <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
             <Col id='disclaimerCol'>
-              <Disclaimer/>
+              <Disclaimer loggedIn={loggedIn}/>
             </Col>
           </Row>
         </section>

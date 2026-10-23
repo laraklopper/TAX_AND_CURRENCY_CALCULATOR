@@ -19,6 +19,7 @@ import EditUserForm from '../components/EditUserForm';
 import { User } from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
 import { buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
+import Disclaimer from '../components/Disclaimer';
 
 // ======MAIN PROFILE FUNCTION COMPONENT
 export default function Profile(
@@ -26,6 +27,7 @@ export default function Profile(
     currentUser, 
     setCurrentUser, 
     logout, 
+    loggedIn,
     setError
   }
   ) {
@@ -356,7 +358,9 @@ export default function Profile(
       </section>
       <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
-            <Col id='disclaimerCol'></Col>
+            <Col id='disclaimerCol'>
+              <Disclaimer loggedIn={loggedIn}/>
+            </Col>
             </Row>
             </section>
       {/* ======FOOTER=========== */}

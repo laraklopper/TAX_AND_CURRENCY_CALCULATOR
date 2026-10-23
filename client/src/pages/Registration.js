@@ -15,11 +15,13 @@ import PageFooter from '../components/PageFooter';
 import { useNavigate } from 'react-router-dom';
 // IMPORT UTILITY FUNCTIONS
 import { emptyNewUserData } from '../utils/userFunc'
+import Disclaimer from '../components/Disclaimer';
 
 //============MAIN REGISTRATION COMPONENT=============
 export default function Registration(//Export default Registration function component
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
-    setError
+    setError,
+    loggedIn
   }) {
   // =========STATE VARIABLES=============
   const [newUserData, setNewUserData] = useState(emptyNewUserData)
@@ -84,7 +86,9 @@ export default function Registration(//Export default Registration function comp
       </section>
       <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
-            <Col id='disclaimerCol'></Col>
+            <Col id='disclaimerCol'>
+              <Disclaimer loggedIn={loggedIn}/>
+            </Col>
             </Row>
             </section>
       <PageFooter/>

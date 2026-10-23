@@ -354,7 +354,7 @@ submitConvert={submitConvert}
       <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
             <Col id='disclaimerCol'>
-              <Disclaimer/>
+              <Disclaimer loggedIn={loggedIn}/>
             </Col>
             </Row>
             </section>

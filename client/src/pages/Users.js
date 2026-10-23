@@ -11,6 +11,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import UsersList from '../components/UsersList';
 import { FileUser } from 'lucide-react';
+import Disclaimer from '../components/Disclaimer';
 // =======MAIN USERS PAGE COMPONENT===========
 export default function Users(
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
@@ -18,6 +19,7 @@ export default function Users(
     users, 
     setUsers, 
     logout, 
+    loggedIn,
     setError
   }) {
 
@@ -58,7 +60,9 @@ export default function Users(
       </section>
       <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
-            <Col id='disclaimerCol'></Col>
+            <Col id='disclaimerCol'>
+              <Disclaimer loggedIn={loggedIn}/>
+            </Col>
             </Row>
             </section>
       <Footer logout={logout}/>

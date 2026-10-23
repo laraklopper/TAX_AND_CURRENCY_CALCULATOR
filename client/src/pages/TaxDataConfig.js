@@ -16,6 +16,7 @@ import TaxDataDisplay from '../components/TaxDataDisplay';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { HandCoins } from 'lucide-react';
 import ChangeTaxYearForm from '../components/ChangeTaxYearForm';
+import Disclaimer from '../components/Disclaimer';
 
 // Base URL of the API this page saves the tax year configuration to
 const API_BASE_URL = 'http://localhost:3001';
@@ -24,6 +25,7 @@ const API_BASE_URL = 'http://localhost:3001';
 export default function TaxDataConfig(//Export default TaxDataConfig.js component
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
     currentUser, 
+    loggedIn,
     logout
   }
   ) {
@@ -230,7 +232,9 @@ setShowTaxForm(false)
         </section>
         <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
-            <Col id='disclaimerCol'></Col>
+            <Col id='disclaimerCol'>
+              <Disclaimer loggedIn={loggedIn}/>
+            </Col>
             </Row>
             </section>
       <Footer logout={logout}/>

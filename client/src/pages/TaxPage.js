@@ -5,7 +5,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-export default function TaxPage({currentUser, logout}) {
+import Disclaimer from '../components/Disclaimer';
+export default function TaxPage({currentUser, logout, loggedIn}) {
   return (
     <div id='pageContainer'>
         <Header pageHeader={'TAX'} currentUser={currentUser}/>
@@ -14,7 +15,9 @@ export default function TaxPage({currentUser, logout}) {
         </section>
           <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
-            <Col id='disclaimerCol'></Col>
+            <Col id='disclaimerCol'>
+              <Disclaimer loggedIn={loggedIn}/>
+            </Col>
             </Row>
             </section>
         <Footer logout={logout}/>
