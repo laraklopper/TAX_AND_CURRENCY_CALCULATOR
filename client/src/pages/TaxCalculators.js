@@ -21,6 +21,7 @@ import { Calculator } from 'lucide-react';
 import { taxSeedData } from '../dataArrays/taxSeedData';
 import VatCalculator from '../components/VatCalculatorForm';
 import ProvisionalTaxCalculator from '../components/ProvisionalTaxCalculatorForm';
+import Disclaimer from '../components/Disclaimer';
 
 // Base URL of the API the calculators post to
 const API_BASE_URL = 'http://localhost:3001';
@@ -427,6 +428,13 @@ export default function TaxCalculators({currentUser, logout}) {
         </div>
         </section>
         {/* Saved calculations are listed on the CALCULATIONS page */}
+        <section id='disclaimerSection'>
+          <Row id='disclaimerRow'>
+            <Col id='disclaimerCol'>
+              <Disclaimer/>
+            </Col>
+          </Row>
+        </section>
         {/* ======FOOTER============= */}
       <Footer logout={logout}/>
     </div>

@@ -82,6 +82,11 @@ export default function Registration(//Export default Registration function comp
         </Col>
       </Row>
       </section>
+      <section id='disclaimerSection'>
+          <Row id='disclaimerRow'>
+            <Col id='disclaimerCol'></Col>
+            </Row>
+            </section>
       <PageFooter/>
     </div>
   )

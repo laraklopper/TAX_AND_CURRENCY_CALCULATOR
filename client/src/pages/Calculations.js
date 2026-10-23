@@ -16,6 +16,7 @@ import TaxCalculations from '../components/TaxCalculations';
 import ProvisionalTaxCalculations from '../components/ProvisionalTaxCalculations';
 import VatCalculations from '../components/VatCalculations';
 import InterestCalculations from '../components/InterestCalculations';
+import Disclaimer from '../components/Disclaimer';
 
 // Base URL of the API the calculations lists read from
 const API_BASE_URL = 'http://localhost:3001';
@@ -363,12 +364,16 @@ export default function Calculations({currentUser, logout}) {
         </div>
       )}
             </div>
-
-
         </section>
-        <Footer
-            logout={logout}
-        />
+        <section id='disclaimerSection'>
+          <Row id='disclaimerRow'>
+            <Col id='disclaimerCol'>
+              <Disclaimer/>
+            </Col>
+            </Row>
+            </section>
+            {/* ======FOOTER========== */}
+        <Footer logout={logout}/>
     </div>
   )
 }

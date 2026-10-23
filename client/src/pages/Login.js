@@ -13,6 +13,7 @@ import LoginForm from '../components/LoginForm';
 import { Link } from 'react-router-dom';
 //IMPORT CUSTOM COMPONENTS
 import PageFooter from '../components/PageFooter';
+import Disclaimer from '../components/Disclaimer';
 
 //=======MAIN LOGIN FUNCTION COMPONENT=========
 export default function Login(//Export the default Login function component
@@ -125,6 +126,13 @@ export default function Login(//Export the default Login function component
         <Col id='login-col2'/>
       </Row>
       </section>
+      <section id='disclaimerSection'>
+          <Row id='disclaimerRow'>
+            <Col id='disclaimerCol'>
+              <Disclaimer/>
+            </Col>
+            </Row>
+            </section>
       {/* ==================
       FOOTER: Render the PageFooter.js function component
       ============== */}

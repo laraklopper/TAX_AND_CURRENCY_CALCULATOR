@@ -46,6 +46,16 @@ DISCLAIMER
     display: flex;
     background-color: #C9D6E0;
 }
+#disclaimerRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#disclaimerCol{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 #disclaimerStack{
     display: flex;
     align-items: baseline;

@@ -1,6 +1,8 @@
 import React from 'react'
 import '../css/pagesCss/TaxCalculators.css'
 import '../css/pagesCss/PageSetup.css'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 export default function TaxPage({currentUser, logout}) {
@@ -10,6 +12,11 @@ export default function TaxPage({currentUser, logout}) {
         <section>
             
         </section>
+          <section id='disclaimerSection'>
+          <Row id='disclaimerRow'>
+            <Col id='disclaimerCol'></Col>
+            </Row>
+            </section>
         <Footer logout={logout}/>
     </div>
   )

@@ -150,7 +150,7 @@ export default function Dashboard({currentUser, setCurrentUser, setError, logout
       )}
       <section id='disclaimerSection'>
         <Row id='disclaimerRow'>
-        <Col md={12}>
+        <Col md={12} id='disclaimerCol'>
           <Disclaimer/>
         </Col>
         

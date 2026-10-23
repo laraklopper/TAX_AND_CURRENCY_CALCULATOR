@@ -354,6 +354,11 @@ export default function Profile(
           </div>
         )}     
       </section>
+      <section id='disclaimerSection'>
+          <Row id='disclaimerRow'>
+            <Col id='disclaimerCol'></Col>
+            </Row>
+            </section>
       {/* ======FOOTER=========== */}
       {/* Render the Footer.js component */}
       <Footer logout={logout}/>

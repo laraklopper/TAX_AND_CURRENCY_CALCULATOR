@@ -13,6 +13,7 @@ import { Scale } from 'lucide-react';
 import CurrencyCalculations from '../components/CurrencyCalculations';
 // IMPORT UTILITY FUNCTIONS
 import { EMPTY_CONVERT_FORM, FALLBACK_CURRENCIES } from '../utils/currencyFunc';
+import Disclaimer from '../components/Disclaimer';
 
 // Base URL of the API the converter talks to
 const API_BASE_URL = 'http://localhost:3001';
@@ -350,6 +351,13 @@ submitConvert={submitConvert}
       
 
       </section>
+      <section id='disclaimerSection'>
+          <Row id='disclaimerRow'>
+            <Col id='disclaimerCol'>
+              <Disclaimer/>
+            </Col>
+            </Row>
+            </section>
       <Footer logout={logout}/>
     </div>
   )
