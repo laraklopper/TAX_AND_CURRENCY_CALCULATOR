@@ -1,3 +1,4 @@
+//ProvisionalTaxCalculator.js
 import React, { useEffect, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculatorForms.css'
@@ -48,12 +49,15 @@ import { toLongDate } from '../utils/formatCalculations';
 //   isAuthenticated - boolean, controls whether "Save to history" is shown
 // ---------------------------------------------------------------------------
 
-export default function ProvisionalTaxCalculator({
+//ProvisionalTaxCalculator function Component
+export default function ProvisionalTaxCalculator(
+  {//PROPS PASSED FROM PARENT COMPONENT(TaxCalculators.js)
   taxYears = ["2025-2026"],
   onCalculate,
   onSave,
   isAuthenticated = false,
 }) {
+  //==========STATE VARIABLES=================
   const [form, setForm] = useState({
     ...BLANK_PROV_TAX_FORM,
     taxYear: taxYears[0] ?? "",
@@ -147,6 +151,7 @@ export default function ProvisionalTaxCalculator({
     }
   }
 
+  //==============JSX RENDERING===============
   return (
     <div id="provTaxcalc">
       {status === "error" && (
@@ -465,7 +470,6 @@ export default function ProvisionalTaxCalculator({
             <TrendingUp size={18} className="results__icon" />
             <h2 className="results__title">{result.periodLabel || period.heading}</h2>
           </div>
-
           {/* The date the IRP6 falls due, or nothing where the tax year has no
           dates. The API sends a plain YYYY-MM-DD, which parses as UTC midnight;
           the time is pinned on so it is read as LOCAL midnight instead and the
@@ -588,6 +592,9 @@ export default function ProvisionalTaxCalculator({
           )}
         </div>
       )}
+      <div>
+        <a id='webLink'  href='https://www.sars.gov.za/types-of-tax/provisional-tax/' target='blank'>https://www.sars.gov.za/types-of-tax/provisional-tax/</a>
+      </div>
     </div>
   )
 }
