@@ -13,6 +13,7 @@ import { ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, orPlaceholder } from '../utils
 
 import { Percent } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Disclaimer from '../components/Disclaimer';
 
 export default function Dashboard({currentUser, setCurrentUser, setError, logout}) {
     const userId = currentUser?._id
@@ -147,6 +148,14 @@ export default function Dashboard({currentUser, setCurrentUser, setError, logout
           </Row>
         </section>
       )}
+      <section id='disclaimerSection'>
+        <Row id='disclaimerRow'>
+        <Col md={12}>
+          <Disclaimer/>
+        </Col>
+        
+      </Row>
+      </section>
       <Footer logout={logout}/>
     </div>
   )

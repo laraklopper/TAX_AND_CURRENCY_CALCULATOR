@@ -36,6 +36,13 @@ LAYOUT
   margin: 0px;
   padding: 10px 0px;
 }
+#disclaimerSection{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+
 /* ========================= 
 Accessibility helpers 
  ARIA : Accessible Rich Internet Applications
@@ -52,6 +59,7 @@ Accessibility helpers
   white-space: nowrap;
   border: 0;
 }
+#webLinkDiv,
 .pageLinkDiv{
     display: flex;
     justify-content: center;

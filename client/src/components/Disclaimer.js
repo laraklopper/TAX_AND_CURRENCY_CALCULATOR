@@ -1,20 +1,24 @@
 import React from 'react'
-import Card from 'react-bootstrap/Card';
+import Stack from 'react-bootstrap/Stack';
+import { Link } from 'react-router-dom';
 
 export default function Disclaimer() {
   return (
-    <Card id='disclaimerCard'>
-      <Card.Header id='cardHeading'>
-        DISCLAIMER:
-      </Card.Header>
-      <Card.Body>
-        <Card.Title>Special title treatment</Card.Title>
-        <Card.Text>
-          With supporting text below as a natural lead-in to additional content.
-        </Card.Text>
-        <Card.Link href='https://www.sars.gov.za/' target='blank' className='web-link'>https://www.sars.gov.za/</Card.Link>
-      </Card.Body>
-    </Card>
-
+    <Stack direction="horizontal" gap={3} id='disclaimerStack'>
+      <div className="p-2">
+      <h5 className='paraHeading'>DISCLAIMER:</h5>
+      </div>
+      <div className="p-2" >
+        <span className='textSpan'>
+            <p className='textPara'>This tool is intended as a general estimation aid. It does not 
+            replace professional tax or financial advice. Tax rates should be 
+            reviewed and updated annually following the <strong>SARS</strong> Budget Speech, as figures are subject to change.</p>
+        </span>
+      </div>
+      <div className="vr" />
+      <div className="p-2 ms-auto">
+        <Link href='https://www.sars.gov.za/' target='blank'>https://www.sars.gov.za/</Link>
+      </div>
+    </Stack>
   )
 }
