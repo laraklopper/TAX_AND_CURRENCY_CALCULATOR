@@ -1,3 +1,4 @@
+//TaxCalculatorForm.js
 import React, { useEffect, useState } from "react";
 import { Calculator, RotateCcw, TrendingUp, AlertCircle } from "lucide-react";
 import "../css/componentCss/TaxCalculatorForm.css";
