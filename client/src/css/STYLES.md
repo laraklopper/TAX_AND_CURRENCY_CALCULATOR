@@ -65,6 +65,13 @@ html, #body{
   
   background-color: #8dbdca;
 }
+#disclaimerSection{
+   width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    background-color: #C9D6E0;
+}
 ```
 ### 1.3. NAVIGATION BAR
 ```css
