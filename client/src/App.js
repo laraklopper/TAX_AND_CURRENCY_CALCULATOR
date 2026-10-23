@@ -173,7 +173,12 @@ export default function App() {//Export default App function component
             {/* Route to Home/Dashboard  */}
               <Route exact path='/' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Dashboard currentUser={currentUser} logout={logout}/>
+                  <Dashboard
+                    currentUser={currentUser}
+                    setCurrentUser={setCurrentUser}
+                    setError={setError}
+                    logout={logout}
+                  />
                 </ProtectedUserRoute>
               }/>
               {/* Route to Tax Calculators page */}

@@ -15,24 +15,11 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import EditPasswordForm from '../components/EditPasswordForm';
 import EditUserForm from '../components/EditUserForm';
-import AdminRegisForm from '../components/AdminRegisForm';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { User } from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
-import { ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
+import { buildEditUserPayload, emptyEditUserData, orPlaceholder, toUserDate} from '../utils/userFunc';
 
-
-// Calculate a user's age in years from their date of birth
-const calculateAge = (dateOfBirth) => {
-  const dob = new Date(dateOfBirth);
-  const now = new Date();
-  let age = now.getFullYear() - dob.getFullYear();
-  const m = now.getMonth() - dob.getMonth();
-  if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
-    age--;// Birthday has not happened yet this year
-  }
-  return age;
-}
 // ======MAIN PROFILE FUNCTION COMPONENT
 export default function Profile(
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
@@ -50,11 +37,6 @@ export default function Profile(
   // Inline feedback shown inside the edit user form: {type: 'error' | 'success', text: string}
   const [editUserStatus, setEditUserStatus] = useState(null)
   const [editUserLoading, setEditUserLoading] = useState(false)
-// localStorage key so the form is not displayed again once the user exits it
-  const dismissKey = `adminFormDismissed_${currentUser?._id}`
-  const [adminFormDismissed, setAdminFormDismissed] = useState(
-    () => localStorage.getItem(dismissKey) === 'true'
-  )
   // State to disable the delete admin button while the request is in progress
   const [clearingAdmin, setClearingAdmin] = useState(false)
   /*Destructure the current user's details, defaulting to an empty object so the
@@ -72,19 +54,6 @@ export default function Profile(
     setShowEditPswd(prev => (!prev))
     setShowEditUser(false)//Hide edit user form
   },[])
-
-  /* Function to display/render AdminRegisForm.js if user is not an admin user
-  and matches the age requirement of 21 years and has been a user for 3 months 
-  (1 day during development) */
-  const showAdminForm = Boolean(
-    currentUser &&
-    !currentUser.admin &&
-    !adminFormDismissed &&
-    currentUser.dateOfBirth &&
-    calculateAge(currentUser.dateOfBirth) >= ADMIN_MIN_AGE &&
-    currentUser.createdAt && 
-    Date.now() - new Date(currentUser.createdAt).getTime() >= ADMIN_MIN_ACCOUNT_AGE_MS
-  )
 
   // ======REQUESTS/CALLBACKS===========
   /* Report a validation/request failure in one place: inline message and
@@ -170,7 +139,7 @@ export default function Profile(
       if (!response.ok) throw new Error(data?.message || 'Failed to remove admin status');
       // Save the new token (contains the updated admin claim) and update the current user
       localStorage.setItem('token', data.token)
-      // Do not display AdminRegisForm.js (Home.js) again
+      // Do not display AdminRegisForm.js (Dashboard.js) again
       localStorage.setItem(`adminFormDismissed_${data.user?._id}`, 'true')
       setCurrentUser?.(data.user)
       setError?.(null)
@@ -191,10 +160,6 @@ export default function Profile(
         if (!confirmExit) return;
         changeStatus()
     }
-  const exitAdminForm = useCallback(() => {
-    localStorage.setItem(dismissKey, 'true')
-    setAdminFormDismissed(true)
-  },[dismissKey])
 
 
   //=============JSX RENDERING==========================
@@ -389,27 +354,6 @@ export default function Profile(
           </div>
         )}     
       </section>
-      {/* SECTION 2: TOGGLE ADMIN REGISTRATION FORM
-      Only display form (and section) if user is not an admin user 
-      and matches the age requirement of 21 years and has been a user 
-      for 3 months (1 day during development) */}
-      {showAdminForm && (
-        <section id='profileSection2'>
-        <Row id='adminFormRow'>
-          <Col id='adminFormCol1'/>
-          <Col xs={12} md={10} id='adminFormCol'>
-            <div id='adminFormPanal'>
-              <AdminRegisForm
-                setCurrentUser={setCurrentUser}
-                setError={setError}
-                exitAdminForm={exitAdminForm}
-              />
-            </div>
-          </Col>
-          <Col id='adminFormCol2'/>
-        </Row>
-      </section>
-      ) }
       {/* ======FOOTER=========== */}
       {/* Render the Footer.js component */}
       <Footer logout={logout}/>
