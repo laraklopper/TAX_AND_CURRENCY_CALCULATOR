@@ -53,11 +53,9 @@ SHARED INPUT VALIDATION
 /calculate and /save parse a request in exactly the same way and cannot disagree
 about what was asked for.
 
-The amount is read from `amount` where the request carries one. VatCalculatorForm.js
-sends the RESULT of its own local calculation rather than the raw input, so the
-amount is otherwise recovered from the figure that was the input in that
-direction: the net amount on an exclusive calculation, the gross on an inclusive
-one. Recovering it is what lets /save recompute instead of trusting the totals. */
+VatCalculatorForm.js posts only the raw inputs - { amount, mode, isZeroRated } -
+on submit, never figures it worked out itself, so /save always recomputes from
+what the user typed instead of trusting totals sent from the browser. */
 const parseVatInput = (body = {}) => {
     const mode = typeof body.mode === 'string' ? body.mode.trim().toLowerCase() : body.mode;
     /* A request that names no direction is taken as the commoner of the two: a
@@ -66,16 +64,14 @@ const parseVatInput = (body = {}) => {
     name rather than silently working out something else. */
     const direction = mode === undefined || mode === null || mode === '' ? 'exclusive' : mode;
 
-    /* The figure that was typed. Falls back to whichever of the two amounts is
-    the input for this direction, never to the derived one. */
-    const raw = body.amount ?? (
-        direction === 'inclusive' ? body.grossAmount : body.netAmount
-    );
-
     return {
-        amount: parseFloat(raw),
+        // Only accept numbers or numeric strings; anything else becomes NaN and fails validation
+        amount: typeof body.amount === 'number' || typeof body.amount === 'string'
+            ? Number(body.amount === '' ? NaN : body.amount)
+            : NaN,
         mode: direction,
-        isZeroRated: Boolean(body.isZeroRated),
+        // Strict check so a string like "false" is not read as zero-rated
+        isZeroRated: body.isZeroRated === true || body.isZeroRated === 'true',
     };
 };
 

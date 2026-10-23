@@ -181,12 +181,33 @@ LAYOUT
     margin: 0px;
     padding: 5px;
     gap: 10px;
+        background-color: #A7BCD1;
+}
+.vatResultHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 0px 5px 0px;
+    padding: 10px 0px;
+    height: 40px;
+    background-color: #d1d5db;
+    border-top: #404040 solid 2px;
+    border-bottom: #404040 solid 2px;
+    gap: 10px;
+    font-family: "Fira Sans", sans-serif;
+}
+.results__title {
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #1f2937;
+    margin: 0;
 }
 .vat-calculator_result{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: #FFF;
     border-radius: 3px;
     padding: 5px;
     margin: 0px;
@@ -196,13 +217,18 @@ LAYOUT
     align-items: baseline;
     width: 100%;
     justify-content: space-between;
-    
+    margin: 0px;
+    padding: 0px;
     border-bottom: solid 1px;
 }
-.vat-calculator__result-row span{
+
+.vatResultSpan{
     display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
     align-items: baseline;
-    font-weight: 700;
+    justify-content: space-between;
 }
 #saveToHistoryDiv{
     display: flex;

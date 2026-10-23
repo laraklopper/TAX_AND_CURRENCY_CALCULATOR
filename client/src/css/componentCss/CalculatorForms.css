@@ -48,7 +48,22 @@
 /* ===================
 VAT CALCULATOR: VatCalculatorForm.js
 ===========*/
-
+.taxResultLabel{
+    font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0px;
+    padding: 0px;
+}
+.taxResult{
+     font-family: "Roboto Mono", monospace;
+    font-weight: 700;
+    
+    letter-spacing: 2px;
+    margin: 0px;
+    padding: 0px;
+}
 /* ====INPUT====== */
 /* ==============
 LAYOUT

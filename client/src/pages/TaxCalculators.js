@@ -136,9 +136,9 @@ export default function TaxCalculators({ loggedIn, currentUser, logout}) {
     // Read back on the CALCULATIONS page, which loads its own history
   },[postToApi])
 
-  /* Sends the VAT calculator's inputs to the backend, which applies the
-  SARS standard rate (or 0% for zero-rated items) and works out the VAT
-  portion, net and gross amounts. */
+  /* Sends the VAT calculator's inputs ({ amount, mode, isZeroRated }) to the
+  backend on submit, which applies the SARS standard rate (or 0% for
+  zero-rated items) and works out the VAT portion, net and gross amounts. */
   const calculateVat = useCallback(async (payload) => {
     const data = await postToApi('/vat/calculate', payload, 'Could not calculate VAT. Please try again.');
     return data.result;// The form renders the VAT breakdown from this
