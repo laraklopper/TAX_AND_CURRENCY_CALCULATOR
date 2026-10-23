@@ -41,8 +41,21 @@ LAYOUT
     margin: 0px;
     padding: 0px;
     display: flex;
+    background-color: #C9D6E0;
 }
-
+#disclaimerStack{
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    margin: 0px;
+    padding: 10px 5px 5px;
+}
+#disclaimerHeadBlock{
+    display: flex;
+    justify-content: flex-start;
+    margin: 0px;
+    padding: 0px 5px;
+}
 /* ========================= 
 Accessibility helpers 
  ARIA : Accessible Rich Internet Applications
@@ -67,6 +80,7 @@ Accessibility helpers
     padding: 0px;
 }
 #loginLink,
+#webLink,
 .pageLink{
     display: flex;
     letter-spacing: 2px;
@@ -83,19 +97,31 @@ Accessibility helpers
     border-radius: 5px;
     text-align: center;
 }
+#webLink:hover,
 #loginLink:hover,
 .pageLink:hover{
     color: #C9D6E0;
     background-color: #252e36;
 
 }
+#webLink,
 .pageLink{
         border: solid 2px #323A42;
     color: #252e36;
     background-color: #E8F0F6;
-    width: 230px;
+    width: fit-content;
 }
-
+.textPara{
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    color: #404040;
+    margin: 0px;
+    padding: 0px;
+}
+#headingNote{
+    margin: 0px;
+    padding: 0px;
+}
 /* ===============
 ANIMATIONS
 =============*/
