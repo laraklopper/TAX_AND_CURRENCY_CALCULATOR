@@ -220,15 +220,17 @@ export default function VatCalculator(
       {error && <p className="vat-calculator__error">{error}</p>}     
         </div>
       </div>
-      <Stack gap={3}>
+      <Stack gap={3} id='vatCalculatorBtnStack'>
       <div className="p-2" id='submitCalcDiv'>
          <Button
       type='submit'
       id='calculateVatBtn'
       variant='light'
+      // disabled={}
       // ARIA ATTRIBUTES:
       role='button'
       aria-label='calculateVatBtn'
+      // aria-disabled={}
       >CALCULATE VAT</Button>
       </div>
       <div className="p-2" id='resetCalcDiv'>
@@ -237,15 +239,12 @@ export default function VatCalculator(
         type='button'
         id='resetCalcBtn'
         // onClick={}
+        // ARIA ATTRIBUTES:
         >
         <RotateCcwIcon aria-hidden='true' focusable='false'/>RESET
         </Button>
       </div>
-      <div className="p-2">Third item</div>
     </Stack>
-    <div >
-     
-    </div>
     </form>
     <div id='vatCalcResultsDiv'>
   {result && (

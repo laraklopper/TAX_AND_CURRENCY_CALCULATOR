@@ -143,6 +143,13 @@ LAYOUT
     margin: 0px;
     padding: 0px;
 }
+#vatCalculatorBtnStack{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
 /* ===============
  BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons 
  =================*/
