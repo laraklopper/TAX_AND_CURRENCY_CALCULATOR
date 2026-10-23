@@ -2,7 +2,7 @@ import React from 'react'
 import Stack from 'react-bootstrap/Stack';
 import { Link } from 'react-router-dom';
 
-export default function Disclaimer() {
+export default function Disclaimer({loggedIn}) {
   return (
     <Stack gap={3} id='disclaimerStack'>
       <div id='disclaimerTextBlock'>
@@ -15,10 +15,13 @@ export default function Disclaimer() {
             reviewed and updated annually following the <strong>SARS</strong> Budget Speech, as figures are subject to change.</p>
         </span>
       </div>
-      <div className="p-2" id='sarsWebLinkBlock'>
+      {/* ONLY SHOW THE LINK BLOCK IF loggedIn === true*/}
+      {loggedIn && (
+         <div className="p-2" id='sarsWebLinkBlock'>
         <label className='webLinkLabel'>VISIT SARS:</label>
         <Link id='webLink' href='https://www.sars.gov.za/' target='blank'>https://www.sars.gov.za/</Link>
       </div>
+      )}
     </Stack>
   )
 }
