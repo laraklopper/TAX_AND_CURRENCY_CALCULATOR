@@ -12,7 +12,11 @@ SECTION 1: TAX DATA + TAX CONCEPTS DETAILS
     background-color: #4da6ff;
 }
 
-
+#pageLinksBlock{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 /*=========
  LAYOUT
  =========== */

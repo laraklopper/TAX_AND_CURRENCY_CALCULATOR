@@ -52,8 +52,14 @@ Accessibility helpers
   white-space: nowrap;
   border: 0;
 }
-
-#loginLink{
+.pageLinkDiv{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#loginLink,
+.pageLink{
     display: flex;
     letter-spacing: 2px;
     align-items: center;
@@ -69,11 +75,19 @@ Accessibility helpers
     border-radius: 5px;
     text-align: center;
 }
-#loginLink:hover{
+#loginLink:hover,
+.pageLink:hover{
     color: #C9D6E0;
     background-color: #252e36;
 
 }
+.pageLink{
+        border: solid 2px #323A42;
+    color: #252e36;
+    background-color: #E8F0F6;
+    width: 230px;
+}
+
 /* ===============
 ANIMATIONS
 =============*/
