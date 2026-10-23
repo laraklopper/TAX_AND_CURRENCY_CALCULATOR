@@ -5,38 +5,44 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import { NavLink } from 'react-router-dom';
-export default function Header({currentUser, pageHeader}) {
+export default function Header(
+    {//PROPS PASSED FROM PARENT COMPONENT(Dashbord.js , Profile.js, Tax Calculations.js, )
+        currentUser, 
+        //PROPS PASSED TO PARENT COMPONENT 
+        pageHeader}) {
   return (
-    <header id='header'>
+    <header id='header' role='banner'>
         <Row id='headerRow1'>
-            <Col></Col>
+            <Col/>
         </Row>
         <Row id='headerRow2'>
             <Col/>
         <Col xs={5} id='header-col'>
             <span className='headerSpan'>
+            {/* Application Heading */}
                 <h1 id='appHeading'>TAX, CURRENCY & INTEREST CALCULATOR</h1>
             </span>
             <span className='headerSpan'>
+            {/* Page Heading */}
             <h2 id='page-heading'>{pageHeader}</h2>
-
             </span>
         </Col>
         <Col/>
         </Row>
         <Row id='headerNavRow'>
             <Col md={12} xs={12} id='navCol'>
-                <nav id='navigation'>
+            <nav id='navigation'>
                 <ul id='navbar' gap={2} >
-                    <Stack gap={3} className="col-md-5 mx-auto">
+                {/* NAVIGATION BAR STACK */}
+                    <Stack gap={3} id='navBarStack' className="col-md-5 mx-auto">
                     <div className="p-2" id='navbar-block1'>
-                    {/* Link to dashBoard(Home Page) */}
+                    {/* Link to DASHBOARD(Home) Page */}
                         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/' className='refLink'>DASHBOARD</NavLink>
                             </li> 
                         )}
-                        {/* Link To Profile Page*/}
+                        {/* Link To PROFILE Page*/}
                         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/profile' className='refLink'>PROFILE</NavLink>
@@ -57,7 +63,7 @@ export default function Header({currentUser, pageHeader}) {
                                 <NavLink to='/taxCalculators' className='refLink'>TAX CALCULATORS</NavLink>
                             </li>
                         )}
-                        {/* Link to currency Converter Page */}
+                        {/* Link to CURRENCY CONVERTER Page */}
                         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/currencyConverter' className='refLink'>CURRENCY CONVERTER</NavLink>
