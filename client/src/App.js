@@ -228,7 +228,7 @@ export default function App() {//Export default App function component
               {/* Route to Tax Data page */}
               <Route path='/taxData' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <TaxPage currentUser={currentUser} logout={logout}/>
+                  <TaxPage currentUser={currentUser} logout={logout} loggedIn={loggedIn}/>
                 </ProtectedUserRoute>
               }/>
               {/* ADMIN ONLY: Route to Tax Data Configuration page */}

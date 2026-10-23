@@ -6,12 +6,19 @@ import Col from 'react-bootstrap/Col';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Disclaimer from '../components/Disclaimer';
+import TaxDataDisplay from '../components/TaxDataDisplay';
 export default function TaxPage({currentUser, logout, loggedIn}) {
   return (
     <div id='pageContainer'>
         <Header pageHeader={'TAX'} currentUser={currentUser}/>
-        <section>
-            
+        <section id='taxDataSec1'>
+            <Row id='taxDataRow'>
+              <Col id='taxDataCol'>
+                <div id='taxDataPanal'>
+                  <TaxDataDisplay/>
+                </div>
+              </Col>
+            </Row>
         </section>
           <section id='disclaimerSection'>
           <Row id='disclaimerRow'>
