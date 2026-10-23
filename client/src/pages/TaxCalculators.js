@@ -26,7 +26,7 @@ import ProvisionalTaxCalculator from '../components/ProvisionalTaxCalculatorForm
 const API_BASE_URL = 'http://localhost:3001';
 
 // ======MAIN CALCULATORS COMPONENT====================
-export default function Calculators({currentUser, logout}) {
+export default function TaxCalculators({currentUser, logout}) {
   // ==========STATE VARIABLES================
   const [showTaxCalc, setShowTaxCalc] = useState(false)
   const [showIntCalc, setShowIntCalc] = useState(false)
