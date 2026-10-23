@@ -27,6 +27,7 @@ export default function Users(
   return (
     <div id='pageContainer'>
       <Header pageHeader='USERS' currentUser={currentUser}/>
+       {/*===============EVENT/ANIMATION============================ */}
       <Row id='event-row'>
         <Col id='event-col'>
           <div className='event-bar'>
