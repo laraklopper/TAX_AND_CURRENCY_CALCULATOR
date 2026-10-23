@@ -82,7 +82,7 @@ export default function Dashboard({currentUser, setCurrentUser, setError, logout
         </span>
       </div>
     </Stack>
-   <Stack direction="horizontal" gap={3}>
+   <Stack  gap={3}>
       <div className="p-2">
         <span className='paraSpan'>
         <p className='dashboardPara'>  
