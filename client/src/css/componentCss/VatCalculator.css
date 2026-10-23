@@ -1,7 +1,15 @@
 /* ===================
 //VAT CALCULATOR: VatCalculatorForm.js
 ===========*/
-#vat-calculator-form{
+#vatCalculatorDiv{
+        margin: 0px;
+    padding: 10px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+#vatCalculatorForm{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +21,15 @@
     gap: 10px;
     width: 500px;
 }
-.vat-calculator-label{
+#vatCalculatorInput{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 80%;
+}
+.vatCalcLabel{
     display: flex;
     margin: 0px;
     padding: 0px;
@@ -21,6 +37,11 @@
     font-weight: 700;
     color: #000;
     text-transform: uppercase;
+}
+.calcInputDiv{
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 /* LAYOUT */
 #vatCalcHeadingBlock{
@@ -31,6 +52,10 @@
     padding: 0px;
 }
 /* ====INPUT====== */
+.vatCalculatorCheckbox{
+    margin: 0px;
+    padding: 0px;
+}
 /* ==============
 LAYOUT
 ==============*/
@@ -127,4 +152,54 @@ LAYOUT
      letter-spacing: 1px;
      border: #323A42 solid 2px;
     color: #000;
+}
+#vatCalcResultsDiv{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    gap: 10px;
+}
+.vat-calculator_result{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #FFF;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 0px;
+}
+.vat-calculator__result-row{
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    justify-content: space-between;
+    
+    border-bottom: solid 1px;
+}
+.vat-calculator__result-row span{
+    display: flex;
+    align-items: baseline;
+    font-weight: 700;
+}
+#saveToHistoryDiv{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 5px 0px;
+}
+#calculateVatBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    width: 180px;
+    height: 40px;
+    font-family: "Courier Prime", monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: #323A42 solid 2px;
+    color: #000;
+    
 }

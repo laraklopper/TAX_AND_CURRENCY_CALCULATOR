@@ -735,6 +735,26 @@ export const toVatRate = (calculation) => {
     return `${calculation.ratePercent.toLocaleString('en-ZA', { maximumFractionDigits: 2 })}%`
 }
 
+// SARS standard VAT rate. Centralised here so a future rate change
+// (as nearly happened for 2025/2026) only needs updating in one place.
+export const SARS_VAT_RATE = 0.15;
+
+export const ZERO_RATED_CATEGORIES = [
+  'Brown bread',
+  'Maize meal',
+  'Rice',
+  'Vegetables',
+  'Fruit',
+  'Milk',
+  'Eggs',
+  'Vegetable oil',
+  'Dried beans',
+  'Lentils',
+  'Paraffin',
+  'Brown wheaten meal',
+  'Pilchards/sardinella in tins',
+];
+
 //===========================================================================
 // BASIC CALCULATOR (NumberCalculator.js)
 //===========================================================================
