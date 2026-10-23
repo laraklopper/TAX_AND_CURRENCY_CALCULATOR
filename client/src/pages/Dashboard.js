@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import '../css/pagesCss/PageSetup.css'
 import '../css/pagesCss/Dashboard.css'
+import '../css/componentCss/DetailsPanal.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
@@ -8,17 +9,25 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import AdminRegisForm from '../components/AdminRegisForm';
 import { calculateAge } from '../utils/timeFunctions';
-import { ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE } from '../utils/userFunc';
+import { ADMIN_MIN_ACCOUNT_AGE_MS, ADMIN_MIN_AGE, orPlaceholder } from '../utils/userFunc';
 
 import { Percent } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard({currentUser, setCurrentUser, setError, logout}) {
-    const dismissKey = `adminFormDismissed_${currentUser?._id}`
-    const [adminFormDismissed, setAdminFormDismissed] = useState(
-      () => localStorage.getItem(dismissKey) === 'true'
+    const userId = currentUser?._id
+    const dismissKey = `adminFormDismissed_${userId}`
+    // Id of the user who closed the form during this visit (re-renders the page)
+    const [dismissedForId, setDismissedForId] = useState(null)
+    /* Read localStorage on every render rather than once on mount, so the saved
+    choice is picked up once the user's details have loaded */
+    const adminFormDismissed = Boolean(userId) && (
+      dismissedForId === userId ||
+      localStorage.getItem(dismissKey) === 'true'
     )
-  const { fullName} = currentUser || {}
+  const { fullName, admin } = currentUser || {}
+  // Join the first and last name, skipping any part that is missing
+  const displayName = [fullName?.firstName, fullName?.lastName].filter(Boolean).join(' ')
 
     /* Function to display/render AdminRegisForm.js if user is not an admin user
     and matches the age requirement of 21 years and has been a user for 3 months 
@@ -36,8 +45,8 @@ export default function Dashboard({currentUser, setCurrentUser, setError, logout
   // Hide the form and remember the choice so it is not displayed again
   const exitAdminForm = useCallback(() => {
     localStorage.setItem(dismissKey, 'true')
-    setAdminFormDismissed(true)
-  },[dismissKey])
+    setDismissedForId(userId)
+  },[dismissKey, userId])
   return (
     <div id='pageContainer' role='main'>
       <Header currentUser={currentUser} pageHeader={'DASHBOARD'}/>
@@ -57,21 +66,20 @@ export default function Dashboard({currentUser, setCurrentUser, setError, logout
                
               <Stack direction="horizontal" gap={3}>
       <div className='p-2'>
-        <span>
-        <label>SIGNED IN AS:</label>
-        <p>{fullName?.firstName} {fullName?.lastName}</p>
-        <p></p>
-      </span>
+        {/* User's full name */}
+        <span className='details-group'>
+          <p className='details-label'>SIGNED IN AS:</p>
+          <p className='details-value'>{orPlaceholder(displayName)}</p>
+        </span>
       </div>
       <div className="p-2 ms-auto"></div>
       <div className="vr" />
       <div className="p-2">
       {/* state whether the user is signed in as Admin or user */}
-      <span>
-        <label>SIGNED IN AS</label>
-        <p>{/*ADMIN/USER*/}</p>
-
-      </span>
+        <span className='details-group'>
+          <p className='details-label'>ACCOUNT TYPE:</p>
+          <p className='details-value'>{admin ? 'ADMIN' : 'USER'}</p>
+        </span>
       </div>
     </Stack>
    <Stack direction="horizontal" gap={3}>
