@@ -26,52 +26,61 @@ export default function Header({currentUser, pageHeader}) {
         </Row>
         <Row id='headerNavRow'>
             <Col md={12} xs={12} id='navCol'>
-          
                 <nav id='navigation'>
-                    <ul id='navbar' gap={2} >
+                <ul id='navbar' gap={2} >
                     <Stack gap={3} className="col-md-5 mx-auto">
-      <div className="p-2" id='navbar-block1'>
-      {/* Link to dashBoard */}
-        {currentUser && (
+                    <div className="p-2" id='navbar-block1'>
+                    {/* Link to dashBoard(Home Page) */}
+                        {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/' className='refLink'>DASHBOARD</NavLink>
                             </li> 
                         )}
-                        {/* Link TO calculators */}
+                        {/* Link To Profile Page*/}
                         {currentUser && (
-                            <li className='linkItem'>
-                                <NavLink to='/calculators' className='refLink'>CALCULATORS</NavLink>
-                            </li>
-                        )}
-
-                        {currentUser && (
-                            <li className='linkItem'>
-                                <NavLink to='/currencyConverter' className='refLink'>CURRENCY CONVERTER</NavLink>
-                            </li>
-                        )}
-      </div>
-      <div className="p-2" id='navbar-block2'>
-      {currentUser && (
-        <li>
-            <NavLink className='refLink' to='/calculations'>CALCULATIONS</NavLink>
-        </li>
-      )}
-  {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/profile' className='refLink'>PROFILE</NavLink>
                             </li>
                         )}
-      </div>
-      {/* ADMIN ONLY ROUTES */}
-      <div className="p-2" id='navbar-block3'>
-       
-                        {currentUser.admin && (
-                            <li>
-                                <NavLink to='/taxes' className='refLink'>TAX DATA</NavLink>
+                        {/* Link to TaxData page */}
+                        {currentUser && (
+                            <li className='linkItem'>
+                                <NavLink to='/taxData' className='refLink'>TAX DATA</NavLink>
                             </li>
                         )}
+                    </div>
+                    {/* NAVBAR BLOCK 2: TaxCalculators + Currency Converter + Calculations */}
+                    <div className="p-2" id='navbar-block2'>
+                        {/* Link TO TAX CALCULATORS Page */}
+                        {currentUser && (
+                            <li className='linkItem'>
+                                <NavLink to='/calculators' className='refLink'>TAX CALCULATORS</NavLink>
+                            </li>
+                        )}
+                        {/* Link to currency Converter Page */}
+                        {currentUser && (
+                            <li className='linkItem'>
+                                <NavLink to='/currencyConverter' className='refLink'>CURRENCY CONVERTER</NavLink>
+                            </li>
+                        )} 
+                        {/* Link to TAX CALCULATIONS Page */}
+                        {currentUser && (
+                            <li className='linkItem'>
+                                <NavLink className='refLink' to='/calculations'>CALCULATIONS</NavLink>
+                            </li>
+                        )}
+                        </div>
+                        {/* NAVBAR BLOCK 2 (ADMIN ONLY ROUTES): Tax Data Configuration page + Users Page */}
+                        <div className="p-2" id='navbar-block3'>
+                        {/* Link to TAX DATA CONFIGURATION page */}
                         {currentUser.admin && (
-                            <li>
+                            <li className='linkItem' id='taxConfigLink'>
+                                <NavLink to='/taxes' className='refLink'>TAX DATA CONFIGURATION</NavLink>
+                            </li>
+                        )}
+                        {/* Link to TAX DATA CONFIGURATION page */}
+                        {currentUser.admin && (
+                            <li className='linkItem'>
                                 <NavLink to='/users' className='refLink'>USERS</NavLink>
                             </li>
                         )}
