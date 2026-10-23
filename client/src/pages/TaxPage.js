@@ -18,8 +18,11 @@ export default function TaxPage(
 
     //==========JSX RENDERING=====================
   return (
-    <div id='pageContainer' aria-labelledby='pageTitle'>
+    <div id='pageContainer' aria-labelledby='pageTitle' role='main'>
+    {/* ----------Screen Reader Header------------ */}
     <p className='visually-hidden' id='pageTitle'>TAX INFORMATION PAGE</p>
+    {/* ========HEADER=========== */}
+    {/* Render the Header Component with 'TAX DATA' as the pageHeader */}
         <Header pageHeader={'TAX DATA'} currentUser={currentUser}/>
         <section id='taxDataSec1'>
             <Row id='taxDataRow'>
