@@ -33,7 +33,7 @@ export default function Header(
                 <nav id='navigation'>
                     <ul id='navbar' gap={2}>
                     {/* NAVIGATION BAR STACK */}
-                        <Stack gap={3} id='navBarStack' className="col-md-5 mx-auto">
+                        <Stack gap={3} id='navBarStack' >
                             {/* NAVBAR BLOCK 1: Dashboard + Profile + Tax Data */}
                             {currentUser && (
                                 <div className="p-2" id='navbar-block1'>
@@ -72,8 +72,8 @@ export default function Header(
                             {currentUser?.admin && (
                                 <div className="p-2" id='navbar-block3'>
                                     {/* Link to TAX DATA CONFIGURATION Page */}
-                                    <li className='linkItem' id='taxConfigLink'>
-                                        <NavLink to='/taxConfig' className='refLink'>TAX DATA CONFIGURATION</NavLink>
+                                    <li className='linkItem'>
+                                        <NavLink to='/taxConfig' id='taxConfigLink'>TAX DATA CONFIGURATION</NavLink>
                                     </li>
                                     {/* Link to USERS Page */}
                                     <li className='linkItem'>
