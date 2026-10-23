@@ -178,13 +178,18 @@ export default function App() {//Export default App function component
                     setCurrentUser={setCurrentUser}
                     setError={setError}
                     logout={logout}
+                    loggedIn={loggedIn}
                   />
                 </ProtectedUserRoute>
               }/>
               {/* Route to Tax Calculators page */}
               <Route path='/taxCalculators' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <TaxCalculators currentUser={currentUser} logout={logout}/>
+                  <TaxCalculators 
+                    currentUser={currentUser} 
+                    logout={logout} 
+                    loggedIn={loggedIn}
+                    />
                 </ProtectedUserRoute>
               }/>
               <Route path='/currencyConverter' element={
@@ -195,7 +200,6 @@ export default function App() {//Export default App function component
                     setError={setError}
                     logout={logout}
                     loggedIn={loggedIn}
-        
                     />
                 </ProtectedUserRoute>
               }/>
@@ -204,6 +208,7 @@ export default function App() {//Export default App function component
                   <Calculations
                     currentUser={currentUser}
                     logout={logout}
+                    loggedIn={loggedIn}
                   />
                 </ProtectedUserRoute>
               }/>
@@ -216,6 +221,7 @@ export default function App() {//Export default App function component
                     setUsers={setUsers}
                     setError={setError}
                     logout={logout}
+                    loggedIn={loggedIn}
                   />
                 </ProtectedUserRoute>
               }/>
