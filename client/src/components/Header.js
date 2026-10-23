@@ -54,7 +54,7 @@ export default function Header({currentUser, pageHeader}) {
                         {/* Link TO TAX CALCULATORS Page */}
                         {currentUser && (
                             <li className='linkItem'>
-                                <NavLink to='/calculators' className='refLink'>TAX CALCULATORS</NavLink>
+                                <NavLink to='/taxCalculators' className='refLink'>TAX CALCULATORS</NavLink>
                             </li>
                         )}
                         {/* Link to currency Converter Page */}
@@ -66,7 +66,7 @@ export default function Header({currentUser, pageHeader}) {
                         {/* Link to TAX CALCULATIONS Page */}
                         {currentUser && (
                             <li className='linkItem'>
-                                <NavLink className='refLink' to='/calculations'>CALCULATIONS</NavLink>
+                                <NavLink className='refLink' to='/calculations'>TAX CALCULATIONS</NavLink>
                             </li>
                         )}
                         </div>
@@ -75,7 +75,7 @@ export default function Header({currentUser, pageHeader}) {
                         {/* Link to TAX DATA CONFIGURATION page */}
                         {currentUser.admin && (
                             <li className='linkItem' id='taxConfigLink'>
-                                <NavLink to='/taxes' className='refLink'>TAX DATA CONFIGURATION</NavLink>
+                                <NavLink to='/taxConfig' className='refLink'>TAX DATA CONFIGURATION</NavLink>
                             </li>
                         )}
                         {/* Link to TAX DATA CONFIGURATION page */}
@@ -84,8 +84,7 @@ export default function Header({currentUser, pageHeader}) {
                                 <NavLink to='/users' className='refLink'>USERS</NavLink>
                             </li>
                         )}
-      </div>
-    
+                    </div>
     </Stack>
                         
                        

@@ -1,4 +1,4 @@
-// TaxData.js
+// TaxDataConfig.js
 import React, { useCallback, useEffect, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/pagesCss/PageSetup.css'
@@ -19,7 +19,7 @@ import { HandCoins } from 'lucide-react';
 const API_BASE_URL = 'http://localhost:3001';
 
 //============MAIN TAXDATA COMPONENT=============
-export default function TaxData(//Export default TaxData.js component
+export default function TaxDataConfig(//Export default TaxDataConfig.js component
   {//PROPS PASSED FROM PARENT COMPONENT (App.js)
     currentUser, 
     logout
