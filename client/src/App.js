@@ -19,17 +19,19 @@ import ForgotPassword from './pages/ForgotPassword'
 import PasswordReset from './pages/PasswordReset'
 // LOGGED IN PAGES
 import Dashboard from './pages/Dashboard'
-import Calculators from './pages/Calculators';
+import TaxCalculators from './pages/TaxCalculators';
 import CurrencyConverter from './pages/CurrencyConverter'
+import Calculations from './pages/Calculations';
 import Profile from './pages/Profile'
-import TaxData from './pages/TaxData';
+import TaxPage from './pages/TaxPage';
+// ADMIN ONLY PAGES
+import TaxDataConfig from './pages/TaxDataConfig';
 import Users from './pages/Users'
 // PROTECTED ROUTES
 import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { Bug, GlobeOff } from 'lucide-react';
-import Calculations from './pages/Calculations';
 
 // MAIN APP FUNCTION COMPONENT
 export default function App() {//Export default App function component
@@ -174,9 +176,10 @@ export default function App() {//Export default App function component
                   <Dashboard currentUser={currentUser} logout={logout}/>
                 </ProtectedUserRoute>
               }/>
-              <Route path='/calculators' element={
+              {/* Route to Tax Calculators page */}
+              <Route path='/taxCalculators' element={
                 <ProtectedUserRoute currentUser={currentUser}>
-                  <Calculators currentUser={currentUser} logout={logout}/>
+                  <TaxCalculators currentUser={currentUser} logout={logout}/>
                 </ProtectedUserRoute>
               }/>
               <Route path='/currencyConverter' element={
@@ -211,9 +214,16 @@ export default function App() {//Export default App function component
                   />
                 </ProtectedUserRoute>
               }/>
-              <Route path='/taxes' element={
+              {/* Route to Tax Data page */}
+              <Route path='/taxData' element={
+                <ProtectedUserRoute currentUser={currentUser}>
+                  <TaxPage currentUser={currentUser} logout={logout}/>
+                </ProtectedUserRoute>
+              }/>
+              {/* ADMIN ONLY: Route to Tax Data Configuration page */}
+              <Route path='/taxConfig' element={
                 <ProtectedAdminRoute currentUser={currentUser}>
-                <TaxData users={users} currentUser={currentUser} logout={logout}/>
+                  <TaxDataConfig currentUser={currentUser} logout={logout}/>
                 </ProtectedAdminRoute>
               }/>
               <Route path='/users' element={
