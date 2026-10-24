@@ -165,25 +165,25 @@ export default function InterestCalculatorForm({
   const breakdownHeading = result?.periodUnit === "months" ? "Month" : "Year";
 
   return (
-    <div className="interest-calculator">
-
-      <form id='interest-calculator-form' onSubmit={handleSubmit} noValidate>
-         <div id="taxFormHeadingBlock">
-        <h1 id="taxFormHeading">Interest Calculator</h1>
-        <span className='form-text-span'>
-          <p className="form-text">
-            Calculate how much interest you'll earn or owe over time, using
-            simple or compound interest.
-        </p>
-        </span>
-      </div>
+    <div id="interestCalculatorDiv">
       {status === "error" && (
         <div className="alert alert--error">
           <AlertCircle size={16} color='#C22419' className="alert__icon" />
           {statusMessage}
         </div>
       )}
-        <div id='interest-calculator-details-input'>
+      <form id='interestCalculator' onSubmit={handleSubmit} noValidate>
+         <div id="taxFormHeadingBlock">
+        <h1 id="taxFormHeading">Interest Calculator</h1>
+        <span className='form-text-span'>
+          <p className="calcText">
+            Calculate how much interest you'll earn or owe over time, using
+            simple or compound interest.
+        </p>
+        </span>
+      </div>
+        {/* INTEREST CALCULATOR INPUT */}
+        <div id='intCalcInput'>
         {/* --- GROUP 1 Interest type toggle --- */}
         <div id="intCalcGroup1">
         {/* STACK 1 */}
@@ -214,13 +214,19 @@ export default function InterestCalculatorForm({
             </div> 
           </div>
           <div className="p-2" id='calcTextDiv'>
-            <p className='intCalcText'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
-            <p className='intCalcText'>Compound interest is calculated on the principal (original) amount and also on the added interest of previous periods.</p>
+          {form.type === 'simple' && (
+<p className='intCalcText'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
+          )}
+            {form.type === "compound" && (
+                      <p className='intCalcText'>Compound interest is calculated on the principal (original) amount and also on the added interest of previous periods.</p>
+
+            )}
+    
           </div>
         </Stack>
         </div>
         {/* GROUP 2 */}
-        <div id="field-group2">
+        <div id="intCalcGroup2">
         {/* STACK 2 */}
         <Stack gap={3} id='interestForm-Stack2'>
        <div className="p-2" id='principalAmountBlock'>
@@ -244,7 +250,7 @@ export default function InterestCalculatorForm({
       </div>
       {/* TIME PERIOD TOGGLE: calculate over annual or monthly periods */}
       <div className="p-2" id='interestTimeBlock'>
-        <label className='field-label' id='time-period-label'>TIME PERIOD:</label>
+        <label className='taxCalcLabel' id='time-period-label'>TIME PERIOD:</label>
         <div id='buttons-div' role='group' aria-label='Time period'>
           {PERIOD_UNITS.map((p) => (
             <Button
@@ -271,7 +277,7 @@ export default function InterestCalculatorForm({
       </div>
       {/* ANNUAL INTEREST RATE */}
       <div className="p-2" id='annualInterestBlock'>
-      <label className="field-label">Annual interest rate (%)</label>
+      <label className="taxCalcLabel">Annual interest rate </label>
         <div className="input-div">
             <input
               type="number"
@@ -283,6 +289,7 @@ export default function InterestCalculatorForm({
               value={form.rate}
               onChange={(e) => updateField("rate", e.target.value)}
             />
+            <p className='calcText' style={{fontWeight: '700', fontSize: '16px'}}>%</p>
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.rate && <p className="field-error">{errors.rate}</p>}
           </div>
@@ -316,16 +323,20 @@ export default function InterestCalculatorForm({
     </Stack>
      </div>
      {/* GROUP 3: Compounding Frequency + Optional recurring monthly contribution */}
-    <div id='field-group3'>
+    <div id="intCalcGroup3">
+    {/* ---------Screen Reader Header-------------- */}
+    <p className='visually-hidden' id='group3Title'>Optional interest input and hidden fullName readonly input</p>
          <Stack gap={3} id='interestForm-Stack3'>
-      <div className="p-2" id='compounding-freq-block'>
+      <div className="p-2" id='compoundingFreqBlock'>
       {/* COMPOUNDING FREQUENCY */}
-        <div className='input-div'>
+        <div className='intCalcInputDiv'>
  {form.type === "compound" && (
-            <div className="input-div">
-              <label className="field-label">Compounding frequency</label>
+            <div id='compoundingFreqDiv'>
+              <label className="taxCalcLabel" htmlFor='compoundingFreqSelect'>Compounding frequency</label>
+              <div id='intCompFerqinpDiv'>
               <select
               className='input'
+              id='compoundingFreqSelect'
                 value={form.compoundingFrequency}
                 onChange={(e) => updateField("compoundingFrequency", e.target.value)}
               >
@@ -335,15 +346,21 @@ export default function InterestCalculatorForm({
                   </option>
                 ))}
               </select>
+              </div>
             </div>
           )}
         </div>
       </div>
-      <div className="p-2" id='opt-controbution-block'>
-        <div className="input-div">
-        <label className="field-label">Optional recurring monthly contribution (R)</label>
+      {/* OPTIONAL CONTRIBUTION */}
+      <div className="p-2" id='optCntrobutionBlock'>
+      <label className="taxCalcLabel" htmlFor='optMonthlyContText' style={{textAlign: 'center'}}>
+          Optional recurring<br/> monthly contribution
+      </label>
+        <div className="intCalcInputDiv">
+        <p className='calcText' style={{fontWeight: '700'}}>R</p>
             <input
               type="number"
+              id='optMonthlyContText'
               min="0"
               step="0.01"
               placeholder="0"
@@ -361,10 +378,11 @@ export default function InterestCalculatorForm({
       {/* Filled from the logged in user and read only: the name is taken from
       the user's profile, never typed, so it cannot be edited into someone
       else's before a calculation is saved under it. */}
-      <div className='p-2' id='user-fullname-input' hidden>
-      <label className='field-label'>FULL NAME:</label>
-        <div className='input-div'>
-          <label className='field-label' htmlFor='interest-firstName'>FIRST NAME</label>
+      <div className='p-2' id='intFullnameInpBlock' hidden>
+      <label className='taxCalcLabel'>FULL NAME:</label>
+      <div id='intFullNameDiv'>
+<div className='intCalcInputDiv'>
+          <label className='taxCalcLabel' htmlFor='interest-firstName'>FIRST NAME</label>
           <input
             className='input'
             readOnly
@@ -378,8 +396,8 @@ export default function InterestCalculatorForm({
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
         </div>
-        <div className='input-div'>
-          <label className='field-label' htmlFor='interest-lastName'>LAST NAME:</label>
+        <div className='intFullNameDiv'>
+          <label className='taxCalcLabel' htmlFor='interest-lastName'>LAST NAME:</label>
           <input
             className='input'
               readOnly
@@ -394,16 +412,19 @@ export default function InterestCalculatorForm({
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
+      </div>
        </Stack>
     </div>
-        </div>
-        <div className="form-actions">
-        <Stack gap={2} className="col-md-5 mx-auto" id='interestform-btn-stack'>
-        <div className="p-2" id='requiredInfo'>
+      <div id='intCalcRequiredInfo'>
               <p className='infoText' aria-live='polite' aria-hidden='true'>
                   <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
               </p>
         </div>
+        </div>
+        {/* END OF INPUT */}
+        <div className="intCalcActions">
+        <Stack gap={2} className="col-md-5 mx-auto" id='interestformBtnStack'>
+      
        <Button
           variant='light'
             type="submit"
@@ -418,13 +439,11 @@ export default function InterestCalculatorForm({
             {status === "calculating" ? "Calculating..." : "Calculate"}
           </Button>
           <Button variant='danger' type="button" onClick={resetForm} id='clearFormBtn'>
-            <RotateCcw size={16} /> Reset
+            <RotateCcw size={16} aria-hidden='true' focusable='false'/> Reset
           </Button>
     </Stack>
-
         </div>
       </form>
-
       {/* --- Results --- */}
       {result && (
         <div className="results">

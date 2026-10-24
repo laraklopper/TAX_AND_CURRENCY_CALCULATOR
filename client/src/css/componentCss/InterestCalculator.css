@@ -18,11 +18,10 @@
     padding: 0px;
     font-weight: 600;
     font-family: "Open Sans", sans-serif;
-    
     letter-spacing: 2px;
     font-size: 14px;
 }
-.interest-calculator {
+#interestCalculatorDiv{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,7 +32,7 @@
       width: 100%;
       gap: 10px;
 }
-#interest-calculator-form{
+#interestCalculator{
       gap: 10px;
     display: flex;
     flex-direction: column;
@@ -46,7 +45,7 @@
 /* ==============
 LAYOUT
 ===========*/
-#interest-calculator-details-input{
+#intCalcInput{
   display: flex;
   flex-direction: column;
   background-color: #BFBFBF;
@@ -161,11 +160,11 @@ LAYOUT
 }
 
 /* GROUP 2 */
-#field-group2{
+#intCalcGroup2{
     display: flex;
     margin: 0px;
     padding: 10px;
-    /* border: solid #323A42 2px; */
+    border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
 }
@@ -187,11 +186,11 @@ LAYOUT
   padding: 0px;
 }
 /* GROUP 3 */
-#field-group3{
+#intCalcGroup3{
   display: flex;
   margin: 0px;
   padding: 10px;
-  /* border: solid #323A42 2px; */
+  border: solid #323A42 2px;
     background: #D6D6D6;
     border-radius: 8px;
 }
@@ -202,13 +201,43 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
-#user-fullname-input{
+#compoundingFreqBlock,
+#optCntrobutionBlock,
+#intFullnameInpBlock{
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+  gap: 5px;
+}
+.intCalcInputDiv{
+      width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+    justify-content: center;
+}
+#intCompFerqinpDiv{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+  gap: 5px;
+}
+#intFullNameDiv{
+  display: flex;
+  justify-content: center;
   align-items: baseline;
   gap: 10px;
+  margin: 0px;
+  padding: 0px;
 }
 /* --- Form actions --- */
-.form-actions {
+#intCalcActions {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -225,16 +254,20 @@ LAYOUT
   margin: 0px;
   padding: 10px;
 }
-/* TEXT */
-.field-label {
-  font-family: "Fira Sans", sans-serif;
-  font-weight: 700;
+#intFullNameBlock{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0px;
-  letter-spacing: 1px;
   padding: 0px;
-  color: #000;
-  text-transform: uppercase;
 }
+#intFullNameDiv{
+display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+/* TEXT */
+
 /* ------
 ALERTS
 ---------*/
@@ -290,11 +323,13 @@ ALERTS
   opacity: 0.6;
   cursor: not-allowed;
 }
-#interestform-btn-stack{
+#interestformBtnStack{
   display: flex;
   flex-direction: column;
   gap: 5px;
   align-items: center;
+  margin: 0px;
+  padding: 0px;
 }
 .button--primary:hover:not(:disabled) {
   background-color: #1d4ed8;
@@ -487,4 +522,13 @@ ALERTS
 .save-error {
   font-size: 0.75rem;
   color: #dc2626;
+}
+#intCalcRequiredInfo{
+      display: flex;
+      justify-content: center;
+    gap: 10px;
+    font-family: "Open Sans", sans-serif;
+    align-items: center;
+    margin: 0px;
+    width: 100%;
 }

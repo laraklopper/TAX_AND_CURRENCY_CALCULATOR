@@ -70,6 +70,7 @@ export default function TaxCalculators({ loggedIn, currentUser, logout}) {
     setShowCalc(false)
     setShowVatCalc(false)
     setShowTaxCalc(false)
+    setShowIntCalc(false)
   },[])
   //  Function to toggle general/number calculator
    const toggleCalculator = useCallback(() => {
