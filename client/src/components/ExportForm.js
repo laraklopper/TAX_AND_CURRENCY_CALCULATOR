@@ -143,12 +143,12 @@ export default function ExportForm({ type }) {
     }
 
     return (
-    <form aria-labelledby='formTitle' onSubmit={submitExport}>
+    <form id='exportForm' aria-labelledby='formTitle' onSubmit={submitExport}>
         <p className='visually-hidden' id='formTitle'>
             {/* EXPORT TITLE: e.g Export Currency calculations */}
             {`EXPORT ${exportConfig.label}`}
         </p>
-        <Stack direction="horizontal" gap={3} id='export-form-stack'>
+        <Stack direction="horizontal" gap={3} id='exportFormStack'>
       <div className="p-2">
         {/* Select export format */}
                     <label className='exportLabel' htmlFor='exportFormatSelect'>CHOOSE EXPORT FORMAT:</label>

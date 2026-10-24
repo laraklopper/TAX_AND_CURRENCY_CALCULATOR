@@ -147,7 +147,7 @@ export default function TaxCalculations(
       </div>
       <div id='calExptCalcDiv'>
       <div id='calcBtnsDiv' >
-      
+
       <Stack gap={3} id='calcBtnStack'>
       <div className="p-2">
          <Button
@@ -195,7 +195,6 @@ export default function TaxCalculations(
       <div>
       </div>
       </div>
-
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
       <div id='tax-calculation-details-panal' className='calculations-panal'>

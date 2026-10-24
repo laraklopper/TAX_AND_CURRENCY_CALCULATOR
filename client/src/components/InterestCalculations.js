@@ -24,6 +24,7 @@ import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPerc
 import { durationInYearsOf, toCompounding, toTerm, totalCapitalOf } from '../utils/calculationFunc';
 import { X } from 'lucide-react';
 import ExportForm from './ExportForm';
+import NumberCalculator from './NumberCalculator';
 
 //InterestCalculations.js function component
 export default function InterestCalculations(
@@ -37,6 +38,7 @@ export default function InterestCalculations(
     setError
   }) {
     const [toggleExport, setToggleExport] = useState(false)
+    const [showCalculator, setShowCalculator ] = useState(false)
     /* Loading, selection, delete and status handling, shared with the currency
     and tax calculation lists */
     const {
@@ -64,6 +66,12 @@ export default function InterestCalculations(
       setToggleExport(prev => !prev)
       closePanal()//Close calculation details panal
     },[closePanal])
+
+     const toggleCalculator = useCallback(() => {
+            setShowCalculator(prev => (!prev))
+            setToggleExport(false)
+            closePanal()
+      },[closePanal])
     //=============JSX RENDERING===============
   return (
     <div id='interest-calculations-list' className='calculations-list'>
@@ -72,7 +80,6 @@ export default function InterestCalculations(
 
       {/* Inline request feedback, announced to screen readers */}
       <CalculationsStatus status={status} loadError={loadError}/>
-
       {/* ------INTEREST CALCULATIONS TABLE------------- */}
       <div className='calculations-table-block'>
       {interestCalculations.length === 0 ? (
@@ -80,6 +87,9 @@ export default function InterestCalculations(
       ) : (
         <table className='calculations-table' role='table' aria-label={`${interestCalculations.length} saved interest calculations`}>
           <thead>
+          <tr>
+            <th colSpan={7}>INTEREST CALCULATIONS</th>
+          </tr>
             <tr>
               <th scope='col'>DATE SAVED</th>
               <th scope='col'>TYPE</th>
@@ -135,23 +145,48 @@ export default function InterestCalculations(
           {`SHOWING THE NEWEST ${interestCalculations.length} OF ${interestCalculationsTotal} SAVED INTEREST CALCULATIONS`}
         </p>
       )}
-      <div>
+      </div>
+      <div id='calExptCalcDiv'>
+        <div>
+          <Stack gap={3} id='calcBtnStack'>
+          <div className="p-2">
+            <Button
+            variant='light'
+            id='showCalculatorBtn'
+            onClick={toggleCalculator}
+            >
+              {showCalculator ? 'Hide Calculator' : 'View Calculator'}
+            </Button>
+          </div>
+      <div className="p-2">
         <Button
         variant='light'
         onClick={toggleExportForm}
         id='toggleExportBtn'
+        // ARIA ATTRIBUTES
         aria-label={toggleExport ? 'EXIT': 'EXPORT CURRENCY CALCULATIONS'}
         aria-controls='export-calculations-panal'
         >
         {toggleExport ? 'EXIT': 'EXPORT CALCULATIONS'}
         </Button>
       </div>
-      {toggleExport && (
+    </Stack>
+        </div>
+        <div id='calculationsCalcDisplay'>
+        {showCalculator && (
+          <div id='basicCalcPanal'>
+            <NumberCalculator/>
+          </div>
+        )}
+ {toggleExport && (
         <div id='export-calculations-panal'>
           <ExportForm type='interest'/>
         </div>
-      )}
+      )}  
       </div>
+      </div>
+      
+       
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
       <div id='interest-calculation-details-panal' className='calculations-panal'>
@@ -292,5 +327,6 @@ export default function InterestCalculations(
       </div>
       )}
     </div>
+    
   )
 }
