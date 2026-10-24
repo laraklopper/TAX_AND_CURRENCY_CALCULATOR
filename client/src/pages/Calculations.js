@@ -260,7 +260,7 @@ export default function Calculations({currentUser, logout}) {
     <div id='pageContainer'>
         <Header pageHeader={'CALCULATIONS'} currentUser={currentUser}/>
         <section id='calculations-section1'>
-            <div id='calculations-tab-panal'>
+            <div id='calculationsTabPanal'>
     <Row id='toggle-calculation-list-row'>
         <Col id='toggle-calculations-col1'/>
         <Col xs={6} id='toggle-calculations-col'>

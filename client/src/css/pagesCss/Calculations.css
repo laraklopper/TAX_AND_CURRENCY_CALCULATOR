@@ -11,13 +11,13 @@
 /* ====================
 LAYOUT
 =================*/
-#calculations-tab-panal{
+#calculationsTabPanal{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
     width: 100%;
 }
 #tax-calculations-panal,
@@ -129,4 +129,52 @@ differently depending on which list opened it. */
     width: 100%;
     margin: 0px;
     padding: 0px;
+}
+#calExptCalcDiv{
+        display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+}
+#calcBtnsDiv,
+#calculationsCalcDisplay{
+        display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+#calcBtnStack{
+    display: flex;
+    align-items: center;
+    width: 500px;
+    margin: 0px;
+    padding: 0px;
+}
+#basicCalcPanal{
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    margin: 0px;
+    padding: 0px;
+
+}
+#showCalculatorBtn,
+#toggleExportBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    /* font-family: ; */
+    font-weight: 700;
+    color: #000;
+    border: solid #323A42 2px;
+    letter-spacing: 2px;
+    width: 250px;
+    height: 40px;
+    text-transform: uppercase;
 }

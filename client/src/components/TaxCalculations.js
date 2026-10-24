@@ -21,6 +21,7 @@ import Button from 'react-bootstrap/Button';
 // IMPORT SHARED LIST BEHAVIOUR/FORMATTING
 import CalculationsStatus from './CalculationsStatus';
 import useCalculationsList from '../utils/useCalculationsList';
+import NumberCalculator from '../components/NumberCalculator'
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
 import { monthlyTaxOf, netIncomeOf, taxableIncomeOf, toAgeGroup } from '../utils/calculationFunc';
 import { X } from 'lucide-react';
@@ -38,6 +39,7 @@ export default function TaxCalculations(
     setError
   }) {
     const [toggleExport, setToggleExport] = useState(false)
+    const [showCalculator, setShowCalculator] = useState(false)
     /* Loading, selection, delete and status handling, shared with the currency
     and interest calculation lists */
     const {
@@ -63,8 +65,14 @@ export default function TaxCalculations(
 
     const toggleExportForm = useCallback (() => {
       setToggleExport(prev => !prev)
+      setShowCalculator(false)
       closePanal()//Close panal
     },[closePanal])
+    const toggleCalculator = useCallback(() => {
+        setShowCalculator(prev => (!prev))
+        setToggleExport(false)
+
+    },[])
     //=============JSX RENDERING===============
   return (
     <div id='tax-calculations-list' className='calculations-list'>
@@ -81,6 +89,9 @@ export default function TaxCalculations(
       ) : (
         <table className='calculations-table' role='table' aria-label={`${taxCalculations.length} saved tax calculations`}>
           <thead>
+            <tr>
+              <th colSpan={7}>TAX CALCULATIONS</th>
+            </tr>
             <tr>
               <th scope='col'>DATE SAVED</th>
               <th scope='col'>TAX YEAR</th>
@@ -137,8 +148,25 @@ export default function TaxCalculations(
         </p>
       )}
       </div>
-      <div>
-        <Button
+      <div id='calExptCalcDiv'>
+     
+        
+      <div id='calcBtnsDiv' >
+      
+      <Stack gap={3} id='calcBtnStack'>
+      <div className="p-2">
+         <Button
+      variant='light'
+      id='showCalculatorBtn'
+      type='button'
+      onClick={toggleCalculator}
+      // ARIA ATTRIBUTES:
+      >
+        {showCalculator ? 'Hide Calculator' : 'View Calculator'}
+      </Button>
+      </div>
+      <div className="p-2">
+            <Button
         variant='light'
         id='toggleExportBtn'
         onClick={toggleExportForm}
@@ -152,11 +180,26 @@ export default function TaxCalculations(
           {toggleExport ? 'Exit': 'Export calculations'}
         </Button>
       </div>
+ 
+    </Stack>
+      </div>
+
+
+      <div id='calculationsCalcDisplay'>
+{showCalculator && (
+  <div id='basicCalcPanal'>
+    <NumberCalculator/>
+  </div>
+) }
        {toggleExport &&(
         <div id='export-form-panal'>
         <ExportForm type='tax'/>
       </div>
       )}
+      </div>
+      <div>
+      </div>
+      </div>
 
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
