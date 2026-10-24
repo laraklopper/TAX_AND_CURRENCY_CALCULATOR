@@ -567,7 +567,7 @@ work; a completed download is a polite status naming the file that was saved.
 
 ## 8. PROVISIONAL TAX CALCULATOR FORM [ProvisionalTaxCalculatorForm.js](../client/src/components/ProvisionalTaxCalculatorForm.js)
 
-Works out what is payable on one IRP6 and renders the working the way the return
+Works out what is payable on one **IRP6** and renders the working the way the return
 itself is laid out.
 
 Provisional tax is **not a separate tax**: it is the same normal tax section 2
