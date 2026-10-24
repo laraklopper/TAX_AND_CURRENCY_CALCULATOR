@@ -53,7 +53,7 @@ LAYOUT
   padding: 10px;
   gap: 10px;
 }
-/* GROUP 1 */
+/* GROUP 1: Interest type toggle */
 #intCalcGroup1{
     display: flex;
     margin: 0px;
@@ -184,6 +184,7 @@ LAYOUT
   align-items: center;
   margin: 0px;
   padding: 0px;
+  gap: 5px;
 }
 /* GROUP 3 */
 #intCalcGroup3{
