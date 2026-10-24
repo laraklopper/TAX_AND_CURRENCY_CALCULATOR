@@ -19,6 +19,7 @@ import '../css/componentCss/FormSetup.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button'
+import { Asterisk } from 'lucide-react';
 
 // Base URL of the API the export requests are sent to
 const API_BASE_URL = 'http://localhost:3001';
@@ -149,7 +150,7 @@ export default function ExportForm({ type }) {
             {`EXPORT ${exportConfig.label}`}
         </p>
         <Stack direction="horizontal" gap={3} id='exportFormStack'>
-      <div className="p-2">
+      <div className="p-2" id='exportSelectBlock'>
         {/* Select export format */}
                     <label className='exportLabel' htmlFor='exportFormatSelect'>CHOOSE EXPORT FORMAT:</label>
                         <select
@@ -171,7 +172,9 @@ export default function ExportForm({ type }) {
                         <option value='csv'>CSV (.csv)</option>
                         <option value='xlsx'>EXCEL (.xlsx)</option>
                     </select>
+                    <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false'/></small>
       </div>
+      
       {/* ==========ERROR/CONFIRMATION MESSAGE================
       A failure is an assertive alert, because the user pressed a button and
       needs to know it did not work; a completed download is a polite status. */}
@@ -186,8 +189,7 @@ export default function ExportForm({ type }) {
             <p className={error ? 'export-error' : 'export-notice'}>{error || notice}</p>
         </div>
         )}
-      <div className="vr" />
-      <div className="p-2">
+    <div className="p-2 ms-auto">
         <Button
         variant='light'
         type='submit'
@@ -198,6 +200,7 @@ export default function ExportForm({ type }) {
         aria-label={loading ? 'EXPORTING...' : `Export ${exportConfig.label.toLowerCase()}`}
         >{loading ? 'EXPORTING...' : 'EXPORT'}</Button>
       </div>
+      
     </Stack>
 
     </form>

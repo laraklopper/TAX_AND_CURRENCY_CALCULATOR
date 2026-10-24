@@ -1,13 +1,6 @@
 /* ExportForm.css */
 /* The export form under each saved-calculation list. `.export-error` is shared
 with the other forms and lives in FormSetup.css. */
-#exportFormStack{
-    display: flex;
-    align-items: center;
-    margin: 0px;
-    padding: 5px;
-    width: 100%;
-}
 #exportForm{
     display: flex;
     align-items: center;
@@ -15,6 +8,21 @@ with the other forms and lives in FormSetup.css. */
     padding: 10px;
     width: 100%;
     background-color: #A8AEB3;
+}
+/* STACK: https://react-bootstrap.netlify.app/docs/layout/stack */
+#exportFormStack{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 5px;
+    width: 100%;
+}
+#exportSelectBlock{
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
 }
 /* LABEL */
 .exportLabel{
@@ -61,7 +69,7 @@ with the other forms and lives in FormSetup.css. */
     letter-spacing: 2px;
     font-family: "Noto Serif", serif;
 }
-/* EXPORT BUTTON */
+/* EXPORT BUTTON: https://react-bootstrap.netlify.app/docs/components/buttons  */
 #exportBtn{
     display: flex;
     align-items: center;
