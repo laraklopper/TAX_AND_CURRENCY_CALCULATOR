@@ -19,6 +19,7 @@ LAYOUT
     margin: 0px;
     padding: 10px;
     width: 100%;
+    gap: 10px;
 }
 #tax-calculations-panal,
 #interest-calculations-panal,
