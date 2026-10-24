@@ -63,6 +63,7 @@ export default function TaxCalculations(
       logLabel: 'TaxCalculations.js'
     })
 
+    // ========EVENT LISTENERS===============
     const toggleExportForm = useCallback (() => {
       setToggleExport(prev => !prev)
       setShowCalculator(false)
@@ -78,10 +79,8 @@ export default function TaxCalculations(
     <div id='tax-calculations-list' className='calculations-list'>
       {/* Display tax calculations list in table format
       with a details panal displayed after clicking on the calculation*/}
-
       {/* Inline request feedback, announced to screen readers */}
       <CalculationsStatus status={status} loadError={loadError}/>
-
       {/* ------TAX CALCULATIONS TABLE------------- */}
       <div className='calculations-table-block'>
       {taxCalculations.length === 0 ? (
@@ -139,8 +138,6 @@ export default function TaxCalculations(
           </tbody>
         </table>
       )}
-
-     
       {/* Say so when the list is only the newest slice of a longer history */}
       {isTruncated && (
         <p className='infoText' aria-live='polite'>
@@ -149,8 +146,6 @@ export default function TaxCalculations(
       )}
       </div>
       <div id='calExptCalcDiv'>
-     
-        
       <div id='calcBtnsDiv' >
       
       <Stack gap={3} id='calcBtnStack'>
@@ -183,14 +178,14 @@ export default function TaxCalculations(
  
     </Stack>
       </div>
-
-
       <div id='calculationsCalcDisplay'>
-{showCalculator && (
-  <div id='basicCalcPanal'>
-    <NumberCalculator/>
-  </div>
-) }
+      {/* TOGGLE NUMBER CALCULATOR */}
+      {showCalculator && (
+        <div id='basicCalcPanal'>
+          <NumberCalculator/>
+        </div>
+        )}
+        {/* TOGGLE THE EXPORT CALCULATIONS FORM */}
        {toggleExport &&(
         <div id='export-form-panal'>
         <ExportForm type='tax'/>
