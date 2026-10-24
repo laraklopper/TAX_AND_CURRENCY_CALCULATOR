@@ -94,23 +94,6 @@ VAT CALCULATOR: VatCalculatorForm.js
     padding: 0px;
 }
 
-
-/* #provTaxCalculator{
-    display: flex;
-    flex-direction: column;
-    background-color: #A8AEB3;
-    margin: 0px;
-    padding: 10px;
-    align-items: center;
-}
-#provTaxcalcHeader{
-    display: flex;
-    width: 100%;
-    margin: 0px;
-    padding: 5px 0px;
-} */
-
-
 .provPeriodSpan{
     display: flex;
     margin: 0px;
