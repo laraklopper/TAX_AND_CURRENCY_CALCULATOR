@@ -169,7 +169,7 @@ differently depending on which list opened it. */
     align-items: center;
     margin: 0px;
     padding: 0px;
-    /* font-family: ; */
+font-family: "Courier Prime", monospace;
     font-weight: 700;
     color: #000;
     border: solid #323A42 2px;
