@@ -31,6 +31,7 @@ import { rowClass, toFullName, toLongDate, toLongDateTime, toRands } from '../ut
 import { enteredAmountOf, toVatMode, toVatModeLabel, toVatRate } from '../utils/calculationFunc';
 import { X } from 'lucide-react';
 import ExportForm from './ExportForm';
+import NumberCalculator from './NumberCalculator';
 
 //VatCalculations.js function component
 export default function VatCalculations(
@@ -44,6 +45,7 @@ export default function VatCalculations(
     setError
   }) {
     const [toggleExport, setToggleExport] = useState(false)
+    const [showCalculator, setShowCalculator ] = useState(false)
     /* Loading, selection, delete and status handling, shared with the tax,
     provisional tax, currency and interest calculation lists */
     const {
@@ -71,6 +73,11 @@ export default function VatCalculations(
       setToggleExport(prev => !prev)
       closePanal()//Close panal
     },[closePanal])
+      const toggleCalculator = useCallback(() => {
+                    setShowCalculator(prev => (!prev))
+                    setToggleExport(false)
+                    closePanal()
+              },[closePanal])
     //=============JSX RENDERING===============
   return (
     <div id='vat-calculations-list' className='calculations-list'>
@@ -87,6 +94,9 @@ export default function VatCalculations(
       ) : (
         <table className='calculations-table' role='table' aria-label={`${vatCalculations.length} saved VAT calculations`}>
           <thead>
+          <tr>
+            <th colSpan={7}>VAT CALCULATIONS</th>
+          </tr>
             <tr>
               <th scope='col'>DATE SAVED</th>
               <th scope='col'>CALCULATION</th>
@@ -142,8 +152,25 @@ export default function VatCalculations(
         </p>
       )}
       </div>
-      <div>
-        <Button
+      <div id='calExptCalcDiv'>
+      <div id='calcBtnsDiv'>
+            <Stack gap={3} id='calcBtnStack'>
+      <div className="p-2">
+<Button
+variant='light'
+id='showCalculatorBtn'
+onClick={toggleCalculator}
+type='button'
+// ARIA ATTRIBUTES
+aria-label={showCalculator ? 'Hide Calculator' : 'View Calculator'}
+aria-pressed={showCalculator}
+aria-expanded={showCalculator}
+aria-controls='basicCalculatorPanal'
+>
+{showCalculator ? 'Hide Calculator' : 'View Calculator'}
+</Button>
+      </div>
+      <div className="p-2"> <Button
         variant='light'
         id='toggleExportBtn'
         onClick={toggleExportForm}
@@ -155,14 +182,25 @@ export default function VatCalculations(
         aria-expanded={toggleExport}
         >
           {toggleExport ? 'Exit': 'Export calculations'}
-        </Button>
+        </Button></div>
+
+    </Stack>
+
       </div>
+       <div id='calculationsCalcDisplay'>
+ {showCalculator && (
+  <div id='basicCalculatorPanal'>
+  <NumberCalculator/>
+  </div>
+ )}
       {toggleExport && (
         <div id='vat-export-form-panal'>
           <ExportForm type='vat'/>
         </div>
       )}
-
+       </div>
+     
+</div>
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
       <div id='vat-calculation-details-panal' className='calculations-panal'>
