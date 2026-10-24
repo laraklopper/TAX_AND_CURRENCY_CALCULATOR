@@ -29,6 +29,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 // IMPORT SHARED LIST BEHAVIOUR/FORMATTING
 import CalculationsStatus from './CalculationsStatus';
+import NumberCalculator from '../components/NumberCalculator'
 import useCalculationsList from '../utils/useCalculationsList';
 import { NOT_AVAILABLE, rowClass, toFullName, toLongDate, toLongDateTime, toPercent, toRands } from '../utils/formatCalculations';
 import {
@@ -206,7 +207,12 @@ export default function ProvisionalTaxCalculations(
       </div>
     </Stack>
       </div>
-        <div>
+        <div id='calculationsCalcDisplay'>
+        {showCalculator && (
+          <div id='basicCalcPanal'>
+            <NumberCalculator/>
+          </div>
+        )}
     {toggleExport && (
         <div id='prov-tax-export-form-panal'>
           <ExportForm type='provisional'/>
