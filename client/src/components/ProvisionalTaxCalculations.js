@@ -62,6 +62,7 @@ export default function ProvisionalTaxCalculations(
     setError
   }) {
     const [toggleExport, setToggleExport] = useState(false)
+    const [showCalculator, setShowCalculator ] = useState(false)
     /* Loading, selection, delete and status handling, shared with the tax, VAT,
     currency and interest calculation lists */
     const {
@@ -89,6 +90,11 @@ export default function ProvisionalTaxCalculations(
       setToggleExport(prev => !prev)
       closePanal()//Close panal
     },[closePanal])
+     const toggleCalculator = useCallback(() => {
+                setShowCalculator(prev => (!prev))
+                setToggleExport(false)
+                closePanal()
+          },[closePanal])
     //=============JSX RENDERING===============
   return (
     <div id='prov-tax-calculations-list' className='calculations-list'>
@@ -105,6 +111,9 @@ export default function ProvisionalTaxCalculations(
       ) : (
         <table className='calculations-table' role='table' aria-label={`${provTaxCalculations.length} saved provisional tax calculations`}>
           <thead>
+            <tr>
+              <th colSpan={8}>PROVISIONAL TAX CALCULATIONS</th>
+            </tr>
             <tr>
               <th scope='col'>DATE SAVED</th>
               <th scope='col'>TAX YEAR</th>
@@ -155,7 +164,6 @@ export default function ProvisionalTaxCalculations(
           </tbody>
         </table>
       )}
-
       {/* Say so when the list is only the newest slice of a longer history */}
       {isTruncated && (
         <p className='infoText' aria-live='polite'>
@@ -163,7 +171,25 @@ export default function ProvisionalTaxCalculations(
         </p>
       )}
       </div>
-      <div>
+      <div id='calExptCalcDiv'>
+      <div id='calcBtnsDiv'>
+         <Stack gap={3} id='calcBtnStack'>
+      <div className="p-2">
+        <Button
+        variant='light'
+        id='showCalculatorBtn'
+        type='button'
+        onClick={toggleCalculator}
+        // ARIA ATTRIBUTES:
+        aria-label={showCalculator ? 'Hide Calculator' : 'View Calculator'}
+        aria-expanded={showCalculator}
+        aria-pressed={showCalculator}
+        aria-controls='basicCalcPanal'
+        >
+          {showCalculator ? 'Hide Calculator' : 'View Calculator'}
+        </Button>
+      </div>
+      <div className="p-2">
         <Button
         variant='light'
         id='toggleExportBtn'
@@ -178,12 +204,19 @@ export default function ProvisionalTaxCalculations(
           {toggleExport ? 'Exit': 'Export calculations'}
         </Button>
       </div>
-      {toggleExport && (
+    </Stack>
+      </div>
+        <div>
+    {toggleExport && (
         <div id='prov-tax-export-form-panal'>
           <ExportForm type='provisional'/>
         </div>
       )}
 
+        </div>
+      </div>
+
+  
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
       <div id='prov-tax-calculation-details-panal' className='calculations-panal'>

@@ -146,13 +146,19 @@ export default function InterestCalculations(
       )}
       </div>
       <div id='calExptCalcDiv'>
-        <div>
+        <div id='calcBtnsDiv'>
           <Stack gap={3} id='calcBtnStack'>
           <div className="p-2">
             <Button
             variant='light'
             id='showCalculatorBtn'
             onClick={toggleCalculator}
+            type='button'
+            // ARIA ATTRIBUTES:
+        aria-label={showCalculator ? 'Hide Calculator' : 'View Calculator'}
+        aria-expanded={showCalculator}
+        aria-pressed={showCalculator}
+        aria-controls='basicCalcPanal'
             >
               {showCalculator ? 'Hide Calculator' : 'View Calculator'}
             </Button>
