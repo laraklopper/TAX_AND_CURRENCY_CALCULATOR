@@ -77,7 +77,6 @@ export default function InterestCalculations(
     <div id='interest-calculations-list' className='calculations-list'>
       {/* Display interest calculations list in table format
       with a details panal displayed after clicking on the calculation*/}
-
       {/* Inline request feedback, announced to screen readers */}
       <CalculationsStatus status={status} loadError={loadError}/>
       {/* ------INTEREST CALCULATIONS TABLE------------- */}
@@ -185,8 +184,6 @@ export default function InterestCalculations(
       )}  
       </div>
       </div>
-      
-       
       {/* DETAILS PANAL IF A CALCULATION IS SELECTED ON THE TABLE LIST */}
       {selectedCalculation && (
       <div id='interest-calculation-details-panal' className='calculations-panal'>
@@ -327,6 +324,5 @@ export default function InterestCalculations(
       </div>
       )}
     </div>
-    
   )
 }
