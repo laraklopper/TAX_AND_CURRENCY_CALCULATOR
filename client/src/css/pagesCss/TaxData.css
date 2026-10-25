@@ -34,6 +34,19 @@ LAYOUT
     padding: 0px;
     width: 100%;
 }
+#togggleEditTaxStack{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+}
+#editTaxBlock1,
+#editTaxBlock2,
+#editTaxBlock3{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
 /* BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons */
 #toggleTaxChangeBtn{
     display: flex;

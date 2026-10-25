@@ -147,11 +147,11 @@ setShowTaxForm(false)
         <Col/>
         <Col xs={6} id='toggle-tax-formCol'>
           <div className='toggle-div'>
-           <Stack gap={3}>
-           <div className="p-2">
+           <Stack gap={3} id='togggleEditTaxStack'>
+           <div className="p-2" id='editTaxBlock1'>
             <h5>UPDATE TAX DATA</h5>
            </div>
-      <div className="p-2">
+      <div className="p-2" id='editTaxBlock2'>
          <Button 
               variant='warning' 
               onClick={toggleTaxDataForm} 
@@ -166,7 +166,7 @@ setShowTaxForm(false)
               {showTaxForm ? 'HIDE TAX FORM': 'ADD/UPDATE TAX DATA'}
             </Button>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='editTaxBlock3'>
          <Button 
               variant='warning' 
               id='toggle-tax-year-btn' 
