@@ -115,7 +115,17 @@ padding: 0px;
     border-radius: 8px;
 }
 /* GENERAL TEXT FORMAT */
-
+/* Bootstrap's reboot floats the legend at full width, which pulls it inside
+the fieldset. Undoing that puts it back in the gap in the top border. */
+legend{
+    float: none;
+    width: auto;
+    margin: 0px;
+    padding: 0px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Roboto", sans-serif;
+}
 #formHeading{
   color: #000000;
   font-family: "Roboto", sans-serif;
@@ -148,6 +158,8 @@ padding: 0px;
   padding: 0px;
 }
 ````
+### 1.5. CALCULATORS
+
 ### 1.5. TABLES
 
 ```css
