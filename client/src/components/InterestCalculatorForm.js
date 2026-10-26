@@ -185,7 +185,8 @@ export default function InterestCalculatorForm({
         {/* INTEREST CALCULATOR INPUT */}
         <div id='intCalcInput'>
         {/* --- GROUP 1 Interest type toggle --- */}
-        <div id="intCalcGroup1">
+        <fieldset  id="intCalcGroup1">
+        <legend>TYPE</legend>
         {/* STACK 1 */}
           <Stack gap={3} id='interestFormStack1'>
           <div className="p-2" id='toggleGroupBlock1'>
@@ -224,16 +225,16 @@ export default function InterestCalculatorForm({
     
           </div>
         </Stack>
-        </div>
-        {/* GROUP 2 */}
-        <div id="intCalcGroup2">
-        {/* STACK 2 */}
-        <Stack gap={3} id='interestForm-Stack2'>
-       <div className="p-2" id='principalAmountBlock'>
+        </fieldset>
+       
+        {/* GROUP 2 : */}
+        <fieldset id="intCalcGroup2">
+          <legend>AMOUNT</legend>
+          <div id='principalAmountBlock'>
        {/* PRINCIPAL TAX AMOUNT */}
         <label className="taxCalcLabel" htmlFor='principal-tax-amount'>Principal amount:</label>
           <div className="input-div">
-           <p className='calcText'>(R)</p>
+           <p className='calcText'>R</p>
             <input
               type="number"
               id='principal-tax-amount'
@@ -248,10 +249,16 @@ export default function InterestCalculatorForm({
             {errors.principal && <p className="field-error">{errors.principal}</p>}
           </div>
       </div>
+        </fieldset>
+        {/* GROUP 3 */}
+        <fieldset  id="intCalcGroup3">
+          <legend>TIME AND RATE</legend>
+          {/* STACK 2 */}
+        <Stack gap={3} id='interestFormStack2'>
       {/* TIME PERIOD TOGGLE: calculate over annual or monthly periods */}
       <div className="p-2" id='interestTimeBlock'>
         <label className='taxCalcLabel' id='time-period-label'>TIME PERIOD:</label>
-        <div id='buttons-div' role='group' aria-label='Time period'>
+        <div className='buttons-div' role='group' aria-label='Time period'>
           {PERIOD_UNITS.map((p) => (
             <Button
               variant='light'
@@ -278,7 +285,7 @@ export default function InterestCalculatorForm({
       {/* ANNUAL INTEREST RATE */}
       <div className="p-2" id='annualInterestBlock'>
       <label className="taxCalcLabel">Annual interest rate </label>
-        <div className="input-div">
+        <div className="intCalcInputDiv">
             <input
               type="number"
               min="0"
@@ -301,7 +308,7 @@ export default function InterestCalculatorForm({
       {/* TIME PERIOD (YEARS OR MONTHS, PER THE TOGGLE ABOVE) */}
       <div className="p-2" id='timePeriodBlock'>
       <label className="taxCalcLabel">Time period:</label>
-<div className='input-div'>
+<div className='intCalcInputDiv'>
 
 <p className='calcText' style={{textTransform: 'uppercase'}}>({period.noun})</p>
      <input
@@ -321,12 +328,15 @@ export default function InterestCalculatorForm({
 </div>
       </div>
     </Stack>
-     </div>
+        </fieldset>
+    
      {/* GROUP 3: Compounding Frequency + Optional recurring monthly contribution */}
-    <div id="intCalcGroup3">
+     
+    <fieldset id="intCalcGroup4">
+    <legend>OPRIONAL INPUT</legend>
     {/* ---------Screen Reader Header-------------- */}
     <p className='visually-hidden' id='group3Title'>Optional interest input and hidden fullName readonly input</p>
-         <Stack gap={3} id='interestForm-Stack3'>
+         <Stack gap={3} id='interestFormStack3'>
       <div className="p-2" id='compoundingFreqBlock'>
       {/* COMPOUNDING FREQUENCY */}
         <div className='intCalcInputDiv'>
@@ -414,7 +424,7 @@ export default function InterestCalculatorForm({
       </div>
       </div>
        </Stack>
-    </div>
+    </fieldset>
       <div id='intCalcRequiredInfo'>
               <p className='infoText' aria-live='polite' aria-hidden='true'>
                   <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
